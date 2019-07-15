@@ -13,7 +13,7 @@ public class ReadJarMap {
 
 	public static void createJARCategoryMap() {
 //		String csvFile = "src/main/resources/jar-imp.csv";
-		String csvFile="src/main/resources/digdeep-jar-to-packges.csv";
+		String csvFile="src/main/resources/jar-to-packges.csv";
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";

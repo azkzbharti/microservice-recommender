@@ -9,10 +9,9 @@ import com.ibm.research.msr.clustering.KMeans;
 import com.ibm.research.msr.clustering.Naive;
 import com.ibm.research.msr.clustering.NaiveTFIDF;
 import com.ibm.research.msr.extraction.AnalyzeApp;
+import com.ibm.research.msr.jarlist.JarApiList;
 import com.ibm.research.msr.utils.ReadJarMap;
 
-import weka.clusterers.DBScan;
-import weka.gui.simplecli.Exit;
 
 /**
  * 
@@ -22,6 +21,7 @@ public class MSRdriver {
 
 	public static void main(String[] args) throws IOException, Exception {
 		try {
+			JarApiList.createJARFile(args[0]);
 			ReadJarMap.createJARCategoryMap();
 		} catch (Exception e) {
 			// TODO: handle exception
