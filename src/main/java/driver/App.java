@@ -41,18 +41,18 @@ public class App {
 		System.out.println(algorithm);
 		switch(algorithm) {
 			case "kMeans": {
-				int k = 4; //args[2];
+				int k = Integer.parseInt(args[2]);
 				oc = new KMeans(analyzer.getListOfDocuments(),analyzer.getMeasurePath(), k);	
 				break;
 			}
 			case "DBSCAN":{
-				double  epsilon = 0.0003; //args[3];
-				int neighbours = 2; //args[4];
+				double  epsilon = Double.parseDouble(args[2]);//0.0003 ;
+				int neighbours = Integer.parseInt(args[3]);//args[3];
 				oc =  new DBSCAN(analyzer.getListOfDocuments(),analyzer.getMeasurePath(),epsilon,neighbours);
 				break;
 			}
 			case "NAIVETFIDF":{
-				 String meaureType="cosine";//args[3]; 
+				 String meaureType= args[2];  //"cosine";//args[2]; 
 				 oc = new NaiveTFIDF(analyzer.getListOfDocuments(),meaureType);
 //				 oc = new NaiveTFIDF(analyzer.getListOfDocuments(),"cosine");
 				 algorithm=algorithm+meaureType;
