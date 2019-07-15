@@ -1,0 +1,74 @@
+package com.ibm.research.msr.clustering;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import com.ibm.research.msr.extraction.Document;
+
+public class ClusterDetails {
+	
+    List<Document> listOfDocuments = new ArrayList<>();
+   
+    public ClusterDetails() {	
+    	listOfDocuments = new ArrayList<>();
+    }
+    
+    
+    public ClusterDetails(Document doc) {	
+    	listOfDocuments = new ArrayList<>();
+    	listOfDocuments.add(doc);
+    }
+    
+	public ClusterDetails(List<Document> docsList) {
+		listOfDocuments = docsList;
+	}
+    
+	public List<Document> getListOfDocuments() {
+		return listOfDocuments;
+	}
+	
+	public void setListOfDocuments(List<Document> listOfDocuments) {
+		this.listOfDocuments = listOfDocuments;
+	}
+	
+	public void assignDocToCluster(Document doc) {
+		this.listOfDocuments.add(doc);
+		
+	}
+	
+	public void addDocumentToCluster(Document doc) {
+		this.listOfDocuments.add(doc);
+		
+	}
+
+	public void showDetails() {
+		for(Document doc : listOfDocuments) {
+			System.out.println(doc.getName());
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public JSONObject getClusterJson(int count) {
+		JSONObject clusterJson  = new JSONObject();
+    	clusterJson.put("name","Cluster"+count);
+    	clusterJson.put("parent", "root");
+		JSONArray  documentarray = new JSONArray();
+		for(Document doc:listOfDocuments) {
+			JSONObject docobject = new JSONObject();
+    		docobject.put("name", doc.getName()+" jar's:"+new HashSet<>(doc.getTokens()));
+    		docobject.put("parent", "Cluster"+count);
+    		docobject.put("size", 1000*listOfDocuments.size());
+    		documentarray.add(docobject);
+		}
+		clusterJson.put("children",documentarray);
+		return clusterJson;
+	}
+	
+	
+    
+}
