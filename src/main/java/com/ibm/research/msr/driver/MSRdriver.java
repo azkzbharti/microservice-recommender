@@ -1,4 +1,4 @@
-package driver;
+package com.ibm.research.msr.driver;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ import weka.gui.simplecli.Exit;
  * 
  *
  */
-public class App {
+public class MSRdriver {
 	
 	public static void main(String[] args) throws IOException, Exception {
 		try {
