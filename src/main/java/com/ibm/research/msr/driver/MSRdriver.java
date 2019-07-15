@@ -1,5 +1,6 @@
 package com.ibm.research.msr.driver;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.ibm.research.msr.clustering.Clustering;
@@ -18,62 +19,67 @@ import weka.gui.simplecli.Exit;
  *
  */
 public class MSRdriver {
-	
+
 	public static void main(String[] args) throws IOException, Exception {
 		try {
-		ReadJarMap.createJARCategoryMap();
-		}
-		catch (Exception e) {
+			ReadJarMap.createJARCategoryMap();
+		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println("Error while creating jar map");
 		}
-		
+
 //		String appPath="/Users/shreya/git/digdeep";
 
 		String appPath = args[0];
-		String algorithm = args[1];//"KMeans";
+		String algorithm = args[1];// "KMeans";
+
+		// Create the output folder
+		String outputDir = "src/main/output";
+		new File(outputDir).mkdir();
+
 		AnalyzeApp analyzer = new AnalyzeApp(appPath);
-		
+
 //		analyzer.computeMeasure();
 //		analyzer.saveMeasure(null);
 
 		Clustering oc = null;
 		System.out.println(algorithm);
-		switch(algorithm) {
-			case "kMeans": {
-				int k = Integer.parseInt(args[2]);
-				oc = new KMeans(analyzer.getListOfDocuments(),analyzer.getMeasurePath(), k);	
-				break;
-			}
-			case "DBSCAN":{
-				double  epsilon = Double.parseDouble(args[2]);//0.0003 ;
-				int neighbours = Integer.parseInt(args[3]);//args[3];
-				oc =  new DBSCAN(analyzer.getListOfDocuments(),analyzer.getMeasurePath(),epsilon,neighbours);
-				break;
-			}
-			case "NAIVETFIDF":{
-				 String meaureType= args[2];  //"cosine";//args[2]; 
-				 oc = new NaiveTFIDF(analyzer.getListOfDocuments(),meaureType);
-//				 oc = new NaiveTFIDF(analyzer.getListOfDocuments(),"cosine");
-				 algorithm=algorithm+meaureType;
-				 break;
-			}
-			case "NAIVE":{
-				 oc = new Naive(analyzer.getListOfDocuments());
-				 break;
-			}
-			default:{
-				System.out.println("No algorithm, exiting");
-				System.exit(0);
-			}
-			
+
+		switch (algorithm) {
+		case "kMeans": {
+			int k = Integer.parseInt(args[2]);
+			oc = new KMeans(analyzer.getListOfDocuments(), analyzer.getMeasurePath(), k);
+			break;
 		}
-		
-		oc.runClustering(); 
+		case "DBSCAN": {
+			double epsilon = Double.parseDouble(args[2]);// 0.0003 ;
+			int neighbours = Integer.parseInt(args[3]);// args[3];
+			oc = new DBSCAN(analyzer.getListOfDocuments(), analyzer.getMeasurePath(), epsilon, neighbours);
+			break;
+		}
+		case "NAIVETFIDF": {
+			String meaureType = args[2]; // "cosine";//args[2];
+			oc = new NaiveTFIDF(analyzer.getListOfDocuments(), meaureType);
+//				 oc = new NaiveTFIDF(analyzer.getListOfDocuments(),"cosine");
+			algorithm = algorithm + meaureType;
+			break;
+		}
+		case "NAIVE": {
+			oc = new Naive(analyzer.getListOfDocuments());
+			break;
+		}
+		default: {
+			System.out.println("No algorithm, exiting");
+			System.exit(0);
+		}
+
+		}
+
+		oc.runClustering();
 		oc.getClusters();
-		
-		String filename="src/main/resources/cluster.html";    // TODO : Make argument
-		filename=filename.replaceAll(".html", algorithm+".html");	
+
+		String filename = "src/main/output/cluster.html"; // TODO : Make argument
+		filename = filename.replaceAll(".html", algorithm + ".html");
 		oc.savecLusterJSON(filename);
 
 	}
