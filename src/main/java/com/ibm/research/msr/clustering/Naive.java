@@ -21,9 +21,13 @@ import com.ibm.research.msr.extraction.Document;
  *
  */
 public class Naive extends Clustering {
+	
+	private String combineStrategy ="split";
 
-	public Naive(List<Document> documents) {
+	public Naive(List<Document> documents,String combineStrategy ) {
 		super(documents);
+		this.combineStrategy=combineStrategy;
+
 	}
 
 	protected ArrayList<ClusterDetails> calculate_initial_clusters(List<Document> pool_of_Documents) {
@@ -69,14 +73,9 @@ public class Naive extends Clustering {
 			for (int j = 0; j < clusters.size(); j++) {
 				if (i != j) {
 					ClusterDetails secondcls = clusters.get(j);
-//    				System.out.println("cluster at j "+j);
-//    	    		System.out.println("cluster at j "+j+" with size "+ secondcls.listOfDocuments.size());
-
-//    				secondcls.show_details();
-					List<ClusterDetails> newcls = splitCluster(firstcls, secondcls);
-//    	    		System.out.println(newcls.get(0).getListOfDocuments());
+					List<ClusterDetails> newcls ;
+					newcls = splitCluster(firstcls, secondcls);
 					int sz = newcls.get(0).getListOfDocuments().size();
-//    	    		System.out.println("intesection size"+sz+"diff size : "+newcls.get(1).getListOfDocuments().size());
 					quartet = new Quartet(sz, i, j, newcls);
 					inter_size.add(quartet);
 				}
@@ -166,24 +165,39 @@ public class Naive extends Clustering {
 
 	}
 
+		
 	public List<ClusterDetails> splitCluster(ClusterDetails c1, ClusterDetails c2) {
 		List<ClusterDetails> clusters = new ArrayList<>();
+		
+		if(this.combineStrategy=="onlyMerge") {
+			List<Document> combineddocs = new ArrayList<>();
+			combineddocs.addAll(c1.getListOfDocuments().stream().collect(Collectors.toList()));
+			combineddocs.addAll(c2.getListOfDocuments().stream().collect(Collectors.toList()));
+			return clusters;
+		}
+		
 		List<Document> intersection;
 		List<Document> difference;
+		 
 		Set<String> docsNames1 = c1.getListOfDocuments().stream().map(Document::getName).collect(Collectors.toSet());
 		Set<String> docsNames2 = c2.getListOfDocuments().stream().map(Document::getName).collect(Collectors.toSet());
 		Set<String> intersectionNamesSet = Sets.intersection(docsNames1, docsNames2);
-		Set<String> differenceNamesSet = Sets.symmetricDifference(docsNames1, docsNames2);
-
 		intersection = c1.getListOfDocuments().stream().filter(d -> intersectionNamesSet.contains(d.getName()))
 				.collect(Collectors.toList());
+		clusters.add(new ClusterDetails(intersection));
+//		Set<String> differenceNamesSet = Sets.symmetricDifference(docsNames1, docsNames2);
+		Set<String> differenceNamesSet = Sets.difference(docsNames1, docsNames2);	
 		difference = c1.getListOfDocuments().stream().filter(d -> differenceNamesSet.contains(d.getName()))
 				.collect(Collectors.toList());
-		difference.addAll(c2.getListOfDocuments().stream().filter(d -> differenceNamesSet.contains(d.getName()))
-				.collect(Collectors.toList()));
-
-		clusters.add(new ClusterDetails(intersection));
 		clusters.add(new ClusterDetails(difference));
+		Set<String> differenceNamesSet2 = Sets.difference(docsNames2, docsNames1);	
+		difference = c1.getListOfDocuments().stream().filter(d -> differenceNamesSet2.contains(d.getName()))
+				.collect(Collectors.toList());
+		clusters.add(new ClusterDetails(difference));
+		//		difference.addAll(c2.getListOfDocuments().stream().filter(d -> differenceNamesSet.contains(d.getName()))
+//				.collect(Collectors.toList()));
+
+
 		return clusters;
 	}
 

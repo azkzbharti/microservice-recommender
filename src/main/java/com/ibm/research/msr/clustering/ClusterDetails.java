@@ -52,6 +52,18 @@ public class ClusterDetails {
 		}
 	}
 	
+//	public boolean equals(ClusterDetails cd) {
+//	        // TODO Auto-generated method stub
+//	        if(cd instanceof ClusterDetails)
+//	        {
+//	        	ClusterDetails temp = (ClusterDetails) cd;
+//	        	if(this.listOfDocuments.stream().equals(temp.listOfDocuments.stream()))
+//	                return true;
+//	        }
+//	        return false;
+//
+//	    }
+	
 	@SuppressWarnings("unchecked")
 	public JSONObject getClusterJson(int count) {
 		JSONObject clusterJson  = new JSONObject();
@@ -67,6 +79,41 @@ public class ClusterDetails {
 		}
 		clusterJson.put("children",documentarray);
 		return clusterJson;
+	}
+
+
+
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((listOfDocuments == null) ? 0 : listOfDocuments.hashCode());
+		return result;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ClusterDetails other = (ClusterDetails) obj;
+		if (listOfDocuments == null) {
+			if (other.listOfDocuments != null)
+				return false;
+		} else if (!listOfDocuments.equals(other.listOfDocuments))
+			return false;
+		return true;
 	}
 	
 	

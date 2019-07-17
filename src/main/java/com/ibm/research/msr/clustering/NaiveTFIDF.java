@@ -12,9 +12,10 @@ import com.ibm.research.msr.extraction.Document;
 
 public class NaiveTFIDF extends Naive {
 	String distancetype;
+	 
     
-	public NaiveTFIDF(List<Document> documents,String meausretype) {
-		super(documents);
+	public NaiveTFIDF(List<Document> documents,String combineStrategy,String meausretype) {
+		super(documents,combineStrategy);
 		this.distancetype=meausretype;
 	}
 

@@ -59,13 +59,15 @@ public class MSRdriver {
 		}
 		case "NAIVETFIDF": {
 			String meaureType = args[2]; // "cosine";//args[2];
-			oc = new NaiveTFIDF(analyzer.getListOfDocuments(), meaureType);
+			String combineStrategy=args[3]; //"onlyMerge"
+			oc = new NaiveTFIDF(analyzer.getListOfDocuments(), combineStrategy,meaureType);
 //				 oc = new NaiveTFIDF(analyzer.getListOfDocuments(),"cosine");
 			algorithm = algorithm + meaureType;
 			break;
 		}
 		case "NAIVE": {
-			oc = new Naive(analyzer.getListOfDocuments());
+			String combineStrategy=args[3]; //"onlyMerge"
+			oc = new Naive(analyzer.getListOfDocuments(),combineStrategy);
 			break;
 		}
 		default: {
@@ -78,9 +80,9 @@ public class MSRdriver {
 		oc.runClustering();
 		oc.getClusters();
 
-		String filename = "src/main/output/cluster.html"; // TODO : Make argument
-		filename = filename.replaceAll(".html", algorithm + ".html");
-		oc.savecLusterJSON(filename);
+		String d3filename = "src/main/output/cluster.html"; // TODO : Make argument
+		d3filename = d3filename.replaceAll(".html", algorithm + ".html");
+		oc.savecLusterJSON(d3filename);
 
 	}
 }

@@ -8,7 +8,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -72,7 +74,15 @@ public abstract class Clustering {
 	 * Gets JSON for each cluster
 	 * @throws IOException 
 	 */
-	public void savecLusterJSON(String writepath) throws IOException { 
+	public void savecLusterJSON(String writepath) throws IOException {  
+//		System.out.println(clusters.size());
+		 Set<ClusterDetails> s= new HashSet<ClusterDetails>();
+		 s.addAll(clusters); 
+
+		 clusters = new ArrayList<ClusterDetails>();
+		 clusters.addAll(s);  
+//			System.out.println(clusters.size());
+
 		JSONObject clusterobj = new JSONObject();
 		clusterobj.put("name", "root");
 		clusterobj.put("parent", null);
