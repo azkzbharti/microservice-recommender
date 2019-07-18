@@ -68,7 +68,7 @@ public class ClusterDetails {
 			jarNames.remove("None");
     		docobject.put("name", doc.getName()+" jar's:"+jarNames);
     		docobject.put("parent", "Cluster"+count);
-    		docobject.put("size", 1000*listOfDocuments.size());
+//    		docobject.put("size", 1000*listOfDocuments.size());
     		documentarray.add(docobject);
 		}
 		clusterJson.put("children",documentarray);

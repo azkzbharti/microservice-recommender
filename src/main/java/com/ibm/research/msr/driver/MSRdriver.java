@@ -47,7 +47,7 @@ public class MSRdriver {
 
 		Clustering oc = null;
 		System.out.println(algorithm);
-
+		String combineStrategy="";
 		switch (algorithm) {
 		case "kMeans": {
 			int k = Integer.parseInt(args[3]);
@@ -62,14 +62,14 @@ public class MSRdriver {
 		}
 		case "NAIVETFIDF": {
 			String meaureType = args[3]; // "cosine";//args[2];
-			String combineStrategy=args[4]; //"onlyMerge"
+			combineStrategy=args[4]; // "onlyMerge"
 			oc = new NaiveTFIDF(analyzer.getListOfDocuments(), combineStrategy,meaureType);
 //				 oc = new NaiveTFIDF(analyzer.getListOfDocuments(),"cosine");
 			algorithm = algorithm + meaureType;
 			break;
 		}
 		case "NAIVE": {
-			String combineStrategy=args[4]; //"onlyMerge"
+			combineStrategy=args[3]; //"onlyMerge"
 			oc = new Naive(analyzer.getListOfDocuments(),combineStrategy);
 			break;
 		}
@@ -84,7 +84,7 @@ public class MSRdriver {
 		oc.getClusters();
 
 		String d3filename = "src/main/output/cluster.html"; // TODO : Make argument
-		d3filename = d3filename.replaceAll(".html", algorithm + ".html");
+		d3filename = d3filename.replaceAll(".html", algorithm+combineStrategy+args[2]+".html");
 		oc.savecLusterJSON(d3filename);
 
 	}
