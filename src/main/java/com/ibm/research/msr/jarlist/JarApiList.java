@@ -47,8 +47,8 @@ public class JarApiList {
 			
 			File fRoot = new File(root);
 			String[] extensions = new String[] { "jar"};
-			System.out.println("Getting all .jar  in " + fRoot.getPath()
-					+ " including those in subdirectories");
+//			System.out.println("Getting all .jar  in " + fRoot.getPath()
+//					+ " including those in subdirectories");
 			List<File> files = (List<File>) FileUtils.listFiles(fRoot, extensions, true);
 			Set<String> processedJars=new HashSet<String>();
 			for (File f : files) 
@@ -66,7 +66,7 @@ public class JarApiList {
 	        	//String jarName="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\lib\\guava-14.0.1.jar";
 	        	String jarName=f.getAbsolutePath();
 	        	
-	        	System.out.println(jarName);
+//	        	System.out.println(jarName);
 	        	
 				JarFile jarFile = new JarFile(jarName);
 	        	
@@ -88,7 +88,7 @@ public class JarApiList {
 					pw.flush();
 			}
 			pw.close();
-			System.out.println("processedJars ="+processedJars.size());
+//			System.out.println("processedJars ="+processedJars.size());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

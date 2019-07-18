@@ -23,8 +23,18 @@ public class ReadJarMap {
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
 				String[] libCat = line.split(cvsSplitBy);
-				getLibCatMap().put(libCat[1], libCat[0]);
+				String[] temp = libCat[0].split("/");
+				String jarname=temp[temp.length-1];
+//				 System.out.println(jarname);
+				if(libCat[1].length()!=0) { // TODO: check giri code on why they are coming 
+//					System.out.println(libCat[1]);
+			    	libCatMap.put(libCat[1], jarname);
+				}
+				else {
+					System.out.println("File has empty mapping for"+line);
+				}
 			}
+//			System.out.println(libCatMap.keySet().toString());
 		} catch (FileNotFoundException e) {
 		
 			e.printStackTrace();
@@ -40,6 +50,8 @@ public class ReadJarMap {
 			}
 		}
 	}
+	
+
 
 	public static Map<String, String> getLibCatMap() {
 		return libCatMap;

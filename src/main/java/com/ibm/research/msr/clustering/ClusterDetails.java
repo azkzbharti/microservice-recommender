@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -13,6 +14,7 @@ import com.ibm.research.msr.extraction.Document;
 public class ClusterDetails {
 	
     List<Document> listOfDocuments = new ArrayList<>();
+    int votes=0 ;
    
     public ClusterDetails() {	
     	listOfDocuments = new ArrayList<>();
@@ -52,17 +54,7 @@ public class ClusterDetails {
 		}
 	}
 	
-//	public boolean equals(ClusterDetails cd) {
-//	        // TODO Auto-generated method stub
-//	        if(cd instanceof ClusterDetails)
-//	        {
-//	        	ClusterDetails temp = (ClusterDetails) cd;
-//	        	if(this.listOfDocuments.stream().equals(temp.listOfDocuments.stream()))
-//	                return true;
-//	        }
-//	        return false;
-//
-//	    }
+
 	
 	@SuppressWarnings("unchecked")
 	public JSONObject getClusterJson(int count) {
@@ -72,7 +64,9 @@ public class ClusterDetails {
 		JSONArray  documentarray = new JSONArray();
 		for(Document doc:listOfDocuments) {
 			JSONObject docobject = new JSONObject();
-    		docobject.put("name", doc.getName()+" jar's:"+new HashSet<>(doc.getTokens()));
+			Set<String> jarNames= new HashSet(doc.getTokens());
+			jarNames.remove("None");
+    		docobject.put("name", doc.getName()+" jar's:"+jarNames);
     		docobject.put("parent", "Cluster"+count);
     		docobject.put("size", 1000*listOfDocuments.size());
     		documentarray.add(docobject);

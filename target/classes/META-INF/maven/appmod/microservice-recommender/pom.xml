@@ -62,5 +62,15 @@
 </dependency>
 
 
+  	<dependency>
+  		<groupId>org.eclipse.jdt</groupId>
+  		<artifactId>org.eclipse.jdt.core</artifactId>
+  		<version>3.18.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.apache.bcel</groupId>
+  		<artifactId>bcel</artifactId>
+  		<version>6.0</version>
+  	</dependency>
   </dependencies>
 </project>

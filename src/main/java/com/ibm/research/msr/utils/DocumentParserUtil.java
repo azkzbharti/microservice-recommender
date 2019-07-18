@@ -13,6 +13,7 @@ import com.thoughtworks.qdox.model.JavaSource;
 import com.thoughtworks.qdox.parser.ParseException;
 
 public class DocumentParserUtil {
+	private static boolean ignoreNone = false;
 
 	public static void processJavaFile(Document document) throws IOException {
 		List<String> tokens = new ArrayList<String>();
@@ -40,7 +41,10 @@ public class DocumentParserUtil {
 					.filter(entry -> importName.contains(entry.getKey()))
 					.map(entry -> entry.getValue()).findFirst().orElse("None");
 			tokens.add(category);
-			
+			if(ignoreNone && category=="None") {
+				tokens.remove("None");
+				continue;
+			}
 			if (!importCountMap.containsKey(category)) {
 				importCountMap.put(category, 1);
 			} else {
@@ -56,6 +60,14 @@ public class DocumentParserUtil {
 //		for(Map.Entry<String, Integer> entry : importCountMap.entrySet()) {
 //			System.out.println(entry.getKey() + " " + entry.getValue());
 //		}
+	}
+
+	public static boolean isIgnoreNone() {
+		return ignoreNone;
+	}
+
+	public static void setIgnoreNone(boolean ignoreNone) {
+		DocumentParserUtil.ignoreNone = ignoreNone;
 	}
 
 }
