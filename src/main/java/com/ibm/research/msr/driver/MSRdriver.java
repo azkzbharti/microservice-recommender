@@ -93,52 +93,52 @@ public class MSRdriver {
 		oc.setClusters(oc.getConsolidatedClusters());
 		
 		
-//		args.set(3, "split");
-//		oc=runSingleAlgorithm(analyzer,args);
-//		oc.setClusters(oc.getConsolidatedClusters());
-//		
-//		
-////
-//		args.set(1, "kMeans");
-//		args.add(3, "4");
-//		oc=runSingleAlgorithm(analyzer,args);
-//		oc.setClusters(oc.getConsolidatedClusters());
-//		
-//	
-//		
-//		args.set(1, "DBSCAN");
-//		args.set(3, "0.0003");
-//		args.add(4,  "1");
-//		
-//		oc=runSingleAlgorithm(analyzer,args);
-//		oc.setClusters(oc.getConsolidatedClusters());
-//		
-//		 args.set(1, "NAIVETFIDF"); // has 4 variations as below 
-//		
-//			args.set(3, "cosine");
-//			args.set(4,  "onlyMerge");
-//			oc=runSingleAlgorithm(analyzer,args);
-//			oc.setClusters(oc.getConsolidatedClusters());
-//			
-//			args.set(3, "euclidiean");
-//			args.set(4,  "onlyMerge");
-//			oc=runSingleAlgorithm(analyzer,args);
-//			oc.setClusters(oc.getConsolidatedClusters());
-//			
-//			args.set(3, "cosine");
-//			args.set(4,  "split");
-//			oc=runSingleAlgorithm(analyzer,args);
-//			oc.setClusters(oc.getConsolidatedClusters());
-//			
-//			args.set(3, "euclidiean");
-//			args.set(4,  "split");
-//			oc=runSingleAlgorithm(analyzer,args);
-//			oc.setClusters(oc.getConsolidatedClusters());
-//			
-//			
-//		String d3filename = "src/main/output/clusterall.html"; // TODO : Make argument 
-//		oc.savecLusterJSON(d3filename);
-//		
+		args.set(3, "split");
+		oc=runSingleAlgorithm(analyzer,args);
+		oc.setClusters(oc.getConsolidatedClusters());
+		
+		
+//
+		args.set(1, "kMeans");
+		args.add(3, "4");
+		oc=runSingleAlgorithm(analyzer,args);
+		oc.setClusters(oc.getConsolidatedClusters());
+		
+	
+		
+		args.set(1, "DBSCAN");
+		args.set(3, "0.0003");
+		args.add(4,  "1");
+		
+		oc=runSingleAlgorithm(analyzer,args);
+		oc.setClusters(oc.getConsolidatedClusters());
+		
+		 args.set(1, "NAIVETFIDF"); // has 4 variations as below 
+		
+			args.set(3, "cosine");
+			args.set(4,  "onlyMerge");
+			oc=runSingleAlgorithm(analyzer,args);
+			oc.setClusters(oc.getConsolidatedClusters());
+			
+			args.set(3, "euclidiean");
+			args.set(4,  "onlyMerge");
+			oc=runSingleAlgorithm(analyzer,args);
+			oc.setClusters(oc.getConsolidatedClusters());
+			
+			args.set(3, "cosine");
+			args.set(4,  "split");
+			oc=runSingleAlgorithm(analyzer,args);
+			oc.setClusters(oc.getConsolidatedClusters());
+			
+			args.set(3, "euclidiean");
+			args.set(4,  "split");
+			oc=runSingleAlgorithm(analyzer,args);
+			oc.setClusters(oc.getConsolidatedClusters());
+			
+			
+		String d3filename = "src/main/output/clusterall.html"; // TODO : Make argument 
+		oc.savecLusterJSON(d3filename);
+		
 	}
 
 	public static void main(String[] args) throws IOException, Exception {
