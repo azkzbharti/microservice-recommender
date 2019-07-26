@@ -5,18 +5,36 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.google.common.collect.Sets;
 import com.ibm.research.msr.extraction.Document;
 
 public class ClusterDetails {
 	
     List<Document> listOfDocuments = new ArrayList<>();
-    int votes=0 ;
+    double score ;
    
-    public ClusterDetails() {	
+    /**
+	 * @return the score
+	 */
+	public double getScore() {
+		return score;
+	}
+
+
+	/**
+	 * @param score the score to set
+	 */
+	public void setScore(double score) {
+		this.score = score;
+	}
+
+
+	public ClusterDetails() {	
     	listOfDocuments = new ArrayList<>();
     }
     
@@ -29,7 +47,10 @@ public class ClusterDetails {
 	public ClusterDetails(List<Document> docsList) {
 		listOfDocuments = docsList;
 	}
-    
+	public ClusterDetails(List<Document> docsList,double score) {
+		listOfDocuments = docsList;
+		this.score=score;
+	}
 	public List<Document> getListOfDocuments() {
 		return listOfDocuments;
 	}
@@ -54,12 +75,25 @@ public class ClusterDetails {
 		}
 	}
 	
-
+	
+	public int getNoIntersection(ClusterDetails c1) {
+		Set<String> docsNames1 = this.getListOfDocuments().stream().map(Document::getName).collect(Collectors.toSet());
+		Set<String> docsNames2 = c1.getListOfDocuments().stream().map(Document::getName).collect(Collectors.toSet());
+		Set<String> intersectionNamesSet = Sets.intersection(docsNames1, docsNames2);
+		return intersectionNamesSet.size();
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public JSONObject getClusterJson(int count) {
 		JSONObject clusterJson  = new JSONObject();
-    	clusterJson.put("name","Cluster"+count);
+		if(this.score==0) {
+	    	clusterJson.put("name","Cluster"+count);
+
+		}
+		else {
+	    	clusterJson.put("name","Cluster"+count+ "  (score== "+this.score+" ) ");
+		}
     	clusterJson.put("parent", "root");
 		JSONArray  documentarray = new JSONArray();
 		for(Document doc:listOfDocuments) {
@@ -109,6 +143,9 @@ public class ClusterDetails {
 			return false;
 		return true;
 	}
+	
+	
+   	
 	
 	
     

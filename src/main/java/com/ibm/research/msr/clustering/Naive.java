@@ -62,10 +62,10 @@ public class Naive extends Clustering {
 		};
 //    	System.out.println(clusters.size());
 		for (int i = 0; i < clusters.size(); i++) {
-			for (int j = 0; j < clusters.size(); j++) {
-				System.out.println("cluster " + j + "before" + i + "iterations");
-				System.out.println(clusters.get(j).getListOfDocuments().size());
-			}
+//			for (int j = 0; j < clusters.size(); j++) {
+//				System.out.println("cluster " + j + "before" + i + "iterations");
+//				System.out.println(clusters.get(j).getListOfDocuments().size());
+//			}
 			ClusterDetails firstcls = clusters.get(i);
 //    		System.out.println("cluster at "+i+" with size "+ firstcls.listOfDocuments.size());
 //			firstcls.showDetails();
@@ -87,25 +87,25 @@ public class Naive extends Clustering {
 			selquartet = inter_size.get(0);
 
 			if (selquartet.getSize() > 0) {
-				System.out.println("seletcted size");
-				System.out.println(selquartet.getSize());
-				System.out.println("selected i");
-				System.out.println(selquartet.getI());
-				System.out.println("selected j");
-				System.out.println(selquartet.getJ());
+//				System.out.println("seletcted size");
+//				System.out.println(selquartet.getSize());
+//				System.out.println("selected i");
+//				System.out.println(selquartet.getI());
+//				System.out.println("selected j");
+//				System.out.println(selquartet.getJ());
 
 				if (selquartet.getJ() < selquartet.getI()) // order of deletion is important
 				{
-					System.out.println("cluster removed index " + selquartet.getJ() + "--" + selquartet.getI());
-					System.out.println(clusters.get(selquartet.getJ()).listOfDocuments.size());
+//					 System.out.println("cluster removed index " + selquartet.getJ() + "--" + selquartet.getI());
+//					System.out.println(clusters.get(selquartet.getJ()).listOfDocuments.size());
 					clusters.remove(selquartet.getJ());// cause i is already removed
-					System.out.println(clusters.get(selquartet.getI() - 1).listOfDocuments.size());
+//					System.out.println(clusters.get(selquartet.getI() - 1).listOfDocuments.size());
 					clusters.remove(selquartet.getI() - 1);
 				} else {
-					System.out.println("cluster removed index " + selquartet.getJ() + "--" + selquartet.getI());
-					System.out.println(clusters.get(selquartet.getI()).listOfDocuments.size());
+//					System.out.println("cluster removed index " + selquartet.getJ() + "--" + selquartet.getI());
+//					System.out.println(clusters.get(selquartet.getI()).listOfDocuments.size());
 					clusters.remove(selquartet.getI());// cause i is already removed
-					System.out.println(clusters.get(selquartet.getJ() - 1).listOfDocuments.size());
+//					System.out.println(clusters.get(selquartet.getJ() - 1).listOfDocuments.size());
 					clusters.remove(selquartet.getJ() - 1);
 
 				}
@@ -114,7 +114,7 @@ public class Naive extends Clustering {
 				for (ClusterDetails cd : selquartet.getCd()) {
 					if (cd.getListOfDocuments().size() > 0) // adding only non empty cluster to avoid null pointer error
 					{
-						System.out.println("new cluster adding " + cd.getListOfDocuments().size());
+//						System.out.println("new cluster adding " + cd.getListOfDocuments().size());
 						clusters.add(cd);
 
 					}
@@ -127,14 +127,14 @@ public class Naive extends Clustering {
 //        		System.out.println(clusters.get(j).getListOfDocuments().size());
 //        		} 
 		}
-		System.out.println("----");
-		System.out.println("finalscls");
-		for (int i = 0; i < clusters.size(); i++) {
-			System.out.println("cluster " + i);
-			System.out.println(clusters.get(i).listOfDocuments.size());
-			System.out.println("+++++++");
+//		System.out.println("----");
+//		System.out.println("finalscls");
+//		for (int i = 0; i < clusters.size(); i++) {
+//			System.out.println("cluster " + i);
+//			System.out.println(clusters.get(i).listOfDocuments.size());
+//			System.out.println("+++++++");
 
-		}
+//		}
 		this.clusters = clusters;
 		int count = 0;
 		JSONObject clusterobj = new JSONObject();
@@ -173,6 +173,7 @@ public class Naive extends Clustering {
 			List<Document> combineddocs = new ArrayList<>();
 			combineddocs.addAll(c1.getListOfDocuments().stream().collect(Collectors.toList()));
 			combineddocs.addAll(c2.getListOfDocuments().stream().collect(Collectors.toList()));
+			clusters.add(new ClusterDetails(combineddocs));
 			return clusters;
 		}
 		

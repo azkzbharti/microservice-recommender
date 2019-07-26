@@ -8,9 +8,14 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -27,12 +32,43 @@ import weka.filters.unsupervised.attribute.Remove;
  */
 public abstract class Clustering {
 
+	static Map<ClusterDetails, Integer> consolidatedClusters = new HashMap<ClusterDetails, Integer>();
+
 	protected List<Document> listOfDocuments = new ArrayList<Document>();
 	protected List<ClusterDetails> clusters = new ArrayList<>();
 
 	public Clustering(List<Document> listOfDocuments) {
 		this.listOfDocuments = listOfDocuments;
 	}
+
+	
+
+	/**
+	 * @return the consolidatedClusters
+	 */
+	public List<ClusterDetails> getConsolidatedClusters() {
+		List<ClusterDetails> newclusters =  new ArrayList<>();
+		
+		for (ClusterDetails cls:Clustering.consolidatedClusters.keySet()) {
+//			System.out.println(Clustering.consolidatedClusters.get(cls));
+			ClusterDetails temp = new ClusterDetails(cls.getListOfDocuments(),Clustering.consolidatedClusters.get(cls));
+			newclusters.add(temp);	
+//			temp.showDetails();
+		}
+		return newclusters;
+//		return consolidatedClusters;
+	}
+
+
+
+	/**
+	 * @param consolidatedClusters the consolidatedClusters to set
+	 */
+	public static void setConsolidatedClusters(Map<ClusterDetails, Integer> consolidatedClusters) {
+		Clustering.consolidatedClusters = consolidatedClusters;
+	}
+
+
 
 	public List<Document> getListOfDocuments() {
 		return listOfDocuments;
@@ -46,7 +82,7 @@ public abstract class Clustering {
 		return clusters;
 	}
 
-	public void setClusters(ArrayList<ClusterDetails> clusters) {
+	public void setClusters(List<ClusterDetails> clusters) {
 		this.clusters = clusters;
 	}
 	
@@ -81,6 +117,8 @@ public abstract class Clustering {
 
 		 clusters = new ArrayList<ClusterDetails>();
 		 clusters.addAll(s);  
+		 clusters=sortClusterOnScore(clusters);
+
 //			System.out.println(clusters.size());
 
 		JSONObject clusterobj = new JSONObject();
@@ -102,6 +140,46 @@ public abstract class Clustering {
 	    System.out.println("File written at "+ writepath);
 	}
 	
+	public void CombineClusters() {
+		
+		for(ClusterDetails cls :this.clusters) {
+			Integer cvalue;
+			if(consolidatedClusters.containsKey(cls)) {
+				cvalue = consolidatedClusters.get(cls);
+				cvalue = cvalue+1;
+//				System.out.println(cls.showDetails());
+				cls.showDetails();
+			}
+			else {
+				cvalue=0;
 
+			}
+			System.out.println(consolidatedClusters.size()+"----"+cvalue);
+			consolidatedClusters.put(cls, cvalue);
+		}
+				
+	}
+	public void removeDuplicate() {
+		// will remove the same clusters
+		 Set<ClusterDetails> s= new HashSet<ClusterDetails>();
+		 s.addAll(this.clusters);
+		 List<ClusterDetails> listofclusters = new ArrayList<ClusterDetails>();
+		 listofclusters.addAll(s); 
+		 this.clusters=listofclusters;
+		 }
 
+	public  List<ClusterDetails> sortClusterOnScore(List<ClusterDetails> clusters) {
+		Comparator<ClusterDetails> comparator = new Comparator<ClusterDetails>() {
+
+			public int compare(ClusterDetails tupleA, ClusterDetails tupleB) {
+				return Double.compare(tupleA.getScore(), tupleB.getScore());
+//                return (tupleA.getSize()-(tupleB.getSize()));
+			}
+			
+	
+		};
+		Collections.sort(clusters, Collections.reverseOrder(comparator));
+		return clusters;
+	}
+	
 }
