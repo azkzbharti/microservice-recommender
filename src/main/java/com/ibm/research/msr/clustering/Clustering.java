@@ -126,8 +126,10 @@ public abstract class Clustering {
 		clusterobj.put("parent", null);
 		JSONArray clusterArray = new JSONArray();
 		int count = 0;
+		
 		for (ClusterDetails cls : clusters) {
 			if (cls.getListOfDocuments().size() > 0) {
+				cls.setClusterName();
 				clusterArray.add(cls.getClusterJson(count));
 				count += 1;
 			}
@@ -143,18 +145,19 @@ public abstract class Clustering {
 	public void CombineClusters() {
 		
 		for(ClusterDetails cls :this.clusters) {
-			Integer cvalue;
+			Integer cvalue=0;
 			if(consolidatedClusters.containsKey(cls)) {
 				cvalue = consolidatedClusters.get(cls);
 				cvalue = cvalue+1;
 //				System.out.println(cls.showDetails());
-				cls.showDetails();
+//				cls.showDetails();
 			}
 			else {
-				cvalue=0;
-
+				// compute score based on intersection if not present as is 
+				// S(C1)= Sum_i=1 to n ((C1 inter Ci)*V(ci)/(#C1+#Ci-(c1 inter ci))*V(C1)
+				
 			}
-			System.out.println(consolidatedClusters.size()+"----"+cvalue);
+//			System.out.println(consolidatedClusters.size()+"----"+cvalue);
 			consolidatedClusters.put(cls, cvalue);
 		}
 				

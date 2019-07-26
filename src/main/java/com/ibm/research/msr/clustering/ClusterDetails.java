@@ -2,11 +2,16 @@ package com.ibm.research.msr.clustering;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -17,6 +22,7 @@ public class ClusterDetails {
 	
     List<Document> listOfDocuments = new ArrayList<>();
     double score ;
+    String clusterName;
    
     /**
 	 * @return the score
@@ -83,16 +89,52 @@ public class ClusterDetails {
 		return intersectionNamesSet.size();
 	}
 	
+	public void setClusterName() {
+		Map<String,Integer> alltokens= new HashMap();
+		String clusterName="";
+		for(Document doc:listOfDocuments) {
+			Map<String,Integer>tMap = doc.getTokenCountMap();
+			for(String key:tMap.keySet()) {
+				if(alltokens.containsKey(key))
+				alltokens.put(key,alltokens.get(key)+tMap.get(key));
+				else
+				alltokens.put(key,tMap.get(key));
+			}
+			alltokens.putAll(doc.getTokenCountMap());
+		}
+		int maxValueInMap=(Collections.max(alltokens.values()));
+		for (Entry<String, Integer> entry : alltokens.entrySet()) {  // Itrate through hashmap
+            if (entry.getValue()==maxValueInMap) {
+            	clusterName=clusterName+entry.getKey().replace(".jar", ",");
+            }
+        }
+		this.clusterName=clusterName.substring(0, clusterName.length() - 1);
+	}
 	
+	/**
+	 * @return the clusterName
+	 */
+	public String getClusterName() {
+		return clusterName;
+	}
+
+
+	/**
+	 * @param clusterName the clusterName to set
+	 */
+	public void setClusterName(String clusterName) {
+		this.clusterName = clusterName;
+	}
+
+
 	@SuppressWarnings("unchecked")
 	public JSONObject getClusterJson(int count) {
 		JSONObject clusterJson  = new JSONObject();
 		if(this.score==0) {
-	    	clusterJson.put("name","Cluster"+count);
-
+	    	clusterJson.put("name","Cluster"+count+ " Name: "+this.clusterName);
 		}
 		else {
-	    	clusterJson.put("name","Cluster"+count+ "  (score== "+this.score+" ) ");
+	    	clusterJson.put("name","Cluster"+count+ " Name: "+this.clusterName+"  (score== "+this.score+" ) ");
 		}
     	clusterJson.put("parent", "root");
 		JSONArray  documentarray = new JSONArray();

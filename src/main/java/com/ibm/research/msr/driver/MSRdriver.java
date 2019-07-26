@@ -24,7 +24,7 @@ import com.ibm.research.msr.utils.ReadJarMap;
  */
 public class MSRdriver {
 	public static Clustering runSingleAlgorithm(AnalyzeApp analyzer,List<String> args) throws IOException {
-		DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(args.get(2)));	  
+		
 		String algorithm = args.get(1);// "KMeans";
 
 		Clustering oc = null;
@@ -93,52 +93,52 @@ public class MSRdriver {
 		oc.setClusters(oc.getConsolidatedClusters());
 		
 		
-		args.set(3, "split");
-		oc=runSingleAlgorithm(analyzer,args);
-		oc.setClusters(oc.getConsolidatedClusters());
-		
-		
-//
-		args.set(1, "kMeans");
-		args.add(3, "4");
-		oc=runSingleAlgorithm(analyzer,args);
-		oc.setClusters(oc.getConsolidatedClusters());
-		
-	
-		
-		args.set(1, "DBSCAN");
-		args.set(3, "0.0003");
-		args.add(4,  "1");
-		
-		oc=runSingleAlgorithm(analyzer,args);
-		oc.setClusters(oc.getConsolidatedClusters());
-		
-		 args.set(1, "NAIVETFIDF"); // has 4 variations as below 
-		
-			args.set(3, "cosine");
-			args.set(4,  "onlyMerge");
-			oc=runSingleAlgorithm(analyzer,args);
-			oc.setClusters(oc.getConsolidatedClusters());
-			
-			args.set(3, "euclidiean");
-			args.set(4,  "onlyMerge");
-			oc=runSingleAlgorithm(analyzer,args);
-			oc.setClusters(oc.getConsolidatedClusters());
-			
-			args.set(3, "cosine");
-			args.set(4,  "split");
-			oc=runSingleAlgorithm(analyzer,args);
-			oc.setClusters(oc.getConsolidatedClusters());
-			
-			args.set(3, "euclidiean");
-			args.set(4,  "split");
-			oc=runSingleAlgorithm(analyzer,args);
-			oc.setClusters(oc.getConsolidatedClusters());
-			
-			
-		String d3filename = "src/main/output/clusterall.html"; // TODO : Make argument 
-		oc.savecLusterJSON(d3filename);
-		
+//		args.set(3, "split");
+//		oc=runSingleAlgorithm(analyzer,args);
+//		oc.setClusters(oc.getConsolidatedClusters());
+//		
+//		
+////
+//		args.set(1, "kMeans");
+//		args.add(3, "4");
+//		oc=runSingleAlgorithm(analyzer,args);
+//		oc.setClusters(oc.getConsolidatedClusters());
+//		
+//	
+//		
+//		args.set(1, "DBSCAN");
+//		args.set(3, "0.0003");
+//		args.add(4,  "1");
+//		
+//		oc=runSingleAlgorithm(analyzer,args);
+//		oc.setClusters(oc.getConsolidatedClusters());
+//		
+//		 args.set(1, "NAIVETFIDF"); // has 4 variations as below 
+//		
+//			args.set(3, "cosine");
+//			args.set(4,  "onlyMerge");
+//			oc=runSingleAlgorithm(analyzer,args);
+//			oc.setClusters(oc.getConsolidatedClusters());
+//			
+//			args.set(3, "euclidiean");
+//			args.set(4,  "onlyMerge");
+//			oc=runSingleAlgorithm(analyzer,args);
+//			oc.setClusters(oc.getConsolidatedClusters());
+//			
+//			args.set(3, "cosine");
+//			args.set(4,  "split");
+//			oc=runSingleAlgorithm(analyzer,args);
+//			oc.setClusters(oc.getConsolidatedClusters());
+//			
+//			args.set(3, "euclidiean");
+//			args.set(4,  "split");
+//			oc=runSingleAlgorithm(analyzer,args);
+//			oc.setClusters(oc.getConsolidatedClusters());
+//			
+//			
+//		String d3filename = "src/main/output/clusterall.html"; // TODO : Make argument 
+//		oc.savecLusterJSON(d3filename);
+//		
 	}
 
 	public static void main(String[] args) throws IOException, Exception {
@@ -163,22 +163,26 @@ public class MSRdriver {
 			System.out.println("Output directory exists");
 
 		}
-
-		AnalyzeApp analyzer = new AnalyzeApp(appPath);
+		AnalyzeApp analyzer ;
 		List<String> argsList = new ArrayList<String>(Arrays.asList(args));;
 		List<String> argsList2 = new ArrayList<String>(Arrays.asList(args));;
 		
 		if(args[1].equals("all")){
+			argsList.add("true"); //TODO: remove this
+			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(2)));
+			analyzer = new AnalyzeApp(appPath);
 			System.out.println(argsList.size());
-//			argsList.add("true");
-//			
-//			runAllAlgorithms(analyzer, argsList);
-			argsList2.add("false");
+			runAllAlgorithms(analyzer, argsList);
+			argsList2.add("false"); //TODO: remove this
+			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(2)));
+			analyzer = new AnalyzeApp(appPath);
 			runAllAlgorithms(analyzer, argsList2);
 		}
-		else 	
+		else {
+			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(2)));
+			analyzer = new AnalyzeApp(appPath);
 			runSingleAlgorithm(analyzer,argsList); // TODO: remove setIgnoreNone from user input always generate both
-		
+		}
 
 //		analyzer.computeMeasure();
 //		analyzer.saveMeasure(null);

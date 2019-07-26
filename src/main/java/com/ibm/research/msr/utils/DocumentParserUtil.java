@@ -13,9 +13,10 @@ import com.thoughtworks.qdox.model.JavaSource;
 import com.thoughtworks.qdox.parser.ParseException;
 
 public class DocumentParserUtil {
-	private static boolean ignoreNone = false;
+	private static boolean ignoreNone;
 
 	public static void processJavaFile(Document document) throws IOException {
+
 		List<String> tokens = new ArrayList<String>();
 		Map<String, Integer> importCountMap = new HashMap<String, Integer>() ;
 
@@ -41,15 +42,17 @@ public class DocumentParserUtil {
 					.filter(entry -> importName.contains(entry.getKey()))
 					.map(entry -> entry.getValue()).findFirst().orElse("None");
 			tokens.add(category);
-			if(ignoreNone && category=="None") {
-				tokens.remove("None");
-				continue;
-			}
 			if (!importCountMap.containsKey(category)) {
 				importCountMap.put(category, 1);
 			} else {
 				importCountMap.put(category, importCountMap.get(category) + 1);
 			}
+			if(DocumentParserUtil.getIgnoreNone() && category=="None") {
+				tokens.remove("None");
+				importCountMap.remove("None");
+				continue;
+			}
+			
 		}
 		
 		// set tokens and import Count
@@ -62,7 +65,7 @@ public class DocumentParserUtil {
 //		}
 	}
 
-	public static boolean isIgnoreNone() {
+	public static boolean getIgnoreNone() {
 		return ignoreNone;
 	}
 
