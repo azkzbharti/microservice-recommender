@@ -8,13 +8,13 @@ Algorithms supported:
 
  
 Run time argumnets: 
-"path to app/ measurefile" algorithm 
+"path to app or measurefile" algorithm  IgnoreNoneCategory(true/false)
 for eg
-1. /Users/shreya/git/digdeep kMeans 4 // (k)
-2. /Users/shreya/git/digdeep DBSCAN 0.0003 2  //(epislon neighbours)
-3. /Users/shreya/git/digdeep NAIVE
-4. /Users/shreya/git/digdeep NAIVETFIDF euclidiean  // or cosine 
+1. /Users/shreya/git/digdeep false kMeans 4 // (k)
+2. /Users/shreya/git/digdeep true DBSCAN 0.0003 2  //(epislon neighbours)
+3. /Users/shreya/git/digdeep false NAIVE
+4. /Users/shreya/git/digdeep false NAIVETFIDF euclidiean  // or cosine 
 
 or to compute on pre-computed measure file: 
- src/main/resources/tf_idf-analy.csv algorithm othersoptions
+ src/main/resources/tf_idf-analy.csv algorithm other-options-as-above
 
