@@ -14,13 +14,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.ibm.research.msr.extraction.Document;
+import com.ibm.research.msr.utils.ReadJarMap;
 
 import weka.core.Instances;
 import weka.filters.Filter;
@@ -44,10 +47,51 @@ public abstract class Clustering {
 	
 
 	/**
+	 * @param clusters 
 	 * @return the consolidatedClusters
 	 */
+	public List<ClusterDetails> scorePartialClusters(List<ClusterDetails> clusters){
+		
+		List<ClusterDetails> newclusters =  new ArrayList<>();
+		
+		for (int i=0;i<clusters.size();i++) {
+			ClusterDetails cls_i =clusters.get(i);	
+//			if(cls_i.getScore()==0) {
+//				cls_i.setScore(score);
+//			}
+//			cls_i.showDetails();
+//			System.out.println("Setting score"+cls_i.getScore());
+////			if(cls_i.getScore()==0) {
+//			for(int j=0;j<clusters.size();j++) {
+//				if(i!=j) {
+//
+//
+//				ClusterDetails cls_j = clusters.get(j);
+//				cls_j.showDetails();
+//				System.out.println("j score"+cls_j.getScore());
+//				int inter= cls_i.getNoIntersection(cls_j);
+//				System.out.println("Inter"+inter);
+//				double term1 = inter/((cls_i.getListOfDocuments().size()+cls_j.getListOfDocuments().size())-inter);
+//				double score=term1+cls_j.getScore()+cls_i.getScore();
+//				if(cls_i.getScore()==0) {
+//				cls_i.setScore(cls_i.getScore()+score);
+//				}
+//				}
+//				}
+////			}
+			
+			System.out.println("Setting score"+cls_i.getScore());
+			newclusters.add(cls_i);	
+		}
+		this.clusters=newclusters;
+		return newclusters;
+
+
+	}
 	public List<ClusterDetails> getConsolidatedClusters() {
 		List<ClusterDetails> newclusters =  new ArrayList<>();
+		List<ClusterDetails> newclusters1 =  new ArrayList<>();
+
 		
 		for (ClusterDetails cls:Clustering.consolidatedClusters.keySet()) {
 //			System.out.println(Clustering.consolidatedClusters.get(cls));
@@ -55,6 +99,8 @@ public abstract class Clustering {
 			newclusters.add(temp);	
 //			temp.showDetails();
 		}
+		System.out.println("here"+newclusters.size());
+
 		return newclusters;
 //		return consolidatedClusters;
 	}
@@ -143,23 +189,36 @@ public abstract class Clustering {
 	}
 	
 	public void CombineClusters() {
-		
+
 		for(ClusterDetails cls :this.clusters) {
 			Integer cvalue=0;
 			if(consolidatedClusters.containsKey(cls)) {
 				cvalue = consolidatedClusters.get(cls);
 				cvalue = cvalue+1;
-//				System.out.println(cls.showDetails());
-//				cls.showDetails();
+				ClusterDetails tcls = consolidatedClusters.entrySet()
+					      .stream()
+					      .filter(entry -> consolidatedClusters.containsKey(cls))
+					      .map(Map.Entry::getKey).findFirst().get();
+				if(cls.getClusterName()!="None" && tcls.getClusterName()=="None" ) {
+			     cls.setClusterName(tcls.getClusterName());
+			     consolidatedClusters.replace(cls, cvalue, cvalue);
+				}
+				else {
+					consolidatedClusters.put(cls, cvalue);
+				}
+
 			}
 			else {
+				consolidatedClusters.put(cls, cvalue);
 				// compute score based on intersection if not present as is 
 				// S(C1)= Sum_i=1 to n ((C1 inter Ci)*V(ci)/(#C1+#Ci-(c1 inter ci))*V(C1)
 				
-			}
-//			System.out.println(consolidatedClusters.size()+"----"+cvalue);
-			consolidatedClusters.put(cls, cvalue);
+			}			
 		}
+//	 List<Entry<ClusterDetails, Integer>> listOfEntry = consolidatedClusters.entrySet().stream().sorted().collect(Collectors.toList());
+				
+			
+		
 				
 	}
 	public void removeDuplicate() {
@@ -171,11 +230,20 @@ public abstract class Clustering {
 		 this.clusters=listofclusters;
 		 }
 
+	
 	public  List<ClusterDetails> sortClusterOnScore(List<ClusterDetails> clusters) {
 		Comparator<ClusterDetails> comparator = new Comparator<ClusterDetails>() {
 
 			public int compare(ClusterDetails tupleA, ClusterDetails tupleB) {
-				return Double.compare(tupleA.getScore(), tupleB.getScore());
+				int sComp = Double.compare(tupleA.getScore(),tupleB.getScore());
+
+	            if (sComp != 0) {
+	               return sComp;
+	            } 
+	            Integer x1 = tupleA.getListOfDocuments().size();
+	            Integer x2 = tupleB.getListOfDocuments().size();
+	            return x2-x1; // reverse order
+//				return Double.compare(tupleA.getScore(), tupleB.getScore());
 //                return (tupleA.getSize()-(tupleB.getSize()));
 			}
 			

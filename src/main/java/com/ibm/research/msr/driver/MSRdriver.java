@@ -23,6 +23,7 @@ import com.ibm.research.msr.utils.ReadJarMap;
  *
  */
 public class MSRdriver {
+	
 	public static Clustering runSingleAlgorithm(AnalyzeApp analyzer,List<String> args) throws IOException {
 		
 		String algorithm = args.get(1);// "KMeans";
@@ -76,6 +77,8 @@ public class MSRdriver {
 		d3filename = d3filename.replaceAll(".html", algorithm+combineStrategy+args.get(2)+".html");
 		oc.savecLusterJSON(d3filename);
 		oc.CombineClusters();
+		
+
 		return oc;
 		
 		
@@ -92,50 +95,52 @@ public class MSRdriver {
 		oc=runSingleAlgorithm(analyzer,args);
 		oc.setClusters(oc.getConsolidatedClusters());
 		
-		
+//		
+//		
 		args.set(3, "split");
-		oc=runSingleAlgorithm(analyzer,args);
-		oc.setClusters(oc.getConsolidatedClusters());
-		
-		
+//		oc=runSingleAlgorithm(analyzer,args);
+//		oc.setClusters(oc.getConsolidatedClusters());
+//		
+//		
 //
 		args.set(1, "kMeans");
-		args.add(3, "4");
+		args.add(3, "2");
 		oc=runSingleAlgorithm(analyzer,args);
 		oc.setClusters(oc.getConsolidatedClusters());
-		
-	
-		
+//		
+//	
+//		
 		args.set(1, "DBSCAN");
 		args.set(3, "0.0003");
 		args.add(4,  "1");
 		
-		oc=runSingleAlgorithm(analyzer,args);
-		oc.setClusters(oc.getConsolidatedClusters());
-		
+//		oc=runSingleAlgorithm(analyzer,args);
+//		oc.setClusters(oc.getConsolidatedClusters());
+//		
 		 args.set(1, "NAIVETFIDF"); // has 4 variations as below 
 		
-			args.set(3, "cosine");
-			args.set(4,  "onlyMerge");
-			oc=runSingleAlgorithm(analyzer,args);
-			oc.setClusters(oc.getConsolidatedClusters());
+//			args.set(3, "cosine");
+//			args.set(4,  "onlyMerge");
+//			oc=runSingleAlgorithm(analyzer,args);
+//			oc.setClusters(oc.getConsolidatedClusters());
 			
-			args.set(3, "euclidiean");
-			args.set(4,  "onlyMerge");
-			oc=runSingleAlgorithm(analyzer,args);
-			oc.setClusters(oc.getConsolidatedClusters());
+//			args.set(3, "euclidiean");
+//			args.set(4,  "onlyMerge");
+//			oc=runSingleAlgorithm(analyzer,args);
+//			oc.setClusters(oc.getConsolidatedClusters());
 			
-			args.set(3, "cosine");
-			args.set(4,  "split");
-			oc=runSingleAlgorithm(analyzer,args);
-			oc.setClusters(oc.getConsolidatedClusters());
-			
-			args.set(3, "euclidiean");
-			args.set(4,  "split");
-			oc=runSingleAlgorithm(analyzer,args);
-			oc.setClusters(oc.getConsolidatedClusters());
-			
-			
+//			args.set(3, "cosine");
+//			args.set(4,  "split");
+//			oc=runSingleAlgorithm(analyzer,args);
+//			oc.setClusters(oc.getConsolidatedClusters());
+//			
+//			args.set(3, "euclidiean");
+//			args.set(4,  "split");
+//			oc=runSingleAlgorithm(analyzer,args);
+//			oc.setClusters(oc.getConsolidatedClusters());
+//			
+		 
+//		oc.scorePartialClusters(oc.getClusters());	
 		String d3filename = "src/main/output/clusterall.html"; // TODO : Make argument 
 		oc.savecLusterJSON(d3filename);
 		
@@ -171,10 +176,16 @@ public class MSRdriver {
 			argsList.add("true"); //TODO: remove this
 			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(2)));
 			analyzer = new AnalyzeApp(appPath);
+			System.out.println(DocumentParserUtil.getIgnoreNone());
+
 			System.out.println(argsList.size());
 			runAllAlgorithms(analyzer, argsList);
+			
 			argsList2.add("false"); //TODO: remove this
-			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(2)));
+			
+			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList2.get(2)));
+			
+			System.out.println("her"+DocumentParserUtil.getIgnoreNone());
 			analyzer = new AnalyzeApp(appPath);
 			runAllAlgorithms(analyzer, argsList2);
 		}

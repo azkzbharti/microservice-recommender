@@ -67,7 +67,11 @@ public class KMeans extends Clustering {
 			}
 			clusters =clus.values().stream().collect(Collectors.toList());
 			
-		} catch (Exception e) {
+		}
+		catch(IllegalArgumentException e) {
+			System.out.println("Argument Erorr : reduce k for KMeans");
+		}
+		catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
