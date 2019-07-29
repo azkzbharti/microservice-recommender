@@ -7,20 +7,28 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import weka.gui.simplecli.Exit;
+
 public class ReadJarMap {
 
 	private static Map<String, String> libCatMap = new HashMap<String, String>();
 
+	@SuppressWarnings("resource")
 	public static void createJARCategoryMap() {
 //		String csvFile = "src/main/resources/jar-imp.csv";
 		String csvFile="src/main/resources/jar-to-packges.csv";
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
-		
 
 		try {
 			br = new BufferedReader(new FileReader(csvFile));
+			br.readLine();
+			if(br.readLine()==null) {
+				System.out.println("Empty jar mapping error while parsing jar's.");
+				System.exit(-1);
+			}
+			br = new BufferedReader(new FileReader(csvFile));	
 			while ((line = br.readLine()) != null) {
 				String[] libCat = line.split(cvsSplitBy);
 				String[] temp = libCat[0].split("/");
@@ -34,7 +42,6 @@ public class ReadJarMap {
 					System.out.println("File has empty mapping for"+line);
 				}
 			}
-//			System.out.println(libCatMap.keySet().toString());
 		} catch (FileNotFoundException e) {
 		
 			e.printStackTrace();

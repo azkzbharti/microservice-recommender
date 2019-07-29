@@ -119,10 +119,9 @@ public class ClusterDetails {
             	clusterName=clusterName+entry.getKey().replace(".jar", ",");
             }
         }
-		if(clusterName.equals(""))
+		if(clusterName.equals("") || clusterName.equals("None"))
 			clusterName = "None ,";
 		clusterName=clusterName.substring(0, clusterName.length() - 1);
-		System.out.println(clusterName);
 
 		this.clusterName=clusterName;
 	}
@@ -167,6 +166,13 @@ public class ClusterDetails {
 		return clusterJson;
 	}
 
+	public JSONObject getCustomJson(int count) {
+		JSONObject clusterJson  = new JSONObject();
+    	clusterJson.put("Cluster","Cluster: "+count+ " Name: "+this.clusterName );
+
+		return clusterJson;
+
+	}
 
 
 

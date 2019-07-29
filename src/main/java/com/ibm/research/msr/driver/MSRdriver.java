@@ -119,25 +119,25 @@ public class MSRdriver {
 //		
 		 args.set(1, "NAIVETFIDF"); // has 4 variations as below 
 		
-//			args.set(3, "cosine");
-//			args.set(4,  "onlyMerge");
-//			oc=runSingleAlgorithm(analyzer,args);
-//			oc.setClusters(oc.getConsolidatedClusters());
+			args.set(3, "cosine");
+			args.set(4,  "onlyMerge");
+			oc=runSingleAlgorithm(analyzer,args);
+			oc.setClusters(oc.getConsolidatedClusters());
 			
-//			args.set(3, "euclidiean");
-//			args.set(4,  "onlyMerge");
-//			oc=runSingleAlgorithm(analyzer,args);
-//			oc.setClusters(oc.getConsolidatedClusters());
+			args.set(3, "euclidiean");
+			args.set(4,  "onlyMerge");
+			oc=runSingleAlgorithm(analyzer,args);
+			oc.setClusters(oc.getConsolidatedClusters());
 			
-//			args.set(3, "cosine");
-//			args.set(4,  "split");
-//			oc=runSingleAlgorithm(analyzer,args);
-//			oc.setClusters(oc.getConsolidatedClusters());
-//			
-//			args.set(3, "euclidiean");
-//			args.set(4,  "split");
-//			oc=runSingleAlgorithm(analyzer,args);
-//			oc.setClusters(oc.getConsolidatedClusters());
+			args.set(3, "cosine");
+			args.set(4,  "split");
+			oc=runSingleAlgorithm(analyzer,args);
+			oc.setClusters(oc.getConsolidatedClusters());
+			
+			args.set(3, "euclidiean");
+			args.set(4,  "split");
+			oc=runSingleAlgorithm(analyzer,args);
+			oc.setClusters(oc.getConsolidatedClusters());
 //			
 		 
 //		oc.scorePartialClusters(oc.getClusters());	

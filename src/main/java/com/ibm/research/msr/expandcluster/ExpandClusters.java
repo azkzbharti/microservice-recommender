@@ -8,5 +8,13 @@ public class ExpandClusters {
 
 	List<ClusterDetails> listofclusters ;
 	
+	public ExpandClusters(List<ClusterDetails> listofclusters) {
+		// TODO Auto-generated constructor stub
+		this.listofclusters=listofclusters;
+	}
+	
+	public void serializeCustomJson() {
+		
+	}
 
 }

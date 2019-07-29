@@ -54,7 +54,6 @@ public class AnalyzeApp {
 			saveMeasure();
 		}
 		else {
-//			"src/main/resources/tf_idf-analy.csv"
 			System.out.println("Reading from CSV file");
 			read_measure_tf_file(appPath);
 			

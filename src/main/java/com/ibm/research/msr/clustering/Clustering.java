@@ -99,7 +99,6 @@ public abstract class Clustering {
 			newclusters.add(temp);	
 //			temp.showDetails();
 		}
-		System.out.println("here"+newclusters.size());
 
 		return newclusters;
 //		return consolidatedClusters;
