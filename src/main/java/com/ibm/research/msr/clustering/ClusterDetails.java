@@ -17,6 +17,7 @@ import org.json.simple.JSONObject;
 
 import com.google.common.collect.Sets;
 import com.ibm.research.msr.extraction.Document;
+import com.ibm.research.msr.utils.DocumentParserUtil;
 
 public class ClusterDetails {
 	
@@ -90,25 +91,39 @@ public class ClusterDetails {
 	}
 	
 	public void setClusterName() {
+		//TODO: improve this logic
 		Map<String,Integer> alltokens= new HashMap();
 		String clusterName="";
 		for(Document doc:listOfDocuments) {
 			Map<String,Integer>tMap = doc.getTokenCountMap();
+//			if(tMap.containsKey("None"))
+//				tMap.remove("None");
 			for(String key:tMap.keySet()) {
 				if(alltokens.containsKey(key))
-				alltokens.put(key,alltokens.get(key)+tMap.get(key));
+				alltokens.put(key,alltokens.get(key)+(tMap.get(key)/listOfDocuments.size()));
 				else
-				alltokens.put(key,tMap.get(key));
+				alltokens.put(key,tMap.get(key)/listOfDocuments.size());
 			}
 			alltokens.putAll(doc.getTokenCountMap());
 		}
+		if(alltokens.containsKey("None") && alltokens.get("None") == listOfDocuments.size()) {
+			this.clusterName="None, ";
+			return;
+		}
+//		alltokens.remove("None");
+//		System.out.println(clusterName);
+
 		int maxValueInMap=(Collections.max(alltokens.values()));
 		for (Entry<String, Integer> entry : alltokens.entrySet()) {  // Itrate through hashmap
             if (entry.getValue()==maxValueInMap) {
             	clusterName=clusterName+entry.getKey().replace(".jar", ",");
             }
         }
-		this.clusterName=clusterName.substring(0, clusterName.length() - 1);
+		if(clusterName.equals("") || clusterName.equals("None"))
+			clusterName = "None ,";
+		clusterName=clusterName.substring(0, clusterName.length() - 1);
+
+		this.clusterName=clusterName;
 	}
 	
 	/**
@@ -131,10 +146,10 @@ public class ClusterDetails {
 	public JSONObject getClusterJson(int count) {
 		JSONObject clusterJson  = new JSONObject();
 		if(this.score==0) {
-	    	clusterJson.put("name","Cluster"+count+ " Name: "+this.clusterName);
+	    	clusterJson.put("name","Cluster: "+count+ " Name: "+this.clusterName );
 		}
 		else {
-	    	clusterJson.put("name","Cluster"+count+ " Name: "+this.clusterName+"  (score== "+this.score+" ) ");
+	    	clusterJson.put("name","Cluster: "+count+ " Name: "+this.clusterName +"  (score== "+this.score+" ) ");
 		}
     	clusterJson.put("parent", "root");
 		JSONArray  documentarray = new JSONArray();
@@ -151,6 +166,13 @@ public class ClusterDetails {
 		return clusterJson;
 	}
 
+	public JSONObject getCustomJson(int count) {
+		JSONObject clusterJson  = new JSONObject();
+    	clusterJson.put("Cluster","Cluster: "+count+ " Name: "+this.clusterName );
+
+		return clusterJson;
+
+	}
 
 
 

@@ -28,7 +28,7 @@ public class DocumentParserUtil {
 			imports = src.getImports();
 			JavaPackage pkg = src.getPackage();
 			// set package name
-			document.setPackageName(pkg.getName());
+			document.setPackageName(src.getPackageName());
 		} catch (ParseException e) {
 			System.out.println("Parse Error in : " + document.getFile().getAbsolutePath());
 			return;
