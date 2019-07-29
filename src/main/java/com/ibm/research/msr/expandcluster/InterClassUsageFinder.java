@@ -5,7 +5,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.AST;
@@ -13,16 +16,25 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.IPackageBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.PackageDeclaration;
+import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 
 public class InterClassUsageFinder {
+	
+	Map<ClassPair,Integer> interClassUsageMatrix=new HashMap<ClassPair,Integer>();
 
-	public void find(String srcFilesRoot)
+	String currentJavaFilePkgName=null;
+	
+	public Map<ClassPair,Integer> find(String srcFilesRoot)
 	{
 
 		File fRoot = new File(srcFilesRoot);
@@ -33,7 +45,7 @@ public class InterClassUsageFinder {
 		for (File file : files) {
 			processOneFile(file,srcFilesRoot);
 		}
-
+		return interClassUsageMatrix;
 	}
 	
 	public void processOneFile(File file, String srcFilesRoot)
@@ -80,10 +92,54 @@ public class InterClassUsageFinder {
 		
 		parser.setEnvironment(null, srcPath, null, true);
 
+		
 		final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
+		
+		final Stack<TypeDeclaration> stackTD=new Stack<TypeDeclaration>();
+		
 		System.out.println("create ast done");
 		cu.accept(new ASTVisitor() {
+
+			public boolean visit(PackageDeclaration p)
+			{
+				IPackageBinding ipb = p.resolveBinding();
+				if (ipb!=null)
+				{
+					currentJavaFilePkgName=ipb.getName();
+				}
+				return true;
+			}
 			
+			public boolean visit(TypeDeclaration td)
+			{
+				ITypeBinding itb=td.resolveBinding();
+				if (itb!=null)
+				{
+					//System.out.println("itb qualified name= " 
+					//		+ itb.getQualifiedName());
+//					IJavaElement ije=itb.getJavaElement();
+//					ije.
+				}
+				else
+				{
+					//System.out.println("itb null");
+				}
+				//System.out.println("enter visit td " + td.getName().getFullyQualifiedName());
+				stackTD.push(td);
+				return true;
+			}
+
+			public void endVisit(TypeDeclaration td)
+			{
+				stackTD.pop();
+			}
+
+			
+			public boolean visit(MethodDeclaration m)
+			{
+				System.out.println("visit md " + m.getName().getFullyQualifiedName());
+				return true;
+			}
 //			public boolean visit(SingleVariableDeclaration svd)
 //			{
 //				System.out.println("visit svd "+svd.toString());
@@ -119,7 +175,7 @@ public class InterClassUsageFinder {
 						if (itb.isFromSource())
 						{
 							String n = itb.getName();
-							System.out.println("\t\tVDF: Usage of " + n);
+		//					System.out.println("\t\tVDF: Usage of " + n);
 						}
 					}
 				}
@@ -138,7 +194,7 @@ public class InterClassUsageFinder {
 						//if (itb.isFromSource())
 						//{
 							String n = itb.getName();
-							System.out.println("\t\tVariableDeclaration: Usage of " + n);
+	//						System.out.println("\t\tVariableDeclaration: Usage of " + n);
 						//}
 					}
 				}
@@ -161,7 +217,81 @@ public class InterClassUsageFinder {
 					if (itb.isFromSource())
 					{
 						String n = itb.getName();
-						System.out.println("\t\tMethodInvocation: Usage of " + n);
+//						System.out.println("\t\tMethodInvocation: Usage of " + n);
+					}
+					
+				}
+
+				return true;
+			}
+
+			public boolean visit(SimpleName e)
+			{
+				//to ignore package imports and all
+				if (stackTD.isEmpty())
+				{
+ 					System.out.println("not within a type");
+					return true;
+				}
+				
+				//System.out.println("visit SimpleName " +e.toString());
+				ITypeBinding itb = e.resolveTypeBinding();
+				if (itb!=null)
+				{
+					if (itb.isFromSource())
+					{
+						String n = itb.getName();
+						IPackageBinding ipb = itb.getPackage();
+						String usedClassName=null;
+						if (ipb!=null)
+						{
+							usedClassName=ipb.getName()+"."+n;
+						}
+						else
+						{
+							usedClassName=n;
+						}
+						System.out.println("\t\tSimpleName: Usage of " + n);
+					
+
+						String curClassName=null;
+						if (!stackTD.isEmpty())
+						{
+							TypeDeclaration curClass=stackTD.peek();
+							curClassName=curClass.getName().getFullyQualifiedName();
+							System.out.println(curClassName);
+						}
+						else
+						{
+							curClassName=file.getName();
+						}
+
+						String thisClassFQName=null;						
+						if (currentJavaFilePkgName!=null)
+						{
+							thisClassFQName=currentJavaFilePkgName+"."+curClassName;
+						}
+						else
+						{
+							
+							thisClassFQName=curClassName;
+						}
+						
+						ClassPair cp=new ClassPair(thisClassFQName,usedClassName);
+//						ClassPair cp=new ClassPair(curClassName,usedClassName);
+						
+						Integer usageCount = interClassUsageMatrix.get(cp);
+						if (usageCount==null)
+						{
+							usageCount=new Integer(1);
+							interClassUsageMatrix.put(cp,usageCount);
+						}
+						else
+						{
+							Integer uc2=new Integer(usageCount.intValue()+1);
+							interClassUsageMatrix.put(cp,uc2);
+						}
+
 					}
 					
 				}
@@ -172,20 +302,27 @@ public class InterClassUsageFinder {
 
 		});
 	
+		System.out.println("interClassUsageMatrix");
+		for (ClassPair cp:interClassUsageMatrix.keySet())
+		{
+			Integer usageCount=interClassUsageMatrix.get(cp);
+			System.out.println(cp+"->"+usageCount);
+		}
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		if (args.length <1)
-		{
-			System.err.println("USAGE: <root of source files for project>");
-			System.exit(-1);
-		}
 		
-		int choice =1;
+		int choice =2;
 		InterClassUsageFinder i=new InterClassUsageFinder();
 		if (choice==1)
 		{
+			if (args.length <1)
+			{
+				System.err.println("USAGE: <root of source files for project>");
+				System.exit(-1);
+			}
+
 			String srcFilesRoot=args[0];
 			//InterClassUsageFinder i=new InterClassUsageFinder();
 			i.find(srcFilesRoot);
