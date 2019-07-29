@@ -8,6 +8,9 @@ Algorithms supported:
 
  
 Run time argumnets: 
+Run all alorithms together: 
+/Users/shreya/git/digdeep  all
+
 "path to app or measurefile" algorithm  IgnoreNoneCategory(true/false)
 for eg
 1. /Users/shreya/git/digdeep false kMeans 4 // (k)
