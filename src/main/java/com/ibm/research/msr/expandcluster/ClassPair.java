@@ -4,6 +4,30 @@ public class ClassPair {
 	
 		String thisClass;
 		
+		public String getThisClass() {
+			return thisClass;
+		}
+
+
+
+		public void setThisClass(String thisClass) {
+			this.thisClass = thisClass;
+		}
+
+
+
+		public String getUsedClass() {
+			return usedClass;
+		}
+
+
+
+		public void setUsedClass(String usedClass) {
+			this.usedClass = usedClass;
+		}
+
+
+
 		String usedClass;
 		
 		
