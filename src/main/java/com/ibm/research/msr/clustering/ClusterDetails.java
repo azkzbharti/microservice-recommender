@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections.map.HashedMap;
@@ -52,16 +53,36 @@ public class ClusterDetails {
     }
     
 	public ClusterDetails(List<Document> docsList) {
+//		 Set<Document> s= new HashSet<Document>();
+//		 s.addAll(docsList);
+//		 this.listOfDocuments = new ArrayList<Document>();
 		listOfDocuments = docsList;
 	}
+
 	public ClusterDetails(List<Document> docsList,double score) {
 		listOfDocuments = docsList;
 		this.score=score;
 	}
+	public void removeDoc(Document doc) {
+		this.listOfDocuments.remove(doc);
+		
+	}
+	public void removeDuplicates() {
+		 Set<Document> s= new HashSet<Document>();
+		 s.addAll(this.listOfDocuments);
+		 this.listOfDocuments = new ArrayList<Document>();
+		 this.listOfDocuments.addAll(s); 
+	
+	}
 	public List<Document> getListOfDocuments() {
 		return listOfDocuments;
 	}
-	
+	public List<String> getListOfDocumentsNames() {
+		List<String> docnames;
+		docnames=listOfDocuments.stream().map(Document::getUniqueName).collect(Collectors.toList());
+		
+		return docnames;
+	}
 	public void setListOfDocuments(List<Document> listOfDocuments) {
 		this.listOfDocuments = listOfDocuments;
 	}
@@ -72,7 +93,8 @@ public class ClusterDetails {
 	}
 	
 	public void addDocumentToCluster(Document doc) {
-		this.listOfDocuments.add(doc);
+		if(!listOfDocuments.contains(doc))
+			this.listOfDocuments.add(doc);
 		
 	}
 
@@ -89,6 +111,8 @@ public class ClusterDetails {
 		Set<String> intersectionNamesSet = Sets.intersection(docsNames1, docsNames2);
 		return intersectionNamesSet.size();
 	}
+	
+	
 	
 	public void setClusterName() {
 		//TODO: improve this logic
@@ -145,6 +169,9 @@ public class ClusterDetails {
 	@SuppressWarnings("unchecked")
 	public JSONObject getClusterJson(int count) {
 		JSONObject clusterJson  = new JSONObject();
+		if(this.clusterName=="")
+		System.out.println(this.clusterName);
+		System.out.println(this.score);
 		if(this.score==0) {
 	    	clusterJson.put("name","Cluster: "+count+ " Name: "+this.clusterName );
 		}

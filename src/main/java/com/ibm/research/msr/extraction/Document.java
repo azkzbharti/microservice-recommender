@@ -86,7 +86,9 @@ public class Document {
 		this.tokenCountMap = tokenCountMap;
 	}
 	
-	
+	public String getUniqueName() {
+		return this.packageName+"."+this.fileName.replace(".java", "");
+	}
 	public String getName() {
 		return fileName;
 	}

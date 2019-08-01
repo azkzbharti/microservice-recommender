@@ -2,10 +2,14 @@ package com.ibm.research.msr.driver;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.apache.commons.io.FileUtils;
 
 import com.ibm.research.msr.clustering.ClusterDetails;
 import com.ibm.research.msr.clustering.Clustering;
@@ -13,6 +17,7 @@ import com.ibm.research.msr.clustering.DBSCAN;
 import com.ibm.research.msr.clustering.KMeans;
 import com.ibm.research.msr.clustering.Naive;
 import com.ibm.research.msr.clustering.NaiveTFIDF;
+import com.ibm.research.msr.expandcluster.ExpandClusters;
 import com.ibm.research.msr.extraction.AnalyzeApp;
 import com.ibm.research.msr.jarlist.JarApiList;
 import com.ibm.research.msr.utils.Constants;
@@ -151,7 +156,7 @@ public class MSRdriver {
 			args.set(5,  Constants.SPLIT);
 			oc=runSingleAlgorithm(analyzer,args);
 			oc.setClusters(oc.getConsolidatedClusters());
-//			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
 			
 //			oc.extendClusters(oc.mergeRemainingClusters(allAlgoClusterList));
@@ -197,6 +202,7 @@ public class MSRdriver {
 			analyzer = new AnalyzeApp(appPath);
 //			System.out.println(argsList.size());
 			oc=runAllAlgorithms(analyzer, argsList);
+			oc.CLeanClusters();
 			
 			argsList2.add("false"); //TODO: remove this
 			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList2.get(3)));	
@@ -205,13 +211,30 @@ public class MSRdriver {
 			oc=runAllAlgorithms(analyzer, argsList2);
 			oc.setCusterListNames();
 			
-//			ExpandClusters ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath());
-//			ec.getUsage();
-//			oc.setClusters(ec.getListofclusters());
+			oc.CLeanClusters();
 			
+			ExpandClusters ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath());
+			ec.getUsage();
+			oc.setClusters(ec.getListofclusters());
+			oc.CLeanClusters();
+		
 			oc.scorePartialClusters(oc.getClusters());	
 			String d3filename = argsList2.get(1)+"/clusterall.html";//src/main/output/clusterall.html"; // TODO : Make argument 
-			oc.savecLusterJSON(d3filename);
+			
+			String htmlpath=argsList2.get(1);
+			File dir = new File(htmlpath);
+			String[] extensions = new String[] { "html"};
+			List<File> files = (List<File>) FileUtils.listFiles(dir, extensions, true);
+			String temp="<a href=\"filepath\" target=\"_blank\">filename!</a> \n";
+			List<String> htmlpaths= new ArrayList<>();
+			for (File f:files) {
+				temp=temp.replace("filepath", f.getAbsolutePath());
+				temp=temp.replace("filename", f.getName());
+				htmlpaths.add(temp);
+			}
+			
+			oc.savecLusterJSONALL(d3filename,htmlpaths);
+			
 		}
 		else {
 			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));

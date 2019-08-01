@@ -50,6 +50,14 @@ public abstract class Clustering {
 	public Clustering(List<Document> listOfDocuments) {
 		this.listOfDocuments = listOfDocuments;
 	}
+
+	public void CLeanClusters()	{
+		for(ClusterDetails cls:clusters) {
+			cls.showDetails();
+			cls.removeDuplicates();
+			
+		}
+	}
 	
 	public double getScoreForList(List<ClusterDetails> clusterList) {
 		double score=0;
@@ -293,7 +301,11 @@ public abstract class Clustering {
 		for (ClusterDetails cls:Clustering.consolidatedClusters.keySet()) {
 //			System.out.println(Clustering.consolidatedClusters.get(cls));
 			ClusterDetails temp = new ClusterDetails(cls.getListOfDocuments(),Clustering.consolidatedClusters.get(cls));
+			temp.removeDuplicates();
 			newclusters.add(temp);	
+//			if(temp.getClusterName().equals("commons-math3.3.0")) {
+//				temp.showDetails();
+//			}
 //			temp.showDetails();
 		}
 
@@ -339,6 +351,7 @@ public abstract class Clustering {
 
 
 	public void setClusters(List<ClusterDetails> clusters) {
+		
 		this.clusters = clusters;
 	}
 	
@@ -394,6 +407,8 @@ public abstract class Clustering {
 		for (ClusterDetails cls : clusters) {
 			if (cls.getListOfDocuments().size() > 0) {
 				cls.setClusterName();
+				if(cls.getClusterName().equals("Non"))
+					cls.showDetails();
 				clusterArray.add(cls.getClusterJson(count));
 				count += 1;
 			}
@@ -406,6 +421,42 @@ public abstract class Clustering {
 	    System.out.println("File written at "+ writepath);
 	}
 	
+	public void savecLusterJSONALL(String writepath, List<String> htmlpaths) throws IOException {  
+//		System.out.println(clusters.size());
+		 Set<ClusterDetails> s= new HashSet<ClusterDetails>();
+		 s.addAll(clusters); 
+
+		 clusters = new ArrayList<ClusterDetails>();
+		 clusters.addAll(s);  
+		 clusters=sortClusterOnScore(clusters);
+
+//			System.out.println(clusters.size());
+
+		JSONObject clusterobj = new JSONObject();
+		clusterobj.put("name", "root");
+		clusterobj.put("parent", null);
+		JSONArray clusterArray = new JSONArray();
+		int count = 0;
+		
+		for (ClusterDetails cls : clusters) {
+			if (cls.getListOfDocuments().size() > 0) {
+//				System.out.println(cls.getClusterName());
+//				if(!cls.getClusterName().equals("Unused"))
+//					cls.setClusterName();
+				System.out.println(cls.getClusterName());
+				clusterArray.add(cls.getClusterJson(count));
+				count += 1;
+			}
+		}
+		clusterobj.put("children", clusterArray);
+		System.out.println(clusterobj);
+		String fileString = new String(Files.readAllBytes(Paths.get("src/main/resources/clusterall.html")), StandardCharsets.UTF_8);
+		fileString= fileString.replaceAll("%%JSONCONTENT%%", clusterobj.toString());
+	    fileString=fileString.replaceAll("%%FILEPATHS%%", htmlpaths.toString());
+		Files.write(Paths.get(writepath), fileString.getBytes());
+	    
+	    System.out.println("File written at "+ writepath);
+	}
 	public void CombineClusters() {
 
 		for(ClusterDetails cls :this.clusters) {
@@ -417,6 +468,7 @@ public abstract class Clustering {
 					      .stream()
 					      .filter(entry -> consolidatedClusters.containsKey(cls))
 					      .map(Map.Entry::getKey).findFirst().get();
+				
 				if(cls.getClusterName()!="None" && tcls.getClusterName()=="None" ) {
 			     cls.setClusterName(tcls.getClusterName());
 			     consolidatedClusters.replace(cls, cvalue, cvalue);
@@ -441,6 +493,7 @@ public abstract class Clustering {
 	}
 	public void removeDuplicate() {
 		// will remove the same clusters
+		 CLeanClusters();
 		 Set<ClusterDetails> s= new HashSet<ClusterDetails>();
 		 s.addAll(this.clusters);
 		 List<ClusterDetails> listofclusters = new ArrayList<ClusterDetails>();
