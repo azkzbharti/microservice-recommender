@@ -4,25 +4,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.ibm.research.msr.clustering.ClusterDetails;
 import com.ibm.research.msr.clustering.Clustering;
 import com.ibm.research.msr.clustering.DBSCAN;
 import com.ibm.research.msr.clustering.KMeans;
 import com.ibm.research.msr.clustering.Naive;
 import com.ibm.research.msr.clustering.NaiveTFIDF;
-import com.ibm.research.msr.clustering.PostProcessClusters;
-import com.ibm.research.msr.expandcluster.ExpandClusters;
 import com.ibm.research.msr.extraction.AnalyzeApp;
 import com.ibm.research.msr.jarlist.JarApiList;
+import com.ibm.research.msr.utils.Constants;
 import com.ibm.research.msr.utils.DocumentParserUtil;
 import com.ibm.research.msr.utils.ReadJarMap;
 
@@ -36,7 +29,7 @@ public class MSRdriver {
 	
 	public static Clustering runSingleAlgorithm(AnalyzeApp analyzer,List<String> args) throws IOException {
 		
-		String algorithm = args.get(2);// "KMeans";
+		String algorithm = args.get(2).trim().toLowerCase();// "KMeans";
 
 		Clustering oc = null;
 		System.out.println(args.toString());
@@ -44,18 +37,18 @@ public class MSRdriver {
 		String combineStrategy="";
 		//TODO: check on the number of arguments provided by the user
 		switch (algorithm) {
-		case "kMeans": {
+		case Constants.KMEANS: {
 			int k = Integer.parseInt(args.get(4));
 			oc = new KMeans(analyzer.getListOfDocuments(), analyzer.getMeasurePath(), k);
 			break;
 		}
-		case "DBSCAN": {
+		case Constants.DBSCAN: {
 			double epsilon = Double.parseDouble(args.get(4));// 0.0003 ;
 			int neighbours = Integer.parseInt(args.get(5));// args[3];
 			oc = new DBSCAN(analyzer.getListOfDocuments(), analyzer.getMeasurePath(), epsilon, neighbours);
 			break;
 		}
-		case "NAIVETFIDF": {
+		case Constants.NAIVE_TFIDF: {
 			String meaureType =args.get(4); // "cosine";//args[2];
 			combineStrategy=args.get(5); // "onlyMerge"
 			oc = new NaiveTFIDF(analyzer.getListOfDocuments(), combineStrategy,meaureType);
@@ -63,7 +56,7 @@ public class MSRdriver {
 			algorithm = algorithm + meaureType;
 			break;
 		}
-		case "NAIVE": {
+		case Constants.NAIVE: {
 			combineStrategy=args.get(4);//"onlyMerge"
 			oc = new Naive(analyzer.getListOfDocuments(),combineStrategy);
 			break;
@@ -102,26 +95,26 @@ public class MSRdriver {
 		
 		List<List<ClusterDetails>>  allAlgoClusterList = new ArrayList<>();
 
-		args.set(2, "NAIVE"); // has 2 variations as below 
-		args.add(4, "onlyMerge");
+		args.set(2, Constants.NAIVE); // has 2 variations as below 
+		args.add(4, Constants.ONLY_MERGE);
 
 		oc=runSingleAlgorithm(analyzer,args);
 		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 		oc.setClusters(oc.getConsolidatedClusters());
 	
-		args.set(4, "split");
+		args.set(4, Constants.SPLIT);
 		oc=runSingleAlgorithm(analyzer,args);
 		oc.setClusters(oc.getConsolidatedClusters());
 		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 		
-		args.set(2, "kMeans");
+		args.set(2, Constants.KMEANS);
 		args.add(4, "2");
 		oc=runSingleAlgorithm(analyzer,args);
 		oc.setClusters(oc.getConsolidatedClusters());
 		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
 		
-		args.set(2, "DBSCAN");
+		args.set(2, Constants.DBSCAN);
 		args.set(4, "0.0003");
 		args.add(5,  "1");
 		
@@ -131,31 +124,31 @@ public class MSRdriver {
 		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
 		
-		 args.set(2, "NAIVETFIDF"); // has 4 variations as below 
+		 args.set(2, Constants.NAIVE_TFIDF); // has 4 variations as below 
 		
-			args.set(4, "cosine");
-			args.set(5,  "onlyMerge");
+			args.set(4, Constants.COSINE);
+			args.set(5,  Constants.ONLY_MERGE);
 			oc=runSingleAlgorithm(analyzer,args);
 			oc.setClusters(oc.getConsolidatedClusters());
 			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
 			
-			args.set(4, "euclidiean");
-			args.set(5,  "onlyMerge");
+			args.set(4, Constants.EUCLIDIEAN);
+			args.set(5,  Constants.ONLY_MERGE);
 			oc=runSingleAlgorithm(analyzer,args);
 			oc.setClusters(oc.getConsolidatedClusters());
 			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
 			
-			args.set(4, "cosine");
-			args.set(5,  "split");
+			args.set(4, Constants.COSINE);
+			args.set(5,  Constants.SPLIT);
 			oc=runSingleAlgorithm(analyzer,args);
 			oc.setClusters(oc.getConsolidatedClusters());
 			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
 			
-			args.set(4, "euclidiean");
-			args.set(5,  "split");
+			args.set(4, Constants.EUCLIDIEAN);
+			args.set(5,  Constants.SPLIT);
 			oc=runSingleAlgorithm(analyzer,args);
 			oc.setClusters(oc.getConsolidatedClusters());
 //			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
@@ -198,7 +191,7 @@ public class MSRdriver {
 		List<String> argsList2 = new ArrayList<String>(Arrays.asList(args));;
 		Clustering oc = null;
 		
-		if(args[2].equals("all")){
+		if(args[2].equals(Constants.ALL)){
 			argsList.add("true"); //TODO: remove this
 			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
 			analyzer = new AnalyzeApp(appPath);
