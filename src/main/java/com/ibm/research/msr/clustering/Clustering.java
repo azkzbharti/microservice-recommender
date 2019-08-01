@@ -12,16 +12,20 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.google.common.collect.Sets;
 import com.ibm.research.msr.extraction.Document;
 import com.ibm.research.msr.utils.ReadJarMap;
 
@@ -29,13 +33,16 @@ import weka.core.Instances;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Remove;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 /**
  * @author ShreyaKhare
  *
  */
 public abstract class Clustering {
 
-	static Map<ClusterDetails, Integer> consolidatedClusters = new HashMap<ClusterDetails, Integer>();
+	static Map<ClusterDetails, Double> consolidatedClusters = new HashMap<ClusterDetails, Double>();
 
 	protected List<Document> listOfDocuments = new ArrayList<Document>();
 	protected List<ClusterDetails> clusters = new ArrayList<>();
@@ -43,9 +50,199 @@ public abstract class Clustering {
 	public Clustering(List<Document> listOfDocuments) {
 		this.listOfDocuments = listOfDocuments;
 	}
-
 	
+	public double getScoreForList(List<ClusterDetails> clusterList) {
+		double score=0;
+		List<Set<String>> docList;
+		boolean first = true;
+		Set<String> docsNames1= new HashSet();
+		Set<String> docsNames2= new HashSet();
+		Set<String> inter= new HashSet();
+		Set<String> alldocs = new HashSet();
+		for(ClusterDetails cls: clusterList) {
+			if(first) {
+				docsNames1=cls.getListOfDocuments().stream().map(Document::getName).collect(Collectors.toSet());
+				first=false;
+			}
+			else {
+				docsNames2=cls.getListOfDocuments().stream().map(Document::getName).collect(Collectors.toSet());
+				inter=Sets.intersection(docsNames1, docsNames2);
+//				if(inter.size()>0)
+//					System.out.println(inter);
+				docsNames1=inter;
+			}
+			alldocs.addAll(cls.getListOfDocuments().stream().map(Document::getName).collect(Collectors.toSet()));
+		}
+//		Set<String> = Sets.cartesianProduct(docList.subList(0, docList.size()));
+		score=inter.size()/alldocs.size();
+//		System.out.println(score);
+		return score;
+		
+	}
+	
+//	private static List<ImmutableList<ClusterDetails>> makeListofImmutable(List<ClusterDetails> values) {
+//		  List<ImmutableList<ClusterDetails>> converted = new LinkedList<>();
+//		  values.forEach(array -> {
+//		    converted.add(ImmutableList.copyOf(array));
+//		  });
+//		  return converted;
+//		}
+	
+	private void computeCartesianProduct(List<List<ClusterDetails>> algoClusterList) {
+		
+		// create object for each algorithm
+		List<AlgorithmResult> algoClusters = new LinkedList<>();
+		for(List<ClusterDetails> clusters : algoClusterList) {
+			algoClusters.add(new AlgorithmResult(clusters));
+		}
+		
+		List<AlgorithmResult> result = new LinkedList<>();
+				
+		// populate first list as is
+		AlgorithmResult firstList = algoClusters.get(0);
+		for(ClusterDetails cd : firstList.clusters) {
+			result.add(new AlgorithmResult(List.of(cd)));	
+		}
+		
+		
+		// now multiply the existing result with the next list in the iterator
+		for(int i = 1 ; i < algoClusters.size(); i++) {
+			result = multiply(result, algoClusters.get(i));
+		}
+		
+		System.out.println(result.size());
+	}
+	
+	private List<AlgorithmResult> multiply(List<AlgorithmResult> current, AlgorithmResult listToMultiply) {
+		System.out.println(current.size() + " " + listToMultiply.clusters.size());
+		List<AlgorithmResult> result = new LinkedList<>();
+		for(AlgorithmResult algorithmResult : current) {
+			for(ClusterDetails cd : listToMultiply.clusters) { 
+//				int inter=cd.getNoIntersection(algorithmResult.clusters)
+//				if(inter==0) {
+//					
+//				}
+				//List<ClusterDetails> clusters = new ArrayList<>();
+				//clusters.add(cd);
+				//clusters.addAll(algorithmResult.clusters);
+				//result.add(new AlgorithmResult(clusters));
+			}
+		}
+		
+		System.out.println("Result size :- " + result.size());
+		return result;
+		
+	}
+	
+	private static class AlgorithmResult{
+		private List<ClusterDetails> clusters = new LinkedList<>();
 
+		public AlgorithmResult(List<ClusterDetails> clusters) {
+			super();
+			this.clusters.addAll(clusters);
+		}
+	}
+	
+	private static class Result{
+		
+	}
+	
+	
+	private void computeCartesianProductR(List<List<ClusterDetails>> algoClusterList) {
+		
+		// create object for each algorithm
+		List<AlgorithmResult> algoClusters = new LinkedList<>();
+		for(List<ClusterDetails> clusters : algoClusterList) {
+			algoClusters.add(new AlgorithmResult(clusters));
+		}
+		
+		List<AlgorithmResult> result = new LinkedList<>();
+				
+		// populate first list as is
+		AlgorithmResult firstList = algoClusters.get(0);
+		for(ClusterDetails cd : firstList.clusters) {
+			result.add(new AlgorithmResult(List.of(cd)));	
+		}
+		
+		
+		// now multiply the existing result with the next list in the iterator
+		for(int i = 1 ; i < algoClusters.size(); i++) {
+			result = multiply(result, algoClusters.get(i));
+		}
+		
+		System.out.println(result.size());
+	}
+	
+	
+	public List<ClusterDetails> mergeRemainingClusters(List<List<ClusterDetails>> algoCLusterList1) {
+		
+		
+//		List<Set<ClusterDetails>> algoCLusterList = algoCLusterList1.stream().filter(cls->cls.size()!=0).collect(Collectors.toList());
+		List<List<ClusterDetails>> algoCLusterList = algoCLusterList1.stream().filter(cls->cls.size()!=0).collect(Collectors.toList());
+		long l=1;
+		for(List<ClusterDetails> cls:algoCLusterList) {
+			l=l*cls.size();
+			System.out.println(cls.size());
+		}
+		System.out.println(l);
+		List<ClusterDetails> mergerClusters = new ArrayList<>();
+		
+//		Set<List<ClusterDetails>> resultClusters =Sets.cartesianProduct(algoCLusterList.subList(0, algoCLusterList.size()));
+//		computeCartesianProduct(algoCLusterList);
+
+		List<List<ClusterDetails>> resultClusters =Lists.cartesianProduct(algoCLusterList);
+
+		Map<List<ClusterDetails>,Double> scoreMap=new HashMap<List<ClusterDetails>,Double>();          
+		Map<List<ClusterDetails>,Double> sortedscoreMap;
+		
+//		List<Double> allscores= new ArrayList<>();
+//		for(List<ClusterDetails> cls:resultClusters) {
+//			allscores.add(getScoreForList(cls));
+//			scoreMap.put(cls,getScoreForList(cls));
+//		}
+//		Collections.sort(allscores);
+//		
+//		sortedscoreMap = scoreMap
+//			        .entrySet()
+//			        .stream()
+//			        .limit(10)
+//			        .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+//			        .collect(
+//			            Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
+//			                LinkedHashMap::new));
+//		boolean first=true;
+//		double maxvalue=0.0,currentvalue;
+//		for(List<ClusterDetails> clsList:sortedscoreMap.keySet()) {
+//			if(first) {
+//				currentvalue=sortedscoreMap.get(clsList);
+//				maxvalue=currentvalue;
+//				first=false;
+//			}
+//			else {			
+//				currentvalue=sortedscoreMap.get(clsList);
+//			}
+//				if(currentvalue >= maxvalue) { // TODO: put a threshold on the difference
+//					Set<Document> doclist = new HashSet<>();
+//
+//					for(ClusterDetails cls:clsList) {
+////						cls.showDetails();
+//						doclist.addAll(cls.getListOfDocuments());
+//					}
+//					if(doclist.size()>0) {
+//						System.out.println("currentvalue"+currentvalue);
+//						ClusterDetails cls = new ClusterDetails(doclist.stream().collect(Collectors.toList()));
+//						cls.setScore(currentvalue);
+//						mergerClusters.add(cls);
+//						System.out.println(cls.getScore());
+//					}
+//				
+//			}
+////			List<List> doclist=clsList.stream().map(ClusterDetails::getListOfDocuments).collect(Collectors.toList());
+//			
+//		}
+		return mergerClusters;
+		
+	}
 	/**
 	 * @param clusters 
 	 * @return the consolidatedClusters
@@ -109,7 +306,7 @@ public abstract class Clustering {
 	/**
 	 * @param consolidatedClusters the consolidatedClusters to set
 	 */
-	public static void setConsolidatedClusters(Map<ClusterDetails, Integer> consolidatedClusters) {
+	public static void setConsolidatedClusters(Map<ClusterDetails, Double> consolidatedClusters) {
 		Clustering.consolidatedClusters = consolidatedClusters;
 	}
 
@@ -126,11 +323,28 @@ public abstract class Clustering {
 	public List<ClusterDetails> getClusters() {
 		return clusters;
 	}
+	
+	public void extendClusters(List<ClusterDetails> clusterslist) {
+		 Set<ClusterDetails> s= new HashSet<ClusterDetails>();
+		 s.addAll(this.clusters);
+		 List<ClusterDetails> listofclusters = new ArrayList<ClusterDetails>();
+		 listofclusters.addAll(s); 
+		 for (ClusterDetails cls:clusterslist) {
+//			 cls.showDetails();
+			 Clustering.consolidatedClusters.put(cls,cls.getScore());
+		 }
+//		 this.clusters=listofclusters;
+//		 Clustering.consolidatedClusters.put(key, value)
+	}
+
 
 	public void setClusters(List<ClusterDetails> clusters) {
 		this.clusters = clusters;
 	}
 	
+	public List<ClusterDetails> getNonScoreClusters(){
+		return this.clusters.stream().filter(cls->cls.getScore()==0).collect(Collectors.toList());
+	}
 	protected Instances filterData(Instances data) throws Exception {
 		System.out.println("Filtering data ...");
 		Remove remove = new Remove();
@@ -148,6 +362,11 @@ public abstract class Clustering {
 	 */
 	public abstract void runClustering();
 	
+	public void setCusterListNames() {
+		for (ClusterDetails cls : this.clusters) {
+			cls.setClusterName();
+		}
+	}
 	
 
 	/**
@@ -190,7 +409,7 @@ public abstract class Clustering {
 	public void CombineClusters() {
 
 		for(ClusterDetails cls :this.clusters) {
-			Integer cvalue=0;
+			Double cvalue=0.0;
 			if(consolidatedClusters.containsKey(cls)) {
 				cvalue = consolidatedClusters.get(cls);
 				cvalue = cvalue+1;
