@@ -95,92 +95,92 @@ public abstract class Clustering {
 //		  });
 //		  return converted;
 //		}
-	
-	private void computeCartesianProduct(List<List<ClusterDetails>> algoClusterList) {
-		
-		// create object for each algorithm
-		List<AlgorithmResult> algoClusters = new LinkedList<>();
-		for(List<ClusterDetails> clusters : algoClusterList) {
-			algoClusters.add(new AlgorithmResult(clusters));
-		}
-		
-		List<AlgorithmResult> result = new LinkedList<>();
-				
-		// populate first list as is
-		AlgorithmResult firstList = algoClusters.get(0);
-		for(ClusterDetails cd : firstList.clusters) {
-			result.add(new AlgorithmResult(List.of(cd)));	
-		}
-		
-		
-		// now multiply the existing result with the next list in the iterator
-		for(int i = 1 ; i < algoClusters.size(); i++) {
-			result = multiply(result, algoClusters.get(i));
-		}
-		
-		System.out.println(result.size());
-	}
-	
-	private List<AlgorithmResult> multiply(List<AlgorithmResult> current, AlgorithmResult listToMultiply) {
-		System.out.println(current.size() + " " + listToMultiply.clusters.size());
-		List<AlgorithmResult> result = new LinkedList<>();
-		for(AlgorithmResult algorithmResult : current) {
-			for(ClusterDetails cd : listToMultiply.clusters) { 
-//				int inter=cd.getNoIntersection(algorithmResult.clusters)
-//				if(inter==0) {
-//					
-//				}
-				//List<ClusterDetails> clusters = new ArrayList<>();
-				//clusters.add(cd);
-				//clusters.addAll(algorithmResult.clusters);
-				//result.add(new AlgorithmResult(clusters));
-			}
-		}
-		
-		System.out.println("Result size :- " + result.size());
-		return result;
-		
-	}
-	
-	private static class AlgorithmResult{
-		private List<ClusterDetails> clusters = new LinkedList<>();
-
-		public AlgorithmResult(List<ClusterDetails> clusters) {
-			super();
-			this.clusters.addAll(clusters);
-		}
-	}
-	
-	private static class Result{
-		
-	}
-	
-	
-	private void computeCartesianProductR(List<List<ClusterDetails>> algoClusterList) {
-		
-		// create object for each algorithm
-		List<AlgorithmResult> algoClusters = new LinkedList<>();
-		for(List<ClusterDetails> clusters : algoClusterList) {
-			algoClusters.add(new AlgorithmResult(clusters));
-		}
-		
-		List<AlgorithmResult> result = new LinkedList<>();
-				
-		// populate first list as is
-		AlgorithmResult firstList = algoClusters.get(0);
-		for(ClusterDetails cd : firstList.clusters) {
-			result.add(new AlgorithmResult(List.of(cd)));	
-		}
-		
-		
-		// now multiply the existing result with the next list in the iterator
-		for(int i = 1 ; i < algoClusters.size(); i++) {
-			result = multiply(result, algoClusters.get(i));
-		}
-		
-		System.out.println(result.size());
-	}
-	
+//	
+//	private void computeCartesianProduct(List<List<ClusterDetails>> algoClusterList) {
+//		
+//		// create object for each algorithm
+//		List<AlgorithmResult> algoClusters = new LinkedList<>();
+//		for(List<ClusterDetails> clusters : algoClusterList) {
+//			algoClusters.add(new AlgorithmResult(clusters));
+//		}
+//		
+//		List<AlgorithmResult> result = new LinkedList<>();
+//				
+//		// populate first list as is
+//		AlgorithmResult firstList = algoClusters.get(0);
+//		for(ClusterDetails cd : firstList.clusters) {
+//			result.add(new AlgorithmResult(List.of(cd)));	
+//		}
+//		
+//		
+//		// now multiply the existing result with the next list in the iterator
+//		for(int i = 1 ; i < algoClusters.size(); i++) {
+//			result = multiply(result, algoClusters.get(i));
+//		}
+//		
+//		System.out.println(result.size());
+//	}
+//	
+//	private List<AlgorithmResult> multiply(List<AlgorithmResult> current, AlgorithmResult listToMultiply) {
+//		System.out.println(current.size() + " " + listToMultiply.clusters.size());
+//		List<AlgorithmResult> result = new LinkedList<>();
+//		for(AlgorithmResult algorithmResult : current) {
+//			for(ClusterDetails cd : listToMultiply.clusters) { 
+////				int inter=cd.getNoIntersection(algorithmResult.clusters)
+////				if(inter==0) {
+////					
+////				}
+//				//List<ClusterDetails> clusters = new ArrayList<>();
+//				//clusters.add(cd);
+//				//clusters.addAll(algorithmResult.clusters);
+//				//result.add(new AlgorithmResult(clusters));
+//			}
+//		}
+//		
+//		System.out.println("Result size :- " + result.size());
+//		return result;
+//		
+//	}
+//	
+//	private static class AlgorithmResult{
+//		private List<ClusterDetails> clusters = new LinkedList<>();
+//
+//		public AlgorithmResult(List<ClusterDetails> clusters) {
+//			super();
+//			this.clusters.addAll(clusters);
+//		}
+//	}
+//	
+//	private static class Result{
+//		
+//	}
+//	
+//	
+//	private void computeCartesianProductR(List<List<ClusterDetails>> algoClusterList) {
+//		
+//		// create object for each algorithm
+//		List<AlgorithmResult> algoClusters = new LinkedList<>();
+//		for(List<ClusterDetails> clusters : algoClusterList) {
+//			algoClusters.add(new AlgorithmResult(clusters));
+//		}
+//		
+//		List<AlgorithmResult> result = new LinkedList<>();
+//				
+//		// populate first list as is
+//		AlgorithmResult firstList = algoClusters.get(0);
+//		for(ClusterDetails cd : firstList.clusters) {
+//			result.add(new AlgorithmResult(List.of(cd)));	
+//		}
+//		
+//		
+//		// now multiply the existing result with the next list in the iterator
+//		for(int i = 1 ; i < algoClusters.size(); i++) {
+//			result = multiply(result, algoClusters.get(i));
+//		}
+//		
+//		System.out.println(result.size());
+//	}
+//	
 	
 	public List<ClusterDetails> mergeRemainingClusters(List<List<ClusterDetails>> algoCLusterList1) {
 		
