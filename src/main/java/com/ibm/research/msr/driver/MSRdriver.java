@@ -76,6 +76,7 @@ public class MSRdriver {
 		oc.runClustering();
 		oc.getClusters();
 		oc.removeDuplicate();
+		
 		System.out.println(oc.getClusters().size());
 
 		
@@ -85,6 +86,7 @@ public class MSRdriver {
 		d3filename = d3filename.replaceAll(".html", algorithm+combineStrategy+args.get(3)+".html");
 		oc.savecLusterJSON(d3filename);
 		oc.CombineClusters();
+		
 		
 
 		return oc;
@@ -213,10 +215,10 @@ public class MSRdriver {
 			
 			oc.CLeanClusters();
 			
-			ExpandClusters ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath());
-			ec.getUsage();
-			oc.setClusters(ec.getListofclusters());
-			oc.CLeanClusters();
+//			ExpandClusters ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath());
+//			ec.getUsage();
+//			oc.setClusters(ec.getListofclusters());
+//			oc.CLeanClusters();
 		
 			oc.scorePartialClusters(oc.getClusters());	
 			String d3filename = argsList2.get(1)+"/clusterall.html";//src/main/output/clusterall.html"; // TODO : Make argument 

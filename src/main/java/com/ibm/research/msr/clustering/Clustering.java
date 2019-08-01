@@ -443,9 +443,12 @@ public abstract class Clustering {
 //				System.out.println(cls.getClusterName());
 //				if(!cls.getClusterName().equals("Unused"))
 //					cls.setClusterName();
-				System.out.println(cls.getClusterName());
-				clusterArray.add(cls.getClusterJson(count));
-				count += 1;
+				if(cls.getScore()>1) 
+				{
+					System.out.println(cls.getClusterName());
+					clusterArray.add(cls.getClusterJson(count));
+					count += 1;
+				}
 			}
 		}
 		clusterobj.put("children", clusterArray);
