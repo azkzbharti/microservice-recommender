@@ -6,6 +6,7 @@ package com.ibm.research.msr.clustering;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -173,6 +174,7 @@ public class Naive extends Clustering {
 			List<Document> combineddocs = new ArrayList<>();
 			combineddocs.addAll(c1.getListOfDocuments().stream().collect(Collectors.toList()));
 			combineddocs.addAll(c2.getListOfDocuments().stream().collect(Collectors.toList()));
+			Set<Document> combineddocsSet = new HashSet<Document>(combineddocs); 
 			clusters.add(new ClusterDetails(combineddocs));
 			return clusters;
 		}

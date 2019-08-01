@@ -4,14 +4,23 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.ibm.research.msr.clustering.ClusterDetails;
 import com.ibm.research.msr.clustering.Clustering;
 import com.ibm.research.msr.clustering.DBSCAN;
 import com.ibm.research.msr.clustering.KMeans;
 import com.ibm.research.msr.clustering.Naive;
 import com.ibm.research.msr.clustering.NaiveTFIDF;
 import com.ibm.research.msr.clustering.PostProcessClusters;
+import com.ibm.research.msr.expandcluster.ExpandClusters;
 import com.ibm.research.msr.extraction.AnalyzeApp;
 import com.ibm.research.msr.jarlist.JarApiList;
 import com.ibm.research.msr.utils.DocumentParserUtil;
@@ -24,12 +33,12 @@ import com.ibm.research.msr.utils.ReadJarMap;
  */
 public class MSRdriver {
 	
+	
 	public static Clustering runSingleAlgorithm(AnalyzeApp analyzer,List<String> args) throws IOException {
 		
 		String algorithm = args.get(2);// "KMeans";
 
 		Clustering oc = null;
-//		System.out.println(algorithm);
 		System.out.println(args.toString());
 
 		String combineStrategy="";
@@ -72,7 +81,6 @@ public class MSRdriver {
 		System.out.println(oc.getClusters().size());
 
 		
-		
 //		
 //		String d3filename = "src/main/output/cluster.html"; // TODO : Make argument 
 		String d3filename =args.get(1)+"/cluster.html";
@@ -85,71 +93,84 @@ public class MSRdriver {
 		
 		
 	}
+
 	
-	public static void runAllAlgorithms(AnalyzeApp analyzer,List<String> args) throws IOException {
+	public static Clustering runAllAlgorithms(AnalyzeApp analyzer,List<String> args) throws IOException {
 
 	// total 8 outputs
 		Clustering oc =null;
 		
+		List<List<ClusterDetails>>  allAlgoClusterList = new ArrayList<>();
+
 		args.set(2, "NAIVE"); // has 2 variations as below 
 		args.add(4, "onlyMerge");
 
 		oc=runSingleAlgorithm(analyzer,args);
+		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 		oc.setClusters(oc.getConsolidatedClusters());
-		
-//		
-//		
+	
 		args.set(4, "split");
-//		oc=runSingleAlgorithm(analyzer,args);
-//		oc.setClusters(oc.getConsolidatedClusters());
-//		
-//		
-//
+		oc=runSingleAlgorithm(analyzer,args);
+		oc.setClusters(oc.getConsolidatedClusters());
+		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+		
 		args.set(2, "kMeans");
 		args.add(4, "2");
 		oc=runSingleAlgorithm(analyzer,args);
 		oc.setClusters(oc.getConsolidatedClusters());
-//		
-//	
-//		
+		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+
+		
 		args.set(2, "DBSCAN");
 		args.set(4, "0.0003");
 		args.add(5,  "1");
 		
-//		oc=runSingleAlgorithm(analyzer,args);
-//		oc.setClusters(oc.getConsolidatedClusters());
-//		
+		
+		oc=runSingleAlgorithm(analyzer,args);
+		oc.setClusters(oc.getConsolidatedClusters());
+		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+
+		
 		 args.set(2, "NAIVETFIDF"); // has 4 variations as below 
 		
 			args.set(4, "cosine");
 			args.set(5,  "onlyMerge");
 			oc=runSingleAlgorithm(analyzer,args);
 			oc.setClusters(oc.getConsolidatedClusters());
+			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+
 			
 			args.set(4, "euclidiean");
 			args.set(5,  "onlyMerge");
 			oc=runSingleAlgorithm(analyzer,args);
 			oc.setClusters(oc.getConsolidatedClusters());
+			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+
 			
 			args.set(4, "cosine");
 			args.set(5,  "split");
 			oc=runSingleAlgorithm(analyzer,args);
 			oc.setClusters(oc.getConsolidatedClusters());
+			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+
 			
 			args.set(4, "euclidiean");
 			args.set(5,  "split");
 			oc=runSingleAlgorithm(analyzer,args);
 			oc.setClusters(oc.getConsolidatedClusters());
-//			
-		 
-//		oc.scorePartialClusters(oc.getClusters());	
-		String d3filename = args.get(1)+"/clusterall.html";//src/main/output/clusterall.html"; // TODO : Make argument 
-		oc.savecLusterJSON(d3filename);
+//			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+
+			
+//			oc.extendClusters(oc.mergeRemainingClusters(allAlgoClusterList));
+//			oc.setClusters(oc.getConsolidatedClusters());
+			
 		
+
+		return oc;
 	}
 
+	
 	public static void main(String[] args) throws IOException, Exception {
-		
 		
 		try {
 			JarApiList.createJARFile(args[0]);
@@ -175,22 +196,29 @@ public class MSRdriver {
 		AnalyzeApp analyzer ;
 		List<String> argsList = new ArrayList<String>(Arrays.asList(args));;
 		List<String> argsList2 = new ArrayList<String>(Arrays.asList(args));;
+		Clustering oc = null;
 		
 		if(args[2].equals("all")){
 			argsList.add("true"); //TODO: remove this
 			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
 			analyzer = new AnalyzeApp(appPath);
-
 //			System.out.println(argsList.size());
-			runAllAlgorithms(analyzer, argsList);
+			oc=runAllAlgorithms(analyzer, argsList);
 			
 			argsList2.add("false"); //TODO: remove this
-			
-			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList2.get(3)));
-			
+			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList2.get(3)));	
 //			System.out.println("her"+DocumentParserUtil.getIgnoreNone());
 			analyzer = new AnalyzeApp(appPath);
-			runAllAlgorithms(analyzer, argsList2);
+			oc=runAllAlgorithms(analyzer, argsList2);
+			oc.setCusterListNames();
+			
+//			ExpandClusters ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath());
+//			ec.getUsage();
+//			oc.setClusters(ec.getListofclusters());
+			
+			oc.scorePartialClusters(oc.getClusters());	
+			String d3filename = argsList2.get(1)+"/clusterall.html";//src/main/output/clusterall.html"; // TODO : Make argument 
+			oc.savecLusterJSON(d3filename);
 		}
 		else {
 			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
