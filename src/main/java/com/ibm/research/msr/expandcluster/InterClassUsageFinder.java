@@ -25,6 +25,7 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.TypeParameter;
 import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
@@ -119,7 +120,7 @@ public class InterClassUsageFinder {
 
 		final Stack<TypeDeclaration> stackTD = new Stack<TypeDeclaration>();
 
-		System.out.println("create ast done");
+		//System.out.println("create ast done");
 		cu.accept(new ASTVisitor() {
 
 			public boolean visit(PackageDeclaration p) {
@@ -150,7 +151,7 @@ public class InterClassUsageFinder {
 			}
 
 			public boolean visit(MethodDeclaration m) {
-				System.out.println("visit md " + m.getName().getFullyQualifiedName());
+				//System.out.println("visit md " + m.getName().getFullyQualifiedName());
 				return true;
 			}
 //			public boolean visit(SingleVariableDeclaration svd)
@@ -228,23 +229,23 @@ public class InterClassUsageFinder {
 			public boolean visit(SimpleName e) {
 				// to ignore package imports and all
 				if (stackTD.isEmpty()) {
-					System.out.println("not within a type");
+					//System.out.println("not within a type");
 					return true;
 				}
 
-				// System.out.println("visit SimpleName " +e.toString());
+				//System.out.println("visit SimpleName " +e.toString());
 				ITypeBinding itb = e.resolveTypeBinding();
 				if (itb != null) {
 					if (itb.isFromSource()) {
-						String n = itb.getName();
+						String plainTypeName = itb.getName();
 						IPackageBinding ipb = itb.getPackage();
 						String usedClassName = null;
 						if (ipb != null) {
-							usedClassName = ipb.getName() + "." + n;
+							usedClassName = ipb.getName() + "." + plainTypeName;
 						} else {
-							usedClassName = n;
+							usedClassName = plainTypeName;
 						}
-						System.out.println("\t\tSimpleName: Usage of " + n);
+						//System.out.println("\t\tSimpleName: Usage of " + n);
 
 						String curClassName = null;
 						if (!stackTD.isEmpty()) {
@@ -253,6 +254,20 @@ public class InterClassUsageFinder {
 							System.out.println(curClassName);
 						} else {
 							curClassName = file.getName();
+						}
+						
+						// TODO: length of 1 is to avoid type parameter names as K V E T 
+						// appearing in the usage (the other way to do this is expensive
+						// i.e., we have to do 2 pass over all the src files, with the 
+						// 1st pass gathering all declared class names in this project and
+						// then checking in 2nd pass if the simple name is not actually a declared
+						// class name found in the 1st pass but a typical type parameter name 
+						// such as K V E T.
+						
+						if (plainTypeName.length()==1)
+						{
+							System.out.println("ignoring plainTypeName as length is 1. type name=" + plainTypeName);
+							return true;
 						}
 
 						String thisClassFQName = null;
@@ -280,6 +295,8 @@ public class InterClassUsageFinder {
 							// same class usage (ie in type name declatation ie declatation like Class A {
 							return true;
 						}
+						
+						
 						ClassPair cp = new ClassPair(thisClassFQName, usedClassName);
 //						ClassPair cp=new ClassPair(curClassName,usedClassName);
 
@@ -299,6 +316,11 @@ public class InterClassUsageFinder {
 				return true;
 			}
 
+			public boolean visit(TypeParameter e)
+			{
+				//System.out.println("visit type parameter " +e.getName().getFullyQualifiedName());
+				return true;
+			}
 		});
 
 		System.out.println("interClassUsageMatrix");
@@ -311,7 +333,7 @@ public class InterClassUsageFinder {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		int choice = 1;
+		int choice = 2;
 		InterClassUsageFinder i = new InterClassUsageFinder();
 		if (choice == 1) {
 			if (args.length < 1) {
@@ -330,12 +352,13 @@ public class InterClassUsageFinder {
 			}
 		
 		} else if (choice == 2) {
-			String ipf = "C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\com\\ibm\\research\\digdeep\\preventive\\clusterer\\CarrotClusteringEngineImpl.java";
-			;
+			//String ipf = "C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\com\\ibm\\research\\digdeep\\preventive\\clusterer\\CarrotClusteringEngineImpl.java";
+			String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\com\\ibm\\research\\util\\MapUtil.java";
 			// String
 			// ipf="C:\\Users\\GiriprasadSridhara\\dependency-migration-asistant\\src\\main\\java\\com\\ibm\\research\\appmod\\dma\\impact\\ChangedAPIUsageSiteFinder.java";
 			File file = new File(ipf);
-			String srcFilesRoot = "C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\";
+			//String srcFilesRoot = "C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\";
+			String srcFilesRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\";
 			i.processOneFile(file, srcFilesRoot);
 		}
 	}
