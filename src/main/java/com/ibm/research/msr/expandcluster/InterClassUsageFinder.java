@@ -75,6 +75,13 @@ public class InterClassUsageFinder {
 		String fileNameWPath = file.getAbsolutePath();
 		System.out.println("file: " + file.getName() + " " + fileNameWPath);
 
+		// iff file is under /src/
+		if (!fileNameWPath.contains(File.separator+"src"+File.separator))
+		{
+			System.out.println("Ignoring java file not under src folder");
+			return;
+		}
+		
 		StringBuffer sb = new StringBuffer();
 		String line = null;
 		BufferedReader br = null;
@@ -256,6 +263,23 @@ public class InterClassUsageFinder {
 							thisClassFQName = curClassName;
 						}
 
+						if (thisClassFQName.isEmpty())
+						{
+							System.err.println("thisClassFQName is empty!");
+							return true;
+						}
+						
+						if (usedClassName.isEmpty())
+						{
+							System.err.println("usedClassName is empty!");
+							return true;
+						}
+						
+						if (thisClassFQName.compareTo(usedClassName)==0)
+						{
+							// same class usage (ie in type name declatation ie declatation like Class A {
+							return true;
+						}
 						ClassPair cp = new ClassPair(thisClassFQName, usedClassName);
 //						ClassPair cp=new ClassPair(curClassName,usedClassName);
 
@@ -287,7 +311,7 @@ public class InterClassUsageFinder {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		int choice = 2;
+		int choice = 1;
 		InterClassUsageFinder i = new InterClassUsageFinder();
 		if (choice == 1) {
 			if (args.length < 1) {
@@ -297,7 +321,14 @@ public class InterClassUsageFinder {
 
 			String srcFilesRoot = args[0];
 			// InterClassUsageFinder i=new InterClassUsageFinder();
-			i.find(srcFilesRoot);
+			Map<ClassPair, Integer> m=i.find(srcFilesRoot);
+			System.out.println("matrix:");
+			for (ClassPair cp: m.keySet())
+			{
+				Integer c=m.get(cp);
+				System.out.println(cp.getThisClass()+"-"+cp.getUsedClass()+"="+c);
+			}
+		
 		} else if (choice == 2) {
 			String ipf = "C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\com\\ibm\\research\\digdeep\\preventive\\clusterer\\CarrotClusteringEngineImpl.java";
 			;
