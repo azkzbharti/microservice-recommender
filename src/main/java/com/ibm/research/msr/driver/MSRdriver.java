@@ -227,22 +227,24 @@ public class MSRdriver {
 			File dir = new File(htmlpath);
 			String[] extensions = new String[] { "html"};
 			List<File> files = (List<File>) FileUtils.listFiles(dir, extensions, true);
-			List<String> htmlpaths= new ArrayList<>();
+//			List<String> htmlpaths= new ArrayList<>();
+			StringBuilder strBuilder = new StringBuilder();
 			int count=0;
 			for (File f:files) {
 				if(f.getName().contains("all"))
 					continue;
-				String temp="<a href=\"filepath\" target=\"_blank\">filename</a> \n";
+				String temp="<li><a href=\"filepath\" target=\"_blank\">filename</a></li> \n";
 				temp=temp.replace("filepath", f.getAbsolutePath());
 				String fname=f.getName();
 				fname=fname.replace(".html", "");
 				count=count+1;
 				fname=fname.replace("cluster", "Approach"+count+": ");
 				temp=temp.replace("filename",fname);
-				htmlpaths.add(temp);
+				strBuilder.append(temp);
+//				htmlpaths.add(temp);
 			}
 			
-			oc.savecLusterJSONALL(d3filename,htmlpaths);
+			oc.savecLusterJSONALL(d3filename,strBuilder.toString());
 			
 		}
 		else {
