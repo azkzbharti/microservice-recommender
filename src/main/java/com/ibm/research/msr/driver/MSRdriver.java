@@ -230,6 +230,8 @@ public class MSRdriver {
 			List<String> htmlpaths= new ArrayList<>();
 			int count=0;
 			for (File f:files) {
+				if(f.getName().contains("all"))
+					continue;
 				String temp="<a href=\"filepath\" target=\"_blank\">filename</a> \n";
 				temp=temp.replace("filepath", f.getAbsolutePath());
 				String fname=f.getName();
