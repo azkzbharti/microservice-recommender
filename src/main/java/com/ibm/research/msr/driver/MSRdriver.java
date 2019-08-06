@@ -227,11 +227,18 @@ public class MSRdriver {
 			File dir = new File(htmlpath);
 			String[] extensions = new String[] { "html"};
 			List<File> files = (List<File>) FileUtils.listFiles(dir, extensions, true);
-			String temp="<a href=\"filepath\" target=\"_blank\">filename!</a> \n";
 			List<String> htmlpaths= new ArrayList<>();
+			int count=0;
 			for (File f:files) {
+				if(f.getName().contains("all"))
+					continue;
+				String temp="<a href=\"filepath\" target=\"_blank\">filename</a> \n";
 				temp=temp.replace("filepath", f.getAbsolutePath());
-				temp=temp.replace("filename", f.getName());
+				String fname=f.getName();
+				fname=fname.replace(".html", "");
+				count=count+1;
+				fname=fname.replace("cluster", "Approach"+count+": ");
+				temp=temp.replace("filename",fname);
 				htmlpaths.add(temp);
 			}
 			
