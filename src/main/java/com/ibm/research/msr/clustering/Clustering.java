@@ -421,7 +421,7 @@ public abstract class Clustering {
 	    System.out.println("File written at "+ writepath);
 	}
 	
-	public void savecLusterJSONALL(String writepath, List<String> htmlpaths) throws IOException {  
+	public void savecLusterJSONALL(String writepath, String refs) throws IOException {  
 //		System.out.println(clusters.size());
 		 Set<ClusterDetails> s= new HashSet<ClusterDetails>();
 		 s.addAll(clusters); 
@@ -455,7 +455,7 @@ public abstract class Clustering {
 		System.out.println(clusterobj);
 		String fileString = new String(Files.readAllBytes(Paths.get("src/main/resources/clusterall.html")), StandardCharsets.UTF_8);
 		fileString= fileString.replaceAll("%%JSONCONTENT%%", clusterobj.toString());
-	    fileString=fileString.replaceAll("%%FILEPATHS%%", htmlpaths.toString());
+	    fileString=fileString.replaceAll("%%FILEPATHS%%", refs);
 		Files.write(Paths.get(writepath), fileString.getBytes());
 	    
 	    System.out.println("File written at "+ writepath);
