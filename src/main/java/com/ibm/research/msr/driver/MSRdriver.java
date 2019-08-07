@@ -104,23 +104,24 @@ public class MSRdriver {
 
 		args.set(2, Constants.NAIVE); // has 2 variations as below 
 		args.add(4, Constants.ONLY_MERGE);
-
+//
 		oc=runSingleAlgorithm(analyzer,args);
-		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 		oc.setClusters(oc.getConsolidatedClusters());
+		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+
 	
 		args.set(4, Constants.SPLIT);
-		oc=runSingleAlgorithm(analyzer,args);
-		oc.setClusters(oc.getConsolidatedClusters());
-		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
-		
+//		oc=runSingleAlgorithm(analyzer,args);
+//		oc.setClusters(oc.getConsolidatedClusters());
+//		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+//		
 		args.set(2, Constants.KMEANS);
 		args.add(4, "2");
-		oc=runSingleAlgorithm(analyzer,args);
-		oc.setClusters(oc.getConsolidatedClusters());
-		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
-
-		
+//		oc=runSingleAlgorithm(analyzer,args);
+//		oc.setClusters(oc.getConsolidatedClusters());
+//		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+//
+//		
 		args.set(2, Constants.DBSCAN);
 		args.set(4, "0.0003");
 		args.add(5,  "1");
@@ -131,7 +132,7 @@ public class MSRdriver {
 		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
 		
-		 args.set(2, Constants.NAIVE_TFIDF); // has 4 variations as below 
+		    args.set(2, Constants.NAIVE_TFIDF); // has 4 variations as below 
 		
 			args.set(4, Constants.COSINE);
 			args.set(5,  Constants.ONLY_MERGE);
@@ -161,7 +162,7 @@ public class MSRdriver {
 			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
 			
-//			oc.extendClusters(oc.mergeRemainingClusters(allAlgoClusterList));
+////			oc.extendClusters(oc.mergeRemainingClusters(allAlgoClusterList));
 //			oc.setClusters(oc.getConsolidatedClusters());
 			
 		
@@ -202,10 +203,10 @@ public class MSRdriver {
 			argsList.add("true"); //TODO: remove this
 			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
 			analyzer = new AnalyzeApp(appPath);
-//			System.out.println(argsList.size());
-			oc=runAllAlgorithms(analyzer, argsList);
-			oc.CLeanClusters();
 			
+			oc=runAllAlgorithms(analyzer, argsList);
+//			oc.CLeanClusters();
+		
 			argsList2.add("false"); //TODO: remove this
 			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList2.get(3)));	
 //			System.out.println("her"+DocumentParserUtil.getIgnoreNone());
@@ -213,14 +214,14 @@ public class MSRdriver {
 			oc=runAllAlgorithms(analyzer, argsList2);
 			oc.setCusterListNames();
 			
-			oc.CLeanClusters();
-			
-//			ExpandClusters ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath());
-//			ec.getUsage();
-//			oc.setClusters(ec.getListofclusters());
 //			oc.CLeanClusters();
+			
+			ExpandClusters ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath());
+			ec.getUsage();
+			oc.setClusters(ec.getListofclusters());
+			oc.CLeanClusters();
 		
-			oc.scorePartialClusters(oc.getClusters());	
+//			oc.scorePartialClusters(oc.getClusters());	
 			String d3filename = argsList2.get(1)+"/clusterall.html";//src/main/output/clusterall.html"; // TODO : Make argument 
 			
 			String htmlpath=argsList2.get(1);

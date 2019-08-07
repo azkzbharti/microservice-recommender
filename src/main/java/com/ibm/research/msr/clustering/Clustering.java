@@ -285,7 +285,7 @@ public abstract class Clustering {
 //				}
 ////			}
 			
-			System.out.println("Setting score"+cls_i.getScore());
+//			System.out.println("Setting score"+cls_i.getScore());
 			newclusters.add(cls_i);	
 		}
 		this.clusters=newclusters;
@@ -414,7 +414,7 @@ public abstract class Clustering {
 			}
 		}
 		clusterobj.put("children", clusterArray);
-		System.out.println(clusterobj);
+//		System.out.println(clusterobj);
 		String fileString = new String(Files.readAllBytes(Paths.get("src/main/resources/d3.html")), StandardCharsets.UTF_8);
 		fileString= fileString.replaceAll("%%JSONCONTENT%%", clusterobj.toString());
 	    Files.write(Paths.get(writepath), fileString.getBytes());
@@ -443,7 +443,8 @@ public abstract class Clustering {
 //				System.out.println(cls.getClusterName());
 //				if(!cls.getClusterName().equals("Unused"))
 //					cls.setClusterName();
-				if(cls.getScore()>1) 
+//				System.out.println(cls.getScore());
+				if(cls.getScore()>0) 
 				{
 					System.out.println(cls.getClusterName());
 					clusterArray.add(cls.getClusterJson(count));
@@ -452,7 +453,7 @@ public abstract class Clustering {
 			}
 		}
 		clusterobj.put("children", clusterArray);
-		System.out.println(clusterobj);
+//		System.out.println(clusterobj);
 		String fileString = new String(Files.readAllBytes(Paths.get("src/main/resources/clusterall.html")), StandardCharsets.UTF_8);
 		fileString= fileString.replaceAll("%%JSONCONTENT%%", clusterobj.toString());
 	    fileString=fileString.replaceAll("%%FILEPATHS%%", refs);
@@ -496,7 +497,7 @@ public abstract class Clustering {
 	}
 	public void removeDuplicate() {
 		// will remove the same clusters
-		 CLeanClusters();
+//		 CLeanClusters();
 		 Set<ClusterDetails> s= new HashSet<ClusterDetails>();
 		 s.addAll(this.clusters);
 		 List<ClusterDetails> listofclusters = new ArrayList<ClusterDetails>();

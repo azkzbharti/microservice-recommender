@@ -53,10 +53,10 @@ public class ClusterDetails {
     }
     
 	public ClusterDetails(List<Document> docsList) {
-//		 Set<Document> s= new HashSet<Document>();
-//		 s.addAll(docsList);
+		 Set<Document> s= new HashSet<Document>();
+		 s.addAll(docsList);
 //		 this.listOfDocuments = new ArrayList<Document>();
-		listOfDocuments = docsList;
+		listOfDocuments =new ArrayList<Document>(s);
 	}
 
 	public ClusterDetails(List<Document> docsList,double score) {
