@@ -15,5 +15,11 @@ public class Constants {
 	
 	public static final String SRC = "src";
 	public static final String BIN = "bin";
+	
+	// POM download
+    public static final int CONNECTION_TIME_OUT=60*1000;
+	public static final int READ_TIME_OUT=60*1000;
+	public static final String URL_BASE="https://repo.maven.apache.org/maven2/";
+	
 
 }
