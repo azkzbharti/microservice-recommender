@@ -141,9 +141,18 @@ public class POMDependencyDownloadDriver {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+		if (args.length < 2)
+		{
+			System.err.println("USAGE:  <POM XML File With Full Path> <Location where jars should be downloaded>");
+			return;
+		}
 		POMDependencyDownloadDriver p=new POMDependencyDownloadDriver();
-		String pomFileWithPath="C:\\Users\\GiriprasadSridhara\\msr\\microservice-recommender\\pom.xml";
-		String downloadPath="C:\\temp";
+//		String pomFileWithPath="C:\\Users\\GiriprasadSridhara\\msr\\microservice-recommender\\pom.xml";
+//		String downloadPath="C:\\temp";
+		String pomFileWithPath=args[0];
+		String downloadPath=args[1];
+		
 		p.download(pomFileWithPath, downloadPath);
 		System.out.println("done");
 	}
