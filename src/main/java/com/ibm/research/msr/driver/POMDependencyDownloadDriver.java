@@ -3,6 +3,8 @@ package com.ibm.research.msr.driver;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,8 @@ public class POMDependencyDownloadDriver {
 	final int CONNECTION_TIME_OUT=60*1000;
 	
 	final int READ_TIME_OUT=60*1000;
+	
+	final String URL_BASE="https://repo.maven.apache.org/maven2/";
 	
 	class Dependency
 	{
@@ -59,7 +63,8 @@ public class POMDependencyDownloadDriver {
 		
 	}
 
-	public void download(String pomFileWithPath,String downloadPath)
+	public void download(String pomFileWithPath,String downloadPath, 
+			boolean bDownloadJavaDocAndSourcesJarAlso)
 	{
 		try
 		{
@@ -106,30 +111,24 @@ public class POMDependencyDownloadDriver {
 			for (Dependency d: pomDependencies)
 			{
 				
-//				k++;
-//				if (k>3)
-//				{
-//					break;
-//				}
+				k++;
+				if (k>3)
+				{
+					break;
+				}
 				
 				String groupIdWithSlash=d.getGroupId().replace('.', '/');
-				// sample download URL 
-				// https://repo.maven.apache.org/maven2/org/eclipse/jdt/org.eclipse.jdt.core/3.18.0/
-				String urlBase="https://repo.maven.apache.org/maven2/";
-				
-				
 				String jarFileName=d.getArtifactId()+"-"+d.getVersion()+".jar";
+				downloadFileFromURLAndCopyToLocalDisk(downloadPath, d, groupIdWithSlash,jarFileName);
+				
+				if (bDownloadJavaDocAndSourcesJarAlso)
+				{
+					String javaDocJarFileName=d.getArtifactId()+"-"+d.getVersion()+"-javadoc.jar";
+					downloadFileFromURLAndCopyToLocalDisk(downloadPath, d, groupIdWithSlash,javaDocJarFileName);
 
-				String sURL=urlBase+groupIdWithSlash+"/"+d.getArtifactId()+"/"+d.getVersion()+"/"+jarFileName;
-				URL url=new URL(sURL);
-
-				String fullPath=downloadPath+File.separator+jarFileName;
-				
-				File destination=new File(fullPath);
-				
-				System.out.println("downloading "+sURL + " -to-"+fullPath);
-				
-				FileUtils.copyURLToFile(url, destination,CONNECTION_TIME_OUT,READ_TIME_OUT);
+					String sourceJarFileName=d.getArtifactId()+"-"+d.getVersion()+"-sources.jar";
+					downloadFileFromURLAndCopyToLocalDisk(downloadPath, d, groupIdWithSlash,sourceJarFileName);
+				}
 			}
 		}
 		catch(Exception e)
@@ -137,6 +136,33 @@ public class POMDependencyDownloadDriver {
 			e.printStackTrace();
 		}
 		
+	}
+
+	private void downloadFileFromURLAndCopyToLocalDisk(String downloadPath, 
+			Dependency d, String groupIdWithSlash,String jarFileName)
+			throws MalformedURLException {
+
+		// sample download URL 
+		// https://repo.maven.apache.org/maven2/org/eclipse/jdt/org.eclipse.jdt.core/3.18.0/
+		String sURL=URL_BASE+groupIdWithSlash+"/"+d.getArtifactId()+"/"+d.getVersion()+"/"+jarFileName;
+		URL url=new URL(sURL);
+
+		String fullPath=downloadPath+File.separator+jarFileName;
+		
+		File destination=new File(fullPath);
+		
+		System.out.println("downloading "+sURL + " -to-"+fullPath);
+
+		try
+		{
+			FileUtils.copyURLToFile(url, destination,CONNECTION_TIME_OUT,READ_TIME_OUT);
+			System.out.println("\t successfully downloaded and copied " + fullPath);
+		}
+		catch(IOException ioe)
+		{
+			System.err.println("HANDLED IOException while trying to download jar file and copy " + jarFileName);
+			ioe.printStackTrace();
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -152,8 +178,24 @@ public class POMDependencyDownloadDriver {
 //		String downloadPath="C:\\temp";
 		String pomFileWithPath=args[0];
 		String downloadPath=args[1];
+
+		boolean bDownloadJavaDocAndSourcesJarAlso=false;
+		if (args.length == 3)
+		{
+			if (args[2].equalsIgnoreCase("0"))
+			{
+				bDownloadJavaDocAndSourcesJarAlso=false;
+				System.out.println("Will download only jar");
+			}
+			else
+			{
+				bDownloadJavaDocAndSourcesJarAlso=true;
+				System.out.println("Will download only javadoc and sources jar also");
+
+			}
+		}
 		
-		p.download(pomFileWithPath, downloadPath);
+		p.download(pomFileWithPath, downloadPath,bDownloadJavaDocAndSourcesJarAlso);
 		System.out.println("done");
 	}
 
