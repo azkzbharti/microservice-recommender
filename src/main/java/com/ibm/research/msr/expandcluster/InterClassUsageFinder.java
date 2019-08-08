@@ -82,6 +82,25 @@ public class InterClassUsageFinder {
 			System.out.println("Ignoring java file not under src folder");
 			return;
 		}
+
+		// NOTE: 
+		// srcFilesRoot is something like C:\digdeep-master ie root under which 
+		// all *java files must be processed.
+		// If we give the above to ASTParser as source root, then it WILL NOT work properly
+		// what ASTParser needs is the "src" path relative to the project such as
+		// C:\digdeep-master\digdeep-web-common\src\
+		// the variable srcRoot holds the above.
+		
+		int srcIndex=fileNameWPath.indexOf(File.separator+"src"+File.separator);
+		String srcRoot=null;
+		if (srcIndex != -1)
+		{
+			// extract till .../src/ to use as src root
+			srcRoot=fileNameWPath.substring(0,srcIndex+5);	
+		}
+		
+		//System.out.println("src root="+srcRoot);
+		
 		
 		StringBuffer sb = new StringBuffer();
 		String line = null;
@@ -112,14 +131,23 @@ public class InterClassUsageFinder {
 		// parser.setEnvironment(classPathEntries, null, null, true);
 		String[] srcPath = new String[1];
 		// srcPath[0]="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src";
-		srcPath[0] = srcFilesRoot;
-
+		//srcPath[0] = srcFilesRoot;
+		if (srcRoot != null)
+		{
+			srcPath[0]=srcRoot;
+		}
+		else
+		{
+			srcPath[0] = srcFilesRoot;
+		}
 		parser.setEnvironment(null, srcPath, null, true);
 
 		final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 
 		final Stack<TypeDeclaration> stackTD = new Stack<TypeDeclaration>();
 
+		final Map<ClassPair, Integer> localFileInterClassUsageMatrix = new HashMap<ClassPair, Integer>();
+		
 		//System.out.println("create ast done");
 		cu.accept(new ASTVisitor() {
 
@@ -251,7 +279,7 @@ public class InterClassUsageFinder {
 						if (!stackTD.isEmpty()) {
 							TypeDeclaration curClass = stackTD.peek();
 							curClassName = curClass.getName().getFullyQualifiedName();
-							System.out.println(curClassName);
+							//System.out.println(curClassName);
 						} else {
 							curClassName = file.getName();
 						}
@@ -304,9 +332,11 @@ public class InterClassUsageFinder {
 						if (usageCount == null) {
 							usageCount = new Integer(1);
 							interClassUsageMatrix.put(cp, usageCount);
+							localFileInterClassUsageMatrix.put(cp, usageCount);
 						} else {
 							Integer uc2 = new Integer(usageCount.intValue() + 1);
 							interClassUsageMatrix.put(cp, uc2);
+							localFileInterClassUsageMatrix.put(cp, uc2);
 						}
 
 					}
@@ -323,9 +353,11 @@ public class InterClassUsageFinder {
 			}
 		});
 
-		System.out.println("interClassUsageMatrix");
-		for (ClassPair cp : interClassUsageMatrix.keySet()) {
-			Integer usageCount = interClassUsageMatrix.get(cp);
+		System.out.println("LocalFileInterClassUsageMatrix");
+		//for (ClassPair cp : interClassUsageMatrix.keySet()) {
+		for (ClassPair cp : localFileInterClassUsageMatrix.keySet()) {
+			//Integer usageCount = interClassUsageMatrix.get(cp);
+			Integer usageCount = localFileInterClassUsageMatrix.get(cp);
 			System.out.println(cp + "->" + usageCount);
 		}
 	}
@@ -333,7 +365,8 @@ public class InterClassUsageFinder {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		int choice = 2;
+		int choice = 1;
+		//int choice = 2;
 		InterClassUsageFinder i = new InterClassUsageFinder();
 		if (choice == 1) {
 			if (args.length < 1) {
@@ -344,7 +377,7 @@ public class InterClassUsageFinder {
 			String srcFilesRoot = args[0];
 			// InterClassUsageFinder i=new InterClassUsageFinder();
 			Map<ClassPair, Integer> m=i.find(srcFilesRoot);
-			System.out.println("matrix:");
+			System.out.println("\nFinalInterClassUsageMatrix:");
 			for (ClassPair cp: m.keySet())
 			{
 				Integer c=m.get(cp);
@@ -353,12 +386,14 @@ public class InterClassUsageFinder {
 		
 		} else if (choice == 2) {
 			//String ipf = "C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\com\\ibm\\research\\digdeep\\preventive\\clusterer\\CarrotClusteringEngineImpl.java";
-			String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\com\\ibm\\research\\util\\MapUtil.java";
-			// String
+			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\com\\ibm\\research\\util\\MapUtil.java";
+			String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\com\\ibm\\research\\digdeep\\web\\services\\DynamicRecommendationService.java";
+			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\extra\\recommendations\\"
 			// ipf="C:\\Users\\GiriprasadSridhara\\dependency-migration-asistant\\src\\main\\java\\com\\ibm\\research\\appmod\\dma\\impact\\ChangedAPIUsageSiteFinder.java";
 			File file = new File(ipf);
 			//String srcFilesRoot = "C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\";
 			String srcFilesRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\";
+			//String srcFilesRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\";
 			i.processOneFile(file, srcFilesRoot);
 		}
 	}
