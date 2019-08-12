@@ -65,8 +65,55 @@ a:hover {
   transform: scale(1.2);
 }
 
+div.note
+{
+     -moz-border-radius: 6px;
+     -webkit-border-radius: 6px;
+     background-color: #f0f7fb;
+     border: solid 1px #3498db;
+     border-radius: 6px;
+     line-height: 18px;
+     overflow: hidden;
+     padding: 12px;
+		 display: inline-block;
+		 height: 280px;
+		 width: 280px;
+		 margin-right: 40px;
+}
+div.note1
+{
+     -moz-border-radius: 6px;
+     -webkit-border-radius: 6px;
+     background-color :burlywood;
+     border: solid 1px #3498db;
+     border-radius: 6px;
+     line-height: 18px;
+     overflow: hidden;
+     padding: 12px;
+		 display: inline-block;
+		 height: 280px;
+		 width: 280px;
+		 margin-right: 40px;
+}
+div.note2
+{
+     -moz-border-radius: 6px;
+     -webkit-border-radius: 6px;
+     background-color : antiquewhite;
+     border: solid 1px #3498db;
+     border-radius: 6px;
+     line-height: 18px;
+     overflow: hidden;
+     padding: 12px;
+		 display: inline-block;
+		 height: 280px;
+		 width: 280px;
+}
+
     </style>
-<svg width="960" height="2000"></svg>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
   </head>
 
   <body>
@@ -77,6 +124,49 @@ a:hover {
 						</h1>
 				 </header>
 
+				 <div class="note">
+						<h4>Meta Info</h4>
+						 <ul id="meta">
+								 <li><b>Name : </b>DigDeep</li> 
+								 <li><b>Num of Projects : </b>8</li> 
+								 <li><b>Num of Classes : </b>528</li> 
+								 <li><b>Num of  Jars : </b>108</li> 
+								 <li><b>Num of IBM Jars : </b>8</li> 
+						 </ul>
+					</div>
+				 
+					<div class="note1">
+						 <h4>Cluster Info</h4>
+						 <ul id="cluster">
+								 <li><b>size : </b>10</li> 
+								 <li><b>Average Cluster Size : </b>4</li> 
+								 <li><b>Maximum Cluster Size : </b>9</li> 
+								 <li><b>Minimum Cluster Size : </b>2</li> 
+								 <li><b>Clustering Algos : </b>K-means, DBSCAN ..</li> 
+								 <li><b>Minimum Allowed Cluster Size : </b>2</li> 
+								 <li><b>Distance Function Used : </b>Eculidean Distance</li> 
+						 </ul>
+					</div>
+				 
+					<div class="note2">
+						 <h4>Jars Info</h4>
+						 <ul id="jars">
+								 <li><b>Most Used Jar : </b>log4j.jar</li> 
+								 <li><b>Least Used Jar : </b>opencsv.jar</li> 
+								 <li><b>Avg Jar Class Usage : </b>5</li> 
+								 <li><b>Most Jar Class Usage : </b>23</li> 
+								 <li><b>Jars Overlapping Clusters > 1 : </b>34</li> 
+								 <li><b>Average Classes : </b>40</li> 
+								 <li><b>Highest Classes Cluster : </b>92</li> 
+								 <li><b>Lowest Classes Cluster : </b>19</li> 
+								 <li><b>Num Model Jars : </b>60</li> 
+								 <li><b>Num UI Jars : </b>20</li> 
+								 <li><b>Num Backend Jars : </b>20</li> 
+								 <li><b>Others : </b>8</li> 
+						 </ul>
+					</div>
+
+					<svg width="2000" height="2000"></svg>
 <!-- load the d3.js library -->	
 <script src="http://d3js.org/d3.v3.min.js"></script>
 	
@@ -218,6 +308,78 @@ function click(d) {
   }
   update(d);
 }
+
+$(document).ready(function(){
+	
+	json = {
+  "name": "DigDeep1", 
+  "num_projects": 8,
+  "num_classes": 528,
+  "num_jars": 108,
+  "num_ibm_jars": 8,
+  
+  "clusters" : {
+    "size" : 10,
+    "average_jar" : 4,
+    "highest_jar_cluster" : 9,
+    "lowest_jar_cluster" : 2,
+    "clustering_alogs"  :"K-means, DBSCAN",
+    "min_cluster_size"  : 2,
+    "distance_function_used" : "eculidean distance"
+  },
+  "jars" : {
+    "most_used_jar" : "log4j.jar",
+    "least_used_jar" : "opencsv.jar",
+    "avg_jar_class_usage" : 5,
+    "most_jar_class_usage" : 23,
+    "jars_overlapping_clusters_more_1" : 34,
+    "average_classes" : 40,
+    "highest_classes_cluster" : 92,
+    "lowest_classes_cluster" : 19,
+    "num_ui_jars" : 20,
+    "num_model_jars" : 60,
+    "num_backend_jars" : 20,
+    "others" : 8
+  }
+}
+
+
+	 items = $("#meta li");
+	 $(items[0]).text('Name : '+ json['name']);
+	 $(items[1]).text('Num of Projects : '+ json['num_projects']);
+	 $(items[2]).text('Num of Classes : '+ json['num_classes']);
+	 $(items[3]).text('Num of Jars : '+ json['num_jars']);
+	 $(items[4]).text('Num of IBM Jars : '+ json['num_ibm_jars']);
+	
+	 items = $("#cluster li");
+	 $(items[0]).text('size : '+ json['clusters']['size']);
+	 $(items[1]).text('Average Cluster Size : '+ json['clusters']['average_jar']);
+	 $(items[2]).text('Maximum Cluster Size : '+ json['clusters']['highest_jar_cluster']);
+	 $(items[3]).text('Minimum Cluster Size : '+ json['clusters']['lowest_jar_cluster']);
+	 $(items[4]).text('Clustering Algos : '+ json['clusters']['clustering_alogs']);
+	 $(items[5]).text('Minimum Allowed Cluster Size : '+ json['clusters']['min_cluster_size']);
+	 $(items[6]).text('Distance Function Used : '+ json['clusters']['distance_function_used']);
+		
+	 items = $("#jars li");
+	 $(items[0]).text('Most Used Jar : '+ json['jars']['most_used_jar']);
+	 $(items[1]).text('Least Used Jar : '+ json['jars']['least_used_jar']);
+	 $(items[2]).text('Avg Jar Class Usage : '+ json['jars']['avg_jar_class_usage']);
+	 $(items[3]).text('Most Jar Class Usage : '+ json['jars']['most_jar_class_usage']);
+	 $(items[4]).text('Jars Overlapping Clusters : '+ json['jars']['jars_overlapping_clusters_more_1']);
+	 $(items[5]).text('Average Classes : '+ json['jars']['average_classes']);
+	 $(items[6]).text('Highest Classes Cluster : '+ json['jars']['highest_classes_cluster']);
+	 $(items[7]).text('Lowest Classes Cluster : '+ json['jars']['lowest_classes_cluster']);
+	 $(items[8]).text('Num Model Jars : '+ json['jars']['num_ui_jars']);
+	 $(items[9]).text('Num UI Jars : '+ json['jars']['num_model_jars']);
+	 $(items[10]).text('Num Backend Jars  : '+ json['jars']['num_backend_jars']);
+	 $(items[11]).text('Others : '+ json['jars']['others']);
+
+});
+
+
+
+</script>
+
 </script>
 <br />
 
