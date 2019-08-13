@@ -1,5 +1,6 @@
 package com.ibm.research.msr.expandcluster;
 
+import java.security.KeyStore.Entry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,12 +12,16 @@ import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import org.apache.commons.collections.MapIterator;
+import org.apache.commons.collections.iterators.EntrySetMapIterator;
+
 import com.ibm.research.msr.clustering.ClusterDetails;
 import com.ibm.research.msr.extraction.Document;
 
 public class ExpandClusters {
 
 	List<ClusterDetails> listofclusters=new ArrayList<>() ;
+	List<ClusterDetails> newlistofclusters=new ArrayList<>() ;
 	List<ClusterDetails> nonelistofclusters=new ArrayList<>(); 
 	List<ClusterDetails> nonelistofclusters1=new ArrayList<>(); 
 
@@ -24,6 +29,7 @@ public class ExpandClusters {
 
 	public ExpandClusters(List<ClusterDetails> listofclusters,String srcFilesRoot) {
 		// TODO Auto-generated constructor stub
+
 		Set<ClusterDetails> s= new HashSet<ClusterDetails>();
 		s.addAll(listofclusters);
 		listofclusters = new ArrayList<ClusterDetails>();
@@ -33,14 +39,15 @@ public class ExpandClusters {
 				this.nonelistofclusters.add(cls);
 			else 
 				this.listofclusters.add(cls);
+				this.newlistofclusters.add(cls);
 				
 		}
 		
 //		this.nonelistofclusters=listofclusters.stream().filter(cls->cls.getClusterName().trim().equals("None")).collect(Collectors.toList());
-		System.out.println("None clusters "+nonelistofclusters.size()); 
+//		System.out.println("None clusters "+nonelistofclusters.size()); 
 
 //		this.listofclusters=listofclusters.stream().filter(cls->!cls.getClusterName().trim().equals("None")).collect(Collectors.toList());
-		System.out.println("All clusters "+listofclusters.size()); 
+//		System.out.println("All clusters "+listofclusters.size()); 
 
 		i.find(srcFilesRoot);
 		
@@ -60,14 +67,20 @@ public class ExpandClusters {
 				.stream()
 				.map(ClusterDetails::getListOfDocuments)
 				.collect(Collectors.toList());
-		List<Document> listofAllDocsinNone=listofDocsinNone.stream().flatMap(List::stream)
-		        .collect(Collectors.toList());
-		List<Document> notusedDocs = new ArrayList<Document>();
+		Set<Document> listofAllDocsinNone=listofDocsinNone.stream().flatMap(List::stream)
+		        .collect(Collectors.toSet());
 		
+//		for(Document doc:listofAllDocsinNone) {
+//			System.out.println(doc.getName());
+//			System.out.println(doc.getUniqueName());
+//			System.out.println(doc.getFile().getAbsolutePath());
+//		}
+		
+		List<Document> notusedDocs = new ArrayList<Document>();
+	
 		for (Document doc:listofAllDocsinNone) {
-			
-			if(doc.getUniqueName().equals("com.ibm.research.json.JSONArray"))
-				System.out.println("here");
+//			System.out.println(doc.getName());
+
 			Map<ClusterDetails,Integer> docCLusterUsageMap = new HashMap<>();
 			Map<ClusterDetails,Integer> sorteddocCLusterUsageMap = new HashMap<>();
 
@@ -78,17 +91,22 @@ public class ExpandClusters {
 //			System.out.println(docname);
 
 			if(cp.size()==0) {
-				System.out.println("Document not used "+doc.getUniqueName());
+//				System.out.println("Document not used "+doc.getUniqueName());
+				if(!notusedDocs.contains(doc)) {
 				notusedDocs.add(doc);
+				for(ClusterDetails cls:this.newlistofclusters) {
+					cls.removeDoc(doc);
+				}
+				}
 				continue;
 			}
 
 			
 			for(ClassPair pair:cp) {
-				System.out.println(pair.usedClass);
-				System.out.println(doc.getUniqueName());
-				if(!pair.usedClass.equals(doc.getUniqueName()))
-				docUsageMap.put(pair.usedClass, i.interClassUsageMatrix.get(pair));
+//				System.out.println(pair.usedClass);
+//				System.out.println(doc.getUniqueName());
+				if(!pair.thisClass.equals(doc.getUniqueName()))
+				docUsageMap.put(pair.thisClass, i.interClassUsageMatrix.get(pair));
 //				else {
 //					notusedDocs.add(doc);
 //				}
@@ -106,11 +124,19 @@ public class ExpandClusters {
 
 					}
 			}
+			
 			if(docCLusterUsageMap.size()==0) {
 				System.out.println("doc is not used in any cluser classes");
+				if(!notusedDocs.contains(doc)) {
 				notusedDocs.add(doc);
+				for(ClusterDetails cls:this.newlistofclusters) {
+					cls.removeDoc(doc);
+				}
+				}
 				continue;
 			}
+			
+			
 //			System.out.println(docCLusterUsageMap.toString());
 			sorteddocCLusterUsageMap = docCLusterUsageMap
 	        .entrySet()
@@ -120,35 +146,40 @@ public class ExpandClusters {
 	        .collect(
 	            Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
 	                LinkedHashMap::new));
-			System.out.println(sorteddocCLusterUsageMap.toString());
+//			System.out.println(sorteddocCLusterUsageMap.toString());
 
 			ClusterDetails maxUsageCluster = sorteddocCLusterUsageMap.entrySet().stream().findFirst().get().getKey();
-			if(!maxUsageCluster.getListOfDocumentsNames().contains(doc)) {
+//			maxUsageCluster.showDetails();
 				// add to this and remove from others
-				for(ClusterDetails cls:docCLusterUsageMap.keySet()) {
-					if(!cls.equals(maxUsageCluster)) {
-							cls.removeDoc(doc);
-					}
-					else {
-//						if(cls.getListOfDocuments())
-						cls.addDocumentToCluster(doc);
-					}
+			for(ClusterDetails cls:this.newlistofclusters) {
+				if(!cls.equals(maxUsageCluster)) {
+					cls.removeDoc(doc);
 				}
-
+				else  if (!maxUsageCluster.getListOfDocumentsNames().contains(doc.getUniqueName())) 
+				{
+					cls.addDocumentToCluster(doc);
+				}
+			
 			}
+			
 			
 		}
 //		List<ClusterDetails> nonelistofclusters1=this.listofclusters.stream().filter(cls->cls.getClusterName().trim().equals("None")).collect(Collectors.toList());
-//		System.out.println("NONE CLUSTER"+nonelistofclusters1.size());
-		if(notusedDocs.size()>0) {
+		if(notusedDocs.size()>0) {		
+//			for(Document doc:notusedDocs) {
+//				System.out.println(doc.getUniqueName());
+//				System.out.println(doc.getFile().getAbsolutePath());
+//			}
 			ClusterDetails cls = new ClusterDetails(notusedDocs);
-			cls.setClusterName("Unused");			
-			this.listofclusters.add(cls);
+			cls.setClusterName("Unused/Entry Points");	
+			cls.removeDuplicates();
+//			cls.showDetails();
+			this.newlistofclusters.add(cls);
 
 		}
-		System.out.println("size: "+this.listofclusters.size());
-
+//		System.out.println("size: "+this.listofclusters.size());
 		
+		this.listofclusters=this.newlistofclusters;
 	}
 
 	/**

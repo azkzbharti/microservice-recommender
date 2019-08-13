@@ -168,10 +168,10 @@ public class Document {
 		if (getClass() != obj.getClass())
 			return false;
 		Document other = (Document) obj;
-		if (fileName == null) {
-			if (other.fileName != null)
+		if (file == null) {
+			if (other.file != null)
 				return false;
-		} else if (!fileName.equals(other.fileName))
+		} else if (!file.getAbsolutePath().equals(other.file.getAbsolutePath()))
 			return false;
 		return true;
 	}

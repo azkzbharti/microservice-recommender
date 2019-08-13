@@ -62,7 +62,7 @@ public class InterClassUsageFinder {
 			while (itr.hasNext()) {
 				cp = itr.next();
 
-				if (cp.getThisClass().toLowerCase().equals(className.toLowerCase()))
+				if (cp.getUsedClass().toLowerCase().equals(className.toLowerCase()))
 					classPairList.add(cp);
 			}
 		}
