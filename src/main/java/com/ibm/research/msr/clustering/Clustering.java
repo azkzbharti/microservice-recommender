@@ -27,6 +27,7 @@ import org.json.simple.JSONObject;
 
 import com.google.common.collect.Sets;
 import com.ibm.research.msr.extraction.Document;
+import com.ibm.research.msr.utils.Constants;
 import com.ibm.research.msr.utils.ReadJarMap;
 
 import weka.core.Instances;
@@ -53,7 +54,7 @@ public abstract class Clustering {
 
 	public void CLeanClusters()	{
 		for(ClusterDetails cls:clusters) {
-			cls.showDetails();
+//			cls.showDetails();
 			cls.removeDuplicates();
 			
 		}
@@ -190,9 +191,9 @@ public abstract class Clustering {
 		long l=1;
 		for(List<ClusterDetails> cls:algoCLusterList) {
 			l=l*cls.size();
-			System.out.println(cls.size());
+//			System.out.println(cls.size());
 		}
-		System.out.println(l);
+//		System.out.println(l);
 		List<ClusterDetails> mergerClusters = new ArrayList<>();
 		
 //		Set<List<ClusterDetails>> resultClusters =Sets.cartesianProduct(algoCLusterList.subList(0, algoCLusterList.size()));
@@ -285,7 +286,7 @@ public abstract class Clustering {
 //				}
 ////			}
 			
-			System.out.println("Setting score"+cls_i.getScore());
+//			System.out.println("Setting score"+cls_i.getScore());
 			newclusters.add(cls_i);	
 		}
 		this.clusters=newclusters;
@@ -293,6 +294,7 @@ public abstract class Clustering {
 
 
 	}
+	
 	public List<ClusterDetails> getConsolidatedClusters() {
 		List<ClusterDetails> newclusters =  new ArrayList<>();
 		List<ClusterDetails> newclusters1 =  new ArrayList<>();
@@ -358,8 +360,22 @@ public abstract class Clustering {
 	public List<ClusterDetails> getNonScoreClusters(){
 		return this.clusters.stream().filter(cls->cls.getScore()==0).collect(Collectors.toList());
 	}
+	public List<ClusterDetails> combineNoneClusters(){
+		List<ClusterDetails> noneCLusters =getNonScoreClusters();
+		List<ClusterDetails> newList = null;
+		for (ClusterDetails cls:this.clusters) {
+			if(noneCLusters.contains(cls)) {
+				
+			}
+		}
+		return newList;
+		
+	}
+	public List<ClusterDetails> getNoneClusters(){
+		return this.clusters.stream().filter(cls->cls.getClusterName()=="None").collect(Collectors.toList());
+	}
 	protected Instances filterData(Instances data) throws Exception {
-		System.out.println("Filtering data ...");
+//		System.out.println("Filtering data ...");
 		Remove remove = new Remove();
 		String[] options = new String[2];
 		options[0] = "-R";
@@ -388,32 +404,71 @@ public abstract class Clustering {
 	 * @throws IOException 
 	 */
 	public void savecLusterJSON(String writepath) throws IOException {  
-//		System.out.println(clusters.size());
+		List<ClusterDetails> listofclusters=new ArrayList<>() ;
+		List<ClusterDetails> nonelistofclusters=new ArrayList<>(); 
+		
 		 Set<ClusterDetails> s= new HashSet<ClusterDetails>();
 		 s.addAll(clusters); 
 
+		 
 		 clusters = new ArrayList<ClusterDetails>();
 		 clusters.addAll(s);  
 		 clusters=sortClusterOnScore(clusters);
-
-//			System.out.println(clusters.size());
-
+		 
+		 for(ClusterDetails cls:clusters) {
+//			 if(cls.getClusterName()==null)
+				 cls.setClusterName();
+				 if (cls.getListOfDocuments().size() > 0 ) {
+			 	if(cls.getClusterName().trim().contains("Non") || cls.getClusterName().trim().equals("None"))
+					nonelistofclusters.add(cls);
+				else 
+					listofclusters.add(cls);
+						}
+				 
+		}
+		 
+ 
 		JSONObject clusterobj = new JSONObject();
 		clusterobj.put("name", "root");
 		clusterobj.put("parent", null);
+		
 		JSONArray clusterArray = new JSONArray();
 		int count = 0;
 		
-		for (ClusterDetails cls : clusters) {
+		for (ClusterDetails cls : listofclusters) {
 			if (cls.getListOfDocuments().size() > 0) {
-				cls.setClusterName();
-				if(cls.getClusterName().equals("Non"))
-					cls.showDetails();
 				clusterArray.add(cls.getClusterJson(count));
 				count += 1;
 			}
 		}
+		if(nonelistofclusters.size()>1) {
+					JSONObject noneClusterobj = new JSONObject();
+					noneClusterobj.put("name", "None");
+					noneClusterobj.put("parent", "root");
+			
+					JSONArray noneClusterArray = new JSONArray();
+					for (ClusterDetails cls : nonelistofclusters) {
+						if (cls.getListOfDocuments().size() > 0) {
+			//				cls.setClusterName();
+							noneClusterArray.add(cls.getClusterJson(-1*count));
+							count += 1;
+						}
+					}
+					
+					
+					noneClusterobj.put("children", noneClusterArray);
+					
+					clusterArray.add(noneClusterobj);
+		}
+		else {
+			for (ClusterDetails cls : nonelistofclusters) {
+				if (cls.getListOfDocuments().size() > 0) {
+					clusterArray.add(cls.getClusterJson(count));
+				}
+		}
+		}
 		clusterobj.put("children", clusterArray);
+
 		System.out.println(clusterobj);
 		String fileString = new String(Files.readAllBytes(Paths.get("src/main/resources/d3.html")), StandardCharsets.UTF_8);
 		fileString= fileString.replaceAll("%%JSONCONTENT%%", clusterobj.toString());
@@ -422,37 +477,100 @@ public abstract class Clustering {
 	}
 	
 	public void savecLusterJSONALL(String writepath, String refs) throws IOException {  
-//		System.out.println(clusters.size());
+		List<ClusterDetails> listofclusters=new ArrayList<>() ;
+		List<ClusterDetails> nonelistofclusters=new ArrayList<>(); 
+		
+		
 		 Set<ClusterDetails> s= new HashSet<ClusterDetails>();
 		 s.addAll(clusters); 
 
+		 
 		 clusters = new ArrayList<ClusterDetails>();
 		 clusters.addAll(s);  
 		 clusters=sortClusterOnScore(clusters);
-
-//			System.out.println(clusters.size());
-
+		 for(ClusterDetails cls:clusters) {
+//			 if(cls.getClusterName()==null)
+//				 cls.setClusterName();
+			 if (cls.getListOfDocuments().size() > 0) {
+				if(cls.getScore()>0 || cls.getClusterName().equals(Constants.unusedClusterName)) { 
+				if(cls.getClusterName().trim().contains("Non") || cls.getClusterName().trim().equals("None"))
+					nonelistofclusters.add(cls);
+				else 
+					listofclusters.add(cls);
+				}
+			 }	
+		}
+		 
+ 
 		JSONObject clusterobj = new JSONObject();
 		clusterobj.put("name", "root");
 		clusterobj.put("parent", null);
+		
 		JSONArray clusterArray = new JSONArray();
 		int count = 0;
 		
-		for (ClusterDetails cls : clusters) {
+		for (ClusterDetails cls : listofclusters) {
 			if (cls.getListOfDocuments().size() > 0) {
-//				System.out.println(cls.getClusterName());
-//				if(!cls.getClusterName().equals("Unused"))
-//					cls.setClusterName();
-				if(cls.getScore()>1) 
-				{
-					System.out.println(cls.getClusterName());
-					clusterArray.add(cls.getClusterJson(count));
-					count += 1;
-				}
+				clusterArray.add(cls.getClusterJson(count));
+				count += 1;
 			}
 		}
+		if(nonelistofclusters.size()>1) {
+					JSONObject noneClusterobj = new JSONObject();
+					noneClusterobj.put("name", "None");
+					noneClusterobj.put("parent", "root");
+			
+					JSONArray noneClusterArray = new JSONArray();
+					for (ClusterDetails cls : nonelistofclusters) {
+						if (cls.getListOfDocuments().size() > 0) {
+			//				cls.setClusterName();
+							noneClusterArray.add(cls.getClusterJson(-1*count));
+							count += 1;
+						}
+					}
+					
+					
+					noneClusterobj.put("children", noneClusterArray);
+					
+					clusterArray.add(noneClusterobj);
+		}
+		else {
+			for (ClusterDetails cls : nonelistofclusters) {
+				if (cls.getListOfDocuments().size() > 0) {
+					clusterArray.add(cls.getClusterJson(count));
+				}
+		}
+		}
 		clusterobj.put("children", clusterArray);
-		System.out.println(clusterobj);
+		
+
+//			System.out.println(clusters.size());
+
+//		JSONObject clusterobj = new JSONObject();
+//		clusterobj.put("name", "root");
+//		clusterobj.put("parent", null);
+//		JSONArray clusterArray = new JSONArray();
+//		int count = 0;
+//		
+//		for (ClusterDetails cls : clusters) {
+//			if (cls.getListOfDocuments().size() > 0) {
+////				System.out.println(cls.getClusterName());
+////				if(!cls.getClusterName().equals("Unused"))
+////					cls.setClusterName();
+////				System.out.println(cls.getScore());
+//				if(cls.getScore()>0) 
+//				{
+//					System.out.println(cls.getClusterName());
+//					clusterArray.add(cls.getClusterJson(count));
+//					count += 1;
+//				}
+//			}
+//		}
+//		clusterobj.put("children", clusterArray);
+////		System.out.println(clusterobj);
+		
+		
+		
 		String fileString = new String(Files.readAllBytes(Paths.get("src/main/resources/clusterall.html")), StandardCharsets.UTF_8);
 		fileString= fileString.replaceAll("%%JSONCONTENT%%", clusterobj.toString());
 	    fileString=fileString.replaceAll("%%FILEPATHS%%", refs);
@@ -463,10 +581,11 @@ public abstract class Clustering {
 	public void CombineClusters() {
 
 		for(ClusterDetails cls :this.clusters) {
-			Double cvalue=0.0;
+			Double cvalue=1.0;
 			if(consolidatedClusters.containsKey(cls)) {
 				cvalue = consolidatedClusters.get(cls);
 				cvalue = cvalue+1;
+				
 				ClusterDetails tcls = consolidatedClusters.entrySet()
 					      .stream()
 					      .filter(entry -> consolidatedClusters.containsKey(cls))
@@ -486,7 +605,8 @@ public abstract class Clustering {
 				// compute score based on intersection if not present as is 
 				// S(C1)= Sum_i=1 to n ((C1 inter Ci)*V(ci)/(#C1+#Ci-(c1 inter ci))*V(C1)
 				
-			}			
+			}	
+//			System.out.println("Currently total clusters: "+consolidatedClusters.size());
 		}
 //	 List<Entry<ClusterDetails, Integer>> listOfEntry = consolidatedClusters.entrySet().stream().sorted().collect(Collectors.toList());
 				
@@ -496,7 +616,7 @@ public abstract class Clustering {
 	}
 	public void removeDuplicate() {
 		// will remove the same clusters
-		 CLeanClusters();
+//		 CLeanClusters();
 		 Set<ClusterDetails> s= new HashSet<ClusterDetails>();
 		 s.addAll(this.clusters);
 		 List<ClusterDetails> listofclusters = new ArrayList<ClusterDetails>();

@@ -53,14 +53,16 @@ public class ClusterDetails {
     }
     
 	public ClusterDetails(List<Document> docsList) {
-//		 Set<Document> s= new HashSet<Document>();
-//		 s.addAll(docsList);
+		 Set<Document> s= new HashSet<Document>();
+		 s.addAll(docsList);
 //		 this.listOfDocuments = new ArrayList<Document>();
-		listOfDocuments = docsList;
+		listOfDocuments =new ArrayList<Document>(s);
 	}
 
 	public ClusterDetails(List<Document> docsList,double score) {
-		listOfDocuments = docsList;
+		Set<Document> s= new HashSet<Document>();
+		 s.addAll(docsList);
+		listOfDocuments = new ArrayList<Document>(s);
 		this.score=score;
 	}
 	public void removeDoc(Document doc) {
@@ -140,13 +142,13 @@ public class ClusterDetails {
 		int maxValueInMap=(Collections.max(alltokens.values()));
 		for (Entry<String, Integer> entry : alltokens.entrySet()) {  // Itrate through hashmap
             if (entry.getValue()==maxValueInMap) {
+            	if(!entry.getKey().equals("None")) // cases where None and other jar are equal times then give weght to jar
             	clusterName=clusterName+entry.getKey().replace(".jar", ",");
             }
         }
 		if(clusterName.equals("") || clusterName.equals("None"))
 			clusterName = "None ,";
 		clusterName=clusterName.substring(0, clusterName.length() - 1);
-
 		this.clusterName=clusterName;
 	}
 	
@@ -170,9 +172,12 @@ public class ClusterDetails {
 	public JSONObject getClusterJson(int count) {
 		JSONObject clusterJson  = new JSONObject();
 		if(this.clusterName=="")
-		System.out.println(this.clusterName);
-		System.out.println(this.score);
+//		System.out.println(this.clusterName);
+//		System.out.println(this.score);
+		if(count<0)
+			count=count*-1;
 		if(this.score==0) {
+			
 	    	clusterJson.put("name","Cluster: "+count+ " Name: "+this.clusterName );
 		}
 		else {
@@ -185,7 +190,10 @@ public class ClusterDetails {
 			Set<String> jarNames= new HashSet(doc.getTokens());
 			jarNames.remove("None");
     		docobject.put("name", doc.getName()+" jar's:"+jarNames);
-    		docobject.put("parent", "Cluster"+count);
+    		if(count<0)
+        		docobject.put("parent", "None");
+    		else
+    	     	docobject.put("parent", "Cluster"+count);
 //    		docobject.put("size", 1000*listOfDocuments.size());
     		documentarray.add(docobject);
 		}

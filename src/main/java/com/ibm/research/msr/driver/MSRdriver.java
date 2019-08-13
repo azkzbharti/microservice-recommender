@@ -32,6 +32,7 @@ import com.ibm.research.msr.utils.ReadJarMap;
 public class MSRdriver {
 	
 	
+	
 	public static Clustering runSingleAlgorithm(AnalyzeApp analyzer,List<String> args) throws IOException {
 		
 		String algorithm = args.get(2).trim().toLowerCase();// "KMeans";
@@ -77,9 +78,10 @@ public class MSRdriver {
 		oc.getClusters();
 		oc.removeDuplicate();
 		
-		System.out.println(oc.getClusters().size());
+//		System.out.println("New clusters size:");
+//		System.out.println(oc.getClusters().size());
+//		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
 
-		
 //		
 //		String d3filename = "src/main/output/cluster.html"; // TODO : Make argument 
 		String d3filename =args.get(1)+"/cluster.html";
@@ -93,7 +95,7 @@ public class MSRdriver {
 		
 		
 	}
-
+	
 	
 	public static Clustering runAllAlgorithms(AnalyzeApp analyzer,List<String> args) throws IOException {
 
@@ -104,23 +106,26 @@ public class MSRdriver {
 
 		args.set(2, Constants.NAIVE); // has 2 variations as below 
 		args.add(4, Constants.ONLY_MERGE);
-
+//
 		oc=runSingleAlgorithm(analyzer,args);
-		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 		oc.setClusters(oc.getConsolidatedClusters());
+		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+
 	
 		args.set(4, Constants.SPLIT);
 		oc=runSingleAlgorithm(analyzer,args);
 		oc.setClusters(oc.getConsolidatedClusters());
 		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 		
+		
+		String k=Integer.toString(oc.getClusters().size());
 		args.set(2, Constants.KMEANS);
-		args.add(4, "2");
+		args.add(4, k);
 		oc=runSingleAlgorithm(analyzer,args);
 		oc.setClusters(oc.getConsolidatedClusters());
 		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
-		
+//		
 		args.set(2, Constants.DBSCAN);
 		args.set(4, "0.0003");
 		args.add(5,  "1");
@@ -131,7 +136,7 @@ public class MSRdriver {
 		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
 		
-		 args.set(2, Constants.NAIVE_TFIDF); // has 4 variations as below 
+		    args.set(2, Constants.NAIVE_TFIDF); // has 4 variations as below 
 		
 			args.set(4, Constants.COSINE);
 			args.set(5,  Constants.ONLY_MERGE);
@@ -160,7 +165,7 @@ public class MSRdriver {
 			oc.setClusters(oc.getConsolidatedClusters());
 			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
-			
+//			
 //			oc.extendClusters(oc.mergeRemainingClusters(allAlgoClusterList));
 //			oc.setClusters(oc.getConsolidatedClusters());
 			
@@ -172,6 +177,18 @@ public class MSRdriver {
 	
 	public static void main(String[] args) throws IOException, Exception {
 		
+		String appPath = args[0]; // "/Users/shreya/git/digdeep";
+		String outputDir= args[1];
+		
+		
+		
+		
+		List<String> argsList = new ArrayList<String>(Arrays.asList(args));;
+		List<String> argsList2 = new ArrayList<String>(Arrays.asList(args));;
+		
+		
+
+		
 		try {
 			JarApiList.createJARFile(args[0]);
 			ReadJarMap.createJARCategoryMap();
@@ -181,11 +198,7 @@ public class MSRdriver {
 			System.out.println("Error while creating jar map"+e.toString());
 		}
 		
-		String appPath = args[0]; // "/Users/shreya/git/digdeep";
 		
-		// Create the output folder 
-//		String outputDir = "src/main/output2"; //TODO take in as argument
-		String outputDir= args[1];
 		if(new File(outputDir).mkdir()){
 			System.out.println("Result directory created at "+outputDir);
 		}
@@ -194,33 +207,32 @@ public class MSRdriver {
 
 		}
 		AnalyzeApp analyzer ;
-		List<String> argsList = new ArrayList<String>(Arrays.asList(args));;
-		List<String> argsList2 = new ArrayList<String>(Arrays.asList(args));;
+		
+		
 		Clustering oc = null;
 		
 		if(args[2].equals(Constants.ALL)){
 			argsList.add("true"); //TODO: remove this
 			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
 			analyzer = new AnalyzeApp(appPath);
-//			System.out.println(argsList.size());
+			
 			oc=runAllAlgorithms(analyzer, argsList);
 			oc.CLeanClusters();
-			
+		
 			argsList2.add("false"); //TODO: remove this
 			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList2.get(3)));	
 //			System.out.println("her"+DocumentParserUtil.getIgnoreNone());
 			analyzer = new AnalyzeApp(appPath);
 			oc=runAllAlgorithms(analyzer, argsList2);
 			oc.setCusterListNames();
-			
+
+			ExpandClusters ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath());
+			ec.getUsage();
+			oc.setClusters(ec.getListofclusters());
 			oc.CLeanClusters();
-			
-//			ExpandClusters ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath());
-//			ec.getUsage();
-//			oc.setClusters(ec.getListofclusters());
-//			oc.CLeanClusters();
 		
-			oc.scorePartialClusters(oc.getClusters());	
+//			oc.scorePartialClusters(oc.getClusters());	
+			
 			String d3filename = argsList2.get(1)+"/clusterall.html";//src/main/output/clusterall.html"; // TODO : Make argument 
 			
 			String htmlpath=argsList2.get(1);
@@ -228,7 +240,8 @@ public class MSRdriver {
 			String[] extensions = new String[] { "html"};
 			List<File> files = (List<File>) FileUtils.listFiles(dir, extensions, true);
 //			List<String> htmlpaths= new ArrayList<>();
-			StringBuilder strBuilder = new StringBuilder();
+			StringBuilder strBuilder =
+					new StringBuilder();
 			int count=0;
 			for (File f:files) {
 				if(f.getName().contains("all"))
