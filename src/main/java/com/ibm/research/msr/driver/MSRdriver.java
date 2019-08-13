@@ -1,5 +1,6 @@
 package com.ibm.research.msr.driver;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -78,10 +79,7 @@ public class MSRdriver {
 		oc.getClusters();
 		oc.removeDuplicate();
 		
-//		System.out.println("New clusters size:");
-//		System.out.println(oc.getClusters().size());
-//		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
-
+//		
 //		
 //		String d3filename = "src/main/output/cluster.html"; // TODO : Make argument 
 		String d3filename =args.get(1)+"/cluster.html";
@@ -108,13 +106,23 @@ public class MSRdriver {
 		args.add(4, Constants.ONLY_MERGE);
 //
 		oc=runSingleAlgorithm(analyzer,args);
+		System.out.println("New clusters size:");
+		System.out.println(oc.getClusters().size());
+		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
+
 		oc.setClusters(oc.getConsolidatedClusters());
+		System.out.println(oc.getClusters().size());
 		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
 	
 		args.set(4, Constants.SPLIT);
 		oc=runSingleAlgorithm(analyzer,args);
+		System.out.println("New clusters size:");
+		System.out.println(oc.getClusters().size());
+		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
+
 		oc.setClusters(oc.getConsolidatedClusters());
+		System.out.println(oc.getClusters().size());		
 		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 		
 		
@@ -122,8 +130,8 @@ public class MSRdriver {
 		args.set(2, Constants.KMEANS);
 		args.add(4, k);
 		oc=runSingleAlgorithm(analyzer,args);
-		oc.setClusters(oc.getConsolidatedClusters());
 		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+		oc.setClusters(oc.getConsolidatedClusters());
 
 //		
 		args.set(2, Constants.DBSCAN);
@@ -132,8 +140,8 @@ public class MSRdriver {
 		
 		
 		oc=runSingleAlgorithm(analyzer,args);
-		oc.setClusters(oc.getConsolidatedClusters());
 		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+		oc.setClusters(oc.getConsolidatedClusters());
 
 		
 		    args.set(2, Constants.NAIVE_TFIDF); // has 4 variations as below 
@@ -141,8 +149,8 @@ public class MSRdriver {
 			args.set(4, Constants.COSINE);
 			args.set(5,  Constants.ONLY_MERGE);
 			oc=runSingleAlgorithm(analyzer,args);
-			oc.setClusters(oc.getConsolidatedClusters());
 			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+			oc.setClusters(oc.getConsolidatedClusters());
 
 			
 			args.set(4, Constants.EUCLIDIEAN);
@@ -166,8 +174,10 @@ public class MSRdriver {
 			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
 //			
-//			oc.extendClusters(oc.mergeRemainingClusters(allAlgoClusterList));
-//			oc.setClusters(oc.getConsolidatedClusters());
+//			if(args.get(3).equals("true")) {
+//				oc.extendClusters(oc.mergeRemainingClusters(allAlgoClusterList));
+//				oc.setClusters(oc.getConsolidatedClusters());
+//			}
 			
 		
 

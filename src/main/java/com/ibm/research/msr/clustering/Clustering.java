@@ -185,14 +185,18 @@ public abstract class Clustering {
 	
 	public List<ClusterDetails> mergeRemainingClusters(List<List<ClusterDetails>> algoCLusterList1) {
 		
+		List<ClusterDetails> ScoredClusters = consolidatedClusters.entrySet().stream().filter(entry->(entry.getValue()!=1)).map(entry -> entry.getKey()).collect(Collectors.toList());
+		
 		
 //		List<Set<ClusterDetails>> algoCLusterList = algoCLusterList1.stream().filter(cls->cls.size()!=0).collect(Collectors.toList());
 		List<List<ClusterDetails>> algoCLusterList = algoCLusterList1.stream().filter(cls->cls.size()!=0).collect(Collectors.toList());
 		long l=1;
 		for(List<ClusterDetails> cls:algoCLusterList) {
+			cls.removeAll(ScoredClusters);
 			l=l*cls.size();
-//			System.out.println(cls.size());
+			System.out.println(cls.size());
 		}
+		algoCLusterList.removeIf(x -> x != null && x.isEmpty());
 //		System.out.println(l);
 		List<ClusterDetails> mergerClusters = new ArrayList<>();
 		
@@ -204,51 +208,52 @@ public abstract class Clustering {
 		Map<List<ClusterDetails>,Double> scoreMap=new HashMap<List<ClusterDetails>,Double>();          
 		Map<List<ClusterDetails>,Double> sortedscoreMap;
 		
-//		List<Double> allscores= new ArrayList<>();
-//		for(List<ClusterDetails> cls:resultClusters) {
-//			allscores.add(getScoreForList(cls));
-//			scoreMap.put(cls,getScoreForList(cls));
-//		}
-//		Collections.sort(allscores);
-//		
-//		sortedscoreMap = scoreMap
-//			        .entrySet()
-//			        .stream()
-//			        .limit(10)
-//			        .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-//			        .collect(
-//			            Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
-//			                LinkedHashMap::new));
-//		boolean first=true;
-//		double maxvalue=0.0,currentvalue;
-//		for(List<ClusterDetails> clsList:sortedscoreMap.keySet()) {
-//			if(first) {
-//				currentvalue=sortedscoreMap.get(clsList);
-//				maxvalue=currentvalue;
-//				first=false;
-//			}
-//			else {			
-//				currentvalue=sortedscoreMap.get(clsList);
-//			}
-//				if(currentvalue >= maxvalue) { // TODO: put a threshold on the difference
-//					Set<Document> doclist = new HashSet<>();
-//
-//					for(ClusterDetails cls:clsList) {
-////						cls.showDetails();
-//						doclist.addAll(cls.getListOfDocuments());
-//					}
-//					if(doclist.size()>0) {
-//						System.out.println("currentvalue"+currentvalue);
-//						ClusterDetails cls = new ClusterDetails(doclist.stream().collect(Collectors.toList()));
-//						cls.setScore(currentvalue);
-//						mergerClusters.add(cls);
-//						System.out.println(cls.getScore());
-//					}
-//				
-//			}
-////			List<List> doclist=clsList.stream().map(ClusterDetails::getListOfDocuments).collect(Collectors.toList());
-//			
-//		}
+		List<Double> allscores= new ArrayList<>();
+		for(List<ClusterDetails> cls:resultClusters) {
+			allscores.add(getScoreForList(cls));
+			scoreMap.put(cls,getScoreForList(cls));
+		}
+		Collections.sort(allscores);
+		
+		sortedscoreMap = scoreMap
+			        .entrySet()
+			        .stream()
+			        .limit(10)
+			        .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+			        .collect(
+			            Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
+			                LinkedHashMap::new));
+		boolean first=true;
+		double maxvalue=0.0,currentvalue;
+		
+		for(List<ClusterDetails> clsList:sortedscoreMap.keySet()) {
+			if(first) {
+				currentvalue=sortedscoreMap.get(clsList);
+				maxvalue=currentvalue;
+				first=false;
+			}
+			else {			
+				currentvalue=sortedscoreMap.get(clsList);
+			}
+				if(currentvalue >= maxvalue) { // TODO: put a threshold on the difference
+					Set<Document> doclist = new HashSet<>();
+
+					for(ClusterDetails cls:clsList) {
+//						cls.showDetails();
+						doclist.addAll(cls.getListOfDocuments());
+					}
+					if(doclist.size()>0) {
+						System.out.println("currentvalue"+currentvalue);
+						ClusterDetails cls = new ClusterDetails(doclist.stream().collect(Collectors.toList()));
+						cls.setScore(currentvalue);
+						mergerClusters.add(cls);
+						System.out.println(cls.getScore());
+					}
+				
+			}
+//			List<List> doclist=clsList.stream().map(ClusterDetails::getListOfDocuments).collect(Collectors.toList());
+			
+		}
 		return mergerClusters;
 		
 	}
@@ -358,7 +363,7 @@ public abstract class Clustering {
 	}
 	
 	public List<ClusterDetails> getNonScoreClusters(){
-		return this.clusters.stream().filter(cls->cls.getScore()==0).collect(Collectors.toList());
+		return this.clusters.stream().filter(cls->cls.getScore()==1).collect(Collectors.toList());
 	}
 	public List<ClusterDetails> combineNoneClusters(){
 		List<ClusterDetails> noneCLusters =getNonScoreClusters();
@@ -413,6 +418,7 @@ public abstract class Clustering {
 		 
 		 clusters = new ArrayList<ClusterDetails>();
 		 clusters.addAll(s);  
+		 
 		 clusters=sortClusterOnScore(clusters);
 		 
 		 for(ClusterDetails cls:clusters) {
@@ -608,7 +614,6 @@ public abstract class Clustering {
 			}	
 //			System.out.println("Currently total clusters: "+consolidatedClusters.size());
 		}
-//	 List<Entry<ClusterDetails, Integer>> listOfEntry = consolidatedClusters.entrySet().stream().sorted().collect(Collectors.toList());
 				
 			
 		
