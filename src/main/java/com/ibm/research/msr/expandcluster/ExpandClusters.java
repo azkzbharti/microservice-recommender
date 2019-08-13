@@ -12,11 +12,14 @@ import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import javax.swing.text.StyleConstants.CharacterConstants;
+
 import org.apache.commons.collections.MapIterator;
 import org.apache.commons.collections.iterators.EntrySetMapIterator;
 
 import com.ibm.research.msr.clustering.ClusterDetails;
 import com.ibm.research.msr.extraction.Document;
+import com.ibm.research.msr.utils.Constants;
 
 public class ExpandClusters {
 
@@ -126,7 +129,7 @@ public class ExpandClusters {
 			}
 			
 			if(docCLusterUsageMap.size()==0) {
-				System.out.println("doc is not used in any cluser classes");
+//				System.out.println("doc is not used in any cluser classes");
 				if(!notusedDocs.contains(doc)) {
 				notusedDocs.add(doc);
 				for(ClusterDetails cls:this.newlistofclusters) {
@@ -171,7 +174,7 @@ public class ExpandClusters {
 //				System.out.println(doc.getFile().getAbsolutePath());
 //			}
 			ClusterDetails cls = new ClusterDetails(notusedDocs);
-			cls.setClusterName("Unused/Entry Points");	
+			cls.setClusterName(Constants.unusedClusterName);
 			cls.removeDuplicates();
 //			cls.showDetails();
 			this.newlistofclusters.add(cls);

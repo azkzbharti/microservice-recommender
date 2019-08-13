@@ -13,6 +13,9 @@ public class Constants {
 	public static final String ONLY_MERGE = "onlyMerge";
 	public static final String EUCLIDIEAN = "euclidiean";
 	
+	public static final String unusedClusterName = "Unused/Entry Points";
+
+	
 	public static final String SRC = "src";
 	public static final String BIN = "bin";
 	

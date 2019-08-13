@@ -27,6 +27,7 @@ import org.json.simple.JSONObject;
 
 import com.google.common.collect.Sets;
 import com.ibm.research.msr.extraction.Document;
+import com.ibm.research.msr.utils.Constants;
 import com.ibm.research.msr.utils.ReadJarMap;
 
 import weka.core.Instances;
@@ -491,7 +492,7 @@ public abstract class Clustering {
 //			 if(cls.getClusterName()==null)
 //				 cls.setClusterName();
 			 if (cls.getListOfDocuments().size() > 0) {
-				if(cls.getScore()>0 || cls.getClusterName().equals("Unused")) { 
+				if(cls.getScore()>0 || cls.getClusterName().equals(Constants.unusedClusterName)) { 
 				if(cls.getClusterName().trim().contains("Non") || cls.getClusterName().trim().equals("None"))
 					nonelistofclusters.add(cls);
 				else 
@@ -605,7 +606,7 @@ public abstract class Clustering {
 				// S(C1)= Sum_i=1 to n ((C1 inter Ci)*V(ci)/(#C1+#Ci-(c1 inter ci))*V(C1)
 				
 			}	
-			System.out.println("Currently total clusters: "+consolidatedClusters.size());
+//			System.out.println("Currently total clusters: "+consolidatedClusters.size());
 		}
 //	 List<Entry<ClusterDetails, Integer>> listOfEntry = consolidatedClusters.entrySet().stream().sorted().collect(Collectors.toList());
 				

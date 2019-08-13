@@ -39,7 +39,7 @@ public class InterClassUsageFinder {
 
 		File fRoot = new File(srcFilesRoot);
 		String[] extensions = new String[] { "java" };
-		System.out.println("Getting all .java  in " + fRoot.getPath() + " including those in subdirectories");
+//		System.out.println("Getting all .java  in " + fRoot.getPath() + " including those in subdirectories");
 		List<File> files = (List<File>) FileUtils.listFiles(fRoot, extensions, true);
 		for (File file : files) {
 			processOneFile(file, srcFilesRoot);
@@ -74,7 +74,7 @@ public class InterClassUsageFinder {
 	public void processOneFile(File file, String srcFilesRoot) {
 
 		String fileNameWPath = file.getAbsolutePath();
-		System.out.println("file: " + file.getName() + " " + fileNameWPath);
+//		System.out.println("file: " + file.getName() + " " + fileNameWPath);
 
 		// iff file is under /src/
 		if (!fileNameWPath.contains(File.separator+"src"+File.separator))
@@ -294,7 +294,7 @@ public class InterClassUsageFinder {
 						
 						if (plainTypeName.length()==1)
 						{
-							System.out.println("ignoring plainTypeName as length is 1. type name=" + plainTypeName);
+//							System.out.println("ignoring plainTypeName as length is 1. type name=" + plainTypeName);
 							return true;
 						}
 
@@ -353,12 +353,12 @@ public class InterClassUsageFinder {
 			}
 		});
 
-		System.out.println("LocalFileInterClassUsageMatrix");
+//		System.out.println("LocalFileInterClassUsageMatrix");
 		//for (ClassPair cp : interClassUsageMatrix.keySet()) {
 		for (ClassPair cp : localFileInterClassUsageMatrix.keySet()) {
 			//Integer usageCount = interClassUsageMatrix.get(cp);
 			Integer usageCount = localFileInterClassUsageMatrix.get(cp);
-			System.out.println(cp + "->" + usageCount);
+//			System.out.println(cp + "->" + usageCount);
 		}
 	}
 
@@ -377,7 +377,7 @@ public class InterClassUsageFinder {
 			String srcFilesRoot = args[0];
 			// InterClassUsageFinder i=new InterClassUsageFinder();
 			Map<ClassPair, Integer> m=i.find(srcFilesRoot);
-			System.out.println("\nFinalInterClassUsageMatrix:");
+//			System.out.println("\nFinalInterClassUsageMatrix:");
 			for (ClassPair cp: m.keySet())
 			{
 				Integer c=m.get(cp);

@@ -32,6 +32,7 @@ import com.ibm.research.msr.utils.ReadJarMap;
 public class MSRdriver {
 	
 	
+	
 	public static Clustering runSingleAlgorithm(AnalyzeApp analyzer,List<String> args) throws IOException {
 		
 		String algorithm = args.get(2).trim().toLowerCase();// "KMeans";
@@ -77,9 +78,9 @@ public class MSRdriver {
 		oc.getClusters();
 		oc.removeDuplicate();
 		
-		System.out.println("New clusters size:");
-		System.out.println(oc.getClusters().size());
-		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
+//		System.out.println("New clusters size:");
+//		System.out.println(oc.getClusters().size());
+//		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
 
 //		
 //		String d3filename = "src/main/output/cluster.html"; // TODO : Make argument 
@@ -165,7 +166,7 @@ public class MSRdriver {
 			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
 //			
-////			oc.extendClusters(oc.mergeRemainingClusters(allAlgoClusterList));
+//			oc.extendClusters(oc.mergeRemainingClusters(allAlgoClusterList));
 //			oc.setClusters(oc.getConsolidatedClusters());
 			
 		
@@ -179,8 +180,12 @@ public class MSRdriver {
 		String appPath = args[0]; // "/Users/shreya/git/digdeep";
 		String outputDir= args[1];
 		
+		
+		
+		
 		List<String> argsList = new ArrayList<String>(Arrays.asList(args));;
 		List<String> argsList2 = new ArrayList<String>(Arrays.asList(args));;
+		
 		
 
 		
@@ -227,6 +232,7 @@ public class MSRdriver {
 			oc.CLeanClusters();
 		
 //			oc.scorePartialClusters(oc.getClusters());	
+			
 			String d3filename = argsList2.get(1)+"/clusterall.html";//src/main/output/clusterall.html"; // TODO : Make argument 
 			
 			String htmlpath=argsList2.get(1);
