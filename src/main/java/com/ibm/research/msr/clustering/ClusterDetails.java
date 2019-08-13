@@ -177,19 +177,22 @@ public class ClusterDetails {
 		if(count<0)
 			count=count*-1;
 		if(this.score==0) {
-			
-	    	clusterJson.put("name","Cluster: "+count+ " Name: "+this.clusterName );
+			clusterJson.put("name","Cluster:"+count);
+//	    	clusterJson.put("name","Cluster:"+count+ "Name:"+this.clusterName );
 		}
 		else {
-	    	clusterJson.put("name","Cluster: "+count+ " Name: "+this.clusterName +"  (score== "+this.score+" ) ");
+			clusterJson.put("name","Cluster:"+count);
+//	    	clusterJson.put("name","Cluster:"+count+ "Name:"+this.clusterName+"  (score== "+this.score+" ) ");
 		}
     	clusterJson.put("parent", "root");
+    	clusterJson.put("score", this.score);
 		JSONArray  documentarray = new JSONArray();
 		for(Document doc:listOfDocuments) {
 			JSONObject docobject = new JSONObject();
 			Set<String> jarNames= new HashSet(doc.getTokens());
 			jarNames.remove("None");
-    		docobject.put("name", doc.getName()+" jar's:"+jarNames);
+			
+    		docobject.put("name", doc.getName()+"jar's:"+jarNames);
     		if(count<0)
         		docobject.put("parent", "None");
     		else
