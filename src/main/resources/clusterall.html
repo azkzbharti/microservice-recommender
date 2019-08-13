@@ -186,6 +186,13 @@ var svg = d3.select("svg"),
     height = +svg.attr("height"),
     g = svg.append("g").attr("transform", "translate(40,0)");
 
+function collapse(d) {
+	   if (d.children) {
+	     d._children = d.children;
+	     d.children = null;
+	     d._children.forEach(collapse);
+	   }
+	 }
 var i = 0,
 	duration = 750,
 	root;
