@@ -64,10 +64,10 @@ public class POMDependencyDownloader {
 	 * @param pomFiles
 	 * @param tempFolder
 	 */
-	public void download(ArrayList<String> pomFiles, String tempFolder) {
+	public void download(ArrayList<String> pomFiles, String jarFolder) {
 		Iterator<String> itr = pomFiles.iterator();
 		while (itr.hasNext()) {
-			download(itr.next(), tempFolder, false);
+			download(itr.next(), jarFolder, false);
 		}
 	}
 
