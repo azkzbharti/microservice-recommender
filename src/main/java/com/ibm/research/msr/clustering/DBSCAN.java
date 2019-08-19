@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import com.ibm.research.msr.extraction.Document;
 
 import weka.clusterers.DBScan;
+import weka.core.EuclideanDistance;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.CSVLoader;
@@ -24,6 +25,12 @@ import weka.core.converters.CSVLoader;
 public class DBSCAN extends Clustering{
 	DBScan dbScan = new DBScan();
 	String  tfpath;
+	
+//	public void estimateEpsilion(Instances data) {
+//		EuclideanDistance Dist = 
+//
+//		
+//	}
 	
 	public DBSCAN(List<Document> list, String filepath, double eps, int neigh) throws IOException {
 		super(list);

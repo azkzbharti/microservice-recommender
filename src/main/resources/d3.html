@@ -68,11 +68,11 @@ a:hover {
 }
 	
     </style>
-<svg width="960" height="2000"></svg>
   </head>
 
   <body>
 
+<svg width="2000" height="2000"></svg>
 <!-- load the d3.js library -->	
 <script src="http://d3js.org/d3.v3.min.js"></script>
 	
@@ -91,6 +91,14 @@ var svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height"),
     g = svg.append("g").attr("transform", "translate(40,0)");
+    
+function collapse(d) {
+	   if (d.children) {
+	     d._children = d.children;
+	     d.children = null;
+	     d._children.forEach(collapse);
+	   }
+	 }
 
 var i = 0,
 	duration = 750,
@@ -111,7 +119,7 @@ var diagonal = d3.svg.diagonal()
 root = treeData[0];
 root.x0 = height / 2;
 root.y0 = 0;
-  
+root.children.forEach(collapse);    
 update(root);
 
 d3.select(self.frameElement).style("height", "500px");

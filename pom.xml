@@ -6,7 +6,27 @@
   <artifactId>microservice-recommender</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
-
+	
+<!-- <build>
+  <plugins>
+    <plugin>
+      Build an executable JAR
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>3.1.0</version>
+      <configuration>
+        <archive>
+          <manifest>
+            <addClasspath>true</addClasspath>
+            <classpathPrefix>lib/</classpathPrefix>
+            <mainClass>com.ibm.research.msr.MSRCli</mainClass>
+          </manifest>
+        </archive>
+      </configuration>
+    </plugin>
+  </plugins>
+</build> -->
+      
   <name>microservice-recommender</name>
   <url>http://maven.apache.org</url>
 
@@ -88,4 +108,48 @@
   			<version>1.11.3</version>
   		</dependency>
   </dependencies>
+  
+  
+  <build>
+  	<plugins>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-shade-plugin</artifactId>
+  			<version>3.2.1</version>
+  			
+  			   <configuration>
+          <filters>
+            <filter>
+              <artifact>*:*</artifact>
+              <excludes>
+                <exclude>META-INF/*.SF</exclude>
+                <exclude>META-INF/*.DSA</exclude>
+                <exclude>META-INF/*.RSA</exclude>
+              </excludes>
+            </filter>
+          </filters>
+        </configuration>
+        
+  			  <executions>
+			      <execution>
+			        <phase>package</phase>
+			        <goals>
+			          <goal>shade</goal>
+			        </goals>
+			        <configuration>
+			          <transformers>
+			            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+			              <mainClass>com.ibm.research.msr.cli.MSRCli</mainClass>
+			            </transformer>
+			          </transformers>
+			        </configuration>
+			      </execution>
+			    </executions>
+			    
+  			
+        
+  	
+  		</plugin>
+  	</plugins>
+  </build>
 </project>
