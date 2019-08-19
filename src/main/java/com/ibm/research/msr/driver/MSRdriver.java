@@ -93,6 +93,107 @@ public class MSRdriver {
 		
 		
 	}
+	public static Clustering runNaiveUtility(AnalyzeApp analyzer,List<String> args) throws IOException {
+		Clustering oc =null;
+		
+		List<List<ClusterDetails>>  allAlgoClusterList = new ArrayList<>();
+
+		args.set(2, Constants.NAIVE); // has 2 variations as below 
+		args.add(4, Constants.ONLY_MERGE);
+//
+		oc=runSingleAlgorithm(analyzer,args);
+		System.out.println("New clusters size:");
+		System.out.println(oc.getClusters().size());
+		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
+
+		oc.setClusters(oc.getConsolidatedClusters());
+		System.out.println(oc.getClusters().size());
+		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+
+	
+		args.set(4, Constants.SPLIT);
+		oc=runSingleAlgorithm(analyzer,args);
+		System.out.println("New clusters size:");
+		System.out.println(oc.getClusters().size());
+		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
+
+		oc.setClusters(oc.getConsolidatedClusters());
+		System.out.println(oc.getClusters().size());		
+		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+		return oc;
+		
+	}
+	
+	public static void runNaive(String appPath,String outputPath) throws IOException, Exception {
+		
+		try {
+			JarApiList.createJARFile(appPath); // write to CSV
+			ReadJarMap.createJARCategoryMap(); // read CSV to map
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("Error while creating jar map"+e.toString());
+		}
+		
+		if(new File(outputPath).mkdir()){
+			System.out.println("Result directory created at "+outputPath);
+		}
+		else {
+			System.out.println("Output directory exists");
+
+		}
+		AnalyzeApp analyzer ;
+		Clustering oc = null;
+		List<String> argsList = new ArrayList<String>();
+		argsList.add(appPath);  // workaround:: argList created just to keep code changes minimal
+		argsList.add(outputPath);
+		argsList.add(Constants.ALL); // TODO: will be removed minimial code changes 
+		List<String> argsList2=new ArrayList<String>(argsList);
+		argsList.add("true"); //"will ignore none category
+		DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
+		analyzer = new AnalyzeApp(appPath);
+
+		oc = runNaiveUtility(analyzer, argsList);
+		
+		argsList2.add("false"); //TODO: remove this
+		DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList2.get(3)));
+		
+		analyzer = new AnalyzeApp(appPath);
+		oc = runNaiveUtility(analyzer, argsList2);
+		
+		oc.setCusterListNames();
+
+		
+		ExpandClusters ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath());
+		ec.getUsage();
+		oc.setClusters(ec.getListofclusters());
+		oc.CLeanClusters();
+		
+//		Below codes writes all the above variations in clusterall
+		
+		String d3filename = argsList2.get(1)+"/clusterall.html";//src/main/output/clusterall.html"; // TODO : Make argument 
+		String htmlpath=argsList2.get(1);
+		File dir = new File(htmlpath);
+		String[] extensions = new String[] { "html"};
+		List<File> files = (List<File>) FileUtils.listFiles(dir, extensions, true);
+		StringBuilder strBuilder =
+				new StringBuilder();
+		int count=0;
+		for (File f:files) {
+			if(f.getName().contains("all"))
+				continue;
+			String temp="<li><a href=\"filepath\" target=\"_blank\">filename</a></li> \n";
+			temp=temp.replace("filepath", f.getAbsolutePath());
+			String fname=f.getName();
+			fname=fname.replace(".html", "");
+			count=count+1;
+			fname=fname.replace("cluster", "Approach"+count+": ");
+			temp=temp.replace("filename",fname);
+			strBuilder.append(temp);
+		}
+		
+		oc.savecLusterJSONALL(d3filename,strBuilder.toString());
+	}
 	
 	
 	public static Clustering runAllAlgorithms(AnalyzeApp analyzer,List<String> args) throws IOException {
@@ -189,8 +290,9 @@ public class MSRdriver {
 		
 		String appPath = args[0]; // "/Users/shreya/git/digdeep";
 		String outputDir= args[1];
-		
-		
+//			
+//		runNaive(appPath,outputDir);	
+//		System.exit(0);
 		
 		
 		List<String> argsList = new ArrayList<String>(Arrays.asList(args));;
@@ -223,6 +325,7 @@ public class MSRdriver {
 		
 		if(args[2].equals(Constants.ALL)){
 			argsList.add("true"); //TODO: remove this
+			
 			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
 			analyzer = new AnalyzeApp(appPath);
 			
