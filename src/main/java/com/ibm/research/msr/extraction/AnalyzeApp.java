@@ -8,11 +8,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+
+import com.ibm.research.msr.binaryextractor.ReferencedClassesExtractor;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
@@ -29,6 +33,8 @@ public class AnalyzeApp {
 	private List<Document> listOfDocuments = new ArrayList<Document>();
 	private Set<String> vocab = new LinkedHashSet<String>();
 	private String measurePath="src/main/resources/measure.csv";
+	static Map<String, HashSet<String>> binaryAppImportStatemnts;
+	private static ReferencedClassesExtractor binaryextracor;   //TODO rename the class ReferencedClassesExtractor
 
 	/**
 	 * 
@@ -38,10 +44,12 @@ public class AnalyzeApp {
 	 */
 	public AnalyzeApp(String appPath) throws IOException, Exception {
 		this.appPath = appPath;
+		
+		
 		File dir = new File(appPath);
 		if(dir.isDirectory()) {
 			System.out.println();
-			String[] extensions = new String[] { "java"};
+			String[] extensions = new String[] {"java"};
 			List<File> files = (List<File>) FileUtils.listFiles(dir, extensions, true);
 			for (File file : files) {
 					Document document = new Document(file);
@@ -52,6 +60,19 @@ public class AnalyzeApp {
 			computeMeasure();
 			// TODO: add as an input
 			saveMeasure();
+		}
+		else if(appPath.endsWith("jar")) {
+			binaryextracor = new ReferencedClassesExtractor();
+			binaryAppImportStatemnts =binaryextracor.extract(appPath);
+			for(String doc:binaryAppImportStatemnts.keySet()) {
+				File fdoc= new File(doc);
+				Document document = new Document(fdoc);
+				if (document.getNumberOfTokens() > 0) {
+					listOfDocuments.add(document);
+				}
+				
+			}
+
 		}
 		else {
 			System.out.println("Reading from CSV file");

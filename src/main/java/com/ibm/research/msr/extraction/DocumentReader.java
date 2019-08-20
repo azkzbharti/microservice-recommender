@@ -5,9 +5,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import com.ibm.research.msr.binaryextractor.ReferencedClassesExtractor;
 import com.ibm.research.msr.utils.ReadJarMap;
 import com.thoughtworks.qdox.JavaProjectBuilder;
 import com.thoughtworks.qdox.model.JavaPackage;
@@ -16,7 +18,6 @@ import com.thoughtworks.qdox.parser.ParseException;
 
 public class DocumentReader {
 	private static List<String> token;
-
 	public List<String> getToken() {
 		return token;
 	}
@@ -55,52 +56,50 @@ public class DocumentReader {
 
 	public DocumentReader(File file) throws IOException {
 		importCountMap = new HashMap<String, Integer>();
-		token = processJavaFile(file);
+		
 		num_of_tokens = token.size();
 	}
+	
 
 	public static List<String> processJavaFile(File file) throws IOException {
 		List<String> tokens = new ArrayList<String>();
-//    	Map<String, Integer> importCountMaps = new HashMap<String, Integer>() ;
-
-		JavaProjectBuilder builder = new JavaProjectBuilder();
 		List<String> imports;
-
-		try {
-			JavaSource src = builder.addSource(file);
-			imports = src.getImports();
-			JavaPackage pkg = src.getPackage();
-			packageName = pkg.getName();
-//		   System.out.println(imports);
-		} catch (ParseException e) {
-			System.out.println("Parse Error in : " + file.getAbsolutePath());
-			return null;
-
+//    	Map<String, Integer> importCountMaps = new HashMap<String, Integer>() ;
+		if(file.getName().endsWith("java")) {
+			
+				
+				JavaProjectBuilder builder = new JavaProjectBuilder();
+				
+		
+				try {
+					JavaSource src = builder.addSource(file);
+					imports = src.getImports();
+					JavaPackage pkg = src.getPackage();
+					packageName = pkg.getName();
+		//		   System.out.println(imports);
+				} catch (ParseException e) {
+					System.out.println("Parse Error in : " + file.getAbsolutePath());
+					return null;
+		
+				}
+		}
+		else if(file.getName().endsWith(".class")) {
+			HashSet<String> importset=AnalyzeApp.binaryAppImportStatemnts.get(file.getAbsolutePath());
+			imports=new ArrayList<String>(importset);
+			
+		}
+		else {
+			imports=null;
+			System.out.println("No import statementes extracted"+file.getAbsolutePath());
 		}
 		for (String imp : imports) {
 
-//			for(String keys:DocumentProcessing.libCatMap.keySet() ) {
-//				if(keys.contains("org.carrot") && imp.contains("org.carrot2") && imp.contains(keys)) {
-//					System.out.println(imp+"-----"+keys);
-//
-//				}
-//				
-//				
-//			}
 			String cat = ReadJarMap.getLibCatMap().entrySet().stream().filter(entry -> imp.contains(entry.getKey()))
 					.map(entry -> entry.getValue()).findFirst().orElse("None");
-//			if(imp.contains("org.carrot2")) {
-//					System.out.println(cat);
-//					System.out.println(imp);
-//			}
 //			String importRegex = DocumentProcessing.libCatMap.entrySet().stream().filter(entry -> imp.matches(entry.getKey()))
 //					.map(entry -> entry.getKey()).findFirst().orElse("None");
 			tokens.add(cat);
 //			tokens.add(imp);
-//			if(cat!="None") {
-//				if(!imp.contains("com.ibm"))
-//				   System.out.println(imp);
-//			}
 			if (!importCountMap.containsKey(cat)) {
 				importCountMap.put(cat, 1);
 			} else {
@@ -112,6 +111,13 @@ public class DocumentReader {
 //		setImportCountMap(importCountMap);
 		return tokens;
 
+	}
+	
+	public List<String> proceessBinaryFile() {
+		List<String> tokens = new ArrayList<String>();
+		
+		return tokens;
+		
 	}
 
 	public static List<String> tokenizeDocument(File file) throws Exception {
