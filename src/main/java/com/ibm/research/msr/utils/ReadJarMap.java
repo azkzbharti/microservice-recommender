@@ -12,11 +12,10 @@ import weka.gui.simplecli.Exit;
 public class ReadJarMap {
 
 	private static Map<String, String> libCatMap = new HashMap<String, String>();
-
-	@SuppressWarnings("resource")
-	public static void createJARCategoryMap() {
-//		String csvFile = "src/main/resources/jar-imp.csv";
-		String csvFile="src/main/resources/jar-to-packges.csv";
+	
+	
+	public static void createJARCategoryMap(String csvFile) {
+		
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
@@ -56,6 +55,16 @@ public class ReadJarMap {
 				}
 			}
 		}
+		
+	}
+
+	@SuppressWarnings("resource")
+	public static void createJARCategoryMap() {
+//		String csvFile = "src/main/resources/jar-imp.csv";
+		String csvFile="src/main/resources/jar-to-packges.csv";
+		
+		 createJARCategoryMap(csvFile);
+		
 	}
 	
 

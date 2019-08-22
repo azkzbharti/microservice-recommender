@@ -18,8 +18,57 @@ import javassist.CtClass;
 import javassist.NotFoundException;
 
 public class ReferencedClassesExtractor {
+	
+	public HashSet<String> extractFromClass(String classPath) {
+		
+		HashSet<String> refClasses = new HashSet<String>();
+		ClassParser parser = new ClassParser(classPath);
+		
+		JavaClass javaClass = null;
 
-	public Map<String, HashSet<String>> extract(String jarNameWithFullPath) {
+		try {
+			javaClass = parser.parse();
+		} catch (ClassFormatException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		//System.out.println(javaClass.getClassName());
+
+		ClassPool cp = ClassPool.getDefault();
+
+		CtClass ctc = null;
+
+		try {
+			ctc = cp.get(javaClass.getClassName());
+		} catch (NotFoundException n) {
+			n.printStackTrace();
+		}
+		if (ctc != null) {
+			
+			try {
+				Collection<String> rclasses = ctc.getRefClasses();
+				for (String rc : rclasses) {
+					//System.out.println("\t referenced class =" + rc);
+					refClasses.add(rc);
+				}
+
+				//classToRefClasses.put(javaClass.getClassName(), refClasses);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			System.err.println("ctc null for " + javaClass.getClassName());
+		}
+		
+		return refClasses;
+		
+		
+	}
+
+	public Map<String, HashSet<String>> extractFromJAR(String jarNameWithFullPath) {
 		Map<String, HashSet<String>> classToRefClasses = new HashMap<String, HashSet<String>>();
 
 		try {
@@ -82,7 +131,7 @@ public class ReferencedClassesExtractor {
 		ReferencedClassesExtractor r = new ReferencedClassesExtractor();
 		// test with this very project exported as jar!
 		String jarNameWithFullPath = "/Users/senthil/ms-recomm.jar";
-		Map<String, HashSet<String>> classToRefClasses = r.extract(jarNameWithFullPath);
+		Map<String, HashSet<String>> classToRefClasses = r.extractFromJAR(jarNameWithFullPath);
 		for (String c : classToRefClasses.keySet()) {
 			System.out.println("Class = " + c);
 			System.out.println("\tReferenced classes(Imports):");

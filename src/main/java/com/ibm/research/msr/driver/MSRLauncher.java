@@ -46,6 +46,7 @@ public class MSRLauncher {
 		// creating the temp folder and jar folders inside output folder.
 		new File(tempFolder).mkdir();
 		new File(jarFolder).mkdir();
+		new File(unzipFolder).mkdir();
 
 		Collection<File> xmlFileList = null;
 		ArrayList<String> pomFiles = null;
@@ -94,14 +95,29 @@ public class MSRLauncher {
 			System.out.println(" Output folder " + outputPath);
 			System.out.println(" Temo Folder " + tempFolder);
 			System.out.println(" Algo to run " + algo);
+			
+			try {
+				MSRdriver.runNaive(rootPath, type, outputPath);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		} else if (type.trim().toLowerCase().equals(Constants.BIN)) {
 			// it has to be either packaged as JAR or EAR.
 
 			if (rootPath.endsWith(".jar")) {
+				
+				String[] splits = rootPath.split(File.separator);
+				String jarName = splits[splits.length -1];
+				String dirName = jarName.substring(0, jarName.length() - 4);
+				
 
 				try {
-					unzip(rootPath, unzipFolder);
+					unzip(rootPath, unzipFolder + File.separator + dirName);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -129,23 +145,32 @@ public class MSRLauncher {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 				parsedJars = dumpAPIInfo(unzipFolder, tempFolder);
 
 			} else {
 				System.out.println(
 						"Usage: java MSRLauncher src|bin <path to the root folder> <path to the output folder> <algo to run>");
-				System.out.println( "We only support .ear and .jar for bin option");
+				System.out.println("We only support .ear and .jar for bin option");
 				return;
 			}
-			
+
 			System.out.println(" Need to invoke the algo-driver now");
 			System.out.println(" App Src Root Folder " + unzipFolder);
 			System.out.println(" JAR API Info " + tempFolder + Path.SEPARATOR + "jar-to-packages.csv");
 			System.out.println(" Output folder " + outputPath);
 			System.out.println(" Temo Folder " + tempFolder);
 			System.out.println(" Algo to run " + algo);
-
+			
+			try {
+				MSRdriver.runNaive(unzipFolder, type, outputPath);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		} else {
 			System.out.println(
@@ -154,8 +179,6 @@ public class MSRLauncher {
 		}
 
 	}
-
-	
 
 	private static boolean dumpAPIInfo(String folderPath, String outputPath) {
 
@@ -197,9 +220,11 @@ public class MSRLauncher {
 		ZipEntry zipEntry = zis.getNextEntry();
 		while (zipEntry != null) {
 			File newFile = newFile(destDir, zipEntry);
+
 			FileOutputStream fos = new FileOutputStream(newFile);
 			int len;
 			while ((len = zis.read(buffer)) > 0) {
+
 				fos.write(buffer, 0, len);
 			}
 			fos.close();
@@ -210,7 +235,10 @@ public class MSRLauncher {
 	}
 
 	public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
-		File destFile = new File(destinationDir, zipEntry.getName());
+		System.out.println(" Creating File " + destinationDir.getAbsolutePath() + File.separator +   zipEntry.getName());
+		File destFile = new File(destinationDir.getAbsolutePath() + File.separator +   zipEntry.getName());
+		//create directories for sub directories in zip
+        new File(destFile.getParent()).mkdirs();
 
 		String destDirPath = destinationDir.getCanonicalPath();
 		String destFilePath = destFile.getCanonicalPath();

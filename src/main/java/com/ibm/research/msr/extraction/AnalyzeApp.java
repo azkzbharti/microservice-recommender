@@ -8,15 +8,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 
-import com.ibm.research.msr.binaryextractor.ReferencedClassesExtractor;
+import com.ibm.research.msr.utils.Constants;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
@@ -26,61 +24,49 @@ import com.opencsv.CSVWriter;
  */
 public class AnalyzeApp {
 
-	
-
 	private String appPath;
+	private String appType;
 	private List<File> files;
 	private List<Document> listOfDocuments = new ArrayList<Document>();
 	private Set<String> vocab = new LinkedHashSet<String>();
-	private String measurePath="src/main/resources/measure.csv";
-	static Map<String, HashSet<String>> binaryAppImportStatemnts;
-	private static ReferencedClassesExtractor binaryextracor;   //TODO rename the class ReferencedClassesExtractor
 
 	/**
 	 * 
-	 * @param appPath: test use-> /Users/shreya/git/digdeep or src/main/resources/tf_idf-analy.csv  
+	 * @param appPath: test use-> /Users/shreya/git/digdeep or
+	 *        src/main/resources/tf_idf-analy.csv
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public AnalyzeApp(String appPath) throws IOException, Exception {
+	public AnalyzeApp(String appPath, String appType, String outputPath) throws IOException, Exception {
 		this.appPath = appPath;
-		
-		
+		this.appType = appType;
+
 		File dir = new File(appPath);
-		if(dir.isDirectory()) {
+		if (dir.isDirectory()) {
 			System.out.println();
-			String[] extensions = new String[] {"java"};
+			String[] extensions = null;
+			if (this.appType.equals(Constants.SRC))
+				extensions = new String[] { "java" };
+			else
+				extensions = new String[] { "class" };
+
 			List<File> files = (List<File>) FileUtils.listFiles(dir, extensions, true);
 			for (File file : files) {
-					Document document = new Document(file);
-					if (document.getNumberOfTokens() > 0) {
-						listOfDocuments.add(document);
+				Document document = new Document(file);
+				if (document.getNumberOfTokens() > 0) {
+					listOfDocuments.add(document);
 				}
 			}
 			computeMeasure();
 			// TODO: add as an input
-			saveMeasure();
-		}
-		else if(appPath.endsWith("jar")) {
-			binaryextracor = new ReferencedClassesExtractor();
-			binaryAppImportStatemnts =binaryextracor.extract(appPath);
-			for(String doc:binaryAppImportStatemnts.keySet()) {
-				File fdoc= new File(doc);
-				Document document = new Document(fdoc);
-				if (document.getNumberOfTokens() > 0) {
-					listOfDocuments.add(document);
-				}
-				
-			}
-
-		}
-		else {
+			saveMeasure(outputPath + File.separator + "temp" + File.separator + "measure.csv");
+		} else {
 			System.out.println("Reading from CSV file");
 			read_measure_tf_file(appPath);
-			
+
 		}
 	}
-	
+
 	public void computeMeasure() throws IOException, Exception {
 		calculateTotalWords();
 		documentToVector();
@@ -130,9 +116,9 @@ public class AnalyzeApp {
 	 * @param filePath
 	 * @throws IOException
 	 */
-	public void saveMeasure() throws IOException {
-		CSVWriter csvWriter = new CSVWriter(new FileWriter(this.measurePath));
-		
+	public void saveMeasure(String measurePath) throws IOException {
+		CSVWriter csvWriter = new CSVWriter(new FileWriter(measurePath));
+
 		// set header with vocab name
 		List<String> header = new ArrayList<>(vocab);
 		header.add(0, "docsName");
@@ -140,8 +126,8 @@ public class AnalyzeApp {
 		System.out.println(vocab.size());
 		System.out.println(vocab.toString());
 		csvWriter.writeNext(header.toArray(new String[0]));
-		
-		for(Document document : listOfDocuments) {
+
+		for (Document document : listOfDocuments) {
 			String[] line = new String[vocab.size() + 2];
 			line[0] = document.getFile().getAbsolutePath();
 			line[1] = document.getName();
@@ -158,8 +144,8 @@ public class AnalyzeApp {
 
 	public void read_measure_tf_file(String appPath2) throws IOException {
 		// reads from csv file and creates a list of documents
-		this.listOfDocuments= new ArrayList<>();
-		
+		this.listOfDocuments = new ArrayList<>();
+
 		CSVReader reader = new CSVReader(new FileReader(appPath2));
 		String[] header = reader.readNext();
 		List<String> headers = new ArrayList<>();
@@ -171,7 +157,7 @@ public class AnalyzeApp {
 
 			String filepath = line[0];
 			String filename = line[1];
-	
+
 			List<Double> docVector = new ArrayList<Double>();
 			List<String> documentTokens = new ArrayList<String>();
 			for (int i = 2; i < line.length; i++) {
@@ -191,16 +177,7 @@ public class AnalyzeApp {
 
 		}
 	}
-	
 
-
-	public String getMeasurePath() {
-		return measurePath;
-	}
-
-	public void setMeasurePath(String measurePath) {
-		this.measurePath = measurePath;
-	}
 	public String getAppath() {
 		return appPath;
 	}
@@ -224,7 +201,5 @@ public class AnalyzeApp {
 	public void setListOfDocuments(List<Document> listOfDocuments) {
 		this.listOfDocuments = listOfDocuments;
 	}
-	
-	
 
 }

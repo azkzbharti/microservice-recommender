@@ -46,13 +46,13 @@ public class MSRdriver {
 		switch (algorithm) {
 		case Constants.KMEANS: {
 			int k = Integer.parseInt(args.get(4));
-			oc = new KMeans(analyzer.getListOfDocuments(), analyzer.getMeasurePath(), k);
+			oc = new KMeans(analyzer.getListOfDocuments(), analyzer.getAppath()+File.separator + "temp" + File.separator + "measure.csv", k);
 			break;
 		}
 		case Constants.DBSCAN: {
 			double epsilon = Double.parseDouble(args.get(4));// 0.0003 ;
 			int neighbours = Integer.parseInt(args.get(5));// args[3];
-			oc = new DBSCAN(analyzer.getListOfDocuments(), analyzer.getMeasurePath(), epsilon, neighbours);
+			oc = new DBSCAN(analyzer.getListOfDocuments(), analyzer.getAppath() + File.separator + "temp" + File.separator + "measure.csv", epsilon, neighbours);
 			break;
 		}
 		case Constants.NAIVE_TFIDF: {
@@ -124,24 +124,28 @@ public class MSRdriver {
 		
 	}
 	
-	public static void runNaive(String appPath,String outputPath) throws IOException, Exception {
+	public static void runNaive(String appPath,String appType,String outputPath) throws IOException, Exception {
+//		
+//		try {
+//			JarApiList.createJARFile(appPath); // write to CSV
+//			ReadJarMap.createJARCategoryMap(); // read CSV to map
+//
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			System.out.println("Error while creating jar map"+e.toString());
+//		}
 		
-		try {
-			JarApiList.createJARFile(appPath); // write to CSV
-			ReadJarMap.createJARCategoryMap(); // read CSV to map
-
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println("Error while creating jar map"+e.toString());
-		}
+//		if(new File(outputPath).mkdir()){
+//			System.out.println("Result directory created at "+outputPath);
+//		}
+//		else {
+//			System.out.println("Output directory exists");
+//
+//		}
 		
-		if(new File(outputPath).mkdir()){
-			System.out.println("Result directory created at "+outputPath);
-		}
-		else {
-			System.out.println("Output directory exists");
-
-		}
+		ReadJarMap.createJARCategoryMap(outputPath + File.separator + "temp" + File.separator + "jar-to-packages.csv");
+		
+		
 		AnalyzeApp analyzer ;
 		Clustering oc = null;
 		List<String> argsList = new ArrayList<String>();
@@ -151,14 +155,14 @@ public class MSRdriver {
 		List<String> argsList2=new ArrayList<String>(argsList);
 		argsList.add("true"); //"will ignore none category
 		DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
-		analyzer = new AnalyzeApp(appPath);
+		analyzer = new AnalyzeApp(appPath, appType,outputPath);
 
 		oc = runNaiveUtility(analyzer, argsList);
 		
 		argsList2.add("false"); //TODO: remove this
 		DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList2.get(3)));
 		
-		analyzer = new AnalyzeApp(appPath);
+		analyzer = new AnalyzeApp(appPath,appType,outputPath);
 		oc = runNaiveUtility(analyzer, argsList2);
 		
 		oc.setCusterListNames();
@@ -286,102 +290,102 @@ public class MSRdriver {
 	}
 
 	
-	public static void main(String[] args) throws IOException, Exception {
-		
-		String appPath = args[0]; // "/Users/shreya/git/digdeep";
-		String outputDir= args[1];
+//	public static void main(String[] args) throws IOException, Exception {
+//		
+//		String appPath = args[0]; // "/Users/shreya/git/digdeep";
+//		String outputDir= args[1];
+////			
+////		runNaive(appPath,outputDir);	
+////		System.exit(0);
+//		
+//		
+//		List<String> argsList = new ArrayList<String>(Arrays.asList(args));;
+//		List<String> argsList2 = new ArrayList<String>(Arrays.asList(args));;
+//		
+//		
+//
+//		
+//		try {
+//			JarApiList.createJARFile(args[0]);
+//			ReadJarMap.createJARCategoryMap();
+//
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			System.out.println("Error while creating jar map"+e.toString());
+//		}
+//		
+//		
+//		if(new File(outputDir).mkdir()){
+//			System.out.println("Result directory created at "+outputDir);
+//		}
+//		else {
+//			System.out.println("Output directory exists");
+//
+//		}
+//		AnalyzeApp analyzer ;
+//		
+//		
+//		Clustering oc = null;
+//		
+//		if(args[2].equals(Constants.ALL)){
+//			argsList.add("true"); //TODO: remove this
 //			
-//		runNaive(appPath,outputDir);	
-//		System.exit(0);
-		
-		
-		List<String> argsList = new ArrayList<String>(Arrays.asList(args));;
-		List<String> argsList2 = new ArrayList<String>(Arrays.asList(args));;
-		
-		
-
-		
-		try {
-			JarApiList.createJARFile(args[0]);
-			ReadJarMap.createJARCategoryMap();
-
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println("Error while creating jar map"+e.toString());
-		}
-		
-		
-		if(new File(outputDir).mkdir()){
-			System.out.println("Result directory created at "+outputDir);
-		}
-		else {
-			System.out.println("Output directory exists");
-
-		}
-		AnalyzeApp analyzer ;
-		
-		
-		Clustering oc = null;
-		
-		if(args[2].equals(Constants.ALL)){
-			argsList.add("true"); //TODO: remove this
-			
-			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
-			analyzer = new AnalyzeApp(appPath);
-			
-			oc=runAllAlgorithms(analyzer, argsList);
-			oc.CLeanClusters();
-		
-			argsList2.add("false"); //TODO: remove this
-			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList2.get(3)));	
-//			System.out.println("her"+DocumentParserUtil.getIgnoreNone());
-			analyzer = new AnalyzeApp(appPath);
-			oc=runAllAlgorithms(analyzer, argsList2);
-			oc.setCusterListNames();
-
-			ExpandClusters ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath());
-			ec.getUsage();
-			oc.setClusters(ec.getListofclusters());
-			oc.CLeanClusters();
-		
-//			oc.scorePartialClusters(oc.getClusters());	
-			
-			String d3filename = argsList2.get(1)+"/clusterall.html";//src/main/output/clusterall.html"; // TODO : Make argument 
-			
-			String htmlpath=argsList2.get(1);
-			File dir = new File(htmlpath);
-			String[] extensions = new String[] { "html"};
-			List<File> files = (List<File>) FileUtils.listFiles(dir, extensions, true);
-//			List<String> htmlpaths= new ArrayList<>();
-			StringBuilder strBuilder =
-					new StringBuilder();
-			int count=0;
-			for (File f:files) {
-				if(f.getName().contains("all"))
-					continue;
-				String temp="<li><a href=\"filepath\" target=\"_blank\">filename</a></li> \n";
-				temp=temp.replace("filepath", f.getAbsolutePath());
-				String fname=f.getName();
-				fname=fname.replace(".html", "");
-				count=count+1;
-				fname=fname.replace("cluster", "Approach"+count+": ");
-				temp=temp.replace("filename",fname);
-				strBuilder.append(temp);
-//				htmlpaths.add(temp);
-			}
-			
-			oc.savecLusterJSONALL(d3filename,strBuilder.toString());
-			
-		}
-		else {
-			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
-			analyzer = new AnalyzeApp(appPath);
-			runSingleAlgorithm(analyzer,argsList); // TODO: remove setIgnoreNone from user input always generate both
-		}
-
-//		analyzer.computeMeasure();
-//		analyzer.saveMeasure(null);
-
-		
-	}
+//			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
+//			analyzer = new AnalyzeApp(appPath);
+//			
+//			oc=runAllAlgorithms(analyzer, argsList);
+//			oc.CLeanClusters();
+//		
+//			argsList2.add("false"); //TODO: remove this
+//			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList2.get(3)));	
+////			System.out.println("her"+DocumentParserUtil.getIgnoreNone());
+//			analyzer = new AnalyzeApp(appPath);
+//			oc=runAllAlgorithms(analyzer, argsList2);
+//			oc.setCusterListNames();
+//
+//			ExpandClusters ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath());
+//			ec.getUsage();
+//			oc.setClusters(ec.getListofclusters());
+//			oc.CLeanClusters();
+//		
+////			oc.scorePartialClusters(oc.getClusters());	
+//			
+//			String d3filename = argsList2.get(1)+"/clusterall.html";//src/main/output/clusterall.html"; // TODO : Make argument 
+//			
+//			String htmlpath=argsList2.get(1);
+//			File dir = new File(htmlpath);
+//			String[] extensions = new String[] { "html"};
+//			List<File> files = (List<File>) FileUtils.listFiles(dir, extensions, true);
+////			List<String> htmlpaths= new ArrayList<>();
+//			StringBuilder strBuilder =
+//					new StringBuilder();
+//			int count=0;
+//			for (File f:files) {
+//				if(f.getName().contains("all"))
+//					continue;
+//				String temp="<li><a href=\"filepath\" target=\"_blank\">filename</a></li> \n";
+//				temp=temp.replace("filepath", f.getAbsolutePath());
+//				String fname=f.getName();
+//				fname=fname.replace(".html", "");
+//				count=count+1;
+//				fname=fname.replace("cluster", "Approach"+count+": ");
+//				temp=temp.replace("filename",fname);
+//				strBuilder.append(temp);
+////				htmlpaths.add(temp);
+//			}
+//			
+//			oc.savecLusterJSONALL(d3filename,strBuilder.toString());
+//			
+//		}
+//		else {
+//			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
+//			analyzer = new AnalyzeApp(appPath);
+//			runSingleAlgorithm(analyzer,argsList); // TODO: remove setIgnoreNone from user input always generate both
+//		}
+//
+////		analyzer.computeMeasure();
+////		analyzer.saveMeasure(null);
+//
+//		
+//	}
 }
