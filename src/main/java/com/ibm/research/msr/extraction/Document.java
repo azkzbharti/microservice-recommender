@@ -4,13 +4,9 @@ package com.ibm.research.msr.extraction;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.stream.Collectors;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.ibm.research.msr.utils.DocumentParserUtil;
 
@@ -43,7 +39,9 @@ public class Document {
 	public Document(File file) throws IOException, Exception {
 		this.file = file;
 		fileName = file.getName();
-		DocumentParserUtil.processJavaFile(this);
+		DocumentParserUtil.processFile(this);
+		
+		
 	}
 
 	public Document(String filepath, String filename, List<Double> docvector, List<String> tokens) {
