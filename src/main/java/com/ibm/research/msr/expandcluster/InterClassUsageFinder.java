@@ -6,12 +6,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -34,9 +37,13 @@ public class InterClassUsageFinder {
 	Map<ClassPair, Integer> interClassUsageMatrix = new HashMap<ClassPair, Integer>();
 
 	String currentJavaFilePkgName = null;
+	
+	Set<String> srcRootFoldersSet=null;
 
 	public Map<ClassPair, Integer> find(String srcFilesRoot) {
 
+		srcRootFoldersSet = extractSrcRootFolders(srcFilesRoot);
+		
 		File fRoot = new File(srcFilesRoot);
 		String[] extensions = new String[] { "java" };
 //		System.out.println("Getting all .java  in " + fRoot.getPath() + " including those in subdirectories");
@@ -74,7 +81,7 @@ public class InterClassUsageFinder {
 	public void processOneFile(File file, String srcFilesRoot) {
 
 		String fileNameWPath = file.getAbsolutePath();
-//		System.out.println("file: " + file.getName() + " " + fileNameWPath);
+		System.out.println("file: " + file.getName() + " " + fileNameWPath);
 
 		// iff file is under /src/
 		if (!fileNameWPath.contains(File.separator+"src"+File.separator))
@@ -99,7 +106,7 @@ public class InterClassUsageFinder {
 			srcRoot=fileNameWPath.substring(0,srcIndex+5);	
 		}
 		
-		//System.out.println("src root="+srcRoot);
+		//System.out.println("\t src root="+srcRoot);
 		
 		
 		StringBuffer sb = new StringBuffer();
@@ -128,13 +135,27 @@ public class InterClassUsageFinder {
 		parser.setResolveBindings(true);
 		parser.setBindingsRecovery(true);
 		parser.setUnitName(file.getName());
+		
+		
+		
 		// parser.setEnvironment(classPathEntries, null, null, true);
-		String[] srcPath = new String[1];
+		//String[] srcPath = new String[1];
+		//String[] srcPath = new String[2];
+		//String[] srcPath = new String[3];
+		String[] srcRootFoldersSetArr = srcRootFoldersSet.toArray(new String[1]);
+		String[] srcPath=new String[srcRootFoldersSetArr.length+1];
 		// srcPath[0]="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src";
 		//srcPath[0] = srcFilesRoot;
 		if (srcRoot != null)
 		{
 			srcPath[0]=srcRoot;
+//			srcPath[1]="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-common\\src\\";
+//			srcPath[2]="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-git-common\\src\\";
+//			//srcPath[1]="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\";
+			for (int i=0;i<srcRootFoldersSetArr.length;i++)
+			{
+				srcPath[i+1]=srcRootFoldersSetArr[i];
+			}
 		}
 		else
 		{
@@ -152,6 +173,7 @@ public class InterClassUsageFinder {
 		cu.accept(new ASTVisitor() {
 
 			public boolean visit(PackageDeclaration p) {
+				//System.out.println("\t visit PackageDeclaration " + p.getName().getFullyQualifiedName());
 				IPackageBinding ipb = p.resolveBinding();
 				if (ipb != null) {
 					currentJavaFilePkgName = ipb.getName();
@@ -160,6 +182,7 @@ public class InterClassUsageFinder {
 			}
 
 			public boolean visit(TypeDeclaration td) {
+				//System.out.println("\t visit TypeDeclaration " + td.getName().getFullyQualifiedName());
 				ITypeBinding itb = td.resolveBinding();
 				if (itb != null) {
 					// System.out.println("itb qualified name= "
@@ -179,7 +202,7 @@ public class InterClassUsageFinder {
 			}
 
 			public boolean visit(MethodDeclaration m) {
-				//System.out.println("visit md " + m.getName().getFullyQualifiedName());
+				//System.out.println("\tvisit md " + m.getName().getFullyQualifiedName());
 				return true;
 			}
 //			public boolean visit(SingleVariableDeclaration svd)
@@ -261,7 +284,7 @@ public class InterClassUsageFinder {
 					return true;
 				}
 
-				//System.out.println("visit SimpleName " +e.toString());
+				//System.out.println("\t\t visit SimpleName " +e.toString());
 				ITypeBinding itb = e.resolveTypeBinding();
 				if (itb != null) {
 					if (itb.isFromSource()) {
@@ -342,6 +365,10 @@ public class InterClassUsageFinder {
 					}
 
 				}
+				else
+				{
+					//System.out.println("\t type binding null");
+				}
 
 				return true;
 			}
@@ -353,12 +380,12 @@ public class InterClassUsageFinder {
 			}
 		});
 
-//		System.out.println("LocalFileInterClassUsageMatrix");
+		System.out.println("\tLocalFileInterClassUsageMatrix");
 		//for (ClassPair cp : interClassUsageMatrix.keySet()) {
 		for (ClassPair cp : localFileInterClassUsageMatrix.keySet()) {
 			//Integer usageCount = interClassUsageMatrix.get(cp);
 			Integer usageCount = localFileInterClassUsageMatrix.get(cp);
-//			System.out.println(cp + "->" + usageCount);
+			System.out.println("\t"+cp + "->" + usageCount);
 		}
 	}
 
@@ -377,7 +404,7 @@ public class InterClassUsageFinder {
 			String srcFilesRoot = args[0];
 			// InterClassUsageFinder i=new InterClassUsageFinder();
 			Map<ClassPair, Integer> m=i.find(srcFilesRoot);
-//			System.out.println(m.keySet().size());
+
 			System.out.println("\nFinalInterClassUsageMatrix:");
 			for (ClassPair cp: m.keySet())
 			{
@@ -388,15 +415,77 @@ public class InterClassUsageFinder {
 		} else if (choice == 2) {
 			//String ipf = "C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\com\\ibm\\research\\digdeep\\preventive\\clusterer\\CarrotClusteringEngineImpl.java";
 			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\com\\ibm\\research\\util\\MapUtil.java";
-			String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\com\\ibm\\research\\digdeep\\web\\services\\DynamicRecommendationService.java";
+			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\com\\ibm\\research\\digdeep\\web\\services\\DynamicRecommendationService.java";
+			String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-git-api-web\\src\\com\\ibm\\research\\digdeep\\git\\GitApiResource.java";
 			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\extra\\recommendations\\"
 			// ipf="C:\\Users\\GiriprasadSridhara\\dependency-migration-asistant\\src\\main\\java\\com\\ibm\\research\\appmod\\dma\\impact\\ChangedAPIUsageSiteFinder.java";
 			File file = new File(ipf);
 			//String srcFilesRoot = "C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\";
-			String srcFilesRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\";
+			//String srcFilesRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\";
 			//String srcFilesRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\";
+			String srcFilesRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-git-api-web\\src\\";
 			i.processOneFile(file, srcFilesRoot);
 		}
+		else if (choice==3)
+		{
+			//Make a filter that matches files and directories
+		    final IOFileFilter srcFolderFilter = new IOFileFilter() {  
+		        @Override
+		        public boolean accept(File dir, String name) {
+		        	System.out.println("accept dir " + name);
+		            if (name.compareTo("src")==0)
+		            {
+		            	return true;
+		            }
+		            return false;
+		        }
+
+		        @Override
+		        public boolean accept(File file) {
+		            return false;
+
+		        }
+		    };
+
+		    extractSrcRootFolders("C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\");
+
+		}
+	}
+
+	public static Set<String> extractSrcRootFolders(String sRoot) {
+		//File root=new File("C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\");
+		File root=new File(sRoot);
+//			//List files and folders in that directory
+//		    Collection<File> srcDirs = FileUtils.listFilesAndDirs(root, null, srcFolderFilter);
+//		    for(File s:srcDirs)
+//		    {
+//		    	System.out.println(s.getAbsolutePath());
+//		    }
+		String[] extensions = new String[] { "java" };
+		//File fRoot=new File(root);
+		//			System.out.println("Getting all .java  in " + fRoot.getPath() + " including those in subdirectories");
+		List<File> files = (List<File>) FileUtils.listFiles(root, extensions, true);
+		Set<String> srcRootSet=new HashSet<String>();
+		for (File file : files) {
+			
+			String fileNameWPath=file.getAbsolutePath();
+			int srcIndex=fileNameWPath.indexOf(File.separator+"src"+File.separator);
+			String srcRoot=null;
+			if (srcIndex != -1)
+			{
+				// extract till .../src/ to use as src root
+				srcRoot=fileNameWPath.substring(0,srcIndex+5);
+				srcRootSet.add(srcRoot);
+			}
+
+		}
+		
+		System.out.println("srcRootSet size="+srcRootSet.size());
+		for (String s: srcRootSet)
+		{
+			System.out.println(s);
+		}
+		return srcRootSet;
 	}
 
 }
