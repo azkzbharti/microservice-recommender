@@ -100,15 +100,15 @@ public class MSRdriver {
 
 		args.set(2, Constants.NAIVE); // has 2 variations as below 
 		args.add(4, Constants.ONLY_MERGE);
+////
+//		oc=runSingleAlgorithm(analyzer,args);
+//		System.out.println("New clusters size:");
+//		System.out.println(oc.getClusters().size());
+//		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
 //
-		oc=runSingleAlgorithm(analyzer,args);
-		System.out.println("New clusters size:");
-		System.out.println(oc.getClusters().size());
-		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
-
-		oc.setClusters(oc.getConsolidatedClusters());
-		System.out.println(oc.getClusters().size());
-		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+//		oc.setClusters(oc.getConsolidatedClusters());
+//		System.out.println(oc.getClusters().size());
+//		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
 	
 		args.set(4, Constants.SPLIT);
@@ -116,12 +116,14 @@ public class MSRdriver {
 		System.out.println("New clusters size:");
 		System.out.println(oc.getClusters().size());
 		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
-
+		
 		oc.setClusters(oc.getConsolidatedClusters());
+		
 		System.out.println(oc.getClusters().size());		
 		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+	
 		return oc;
-		
+			
 	}
 	
 	public static void runNaive(String appPath,String appType,String outputPath) throws IOException, Exception {
@@ -155,15 +157,16 @@ public class MSRdriver {
 		List<String> argsList2=new ArrayList<String>(argsList);
 		argsList.add("true"); //"will ignore none category
 		DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
-		analyzer = new AnalyzeApp(appPath, appType,outputPath);
-
-		oc = runNaiveUtility(analyzer, argsList);
+//		analyzer = new AnalyzeApp(appPath, appType,outputPath);
+//
+//		oc = runNaiveUtility(analyzer, argsList);
 		
 		argsList2.add("false"); //TODO: remove this
 		DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList2.get(3)));
 		
 		analyzer = new AnalyzeApp(appPath,appType,outputPath);
 		oc = runNaiveUtility(analyzer, argsList2);
+		
 		
 		oc.setCusterListNames();
 
@@ -197,6 +200,8 @@ public class MSRdriver {
 		}
 		
 		oc.savecLusterJSONALL(d3filename,strBuilder.toString());
+//		analyzer.computeMeasure();
+//		analyzer.saveMeasure(null);
 	}
 	
 	

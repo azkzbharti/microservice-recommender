@@ -51,8 +51,12 @@ public class AnalyzeApp {
 				extensions = new String[] { "class" };
 
 			List<File> files = (List<File>) FileUtils.listFiles(dir, extensions, true);
+	
 			for (File file : files) {
 				Document document = new Document(file);
+				
+				if(file.getAbsolutePath().contains("digdeep-git-common"))
+					System.out.println("here");
 				if (document.getNumberOfTokens() > 0) {
 					listOfDocuments.add(document);
 				}

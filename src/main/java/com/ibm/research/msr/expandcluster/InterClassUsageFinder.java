@@ -377,7 +377,8 @@ public class InterClassUsageFinder {
 			String srcFilesRoot = args[0];
 			// InterClassUsageFinder i=new InterClassUsageFinder();
 			Map<ClassPair, Integer> m=i.find(srcFilesRoot);
-//			System.out.println("\nFinalInterClassUsageMatrix:");
+//			System.out.println(m.keySet().size());
+			System.out.println("\nFinalInterClassUsageMatrix:");
 			for (ClassPair cp: m.keySet())
 			{
 				Integer c=m.get(cp);

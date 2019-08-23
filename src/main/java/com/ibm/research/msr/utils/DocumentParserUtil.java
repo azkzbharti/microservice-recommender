@@ -33,7 +33,6 @@ public class DocumentParserUtil {
 	}
 
 	private static void processJavaFile(Document document) throws IOException {
-
 		List<String> tokens = new ArrayList<String>();
 		Map<String, Integer> importCountMap = new HashMap<String, Integer>();
 
@@ -50,26 +49,42 @@ public class DocumentParserUtil {
 			System.out.println("Parse Error in : " + document.getFile().getAbsolutePath());
 			return;
 		}
-
+		String category="";
 		// parse imports and extract data
 		for (String importName : imports) {
-			String category = ReadJarMap.getLibCatMap().entrySet().stream()
+			 category = ReadJarMap.getLibCatMap().entrySet().stream()
 					.filter(entry -> importName.contains(entry.getKey())).map(entry -> entry.getValue()).findFirst()
 					.orElse("None");
 			tokens.add(category);
+			
 			if (!importCountMap.containsKey(category)) {
 				importCountMap.put(category, 1);
 			} else {
 				importCountMap.put(category, importCountMap.get(category) + 1);
 			}
-			if (DocumentParserUtil.getIgnoreNone() && category == "None") {
-				tokens.remove("None");
-				importCountMap.remove("None");
-				continue;
-			}
-
+//			if (DocumentParserUtil.getIgnoreNone() && category == "None") {
+			
 		}
-
+		System.out.println(document.getName());
+		System.out.println(imports);
+		System.out.println(importCountMap);
+		System.out.println("tokens"+tokens);
+		if(importCountMap.size()>1 && importCountMap.containsKey("None") && importCountMap.get("None")>0 && tokens.size()>1) {
+			tokens.remove("None");
+			importCountMap.remove("None");
+//			continue;
+//		}
+		}
+		if (imports.size()==0) {
+			 category="None";
+			tokens.add(category);
+			importCountMap.put(category, 1);
+		}
+		if (DocumentParserUtil.getIgnoreNone() && category == "None") {
+			tokens.remove("None");
+			importCountMap.remove("None");
+		}		
+		
 		// set tokens and import Count
 		document.setTokens(tokens);
 		document.setTokenCountMap(importCountMap);
