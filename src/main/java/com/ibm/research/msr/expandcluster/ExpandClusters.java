@@ -80,11 +80,11 @@ public class ExpandClusters {
 //		}
 		
 		List<Document> notusedDocs = new ArrayList<Document>();
-	
-		for (Document doc:listofAllDocsinNone) {
-			if(doc.getName().contains("Html2Text"))
-				System.out.println(doc.getName());
+		List<ClusterDetails> listofMergeDocsInClusters = new ArrayList<ClusterDetails>();
+		List<ClusterDetails> listofMergeDocsByClusters = new ArrayList<ClusterDetails>();
 
+		for (Document doc:listofAllDocsinNone) {
+			
 			Map<ClusterDetails,Integer> docCLusterUsageMap = new HashMap<>();
 			Map<ClusterDetails,Integer> docCLusterUsageMap2 = new HashMap<>();
 
@@ -114,17 +114,22 @@ public class ExpandClusters {
 			for(ClassPair pair:cp) {
 //				System.out.println(pair.usedClass);
 //				System.out.println(doc.getUniqueName());
-				if(!pair.thisClass.equals(doc.getUniqueName()))
-				docUsageMap.put(pair.thisClass, i.interClassUsageMatrix.get(pair));
-				if(!pair.thisClass.equals(doc.getUniqueName()))
+				if(!pair.thisClass.equals(doc.getUniqueName())) {
+					docUsageMap.put(pair.thisClass, i.interClassUsageMatrix.get(pair));
+				}
+				if(!pair.usedClass.equals(doc.getUniqueName()))
 					docUsageMap2.put(pair.usedClass, i.interClassUsageMatrix.get(pair));
 //				else {
 //					notusedDocs.add(doc);
 //				}
 			}
+			
+
+
 
 			for(ClusterDetails cls:this.listofclusters) {
 					for (String docInCluster:cls.getListOfDocumentsNames()) {	
+//						System.out.println(cls.getListOfDocumentsNames());
 						if( docUsageMap.keySet().contains(docInCluster)) {
 							if(docCLusterUsageMap.containsKey(cls))
 								docCLusterUsageMap.put(cls,  docCLusterUsageMap.get(cls)+docUsageMap.get(docInCluster));
@@ -147,8 +152,36 @@ public class ExpandClusters {
 
 				}
 			}
-			if(docCLusterUsageMap.size()==0) {
-//				System.out.println("doc is not used in any cluser classes");
+			
+			if(docCLusterUsageMap.size()==0 &&docCLusterUsageMap2.size()==0 ) {
+				List<String> usedByDocNames=docUsageMap.keySet().stream().collect(Collectors.toList());
+//				List<String> usedinDocNames=docUsageMap2.keySet().stream().collect(Collectors.toList());
+				List<Document> usedBydocs = new ArrayList();
+//				List<Document> usedIndocs =  new ArrayList();
+				for(Document doc2:listofAllDocs) {
+					if(!usedByDocNames.contains(doc2.getUniqueName())) {
+						usedBydocs.add(doc2);
+					}
+//					else {
+//						if(usedinDocNames.contains(doc2.getUniqueName()))
+//							usedIndocs.add(doc2);
+//					}
+				}
+				
+//				ClusterDetails usedIndocsCluster= new ClusterDetails(usedIndocs);
+				if(usedBydocs.size()>0) {
+					ClusterDetails usedBydocsCluster= new ClusterDetails(usedBydocs);
+					listofMergeDocsInClusters.add(usedBydocsCluster);
+				}
+//				if(usedIndocs.size()>0)
+//					listofMergeDocsByClusters.add(usedBydocs);	
+				continue ; 
+			}
+			
+			if(doc.getName().contains("Html2Text"))
+				System.out.println(doc.getName());
+		
+			if(docCLusterUsageMap.size()==0 && docCLusterUsageMap2.size()!=0) {
 				if(!notusedDocs.contains(doc)) {
 				notusedDocs.add(doc);
 				for(ClusterDetails cls:this.newlistofclusters) {
@@ -157,8 +190,7 @@ public class ExpandClusters {
 				}
 				continue;
 			}
-			if(docCLusterUsageMap2.size()==0) {
-//				System.out.println("doc is not used in any cluser classes");
+			if(docCLusterUsageMap2.size()==0 && docCLusterUsageMap.size()==0) {
 				if(!notusedDocs.contains(doc)) {
 				notusedDocs.add(doc);
 				for(ClusterDetails cls:this.newlistofclusters) {
@@ -167,6 +199,7 @@ public class ExpandClusters {
 				}
 				continue;
 			}
+
 			
 //			System.out.println(docCLusterUsageMap.toString());
 			sorteddocCLusterUsageMap = docCLusterUsageMap
@@ -189,15 +222,15 @@ public class ExpandClusters {
 			ClusterDetails usedCluster;
 			
 			ClusterDetails maxUsageCluster = sorteddocCLusterUsageMap.entrySet().stream().findFirst().get().getKey();
-			int usage=sorteddocCLusterUsageMap.entrySet().stream().findFirst().get().getValue();
-			ClusterDetails maxUsageCluster2 = sorteddocCLusterUsageMap2.entrySet().stream().findFirst().get().getKey();
-			int usage2=sorteddocCLusterUsageMap2.entrySet().stream().findFirst().get().getValue();
-			if(usage>usage2) {
+//			int usage=sorteddocCLusterUsageMap.entrySet().stream().findFirst().get().getValue();
+//			ClusterDetails maxUsageCluster2 = sorteddocCLusterUsageMap2.entrySet().stream().findFirst().get().getKey();
+//			int usage2=sorteddocCLusterUsageMap2.entrySet().stream().findFirst().get().getValue();
+//			if(usage>usage2) {
 				usedCluster=maxUsageCluster;
-			}
-			else {
-				usedCluster=maxUsageCluster2;
-			}
+//			}
+//			else {
+//				usedCluster=maxUsageCluster2;
+//			}
 //			maxUsageCluster.showDetails();
 				// add to this and remove from others
 			
@@ -208,9 +241,22 @@ public class ExpandClusters {
 				else  if (!usedCluster.getListOfDocumentsNames().contains(doc.getUniqueName())) 
 				{
 					cls.addDocumentToCluster(doc);
+					for(ClusterDetails tcls:listofMergeDocsInClusters) {
+						List<Document> doclist = tcls.getListOfDocuments() ;
+						if(doclist.contains(doc)) {
+							for(Document tdoc:doclist) {
+								if(listofAllDocsinNone.contains(tdoc)) {
+									cls.addDocumentToCluster(tdoc);
+									
+								}
+							}
+						}
+					}
+					
 				}
 			
 			}
+			
 			
 			
 		}
