@@ -81,12 +81,12 @@ public class InterClassUsageFinder {
 	public void processOneFile(File file, String srcFilesRoot) {
 
 		String fileNameWPath = file.getAbsolutePath();
-		System.out.println("file: " + file.getName() + " " + fileNameWPath);
+//		System.out.println("file: " + file.getName() + " " + fileNameWPath);
 
 		// iff file is under /src/
 		if (!fileNameWPath.contains(File.separator+"src"+File.separator))
 		{
-			System.out.println("Ignoring java file not under src folder");
+//			System.out.println("Ignoring java file not under src folder");
 			return;
 		}
 
@@ -380,12 +380,12 @@ public class InterClassUsageFinder {
 			}
 		});
 
-		System.out.println("\tLocalFileInterClassUsageMatrix");
+//		System.out.println("\tLocalFileInterClassUsageMatrix");
 		//for (ClassPair cp : interClassUsageMatrix.keySet()) {
 		for (ClassPair cp : localFileInterClassUsageMatrix.keySet()) {
 			//Integer usageCount = interClassUsageMatrix.get(cp);
 			Integer usageCount = localFileInterClassUsageMatrix.get(cp);
-			System.out.println("\t"+cp + "->" + usageCount);
+//			System.out.println("\t"+cp + "->" + usageCount);
 		}
 	}
 
@@ -405,7 +405,7 @@ public class InterClassUsageFinder {
 			// InterClassUsageFinder i=new InterClassUsageFinder();
 			Map<ClassPair, Integer> m=i.find(srcFilesRoot);
 
-			System.out.println("\nFinalInterClassUsageMatrix:");
+//			System.out.println("\nFinalInterClassUsageMatrix:");
 			for (ClassPair cp: m.keySet())
 			{
 				Integer c=m.get(cp);
@@ -480,11 +480,11 @@ public class InterClassUsageFinder {
 
 		}
 		
-		System.out.println("srcRootSet size="+srcRootSet.size());
-		for (String s: srcRootSet)
-		{
-			System.out.println(s);
-		}
+//		System.out.println("srcRootSet size="+srcRootSet.size());
+//		for (String s: srcRootSet)
+//		{
+//			System.out.println(s);
+//		}
 		return srcRootSet;
 	}
 
