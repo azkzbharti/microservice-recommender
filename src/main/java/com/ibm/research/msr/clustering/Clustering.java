@@ -494,20 +494,21 @@ public abstract class Clustering {
 		 clusters = new ArrayList<ClusterDetails>();
 		 clusters.addAll(s);  
 		 clusters=sortClusterOnScore(clusters);
+//		 listofclusters=clusters;
 		 for(ClusterDetails cls:clusters) {
 //			 if(cls.getClusterName()==null)
 //				 cls.setClusterName();
 			 if (cls.getListOfDocuments().size() > 0) {
-				if(cls.getScore()>0 || cls.getClusterName().equals(Constants.unusedClusterName)) { 
+//				if(cls.getScore()>0 || cls.getClusterName().equals(Constants.unusedClusterName)) { 
 				if(cls.getClusterName().trim().contains("Non") || cls.getClusterName().trim().equals("None"))
 					nonelistofclusters.add(cls);
 				else 
 					listofclusters.add(cls);
-				}
+//				}
 			 }	
 		}
 		 
- 
+		 System.out.println("no of none clusters"+nonelistofclusters.size());
 		JSONObject clusterobj = new JSONObject();
 		clusterobj.put("name", "root");
 		clusterobj.put("parent", null);

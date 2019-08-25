@@ -252,13 +252,13 @@ public class MSRdriver {
 		analyzer = new AnalyzeApp(appPath,appType,outputPath);
 		
 		
-//		oc = runNaiveUtility(analyzer, argsList2);
-		oc = runALLUtility(analyzer, argsList2);
+		oc = runNaiveUtility(analyzer, argsList2);
+//		oc = runALLUtility(analyzer, argsList2);
 		
 		
 		oc.setCusterListNames();
 
-		
+		System.out.println("Calling Inter class usage");
 		ExpandClusters ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath());
 		ec.getUsage();
 		oc.setClusters(ec.getListofclusters());

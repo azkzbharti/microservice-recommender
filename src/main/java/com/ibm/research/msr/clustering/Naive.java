@@ -39,8 +39,8 @@ public class Naive extends Clustering {
 			ArrayList<Document> docsList = new ArrayList<>();
 			for (int j = 0; j < pool_of_Documents.size(); j++) {
 				double tf = pool_of_Documents.get(j).getDocVector().get(i);
-				if(pool_of_Documents.get(j).getFile().getAbsolutePath().contains("GitLabUrlFormatter.java"))
-					System.out.println("here");
+//				if(pool_of_Documents.get(j).getFile().getAbsolutePath().contains("GitLabUrlFormatter.java"))
+//					System.out.println("here");
 				if (tf > 0) {
 					docsList.add(pool_of_Documents.get(j));
 				}
@@ -50,7 +50,7 @@ public class Naive extends Clustering {
 		
 		for (int j = 0; j < initial_centroids.size(); j++) {
 //		System.out.println("cluster " + j + "before" + i + "iterations");
-		System.out.println(initial_centroids.get(j).getListOfDocumentsNames());
+//		System.out.println(initial_centroids.get(j).getListOfDocumentsNames());
 	}
 		return initial_centroids;
 		

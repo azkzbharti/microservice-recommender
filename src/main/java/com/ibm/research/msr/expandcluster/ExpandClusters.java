@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -56,7 +57,196 @@ public class ExpandClusters {
 		
 	}
 	
+	
 	public void getUsage() {
+		// TODO break this code in small functions
+		System.out.println("Doing CLuster expansion");
+		List<List<Document>> listofDocsinNone= this.nonelistofclusters
+				.stream()
+				.map(ClusterDetails::getListOfDocuments)
+				.collect(Collectors.toList());
+		Set<Document> listofAllDocsinNone=listofDocsinNone.stream().flatMap(List::stream)
+		        .collect(Collectors.toSet());
+		Set<Document> notusedDocs = new HashSet<Document>();
+
+		List<HashSet<Document>> doubleLinkedList = new ArrayList<HashSet<Document>>() ;
+		List<HashSet<Document>> tempdoubleLinkedList = new ArrayList<HashSet<Document>>() ;
+
+		Set<Document> tempDocs2=new HashSet<>() ;
+
+		boolean isChanged = true;
+		int count=0;
+		while(true) {
+			
+			try {
+//				System.out.println("For iteraton"+count);
+				count=count+1;
+			tempDocs2 = new HashSet<>(listofAllDocsinNone);
+			isChanged = false;
+			
+			for (Document doc : listofAllDocsinNone) {
+				tempdoubleLinkedList=new ArrayList<HashSet<Document>>(doubleLinkedList);
+//				System.out.println("doc"+doc.getName());
+//				if(doc.getName().equals("SOLRSchemaDTO.java"))
+//					System.out.println("doc"+doc.getName());
+				Map<ClusterDetails,Integer> docCLusterUsageMap = new HashMap<>();
+				Map<String,Integer> docUsageMap = new HashMap<>();
+				Map<String,Integer> sorteddocUsageMap = new HashMap<>();
+
+				Map<ClusterDetails,Integer> sorteddocCLusterUsageMap = new HashMap<>();
+
+
+				List<ClassPair> cp=i.getAssociatedClassPairForClass(doc.getUniqueName());
+				
+				for (ClassPair pair : cp) {
+					if(!pair.thisClass.equals(doc.getUniqueName())) {
+						docUsageMap.put(pair.thisClass, i.interClassUsageMatrix.get(pair));
+					}
+					if(!pair.usedClass.equals(doc.getUniqueName())) {
+						docUsageMap.put(pair.usedClass, i.interClassUsageMatrix.get(pair));
+					}
+		
+				}
+				if(docUsageMap.size()==0) {
+					continue;
+				}
+				for(ClusterDetails cls:this.listofclusters) {
+					for (String docInCluster:cls.getListOfDocumentsNames()) {	
+						if( docUsageMap.keySet().contains(docInCluster)) {
+							if(docCLusterUsageMap.containsKey(cls))
+								docCLusterUsageMap.put(cls,  docCLusterUsageMap.get(cls)+docUsageMap.get(docInCluster));
+							else
+								docCLusterUsageMap.put(cls,  docUsageMap.get(docInCluster));
+
+						}
+						
+
+					}
+				}
+				if(docCLusterUsageMap.size()==0 && docUsageMap.size()!=0){
+					sorteddocUsageMap = docUsageMap
+					        .entrySet()
+					        .stream()
+					        .limit(1)
+					        .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+					        .collect(
+					            Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
+					                LinkedHashMap::new));
+					String assignedDoc=sorteddocUsageMap.entrySet().stream().findFirst().get().getKey();
+					Document connectingDoc = null ;
+					try {
+					connectingDoc=listofAllDocsinNone.stream().filter(sdoc->sdoc.getUniqueName().equals(assignedDoc)).findFirst().get();
+					}
+					catch(Exception e) {
+						//connectingDoc is not in none and not assigned to any cluster based on usage
+						System.out.println("No connecting doc found in none "+doc.getName());
+						notusedDocs.add(doc);
+						continue;
+					}
+					
+					// search for a element in the connecting list
+//					boolean checked=false;
+					int lcount=0;
+					for(Set<Document> list : doubleLinkedList) {
+					    if(!list.contains(connectingDoc)) {
+					    	list.add(doc);
+//					    	checked=true;
+					       //...
+					    }
+//					    for (Document mdoc:list) {
+//					    	System.out.println(lcount+"-------"+mdoc.getName());
+//					    }
+					    lcount+=1;
+					}
+					if(doubleLinkedList.size()==0) {
+						HashSet<Document> tlist = new HashSet<Document>();
+						tlist.add(connectingDoc);
+						tlist.add(doc);
+						doubleLinkedList.add(tlist);
+					}
+					
+				
+					continue;
+				}
+//				if(docCLusterUsageMap.size()==0) {
+//					continue; // No cluster assigned and hence it remains in none
+//				}
+				sorteddocCLusterUsageMap = docCLusterUsageMap
+				        .entrySet()
+				        .stream()
+				        .limit(1)
+				        .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+				        .collect(
+				            Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
+				                LinkedHashMap::new));
+//						System.out.println(sorteddocCLusterUsageMap.toString());
+					
+				ClusterDetails usedCluster;
+				ClusterDetails maxUsageCluster = sorteddocCLusterUsageMap.entrySet().stream().findFirst().get().getKey();
+				usedCluster=maxUsageCluster;
+				
+//				try {
+					
+					for(ClusterDetails cls :this.listofclusters) {
+						if(!cls.equals(usedCluster)) {
+							cls.removeDoc(doc);
+//							listofAllDocsinNone.remove(doc);
+						}
+						else  if (!usedCluster.getListOfDocumentsNames().contains(doc.getUniqueName())) 
+						{
+							if(!cls.getListOfDocuments().contains(doc)) {
+							cls.addDocumentToCluster(doc);	
+							tempDocs2.remove(doc);
+							// check if present in the doublelinklist if yes delete the entry from the list and assign it 
+							for(Set<Document> list:doubleLinkedList ) {
+								if(list.contains(doc)) { 
+									for(Document trDoc:list) {
+										cls.addDocumentToCluster(trDoc);	
+									}
+									tempdoubleLinkedList.remove(list); // delete the entry
+								}
+								
+							}
+							isChanged = true;
+							}
+							
+						}
+					
+					}
+					
+//				} catch(Exception e) {
+//					e.printStackTrace();
+//				}
+				doubleLinkedList=tempdoubleLinkedList;
+
+			}
+			listofAllDocsinNone = tempDocs2;
+			if(!isChanged) {
+				System.out.println("No change.. exiting");
+				break;
+			}} catch(Exception e) {
+				System.out.println("Exception");
+				e.printStackTrace();
+				break;
+			}
+		}
+		for(Set<Document> list:doubleLinkedList) {
+			ClusterDetails newCls= new ClusterDetails(new ArrayList<>(list));
+			newCls.setClusterName("Unclassified after usage");
+			this.listofclusters.add(newCls);
+		}
+		if(notusedDocs.size()>0) {
+			ClusterDetails newCls= new ClusterDetails(new ArrayList<>(notusedDocs));
+			newCls.setClusterName("Unused");
+			
+			this.listofclusters.add(newCls);
+		}
+		 
+		
+		
+	}
+	
+	public void getUsage_old() {
 
 		List<List<Document>> listofDocs= this.listofclusters
 				.stream()
@@ -178,8 +368,8 @@ public class ExpandClusters {
 				continue ; 
 			}
 			
-			if(doc.getName().contains("Html2Text"))
-				System.out.println(doc.getName());
+//			if(doc.getName().contains("Html2Text"))
+//				System.out.println(doc.getName());
 		
 			if(docCLusterUsageMap.size()==0 && docCLusterUsageMap2.size()!=0) {
 				if(!notusedDocs.contains(doc)) {

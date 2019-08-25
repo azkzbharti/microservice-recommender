@@ -65,10 +65,10 @@ public class DocumentParserUtil {
 //			if (DocumentParserUtil.getIgnoreNone() && category == "None") {
 			
 		}
-		System.out.println(document.getName());
-		System.out.println(imports);
-		System.out.println(importCountMap);
-		System.out.println("tokens"+tokens);
+//		System.out.println(document.getName());
+//		System.out.println(imports);
+//		System.out.println(importCountMap);
+//		System.out.println("tokens"+tokens);
 		if(importCountMap.size()>1 && importCountMap.containsKey("None") && importCountMap.get("None")>0 && tokens.size()>1) {
 			tokens.remove("None");
 			importCountMap.remove("None");
