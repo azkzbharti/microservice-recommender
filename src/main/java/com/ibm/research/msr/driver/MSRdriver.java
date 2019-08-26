@@ -46,13 +46,13 @@ public class MSRdriver {
 		switch (algorithm) {
 		case Constants.KMEANS: {
 			int k = Integer.parseInt(args.get(4));
-			oc = new KMeans(analyzer.getListOfDocuments(), analyzer.getAppath()+File.separator + "temp" + File.separator + "measure.csv", k);
+			oc = new KMeans(analyzer.getListOfDocuments(), analyzer.getOutputPath()+File.separator + "temp" + File.separator + "measure.csv", k);
 			break;
 		}
 		case Constants.DBSCAN: {
 			double epsilon = Double.parseDouble(args.get(4));// 0.0003 ;
 			int neighbours = Integer.parseInt(args.get(5));// args[3];
-			oc = new DBSCAN(analyzer.getListOfDocuments(), analyzer.getAppath() + File.separator + "temp" + File.separator + "measure.csv", epsilon, neighbours);
+			oc = new DBSCAN(analyzer.getListOfDocuments(), analyzer.getOutputPath()+ File.separator + "temp" + File.separator + "measure.csv", epsilon, neighbours);
 			break;
 		}
 		case Constants.NAIVE_TFIDF: {
