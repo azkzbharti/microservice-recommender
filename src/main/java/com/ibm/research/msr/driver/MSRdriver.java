@@ -170,6 +170,9 @@ public class MSRdriver {
 			oc.setClusters(oc.getConsolidatedClusters());
 			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
+			oc.extendClusters(oc.mergeRemainingClusters(allAlgoClusterList));
+			oc.setClusters(oc.getConsolidatedClusters());
+			
 //			
 	
 		return oc;
@@ -203,8 +206,9 @@ public class MSRdriver {
 		
 		System.out.println(oc.getClusters().size());		
 		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
-		
-
+//		
+//		oc.extendClusters(oc.mergeRemainingClusters(allAlgoClusterList));
+//		oc.setClusters(oc.getConsolidatedClusters());
 		
 	
 		return oc;

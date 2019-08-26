@@ -177,12 +177,12 @@ public class ClusterDetails {
 		if(count<0)
 			count=count*-1;
 		if(this.score==0) {
-			clusterJson.put("name","Cluster:"+count);
-//	    	clusterJson.put("name","Cluster:"+count+ "Name:"+this.clusterName );
+//			clusterJson.put("name","Cluster:"+count);
+	    	clusterJson.put("name","Cluster:"+count+ "Name:"+this.clusterName );
 		}
 		else {
-			clusterJson.put("name","Cluster:"+count);
-//	    	clusterJson.put("name","Cluster:"+count+ "Name:"+this.clusterName+"  (score== "+this.score+" ) ");
+//			clusterJson.put("name","Cluster:"+count);
+	    	clusterJson.put("name","Cluster:"+count+ "Name:"+this.clusterName+"  (score== "+this.score+" ) ");
 		}
     	clusterJson.put("parent", "root");
     	clusterJson.put("score", this.score);

@@ -232,7 +232,7 @@ public class ExpandClusters {
 		}
 		for(Set<Document> list:doubleLinkedList) {
 			ClusterDetails newCls= new ClusterDetails(new ArrayList<>(list));
-			newCls.setClusterName("Unclassified after usage");
+			newCls.setClusterName("Unclassified");
 			this.listofclusters.add(newCls);
 		}
 		if(notusedDocs.size()>0) {

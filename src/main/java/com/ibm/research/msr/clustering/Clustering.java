@@ -499,12 +499,12 @@ public abstract class Clustering {
 //			 if(cls.getClusterName()==null)
 //				 cls.setClusterName();
 			 if (cls.getListOfDocuments().size() > 0) {
-//				if(cls.getScore()>0 || cls.getClusterName().equals(Constants.unusedClusterName)) { 
+				if(cls.getScore()>-1 || cls.getClusterName().equals(Constants.unusedClusterName)) { 
 				if(cls.getClusterName().trim().contains("Non") || cls.getClusterName().trim().equals("None"))
 					nonelistofclusters.add(cls);
 				else 
 					listofclusters.add(cls);
-//				}
+				}
 			 }	
 		}
 		 
