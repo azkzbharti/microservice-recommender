@@ -47,17 +47,23 @@ public class Naive extends Clustering {
 			}
 			initial_centroids.add(i, new ClusterDetails(docsList));
 		}
+//		
+		 Set<ClusterDetails> s= new HashSet<ClusterDetails>();
+		 s.addAll(initial_centroids);
+		 initial_centroids = new ArrayList<ClusterDetails>();
+		 initial_centroids.addAll(s); 
 		
-		for (int j = 0; j < initial_centroids.size(); j++) {
-//		System.out.println("cluster " + j + "before" + i + "iterations");
+//		for (int j = 0; j < initial_centroids.size(); j++) {
+//		System.out.println("cluster " + j );
 //		System.out.println(initial_centroids.get(j).getListOfDocumentsNames());
-	}
+//	}
 		return initial_centroids;
 		
 	}
 
 	public void runClustering() {
 		ArrayList<ClusterDetails> clusters = calculate_initial_clusters(listOfDocuments);
+	
 		Quartet quartet;
 		Quartet selquartet;
 		Comparator<Quartet> comparator = new Comparator<Quartet>() {
@@ -75,8 +81,8 @@ public class Naive extends Clustering {
 //				System.out.println(clusters.get(j).getListOfDocumentsNames());
 //			}
 			ClusterDetails firstcls = clusters.get(i);
-//    		System.out.println("cluster at "+i+" with size "+ firstcls.listOfDocuments.size());
-//			firstcls.showDetails();
+    		System.out.println("cluster at "+i+" with size "+ firstcls.listOfDocuments.size());
+			firstcls.showDetails();
 			ArrayList<Quartet> inter_size = new ArrayList<Quartet>();
 			for (int j = 0; j < clusters.size(); j++) {
 				if (i != j) {
@@ -122,6 +128,7 @@ public class Naive extends Clustering {
 				for (ClusterDetails cd : selquartet.getCd()) {
 					if (cd.getListOfDocuments().size() > 0) // adding only non empty cluster to avoid null pointer error
 					{
+						if(!clusters.contains(cd))
 //						System.out.println("new cluster adding " + cd.getListOfDocuments().size());
 						clusters.add(cd);
 
@@ -139,9 +146,9 @@ public class Naive extends Clustering {
 //		System.out.println("finalscls");
 //		for (int i = 0; i < clusters.size(); i++) {
 //			System.out.println("cluster " + i);
-//			System.out.println(clusters.get(i).listOfDocuments.size());
+//			System.out.println(clusters.get(i).getListOfDocumentsNames());
 //			System.out.println("+++++++");
-
+//
 //		}
 		this.clusters = clusters;
 		int count = 0;
