@@ -31,15 +31,17 @@ public class ExpandClusters {
 
 	static InterClassUsageFinder i = new InterClassUsageFinder();
 
-	public ExpandClusters(List<ClusterDetails> listofclusters,String srcFilesRoot) {
+	public ExpandClusters(List<ClusterDetails> listofclusters,String srcFilesRoot,boolean SingleClass) {
 		// TODO Auto-generated constructor stub
-
+		// SingleClass -- is false-- will add none clusters to the list for expansion else single class clusters to it 
 		Set<ClusterDetails> s= new HashSet<ClusterDetails>();
 		s.addAll(listofclusters);
 		listofclusters = new ArrayList<ClusterDetails>();
 		listofclusters.addAll(s); 
 		for(ClusterDetails cls:listofclusters) {
-			if(cls.getClusterName().trim().contains("Non") || cls.getClusterName().trim().equals("None"))
+			if(!SingleClass && (cls.getClusterName().trim().contains("Non") || cls.getClusterName().trim().equals("None")))
+				this.nonelistofclusters.add(cls);
+			else if(SingleClass && (cls.getListOfDocuments().size()==1)) //  treats single class clusters as none list 
 				this.nonelistofclusters.add(cls);
 			else 
 				this.listofclusters.add(cls);
