@@ -46,13 +46,13 @@ public class MSRdriver {
 		switch (algorithm) {
 		case Constants.KMEANS: {
 			int k = Integer.parseInt(args.get(4));
-			oc = new KMeans(analyzer.getListOfDocuments(), analyzer.getAppath()+File.separator + "temp" + File.separator + "measure.csv", k);
+			oc = new KMeans(analyzer.getListOfDocuments(), analyzer.getOutputPath()+File.separator + "temp" + File.separator + "measure.csv", k);
 			break;
 		}
 		case Constants.DBSCAN: {
 			double epsilon = Double.parseDouble(args.get(4));// 0.0003 ;
 			int neighbours = Integer.parseInt(args.get(5));// args[3];
-			oc = new DBSCAN(analyzer.getListOfDocuments(), analyzer.getAppath() + File.separator + "temp" + File.separator + "measure.csv", epsilon, neighbours);
+			oc = new DBSCAN(analyzer.getListOfDocuments(), analyzer.getOutputPath()+ File.separator + "temp" + File.separator + "measure.csv", epsilon, neighbours);
 			break;
 		}
 		case Constants.NAIVE_TFIDF: {
@@ -93,22 +93,22 @@ public class MSRdriver {
 		
 		
 	}
-	public static Clustering runNaiveUtility(AnalyzeApp analyzer,List<String> args) throws IOException {
+	public static Clustering runALLUtility(AnalyzeApp analyzer,List<String> args) throws IOException {
 		Clustering oc =null;
 		
 		List<List<ClusterDetails>>  allAlgoClusterList = new ArrayList<>();
 
 		args.set(2, Constants.NAIVE); // has 2 variations as below 
 		args.add(4, Constants.ONLY_MERGE);
+////
+//		oc=runSingleAlgorithm(analyzer,args);
+//		System.out.println("New clusters size:");
+//		System.out.println(oc.getClusters().size());
+//		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
 //
-		oc=runSingleAlgorithm(analyzer,args);
-		System.out.println("New clusters size:");
-		System.out.println(oc.getClusters().size());
-		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
-
-		oc.setClusters(oc.getConsolidatedClusters());
-		System.out.println(oc.getClusters().size());
-		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+//		oc.setClusters(oc.getConsolidatedClusters());
+//		System.out.println(oc.getClusters().size());
+//		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
 	
 		args.set(4, Constants.SPLIT);
@@ -116,12 +116,103 @@ public class MSRdriver {
 		System.out.println("New clusters size:");
 		System.out.println(oc.getClusters().size());
 		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
-
+		
 		oc.setClusters(oc.getConsolidatedClusters());
+		
 		System.out.println(oc.getClusters().size());		
 		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
-		return oc;
 		
+
+		String k=Integer.toString(oc.getClusters().size());
+		args.set(2, Constants.KMEANS);
+		args.add(4, k);
+		oc=runSingleAlgorithm(analyzer,args);
+		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+		oc.setClusters(oc.getConsolidatedClusters());
+
+//		
+		args.set(2, Constants.DBSCAN);
+		args.set(4, "0.0003");
+		args.add(5,  "1");
+		
+		
+		oc=runSingleAlgorithm(analyzer,args);
+		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+		oc.setClusters(oc.getConsolidatedClusters());
+
+		
+		    args.set(2, Constants.NAIVE_TFIDF); // has 4 variations as below 
+		
+//			args.set(4, Constants.COSINE);
+//			args.set(5,  Constants.ONLY_MERGE);
+//			oc=runSingleAlgorithm(analyzer,args);
+//			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+//			oc.setClusters(oc.getConsolidatedClusters());
+//
+//			
+//			args.set(4, Constants.EUCLIDIEAN);
+//			args.set(5,  Constants.ONLY_MERGE);
+//			oc=runSingleAlgorithm(analyzer,args);
+//			oc.setClusters(oc.getConsolidatedClusters());
+//			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+
+			
+			args.set(4, Constants.COSINE);
+			args.set(5,  Constants.SPLIT);
+			oc=runSingleAlgorithm(analyzer,args);
+			oc.setClusters(oc.getConsolidatedClusters());
+			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+
+			
+			args.set(4, Constants.EUCLIDIEAN);
+			args.set(5,  Constants.SPLIT);
+			oc=runSingleAlgorithm(analyzer,args);
+			oc.setClusters(oc.getConsolidatedClusters());
+			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+
+			oc.extendClusters(oc.mergeRemainingClusters(allAlgoClusterList));
+			oc.setClusters(oc.getConsolidatedClusters());
+			
+//			
+	
+		return oc;
+			
+	}
+	public static Clustering runNaiveUtility(AnalyzeApp analyzer,List<String> args) throws IOException {
+		Clustering oc =null;
+		
+		List<List<ClusterDetails>>  allAlgoClusterList = new ArrayList<>();
+
+		args.set(2, Constants.NAIVE); // has 2 variations as below 
+		args.add(4, Constants.ONLY_MERGE);
+////
+//		oc=runSingleAlgorithm(analyzer,args);
+//		System.out.println("New clusters size:");
+//		System.out.println(oc.getClusters().size());
+//		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
+//
+//		oc.setClusters(oc.getConsolidatedClusters());
+//		System.out.println(oc.getClusters().size());
+//		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+
+	
+		args.set(4, Constants.SPLIT);
+		oc=runSingleAlgorithm(analyzer,args);
+		System.out.println("New clusters size:");
+		System.out.println(oc.getClusters().size());
+		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
+		
+		oc.setClusters(oc.getConsolidatedClusters());
+		
+		System.out.println(oc.getClusters().size());		
+		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
+//		
+//		oc.extendClusters(oc.mergeRemainingClusters(allAlgoClusterList));
+//		oc.setClusters(oc.getConsolidatedClusters());
+		
+	
+		return oc;
+			
 	}
 	
 	public static void runNaive(String appPath,String appType,String outputPath) throws IOException, Exception {
@@ -155,20 +246,28 @@ public class MSRdriver {
 		List<String> argsList2=new ArrayList<String>(argsList);
 		argsList.add("true"); //"will ignore none category
 		DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
-		analyzer = new AnalyzeApp(appPath, appType,outputPath);
-
-		oc = runNaiveUtility(analyzer, argsList);
+//		analyzer = new AnalyzeApp(appPath, appType,outputPath);
+//
+//		oc = runNaiveUtility(analyzer, argsList);
 		
 		argsList2.add("false"); //TODO: remove this
 		DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList2.get(3)));
 		
 		analyzer = new AnalyzeApp(appPath,appType,outputPath);
+		
+		
 		oc = runNaiveUtility(analyzer, argsList2);
+//		oc = runALLUtility(analyzer, argsList2);
+		
 		
 		oc.setCusterListNames();
 
+		System.out.println("Calling Inter class usage");
+		ExpandClusters ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath(),false);
+		ec.getUsage();
+		oc.setClusters(ec.getListofclusters());
 		
-		ExpandClusters ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath());
+		ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath(),true); // runs for single size clusters only -- reassigns them 
 		ec.getUsage();
 		oc.setClusters(ec.getListofclusters());
 		oc.CLeanClusters();
@@ -197,7 +296,11 @@ public class MSRdriver {
 		}
 		
 		oc.savecLusterJSONALL(d3filename,strBuilder.toString());
+//		analyzer.computeMeasure();
+//		analyzer.saveMeasure(null);
 	}
+	
+	
 	
 	
 	public static Clustering runAllAlgorithms(AnalyzeApp analyzer,List<String> args) throws IOException {

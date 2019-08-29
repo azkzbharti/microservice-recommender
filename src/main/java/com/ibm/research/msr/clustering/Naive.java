@@ -39,18 +39,31 @@ public class Naive extends Clustering {
 			ArrayList<Document> docsList = new ArrayList<>();
 			for (int j = 0; j < pool_of_Documents.size(); j++) {
 				double tf = pool_of_Documents.get(j).getDocVector().get(i);
+//				if(pool_of_Documents.get(j).getFile().getAbsolutePath().contains("GitLabUrlFormatter.java"))
+//					System.out.println("here");
 				if (tf > 0) {
 					docsList.add(pool_of_Documents.get(j));
 				}
 			}
 			initial_centroids.add(i, new ClusterDetails(docsList));
 		}
-
+//		
+		 Set<ClusterDetails> s= new HashSet<ClusterDetails>();
+		 s.addAll(initial_centroids);
+		 initial_centroids = new ArrayList<ClusterDetails>();
+		 initial_centroids.addAll(s); 
+		
+//		for (int j = 0; j < initial_centroids.size(); j++) {
+//		System.out.println("cluster " + j );
+//		System.out.println(initial_centroids.get(j).getListOfDocumentsNames());
+//	}
 		return initial_centroids;
+		
 	}
 
 	public void runClustering() {
 		ArrayList<ClusterDetails> clusters = calculate_initial_clusters(listOfDocuments);
+	
 		Quartet quartet;
 		Quartet selquartet;
 		Comparator<Quartet> comparator = new Comparator<Quartet>() {
@@ -64,12 +77,12 @@ public class Naive extends Clustering {
 //    	System.out.println(clusters.size());
 		for (int i = 0; i < clusters.size(); i++) {
 //			for (int j = 0; j < clusters.size(); j++) {
-//				System.out.println("cluster " + j + "before" + i + "iterations");
-//				System.out.println(clusters.get(j).getListOfDocuments().size());
+////				System.out.println("cluster " + j + "before" + i + "iterations");
+//				System.out.println(clusters.get(j).getListOfDocumentsNames());
 //			}
 			ClusterDetails firstcls = clusters.get(i);
-//    		System.out.println("cluster at "+i+" with size "+ firstcls.listOfDocuments.size());
-//			firstcls.showDetails();
+    		System.out.println("cluster at "+i+" with size "+ firstcls.listOfDocuments.size());
+			firstcls.showDetails();
 			ArrayList<Quartet> inter_size = new ArrayList<Quartet>();
 			for (int j = 0; j < clusters.size(); j++) {
 				if (i != j) {
@@ -115,6 +128,7 @@ public class Naive extends Clustering {
 				for (ClusterDetails cd : selquartet.getCd()) {
 					if (cd.getListOfDocuments().size() > 0) // adding only non empty cluster to avoid null pointer error
 					{
+						if(!clusters.contains(cd))
 //						System.out.println("new cluster adding " + cd.getListOfDocuments().size());
 						clusters.add(cd);
 
@@ -132,9 +146,9 @@ public class Naive extends Clustering {
 //		System.out.println("finalscls");
 //		for (int i = 0; i < clusters.size(); i++) {
 //			System.out.println("cluster " + i);
-//			System.out.println(clusters.get(i).listOfDocuments.size());
+//			System.out.println(clusters.get(i).getListOfDocumentsNames());
 //			System.out.println("+++++++");
-
+//
 //		}
 		this.clusters = clusters;
 		int count = 0;
@@ -185,19 +199,23 @@ public class Naive extends Clustering {
 		Set<String> docsNames1 = c1.getListOfDocuments().stream().map(Document::getName).collect(Collectors.toSet());
 		Set<String> docsNames2 = c2.getListOfDocuments().stream().map(Document::getName).collect(Collectors.toSet());
 		Set<String> intersectionNamesSet = Sets.intersection(docsNames1, docsNames2);
+//		if(docsNames1.contains("GitLabUrlFormatter.java"))
+//			System.out.println("debug here");
+//		if(docsNames2.contains("GitLabUrlFormatter.java"))
+//			System.out.println("debug here");
 		intersection = c1.getListOfDocuments().stream().filter(d -> intersectionNamesSet.contains(d.getName()))
 				.collect(Collectors.toList());
 		clusters.add(new ClusterDetails(intersection));
-//		Set<String> differenceNamesSet = Sets.symmetricDifference(docsNames1, docsNames2);
 		Set<String> differenceNamesSet = Sets.difference(docsNames1, docsNames2);	
+
 		difference = c1.getListOfDocuments().stream().filter(d -> differenceNamesSet.contains(d.getName()))
 				.collect(Collectors.toList());
 		clusters.add(new ClusterDetails(difference));
 		Set<String> differenceNamesSet2 = Sets.difference(docsNames2, docsNames1);	
-		difference = c1.getListOfDocuments().stream().filter(d -> differenceNamesSet2.contains(d.getName()))
+		difference = c2.getListOfDocuments().stream().filter(d -> differenceNamesSet2.contains(d.getName()))
 				.collect(Collectors.toList());
 		clusters.add(new ClusterDetails(difference));
-		//		difference.addAll(c2.getListOfDocuments().stream().filter(d -> differenceNamesSet.contains(d.getName()))
+//		difference.addAll(c2.getListOfDocuments().stream().filter(d -> differenceNamesSet.contains(d.getName()))
 //				.collect(Collectors.toList()));
 
 

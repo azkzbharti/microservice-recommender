@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Tree Example</title>
+
+    <style>
+	
+	body {
+			overflow: auto;
+			margin-top: 120px;
+			margin-left: 120px;
+	}
+ 
+ header {
+		 width: 100%;
+		 height: 80px;
+		 background: grey;
+		 position: fixed;
+		 padding-left: 10px;
+		 top: 0;
+		 left: 0;
+ }
+ 
+ #refs{
+	 padding-left: 100px;
+ }
+ footer {
+		 width: 100%;
+		 height: 60px;
+		 background: grey;
+		 position: fixed;
+		 bottom: 0;
+		 left: 0;
+ }
+
+	.node {
+		cursor: pointer;
+	}
+
+	.node circle {
+	  fill: #fff;
+	  stroke: steelblue;
+	  stroke-width: 2px;
+	}
+
+	.node text {
+	  font: 8px sans-serif;
+	}
+
+	.link {
+	  fill: none;
+	  stroke: #ccc;
+	  stroke-width: 2px;
+	}
+	
+	a {
+  display: inline-block;
+  padding-left:20px;
+  transition: .3s;
+  font-weight:bold;
+  text-decoration:none;
+}
+a:hover {
+  -webkit-transform: scale(1.2);
+  transform: scale(1.2);
+}
+	
+    </style>
+  </head>
+
+  <body>
+
+<svg width="2000" height="2000"></svg>
+<!-- load the d3.js library -->	
+<script src="http://d3js.org/d3.v3.min.js"></script>
+	
+<script>
+
+var treeData=[
+{"parent":null,"children":[{"parent":"root","score":0.0,"children":[{"parent":"Cluster0","name":"AbstractResource.javajar's:[servlet-api.jar, jsr311-api-1.1.1.jar, wink-common-1.2.1-incubating.jar]"}],"name":"Cluster:0"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster1","name":"Email.javajar's:[mail.jar]"}],"name":"Cluster:1"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster2","name":"AttachmentsViewResource.javajar's:[jsr311-api-1.1.1.jar, slf4j-api-1.6.1.jar]"}],"name":"Cluster:2"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster3","name":"GitHistoryWalker.javajar's:[walker.jar]"}],"name":"Cluster:3"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster4","name":"AggregationService.javajar's:[wink-client-1.2.1-incubating.jar, jsch-0.1.51.jar, servlet-api.jar, jsr311-api-1.1.1.jar, slf4j-api-1.6.1.jar]"}],"name":"Cluster:4"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster5","name":"NGramCalculator.javajar's:[lucene-analyzers-common-4.4.0.jar, lucene-core-4.4.0.jar]"}],"name":"Cluster:5"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster6","name":"CarrotClusteringEngineImpl.javajar's:[guava-14.0.1.jar, carrot2-mini-3.6.2.jar]"}],"name":"Cluster:6"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster7","name":"QProcessorResource.javajar's:[wink-1.2.1-incubating.jar, jsr311-api-1.1.1.jar]"}],"name":"Cluster:7"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster8","name":"AttachmentsAdminResource.javajar's:[servlet-api.jar, jsr311-api-1.1.1.jar, commons-io-2.1.jar, wink-common-1.2.1-incubating.jar]"}],"name":"Cluster:8"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster9","name":"ClustersMerging.javajar's:[commons-lang-2.6.jar]"}],"name":"Cluster:9"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster10","name":"DB2DataSourceInitializer.javajar's:[db2jcc.jar, slf4j-api-1.6.1.jar, servlet-api.jar]"}],"name":"Cluster:10"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster11","name":"ExcelUtility.javajar's:[poi-ooxml-3.7-20101029.jar, poi-3.7-20101029-mod.jar]"}],"name":"Cluster:11"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster12","name":"JSONObjectReader.javajar's:[jsr311-api-1.1.1.jar, commons-io-2.1.jar]"},{"parent":"Cluster12","name":"JSONArrayReader.javajar's:[jsr311-api-1.1.1.jar, commons-io-2.1.jar]"}],"name":"Cluster:12"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster13","name":"CreateAndIndexTickets.javajar's:[commons-httpclient-3.1.jar, solr-core-4.4.0.jar, commons-io-2.1.jar, solr-solrj-4.4.0.jar]"},{"parent":"Cluster13","name":"ServerUtils.javajar's:[commons-io-2.1.jar, solr-solrj-4.4.0.jar, commons-httpclient-3.1.jar, solr-core-4.4.0.jar]"}],"name":"Cluster:13"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster14","name":"SolrProxyService.javajar's:[wink-client-1.2.1-incubating.jar, jsr311-api-1.1.1.jar]"},{"parent":"Cluster14","name":"ExternalIndexResource.javajar's:[wink-client-1.2.1-incubating.jar, jsr311-api-1.1.1.jar, slf4j-api-1.6.1.jar, selenium-server-standalone-2.41.0.jar]"}],"name":"Cluster:14"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster15","name":"DataSourceInitializer.javajar's:[servlet-api.jar, tomcat-dbcp.jar, slf4j-api-1.6.1.jar]"},{"parent":"Cluster15","name":"BlueMixDataSourceInitializer.javajar's:[tomcat-dbcp.jar, slf4j-api-1.6.1.jar, servlet-api.jar]"}],"name":"Cluster:15"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster16","name":"RecommendationsGenerator.javajar's:[commons-math3-3.0.jar]"},{"parent":"Cluster16","name":"RecommendationsGenerator.javajar's:[commons-math3-3.0.jar]"}],"name":"Cluster:16"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster17","name":"CBSAuth.javajar's:[commons-codec-1.7.jar]"},{"parent":"Cluster17","name":"Connection.javajar's:[commons-codec-1.7.jar]"}],"name":"Cluster:17"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster18","name":"SeleniumTestUtil.javajar's:[commons-io-2.1.jar, selenium-server-standalone-2.41.0.jar]"},{"parent":"Cluster18","name":"TicketAnalysisDriver.javajar's:[commons-io-2.1.jar]"}],"name":"Cluster:18"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster19","name":"DynamicRecommendationService.javajar's:[wink-client-1.2.1-incubating.jar, servlet-api.jar, jsr311-api-1.1.1.jar]"},{"parent":"Cluster19","name":"DownloadService.javajar's:[wink-client-1.2.1-incubating.jar, servlet-api.jar, jsr311-api-1.1.1.jar]"}],"name":"Cluster:19"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster20","name":"JavaApiImplementationExtractor.javajar's:[org.eclipse.jdt.core_3.9.1.v20130905-0837.jar]"},{"parent":"Cluster20","name":"JavaApiUsageExtractor.javajar's:[org.eclipse.jdt.core_3.9.1.v20130905-0837.jar]"}],"name":"Cluster:20"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster21","name":"PreventiveDataUtils.javajar's:[selenium-server-standalone-2.41.0.jar]"},{"parent":"Cluster21","name":"SeleniumTest.javajar's:[selenium-server-standalone-2.41.0.jar]"},{"parent":"Cluster21","name":"SeleniumTestUtil.javajar's:[commons-io-2.1.jar, selenium-server-standalone-2.41.0.jar]"}],"name":"Cluster:21"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster22","name":"CustomDataResource.javajar's:[jsr311-api-1.1.1.jar, slf4j-api-1.6.1.jar, wink-common-1.2.1-incubating.jar]"},{"parent":"Cluster22","name":"GitApiResource.javajar's:[jsr311-api-1.1.1.jar, slf4j-api-1.6.1.jar, wink-common-1.2.1-incubating.jar]"},{"parent":"Cluster22","name":"TicketsResource.javajar's:[jsr311-api-1.1.1.jar, slf4j-api-1.6.1.jar, wink-common-1.2.1-incubating.jar]"},{"parent":"Cluster22","name":"GitHistoryResource.javajar's:[jsr311-api-1.1.1.jar, slf4j-api-1.6.1.jar, wink-common-1.2.1-incubating.jar]"}],"name":"Cluster:22"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster23","name":"NGramCalculator.javajar's:[lucene-analyzers-common-4.4.0.jar, lucene-core-4.4.0.jar]"},{"parent":"Cluster23","name":"RegexBasedAnnotator.javajar's:[lucene-core-4.4.0.jar]"},{"parent":"Cluster23","name":"SentimentTagger.javajar's:[lucene-core-4.4.0.jar]"},{"parent":"Cluster23","name":"CatapultStemmer.javajar's:[lucene-core-4.4.0.jar]"}],"name":"Cluster:23"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster24","name":"TicketAnalysisValidation.javajar's:[slf4j-api-1.6.1.jar, selenium-server-standalone-2.41.0.jar]"},{"parent":"Cluster24","name":"ChangeHistoryValidation.javajar's:[slf4j-api-1.6.1.jar, selenium-server-standalone-2.41.0.jar]"},{"parent":"Cluster24","name":"DataExplorationValidation.javajar's:[slf4j-api-1.6.1.jar, selenium-server-standalone-2.41.0.jar]"},{"parent":"Cluster24","name":"ExternalIndexResource.javajar's:[wink-client-1.2.1-incubating.jar, jsr311-api-1.1.1.jar, slf4j-api-1.6.1.jar, selenium-server-standalone-2.41.0.jar]"},{"parent":"Cluster24","name":"APIExtractionValidation.javajar's:[slf4j-api-1.6.1.jar, selenium-server-standalone-2.41.0.jar]"},{"parent":"Cluster24","name":"ExternalSolrIndexValidation.javajar's:[slf4j-api-1.6.1.jar, selenium-server-standalone-2.41.0.jar]"}],"name":"Cluster:24"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster25","name":"AccessControlResource.javajar's:[servlet-api.jar, jsr311-api-1.1.1.jar]"},{"parent":"Cluster25","name":"AccountsResource.javajar's:[servlet-api.jar, jsr311-api-1.1.1.jar]"},{"parent":"Cluster25","name":"RequestDispatcherWriter.javajar's:[servlet-api.jar, jsr311-api-1.1.1.jar]"},{"parent":"Cluster25","name":"AbstractAccountsResource.javajar's:[jsr311-api-1.1.1.jar, servlet-api.jar]"},{"parent":"Cluster25","name":"UploadValidationService.javajar's:[servlet-api.jar, jsr311-api-1.1.1.jar]"},{"parent":"Cluster25","name":"GenericExceptionMapper.javajar's:[jsr311-api-1.1.1.jar, servlet-api.jar]"},{"parent":"Cluster25","name":"UserInterfaceResource.javajar's:[servlet-api.jar, jsr311-api-1.1.1.jar]"},{"parent":"Cluster25","name":"AccessControl.javajar's:[jsr311-api-1.1.1.jar, servlet-api.jar]"},{"parent":"Cluster25","name":"AuthExceptionMapper.javajar's:[jsr311-api-1.1.1.jar, servlet-api.jar]"},{"parent":"Cluster25","name":"TimeUsageService.javajar's:[servlet-api.jar, jsr311-api-1.1.1.jar]"},{"parent":"Cluster25","name":"AccountsAdminResource.javajar's:[servlet-api.jar, jsr311-api-1.1.1.jar]"}],"name":"Cluster:25"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster26","name":"StandardDataSourceInitializer.javajar's:[slf4j-api-1.6.1.jar, servlet-api.jar]"},{"parent":"Cluster26","name":"OutputStreamHttpServletResponseWrapper.javajar's:[servlet-api.jar]"},{"parent":"Cluster26","name":"LocalizedInstance.javajar's:[servlet-api.jar]"},{"parent":"Cluster26","name":"SystemPropertyInitializer.javajar's:[slf4j-api-1.6.1.jar, servlet-api.jar]"},{"parent":"Cluster26","name":"CloudOEServletFilter.javajar's:[servlet-api.jar]"},{"parent":"Cluster26","name":"URLGetter.javajar's:[servlet-api.jar]"},{"parent":"Cluster26","name":"SFException.javajar's:[servlet-api.jar]"},{"parent":"Cluster26","name":"Auth.javajar's:[servlet-api.jar]"},{"parent":"Cluster26","name":"IDAASClient.javajar's:[servlet-api.jar]"},{"parent":"Cluster26","name":"QueueProcessorLauncher.javajar's:[slf4j-api-1.6.1.jar, servlet-api.jar]"},{"parent":"Cluster26","name":"UTF8RequestEncodingFilter.javajar's:[servlet-api.jar]"},{"parent":"Cluster26","name":"DB2DataSourceInitializer.javajar's:[db2jcc.jar, slf4j-api-1.6.1.jar, servlet-api.jar]"}],"name":"Cluster:26"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster27","name":"JSONArrayWriter.javajar's:[jsr311-api-1.1.1.jar]"},{"parent":"Cluster27","name":"AuthException.javajar's:[jsr311-api-1.1.1.jar]"},{"parent":"Cluster27","name":"MultiValueService.javajar's:[jsr311-api-1.1.1.jar]"},{"parent":"Cluster27","name":"SubResource.javajar's:[jsr311-api-1.1.1.jar]"},{"parent":"Cluster27","name":"MetaDataResource.javajar's:[jsr311-api-1.1.1.jar]"},{"parent":"Cluster27","name":"JSONObjectWriter.javajar's:[jsr311-api-1.1.1.jar]"},{"parent":"Cluster27","name":"ChartsResource.javajar's:[jsr311-api-1.1.1.jar]"},{"parent":"Cluster27","name":"TaskResource.javajar's:[jsr311-api-1.1.1.jar]"},{"parent":"Cluster27","name":"DynamicWebProvider.javajar's:[jsr311-api-1.1.1.jar]"},{"parent":"Cluster27","name":"UsageService.javajar's:[jsr311-api-1.1.1.jar]"},{"parent":"Cluster27","name":"AccessControlException.javajar's:[jsr311-api-1.1.1.jar]"},{"parent":"Cluster27","name":"InvestigationService.javajar's:[jsr311-api-1.1.1.jar]"},{"parent":"Cluster27","name":"QProcessorManager.javajar's:[jsr311-api-1.1.1.jar]"}],"name":"Cluster:27"},{"parent":"root","score":0.0,"children":[{"parent":"Cluster28","name":"TicketAnalysisProcessor.javajar's:[slf4j-api-1.6.1.jar]"},{"parent":"Cluster28","name":"GitApiProcessor.javajar's:[slf4j-api-1.6.1.jar]"},{"parent":"Cluster28","name":"Domain.javajar's:[slf4j-api-1.6.1.jar]"},{"parent":"Cluster28","name":"DummyProcessor.javajar's:[slf4j-api-1.6.1.jar]"},{"parent":"Cluster28","name":"SystemPropertyInitializer.javajar's:[slf4j-api-1.6.1.jar, servlet-api.jar]"},{"parent":"Cluster28","name":"QueueProcessor.javajar's:[slf4j-api-1.6.1.jar]"},{"parent":"Cluster28","name":"QueueProcessorLauncher.javajar's:[slf4j-api-1.6.1.jar, servlet-api.jar]"},{"parent":"Cluster28","name":"GitHistoryProcessor.javajar's:[slf4j-api-1.6.1.jar]"},{"parent":"Cluster28","name":"CustomDataIndexingProcessor.javajar's:[slf4j-api-1.6.1.jar]"},{"parent":"Cluster28","name":"StandardDataSourceInitializer.javajar's:[slf4j-api-1.6.1.jar, servlet-api.jar]"},{"parent":"Cluster28","name":"DataSourceInitializer.javajar's:[servlet-api.jar, tomcat-dbcp.jar, slf4j-api-1.6.1.jar]"},{"parent":"Cluster28","name":"DB2DataSourceInitializer.javajar's:[db2jcc.jar, slf4j-api-1.6.1.jar, servlet-api.jar]"},{"parent":"Cluster28","name":"AggregationService.javajar's:[wink-client-1.2.1-incubating.jar, jsch-0.1.51.jar, servlet-api.jar, jsr311-api-1.1.1.jar, slf4j-api-1.6.1.jar]"},{"parent":"Cluster28","name":"BlueMixDataSourceInitializer.javajar's:[tomcat-dbcp.jar, slf4j-api-1.6.1.jar, servlet-api.jar]"}],"name":"Cluster:28"},{"parent":"root","children":[{"parent":"root","score":0.0,"children":[{"parent":"None","name":"SOLRSchema.javajar's:[]"}],"name":"Cluster:-29"},{"parent":"root","score":0.0,"children":[{"parent":"None","name":"JSONArray.javajar's:[]"},{"parent":"None","name":"JSONObject.javajar's:[]"}],"name":"Cluster:-30"},{"parent":"root","score":0.0,"children":[{"parent":"None","name":"CsvInfo.javajar's:[]"},{"parent":"None","name":"AccountProperties.javajar's:[]"},{"parent":"None","name":"UpdateAccountsSetDeletedQuery.javajar's:[]"},{"parent":"None","name":"CsvDataTypeParser.javajar's:[]"},{"parent":"None","name":"QProcessorUtil.javajar's:[]"},{"parent":"None","name":"ConceptsTagger.javajar's:[]"},{"parent":"None","name":"SelectDistinctUsersFromWebUsage.javajar's:[]"},{"parent":"None","name":"DeleteSavedChartByIdQuery.javajar's:[]"},{"parent":"None","name":"RecommendationType.javajar's:[]"},{"parent":"None","name":"DBUtil.javajar's:[]"},{"parent":"None","name":"RRecommendation.javajar's:[]"},{"parent":"None","name":"MyTrustProvider.javajar's:[]"},{"parent":"None","name":"GitApiExtractor.javajar's:[]"},{"parent":"None","name":"LicenseException.javajar's:[]"},{"parent":"None","name":"IOUtils.javajar's:[]"},{"parent":"None","name":"IncidentAnalyzer.javajar's:[]"},{"parent":"None","name":"Client.javajar's:[]"},{"parent":"None","name":"SelectAccountsForUserQuery.javajar's:[]"},{"parent":"None","name":"UpdateTaskAbortedStatusQuery.javajar's:[]"},{"parent":"None","name":"Html2Text.javajar's:[]"},{"parent":"None","name":"StripNewLineOnly.javajar's:[]"},{"parent":"None","name":"GitHistoryDomain.javajar's:[]"},{"parent":"None","name":"Statement.javajar's:[]"},{"parent":"None","name":"RegexDictionaryMatcher.javajar's:[]"},{"parent":"None","name":"NgramClusteringEngineImpl.javajar's:[]"},{"parent":"None","name":"NameValue.javajar's:[]"},{"parent":"None","name":"UpdateOldestQueuedTaskWithInstanceIdQuery.javajar's:[]"},{"parent":"None","name":"SelectInvestigationsByAccountName.javajar's:[]"},{"parent":"None","name":"SingletonQuery.javajar's:[]"},{"parent":"None","name":"GitHubUrlFormatter.javajar's:[]"},{"parent":"None","name":"SelectAccountsWhereUserIsAdminQuery.javajar's:[]"},{"parent":"None","name":"UpdateAccountPropertiesMapQuery.javajar's:[]"},{"parent":"None","name":"SOLRSchemaDTO.javajar's:[]"},{"parent":"None","name":"EmbeddedContent.javajar's:[]"},{"parent":"None","name":"TypeGuess.javajar's:[]"},{"parent":"None","name":"QueueStatus.javajar's:[]"},{"parent":"None","name":"SelectAccessControlForAccountQuery.javajar's:[]"},{"parent":"None","name":"SelectQProcessorStatusQuery.javajar's:[]"},{"parent":"None","name":"FileUtils.javajar's:[]"},{"parent":"None","name":"Unstem.javajar's:[]"},{"parent":"None","name":"DeleteFromLicensesQuery.javajar's:[]"},{"parent":"None","name":"Dimension.javajar's:[]"},{"parent":"None","name":"Dimension.javajar's:[]"},{"parent":"None","name":"SecurityInfo.javajar's:[]"},{"parent":"None","name":"DatabaseManager.javajar's:[]"},{"parent":"None","name":"SelectAccountPropertiesQuery.javajar's:[]"},{"parent":"None","name":"SelectCountTaskByStatus.javajar's:[]"},{"parent":"None","name":"Recommendation.javajar's:[]"},{"parent":"None","name":"Recommendation.javajar's:[]"},{"parent":"None","name":"SavedChart.javajar's:[]"},{"parent":"None","name":"ExtactColumn.javajar's:[]"},{"parent":"None","name":"SelectCompletedTasksByAccountQuery.javajar's:[]"},{"parent":"None","name":"SeqCache.javajar's:[]"},{"parent":"None","name":"UpdateAccountPropertiesLrMapQuery.javajar's:[]"},{"parent":"None","name":"AccessibleAccount.javajar's:[]"},{"parent":"None","name":"Update.javajar's:[]"},{"parent":"None","name":"TestClientConfig.javajar's:[]"},{"parent":"None","name":"InsertIntoPaymentsQuery.javajar's:[]"},{"parent":"None","name":"PreventiveSOLRUtils.javajar's:[]"},{"parent":"None","name":"StandardInputReader.javajar's:[]"},{"parent":"None","name":"Util.javajar's:[]"},{"parent":"None","name":"MergeForIncrementalRun.javajar's:[]"},{"parent":"None","name":"SelectAdminUsersForAccountQuery.javajar's:[]"},{"parent":"None","name":"HTMLHelper.javajar's:[]"},{"parent":"None","name":"SelectActiveTasksByStatusAndAccount.javajar's:[]"},{"parent":"None","name":"CsvReader.javajar's:[]"},{"parent":"None","name":"CsvReader.javajar's:[]"},{"parent":"None","name":"AbstractAdminResource.javajar's:[]"},{"parent":"None","name":"Entropy.javajar's:[]"},{"parent":"None","name":"GitLabUrlFormatter.javajar's:[]"},{"parent":"None","name":"AddWeekdayShift.javajar's:[]"},{"parent":"None","name":"AddWeekdayShift.javajar's:[]"},{"parent":"None","name":"NonZeroReturnValueException.javajar's:[]"},{"parent":"None","name":"License.javajar's:[]"},{"parent":"None","name":"JdbcDataSource.javajar's:[]"},{"parent":"None","name":"InsertIntoAccessControlQuery.javajar's:[]"},{"parent":"None","name":"TicketAnalysis.javajar's:[]"},{"parent":"None","name":"SelectVisistedUserQuery.javajar's:[]"},{"parent":"None","name":"VoidQuery.javajar's:[]"},{"parent":"None","name":"PartialSequence.javajar's:[]"},{"parent":"None","name":"MyX509TrustManager.javajar's:[]"},{"parent":"None","name":"SelectTrackUsageByAccount.javajar's:[]"},{"parent":"None","name":"VCAPServices.javajar's:[]"},{"parent":"None","name":"DeleteFromInvestigationQuery.javajar's:[]"},{"parent":"None","name":"PreventivUtils.javajar's:[]"},{"parent":"None","name":"Node.javajar's:[]"},{"parent":"None","name":"VCAPApplication.javajar's:[]"},{"parent":"None","name":"Data.javajar's:[]"},{"parent":"None","name":"DigDeep.javajar's:[]"},{"parent":"None","name":"InputReader.javajar's:[]"},{"parent":"None","name":"UpdateAccessControlQuery.javajar's:[]"},{"parent":"None","name":"MainClusteringEngine.javajar's:[]"},{"parent":"None","name":"UpdateRunningTasksToQueued.javajar's:[]"},{"parent":"None","name":"TicketAnalysisDomain.javajar's:[]"},{"parent":"None","name":"AnalysisEngine.javajar's:[]"},{"parent":"None","name":"SequenceImpl.javajar's:[]"},{"parent":"None","name":"StripNewLine.javajar's:[]"},{"parent":"None","name":"ConsoleReader.javajar's:[]"},{"parent":"None","name":"SelectLicensesByLicensor.javajar's:[]"},{"parent":"None","name":"SelectAccountByNameQuery.javajar's:[]"},{"parent":"None","name":"DeployResults.javajar's:[]"},{"parent":"None","name":"FieldInfo.javajar's:[]"},{"parent":"None","name":"GitUrlFormatter.javajar's:[]"},{"parent":"None","name":"DeleteMetaDataFromAccountPropertiesQuery.javajar's:[]"},{"parent":"None","name":"SelectPlanForUserQuery.javajar's:[]"},{"parent":"None","name":"SelectTasksByAccountQuery.javajar's:[]"},{"parent":"None","name":"DynamicWebContent.javajar's:[]"},{"parent":"None","name":"ValidationException.javajar's:[]"},{"parent":"None","name":"LineProcessor.javajar's:[]"},{"parent":"None","name":"LicenseManager.javajar's:[]"},{"parent":"None","name":"ClusteringEngineInterface.javajar's:[]"},{"parent":"None","name":"UpdateTaskDisownStatusQuery.javajar's:[]"},{"parent":"None","name":"QProcessorInfo.javajar's:[]"},{"parent":"None","name":"AnnotationEngine.javajar's:[]"},{"parent":"None","name":"SelectSavedChartByIdQuery.javajar's:[]"},{"parent":"None","name":"InsertIntoChartsQuery.javajar's:[]"},{"parent":"None","name":"CleansingEngine.javajar's:[]"},{"parent":"None","name":"DefaultValuedHashMap.javajar's:[]"},{"parent":"None","name":"InsertIntoLicensesQuery.javajar's:[]"},{"parent":"None","name":"HoleEvent.javajar's:[]"},{"parent":"None","name":"UpdateInvestigationSetComment.javajar's:[]"},{"parent":"None","name":"PreprocessingEngine.javajar's:[]"},{"parent":"None","name":"SelectAccessControlEntryQuery.javajar's:[]"},{"parent":"None","name":"ExternalIndexDomain.javajar's:[]"},{"parent":"None","name":"LLNode.javajar's:[]"},{"parent":"None","name":"MapCoreApps.javajar's:[]"},{"parent":"None","name":"SelectAmountFromAccountChargesForAccount.javajar's:[]"},{"parent":"None","name":"SelectPendingTasksByAccountQuery.javajar's:[]"},{"parent":"None","name":"ClustersHierarchy.javajar's:[]"},{"parent":"None","name":"ReplaceSemiColon.javajar's:[]"},{"parent":"None","name":"ProcessManager.javajar's:[]"},{"parent":"None","name":"InsertIntoTrackUsageQuery.javajar's:[]"},{"parent":"None","name":"LinkedProperties.javajar's:[]"},{"parent":"None","name":"InvestigationStatus.javajar's:[]"},{"parent":"None","name":"SL4Tickets.javajar's:[]"},{"parent":"None","name":"Period.javajar's:[]"},{"parent":"None","name":"AccessLevel.javajar's:[]"},{"parent":"None","name":"AbstractViewResource.javajar's:[]"},{"parent":"None","name":"PipelineDriver.javajar's:[]"},{"parent":"None","name":"ClusteringResultIDLabelPairs.javajar's:[]"},{"parent":"None","name":"SelectActiveTasksByStatus.javajar's:[]"},{"parent":"None","name":"SelectLicensesByUserForItemQuery.javajar's:[]"},{"parent":"None","name":"Task.javajar's:[]"},{"parent":"None","name":"TokenInfo.javajar's:[]"},{"parent":"None","name":"SSOService.javajar's:[]"},{"parent":"None","name":"InsertIntoVisitedUsersQuery.javajar's:[]"},{"parent":"None","name":"InsertIntoPlanQuery.javajar's:[]"},{"parent":"None","name":"UTF8Control.javajar's:[]"},{"parent":"None","name":"JSONException.javajar's:[]"},{"parent":"None","name":"JSONException.javajar's:[]"},{"parent":"None","name":"JarDirectoryClassLoader.javajar's:[]"},{"parent":"None","name":"InsertIntoAccountsQuery.javajar's:[]"},{"parent":"None","name":"UpdateLicensesSetRevokedQuery.javajar's:[]"},{"parent":"None","name":"SelectTaskByIdQuery.javajar's:[]"},{"parent":"None","name":"CsvWriter.javajar's:[]"},{"parent":"None","name":"SelectSavedChartsForAccountQuery.javajar's:[]"},{"parent":"None","name":"InsertIntoPropertiesQuery.javajar's:[]"},{"parent":"None","name":"SelectAccountsQuery.javajar's:[]"},{"parent":"None","name":"UsageType.javajar's:[]"},{"parent":"None","name":"DataType.javajar's:[]"},{"parent":"None","name":"UpdateAccountPropertiesMetaDataQuery.javajar's:[]"},{"parent":"None","name":"SelectDistinctUsersFromWebUsageForAccount.javajar's:[]"},{"parent":"None","name":"Constants.javajar's:[]"},{"parent":"None","name":"Constants.javajar's:[]"},{"parent":"None","name":"Constants.javajar's:[]"},{"parent":"None","name":"Constants.javajar's:[]"},{"parent":"None","name":"UpdateTaskStatusQuery.javajar's:[]"},{"parent":"None","name":"DateUtil.javajar's:[]"},{"parent":"None","name":"InsertIntoInvestigationsQuery.javajar's:[]"},{"parent":"None","name":"ProcessCommunicationException.javajar's:[]"},{"parent":"None","name":"Account.javajar's:[]"},{"parent":"None","name":"Usage.javajar's:[]"},{"parent":"None","name":"UpdateAccountPropertiesDrMapQuery.javajar's:[]"},{"parent":"None","name":"SelectAccessControlEntryWithAdminQuery.javajar's:[]"},{"parent":"None","name":"DeleteFromAccessControlQuery.javajar's:[]"},{"parent":"None","name":"Cluster.javajar's:[]"},{"parent":"None","name":"MapUtil.javajar's:[]"},{"parent":"None","name":"SelectTotalAmountPaidForAccount.javajar's:[]"},{"parent":"None","name":"SelectCountTaskByStatusAndAccount.javajar's:[]"},{"parent":"None","name":"GitApiDomain.javajar's:[]"},{"parent":"None","name":"InsertIntoTaskQueueQuery.javajar's:[]"},{"parent":"None","name":"IncidentAnalyzerTester.javajar's:[]"},{"parent":"None","name":"Plan.javajar's:[]"},{"parent":"None","name":"Query.javajar's:[]"},{"parent":"None","name":"MergeFilesToResult.javajar's:[]"},{"parent":"None","name":"SelectTotalAmountFromAccountCharges.javajar's:[]"},{"parent":"None","name":"JazzHubUrlFormatter.javajar's:[]"},{"parent":"None","name":"Sequence.javajar's:[]"},{"parent":"None","name":"DataExplorationDomain.javajar's:[]"},{"parent":"None","name":"RecommendationsEngine.javajar's:[]"},{"parent":"None","name":"ConfigHelper.javajar's:[]"},{"parent":"None","name":"SelectOldestQueuedTaskQuery.javajar's:[]"},{"parent":"None","name":"ConfigStore.javajar's:[]"},{"parent":"None","name":"SelectTotalAmountPaid.javajar's:[]"},{"parent":"None","name":"Event.javajar's:[]"}],"name":"Cluster:-31"}],"name":"None"}],"name":"root"}
+]
+
+// ************** Generate the tree diagram	 *****************
+var margin = {top: 20, right: 120, bottom: 20, left: 120},
+	width = 1060 - margin.right - margin.left,
+	height = 500 - margin.top - margin.bottom;
+
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height"),
+    g = svg.append("g").attr("transform", "translate(40,0)");
+    
+function collapse(d) {
+	   if (d.children) {
+	     d._children = d.children;
+	     d.children = null;
+	     d._children.forEach(collapse);
+	   }
+	 }
+
+var i = 0,
+	duration = 750,
+	root;
+
+var tree = d3.layout.tree()
+	.size([height, width]);
+
+var diagonal = d3.svg.diagonal()
+	.projection(function(d) { return [d.y, d.x]; });
+
+// var svg = d3.select("body").append("svg")
+// 	.attr("width", width + margin.right + margin.left)
+// 	.attr("height", height + margin.top + margin.bottom)
+//   .append("g")
+// 	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+root = treeData[0];
+root.x0 = height / 2;
+root.y0 = 0;
+root.children.forEach(collapse);    
+update(root);
+
+d3.select(self.frameElement).style("height", "500px");
+
+function update(source) {
+
+  // Compute the new tree layout.
+  var nodes = tree.nodes(root).reverse(),
+	  links = tree.links(nodes);
+
+  // Normalize for fixed-depth.
+  nodes.forEach(function(d) { d.y = d.depth * 280; });
+
+  // Update the nodes…
+  var node = svg.selectAll("g.node")
+	  .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+  // Enter any new nodes at the parent's previous position.
+  var nodeEnter = node.enter().append("g")
+	  .attr("class", "node")
+	  .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+	  .on("click", click);
+
+  nodeEnter.append("circle")
+	  .attr("r", 1e-6)
+	  .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+  nodeEnter.append("text")
+	  .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
+	  .attr("dy", ".35em")
+	  .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+	  .text(function(d) { return d.name; })
+	  .style("fill-opacity", 1e-6);
+
+  // Transition nodes to their new position.
+  var nodeUpdate = node.transition()
+	  .duration(duration)
+	  .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+  nodeUpdate.select("circle")
+	  .attr("r", 2.5)
+	  .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+  nodeUpdate.select("text")
+	  .style("fill-opacity", 1);
+
+  // Transition exiting nodes to the parent's new position.
+  var nodeExit = node.exit().transition()
+	  .duration(duration)
+	  .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+	  .remove();
+
+  nodeExit.select("circle")
+	  .attr("r", 1e-6);
+
+  nodeExit.select("text")
+	  .style("fill-opacity", 1e-6);
+
+  // Update the links…
+  var link = svg.selectAll("path.link")
+	  .data(links, function(d) { return d.target.id; });
+
+  // Enter any new links at the parent's previous position.
+  link.enter().insert("path", "g")
+	  .attr("class", "link")
+	  .attr("d", function(d) {
+		var o = {x: source.x0, y: source.y0};
+		return diagonal({source: o, target: o});
+	  });
+
+  // Transition links to their new position.
+  link.transition()
+	  .duration(duration)
+	  .attr("d", diagonal);
+
+  // Transition exiting nodes to the parent's new position.
+  link.exit().transition()
+	  .duration(duration)
+	  .attr("d", function(d) {
+		var o = {x: source.x, y: source.y};
+		return diagonal({source: o, target: o});
+	  })
+	  .remove();
+
+  // Stash the old positions for transition.
+  nodes.forEach(function(d) {
+	d.x0 = d.x;
+	d.y0 = d.y;
+  });
+}
+
+// Toggle children on click.
+function click(d) {
+  if (d.children) {
+	d._children = d.children;
+	d.children = null;
+  } else {
+	d.children = d._children;
+	d._children = null;
+  }
+  update(d);
+}
+
+</script>
+	
+  </body>
+</html>

@@ -25,6 +25,21 @@ import com.opencsv.CSVWriter;
 public class AnalyzeApp {
 
 	private String appPath;
+	private String outputPath;
+	/**
+	 * @return the outputPath
+	 */
+	public String getOutputPath() {
+		return outputPath;
+	}
+
+	/**
+	 * @param outputPath the outputPath to set
+	 */
+	public void setOutputPath(String outputPath) {
+		this.outputPath = outputPath;
+	}
+
 	private String appType;
 	private List<File> files;
 	private List<Document> listOfDocuments = new ArrayList<Document>();
@@ -40,6 +55,7 @@ public class AnalyzeApp {
 	public AnalyzeApp(String appPath, String appType, String outputPath) throws IOException, Exception {
 		this.appPath = appPath;
 		this.appType = appType;
+		this.outputPath=outputPath;
 
 		File dir = new File(appPath);
 		if (dir.isDirectory()) {
@@ -51,8 +67,12 @@ public class AnalyzeApp {
 				extensions = new String[] { "class" };
 
 			List<File> files = (List<File>) FileUtils.listFiles(dir, extensions, true);
+	
 			for (File file : files) {
 				Document document = new Document(file);
+				
+//				if(file.getAbsolutePath().contains("digdeep-git-common"))
+//					System.out.println("here");
 				if (document.getNumberOfTokens() > 0) {
 					listOfDocuments.add(document);
 				}
