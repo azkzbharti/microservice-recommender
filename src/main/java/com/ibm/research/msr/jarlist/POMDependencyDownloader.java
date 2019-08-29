@@ -22,6 +22,8 @@ import com.ibm.research.msr.utils.Constants;
 public class POMDependencyDownloader {
 
 	class Dependency {
+		
+
 		String groupId;
 
 		String artifactId;
@@ -56,6 +58,13 @@ public class POMDependencyDownloader {
 			return version;
 		}
 
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return "Dependency [groupId=" + groupId + ", artifactId=" + artifactId + ", version=" + version + "]";
+		}
 	}
 
 	/**
@@ -94,27 +103,55 @@ public class POMDependencyDownloader {
 								"atleast one of group id, artifact id, version is missing " + depElements.size());
 						continue;
 					}
-					String groupId = depElements.get(1).text();
-					String artifactId = depElements.get(2).text();
-					String version = depElements.get(3).text();
+					
+					//depElements.get(index)
+					
+					String groupId = null;
+					String artifactId = null;
+					String version = null;
+//					String groupId = depElements.get(1).text();
+//					String artifactId = depElements.get(2).text();
+//					// version need not always be the 4th element see pom.xml in acme monolith
+//					
+//					String version = depElements.get(3).text();
 
-					Dependency d = new Dependency(groupId, artifactId, version);
-					pomDependencies.add(d);
 					for (int j = 0; j < depElements.size(); j++) {
 						Element de = depElements.get(j);
 						System.out.println("\tDependency element " + j + "-" + de.tagName() + "-" + de.text());
+						
+						if (de.tagName().compareTo("groupId")==0)
+						{
+							groupId=de.text();
+						}
+						else if (de.tagName().compareTo("artifactId")==0)
+						{
+							artifactId=de.text();
+						}
+						else if (de.tagName().compareTo("version")==0)
+						{
+							version=de.text();
+						}
 
 					}
+					
+					Dependency d = new Dependency(groupId, artifactId, version);
+					pomDependencies.add(d);
+
 				}
 			}
 
+			int j=0;
+			for (Dependency d : pomDependencies) {
+				j++;
+				System.out.println(j+"\t"+d);
+			}
 			int k = 0;
 			for (Dependency d : pomDependencies) {
 
 				k++;
-				if (k > 3) {
-					break;
-				}
+//				if (k > 3) {
+//					break;
+//				}
 
 				String groupIdWithSlash = d.getGroupId().replace('.', '/');
 				String jarFileName = d.getArtifactId() + "-" + d.getVersion() + ".jar";
