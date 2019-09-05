@@ -17,6 +17,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
+
 import com.ibm.research.msr.utils.Constants;
 
 public class POMDependencyDownloader {
@@ -134,6 +135,13 @@ public class POMDependencyDownloader {
 
 					}
 					
+					if (version==null)
+					{
+						System.out.println("\t version NULL, extracting from maven url");
+						version=extractLatestVersionNumberFromMaven(groupId, artifactId);
+						System.out.println("\t version NULL, extracted from maven url="+version);
+					}
+					
 					Dependency d = new Dependency(groupId, artifactId, version);
 					pomDependencies.add(d);
 
@@ -224,4 +232,40 @@ public class POMDependencyDownloader {
 		System.out.println("done");
 	}
 
+	public String extractLatestVersionNumberFromMaven(String groupId,String artifactId)
+	{
+		try
+		{
+	        String groupIdWithSlash=groupId.replace('.', '/');
+			String sUrl="https://repo.maven.apache.org/maven2/"+groupIdWithSlash+"/"+artifactId+"/maven-metadata.xml";
+	        Document d = Jsoup.connect(sUrl).get();
+	//		System.out.println(d.html());
+	
+			Document xmldoc = Jsoup.parse(d.html(), "", Parser.xmlParser());
+	
+			Elements es=xmldoc.getAllElements();
+	//		System.out.println("getAllElements");
+			for (Element e : es) {
+				
+	//		    System.out.println("\t id =" + e.id());
+	//		    System.out.println("\t tag name =" + e.tagName());
+	//		    System.out.println("\t text =" + e.text());
+	
+				
+			    String tagName=e.tagName();
+			    String latestVersionNumber=null;
+			    if (tagName.compareTo("latest")==0)
+			    {
+	//                System.out.println("\n\t groupid="+groupId+" \tartifact id="+artifactId);
+			    	latestVersionNumber=e.text();
+	//		    	System.out.println("\t latest version = " + latestVersionNumber);
+			    	return latestVersionNumber;
+			    }
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
