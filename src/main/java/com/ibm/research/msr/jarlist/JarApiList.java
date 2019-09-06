@@ -148,7 +148,8 @@ public class JarApiList {
 	public void collectJavaPackagesAndClasses(String jarName, JarFile jarFile, PrintWriter pw)
 			throws ClassFormatException, IOException {
 		Set<String> packages = new HashSet<String>();
-
+		//System.out.println("collectJavaPackagesAndClasses for jar="+jarName);
+		
 //		        Map<String, JavaClass> javaClasses =
 //		            new LinkedHashMap<String, JavaClass>();
 		Enumeration<JarEntry> entries = jarFile.entries();
@@ -159,6 +160,16 @@ public class JarApiList {
 			if (!entry.getName().endsWith(".class")) {
 				continue;
 			}
+			
+			// for module-info.class, the parse method throws an
+			// Invalid byte tag in constant pool: 19 exception, so skipping it.
+			if (entry.getName().compareTo("module-info.class")==0)
+			{
+				continue;
+			}
+			
+			
+			//System.out.println("\t jar entry name="+entry.getName());
 
 			ClassParser parser = new ClassParser(jarName, entry.getName());
 			JavaClass javaClass = parser.parse();
