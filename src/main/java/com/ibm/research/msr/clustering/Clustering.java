@@ -3,6 +3,7 @@
  */
 package com.ibm.research.msr.clustering;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -476,7 +477,11 @@ public abstract class Clustering {
 		clusterobj.put("children", clusterArray);
 
 		System.out.println(clusterobj);
-		String fileString = new String(Files.readAllBytes(Paths.get("src/main/resources/d3.html")), StandardCharsets.UTF_8);
+		
+		String MSR_HOME = System.getProperty("MSR_HOME");
+		String d3Html = MSR_HOME + File.separator + "d3.html";
+		
+		String fileString = new String(Files.readAllBytes(Paths.get(d3Html)), StandardCharsets.UTF_8);
 		fileString= fileString.replaceAll("%%JSONCONTENT%%", clusterobj.toString());
 	    Files.write(Paths.get(writepath), fileString.getBytes());
 	    System.out.println("File written at "+ writepath);
@@ -576,9 +581,10 @@ public abstract class Clustering {
 //		clusterobj.put("children", clusterArray);
 ////		System.out.println(clusterobj);
 		
+		String MSR_HOME = System.getProperty("MSR_HOME");
+		String clusterAllHtml = MSR_HOME + File.separator + "clusterall.html";
 		
-		
-		String fileString = new String(Files.readAllBytes(Paths.get("src/main/resources/clusterall.html")), StandardCharsets.UTF_8);
+		String fileString = new String(Files.readAllBytes(Paths.get(clusterAllHtml)), StandardCharsets.UTF_8);
 		fileString= fileString.replaceAll("%%JSONCONTENT%%", clusterobj.toString());
 	    fileString=fileString.replaceAll("%%FILEPATHS%%", refs);
 		Files.write(Paths.get(writepath), fileString.getBytes());
