@@ -17,11 +17,11 @@ public class MetricComputation {
 	
 	public void getMetrics() {
 		for(ClusterDetails cls:listofclusters) {
+			int cohesion=0;
+			cls.setScore(cohesion);
 			//computeMetrics();
 		}
-		for(ClusterDetails cls:listofclusters) {
-			//reassignMetrics();
-		
+		for(ClusterDetails cls:listofclusters) {		
 		
 		// example of getting docUsageMap from Interclass 
 		Map<String,Integer> docUsageMap = new HashMap<>();

@@ -39,6 +39,9 @@ public class ExpandClusters {
 		listofclusters = new ArrayList<ClusterDetails>();
 		listofclusters.addAll(s); 
 		for(ClusterDetails cls:listofclusters) {
+			// if the metric is whater you want reassignment add it to nonlist 
+		//	this.nonelistofclusters.add(cls);
+			
 			if(!SingleClass && (cls.getClusterName().trim().contains("Non") || cls.getClusterName().trim().equals("None")))
 				this.nonelistofclusters.add(cls);
 			else if(SingleClass && (cls.getListOfDocuments().size()==1)) //  treats single class clusters as none list 
