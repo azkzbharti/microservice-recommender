@@ -440,7 +440,7 @@ public abstract class Clustering {
 				JSONObject clusterobj = new JSONObject();
 				clusterobj.put("name", c.getClusterName());
 
-				List<String> childList = c.getListOfDocumentsNames();
+				List<String> childList = c.getListOfShortDocumentsNames();
 				if (!childList.isEmpty()) {
 					JSONArray childrenArray = new JSONArray();
 
