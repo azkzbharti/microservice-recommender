@@ -279,32 +279,33 @@ public class MSRdriver {
 		oc.setClusters(ec.getListofclusters());
 		oc.CLeanClusters();
 		
-//		Below codes writes all the above variations in clusterall
+//		Below codes writes all the above variations in clusterall - TODO: Discuss with Shreya and remove this. 
 		
-		String d3filename = argsList2.get(1)+"/clusterall.html";//src/main/output/clusterall.html"; // TODO : Make argument 
-		String htmlpath=argsList2.get(1);
-		File dir = new File(htmlpath);
-		String[] extensions = new String[] { "html"};
-		List<File> files = (List<File>) FileUtils.listFiles(dir, extensions, true);
-		StringBuilder strBuilder =
-				new StringBuilder();
-		int count=0;
-		for (File f:files) {
-			if(f.getName().contains("all"))
-				continue;
-			String temp="<li><a href=\"filepath\" target=\"_blank\">filename</a></li> \n";
-			temp=temp.replace("filepath", f.getAbsolutePath());
-			String fname=f.getName();
-			fname=fname.replace(".html", "");
-			count=count+1;
-			fname=fname.replace("cluster", "Approach"+count+": ");
-			temp=temp.replace("filename",fname);
-			strBuilder.append(temp);
-		}
+//		String d3filename = argsList2.get(1)+"/clusterall.html";//src/main/output/clusterall.html"; // TODO : Make argument 
+//		String htmlpath=argsList2.get(1);
+//		File dir = new File(htmlpath);
+//		String[] extensions = new String[] { "html"};
+//		List<File> files = (List<File>) FileUtils.listFiles(dir, extensions, true);
+//		StringBuilder strBuilder =
+//				new StringBuilder();
+//		int count=0;
+//		for (File f:files) {
+//			if(f.getName().contains("all"))
+//				continue;
+//			String temp="<li><a href=\"filepath\" target=\"_blank\">filename</a></li> \n";
+//			temp=temp.replace("filepath", f.getAbsolutePath());
+//			String fname=f.getName();
+//			fname=fname.replace(".html", "");
+//			count=count+1;
+//			fname=fname.replace("cluster", "Approach"+count+": ");
+//			temp=temp.replace("filename",fname);
+//			strBuilder.append(temp);
+//		}
+//		
+//		oc.savecLusterJSONALL(d3filename,strBuilder.toString());
 		
-		oc.savecLusterJSONALL(d3filename,strBuilder.toString());
+		String  d3ClusterPackJSON = outputPath + File.separator + "ui" + File.separator + "data" + File.separator + "clusterall.json";
 		
-		String d3ClusterPackJSON = argsList2.get(1)+"/clusterall.json";
 		oc.saveClusterAsCirclePackJSON(d3ClusterPackJSON);
 //		analyzer.computeMeasure();
 //		analyzer.saveMeasure(null);

@@ -26,7 +26,7 @@ public class MSRLauncher {
 
 		if (args.length != 4) {
 			System.out.println(
-					"Usage: java MSRLauncher src|bin <path to the root folder> <path to the output folder> <algo to run>");
+					"Usage: java -DMSR_HOME=<absolute path of the resources folder> MSRLauncher src|bin <path to the root folder> <path to the output folder> <algo to run>");
 			return;
 		}
 
@@ -38,6 +38,11 @@ public class MSRLauncher {
 		String tempFolder = outputPath + File.separator + "temp";
 		String jarFolder = outputPath + File.separator + "temp" + File.separator + "jars";
 		String unzipFolder = outputPath + File.separator + "temp" + File.separator + "unzip";
+		String uiFolder = outputPath + File.separator + "ui" ;
+		
+		
+		String MSR_HOME = System.getProperty("MSR_HOME");
+	
 
 		if (!(new File(outputPath).exists())) {
 			// if output folder is not created, create that first.
@@ -48,6 +53,16 @@ public class MSRLauncher {
 		new File(tempFolder).mkdir();
 		new File(jarFolder).mkdir();
 		new File(unzipFolder).mkdir();
+		new File(uiFolder).mkdir();
+		
+		// copy the UI folder to the output folder;
+		try {
+		FileUtils.copyDirectory(new File( MSR_HOME + File.separator + "ui"), new File(uiFolder));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			System.out.println( " Unable to copy UI folder ");
+		}
 
 		Collection<File> buildFieList = null;
 		ArrayList<String> pomFiles = null;
@@ -121,6 +136,9 @@ public class MSRLauncher {
 
 			try {
 				MSRdriver.runNaive(rootPath, type, outputPath);
+				
+				// generate stats information
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
