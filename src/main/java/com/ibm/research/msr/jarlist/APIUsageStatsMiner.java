@@ -21,6 +21,8 @@ import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
+import com.google.gson.Gson;
+
 public class APIUsageStatsMiner {
 	
 	String[] classPathEntries=null;
@@ -29,7 +31,7 @@ public class APIUsageStatsMiner {
 	Map<String,HashSet<String>> jarToSetOfUsedAPIs=new HashMap<String,HashSet<String>>();
 	Map<String,Integer> jarToAPICount=new HashMap<String,Integer>();
 	
-	public void mine(String srcRoot,String jarToPkgsClassesCsv)
+	public void mine(String srcRoot,String jarToPkgsClassesCsv,String opJSONFileNameWithPath)
 	{
 		try
 		{
@@ -59,7 +61,7 @@ public class APIUsageStatsMiner {
 				String jarWoPath=null;
 				if (li!=-1)
 				{
-					jarWoPath=jarWithPath.substring(li);
+					jarWoPath=jarWithPath.substring(li+1);
 				}
 				else
 				{
@@ -122,8 +124,13 @@ public class APIUsageStatsMiner {
 				processOneFile(file,srcRoot);
 			}
 			
-			PrintWriter pw=new PrintWriter(srcRoot+File.separator+"jar-to-used-apis.csv");
-			pw.println("Jar,DistinctAPIsUsageCount,API");
+			//String opFileName=srcRoot+File.separator+"jar-to-used-apis.csv";
+			System.out.println("writing to op file="+opJSONFileNameWithPath);
+			PrintWriter pw=new PrintWriter(opJSONFileNameWithPath);
+			//pw.println("Jar,DistinctAPIsUsageCount,API");
+			
+			List<APIUsageStats> apiUsageStatsList=new ArrayList<APIUsageStats>();
+			
 			for (String jar:jarToSetOfUsedAPIs.keySet())
 			{
 				HashSet<String> usedAPIs = jarToSetOfUsedAPIs.get(jar);
@@ -131,11 +138,23 @@ public class APIUsageStatsMiner {
 				for (String s:usedAPIs)
 				{
 					System.out.println("\t" + s);
-					Integer iAPICnt=jarToAPICount.get(jar);
-					double percentUse=(usedAPIs.size()*100.0)/iAPICnt.intValue();
-					pw.println(jar+","+usedAPIs.size()+","+s+","+percentUse);
 				}
+				Integer iAPICnt=jarToAPICount.get(jar);
+				//double percentUse=(usedAPIs.size()*100.0)/iAPICnt.intValue();
+				//pw.println(jar+","+usedAPIs.size()+","+s+","+percentUse);
+				APIUsageStats a=new APIUsageStats(jar,iAPICnt.intValue(),usedAPIs.size());
+				apiUsageStatsList.add(a);
 			}
+			
+			System.out.println("apiUsageStatsList size="+apiUsageStatsList.size());
+			
+			Gson g=new Gson();
+			String json=g.toJson(apiUsageStatsList);
+			System.out.println("json=\n"+json);
+			pw.println(json);
+			
+			
+			
 			pw.flush();
 			pw.close();
 
@@ -256,12 +275,13 @@ public class APIUsageStatsMiner {
 //		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\jar-to-packages-classes.csv";
 		String srcRoot="C:\\Users\\GiriprasadSridhara\\sample.plantsbywebsphere-18.0.0.4\\sample.plantsbywebsphere-manual-dependencies\\src";
 		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\msr\\microservice-recommender\\src\\main\\resources\\jar-to-packages-classes-public-methods.csv";
+		String opJSONFileNameWithPath="C:\\temp\\api-usage.json";
 //		String srcRoot="C:\\Users\\GiriprasadSridhara\\Documents\\acmeair-monolithic-java-master\\acmeair-monolithic-java-master\\src";
 //		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\Documents\\acmeair-monolithic-java-master\\acmeair-monolithic-java-master\\acme-jar-to-apis.csv";
 //		String srcRoot="C:\\Users\\GiriprasadSridhara\\sample.daytrader7\\daytrader-ee7-ejb\\";
 //		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\sample.daytrader7\\daytrader-ee7-ejb\\lib-dma\\daytrader-ee7-ejb-jar-to-apis.csv";
 		
-		a.mine(srcRoot, jarToPkgsClassesCsv);
+		a.mine(srcRoot, jarToPkgsClassesCsv,opJSONFileNameWithPath);
 	}
 
 }
