@@ -16,6 +16,7 @@ import java.util.jar.JarFile;
 import org.apache.bcel.classfile.ClassFormatException;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.classfile.Method;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.Path;
 
@@ -24,6 +25,13 @@ import org.eclipse.core.runtime.Path;
  * and save it in "src/main/resources/jar-to-packges.csv"
  */
 public class JarApiList {
+	
+	String outputFileName=null;
+	
+	public void setOutputFileName(String o)
+	{
+		outputFileName=o;
+	}
 
 	public static void createJARFile(String appath) {
 		// functionality here
@@ -89,11 +97,22 @@ public class JarApiList {
 			// String root="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\";
 			// PrintWriter pw=new
 			// PrintWriter(root+File.separator+"jar-to-packages-classes.csv");
-			String csvFile = "src/main/resources/jar-to-packages.csv";
+			//String csvFile = "src/main/resources/jar-to-packages.csv";
+			String csvFile = null;
+			
+			if (outputFileName==null)
+			{
+				csvFile="src/main/resources/jar-to-packages-classes-public-methods.csv";
+			}
+			else
+			{
+				csvFile=outputFileName;
+			}
 			// PrintWriter pw=new
 			// PrintWriter("src/main/output/jar-to-packages-classes.csv");
 			PrintWriter pw = new PrintWriter(csvFile);
-			pw.println("jarName,packageName,className");
+			//pw.println("jarName,packageName,className");
+			pw.println("jarName,packageName,className,publicMethodName");
 			// File flf=new File(libFolder);
 
 			// File[] files=flf.listFiles();
@@ -179,7 +198,17 @@ public class JarApiList {
 			// packages.add(javaClass.getPackageName());
 			// System.out.println("\t super class name = " + javaClass.getSuperclassName());
 			// javaClasses.put(javaClass.getClassName(), javaClass);
-			pw.println(jarName + "," + pName + "," + cName);
+			
+			Method[] javaClassMethods = javaClass.getMethods();
+			for (Method m : javaClassMethods)
+            {
+				if (m.isPublic())
+				{
+					pw.println(jarName + "," + pName + "," + cName+","+m.getName());
+				}
+            }
+			
+			//pw.println(jarName + "," + pName + "," + cName);
 		}
 		// return packages;
 	}
@@ -189,11 +218,17 @@ public class JarApiList {
 
 		JarApiList p = new JarApiList();
 		if (args.length < 1) {
-			System.err.println("USAGE: <root folder under which jars are located (recursively searched)");
+			System.err.println("USAGE: <root folder under which jars are located (recursively searched) <optional output file name>");
 			System.exit(-1);
 		}
 		// root="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\";
 		String root = args[0];
+		
+		if (args.length==2)
+		{
+			String opFileName=args[1];
+			p.setOutputFileName(opFileName);
+		}
 		p.find(root);
 
 	}
