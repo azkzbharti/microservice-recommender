@@ -1,39 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+  <head>
     <meta charset="utf-8">
 
+    <title>Tree Example</title>
+
+    <style>
+	
+	body {
+			overflow: auto;
+			margin-top: 120px;
+			margin-left: 120px;
+	}
  
+ header {
+		 width: 100%;
+		 height: 80px;
+		 background: grey;
+		 position: fixed;
+		 padding-left: 10px;
+		 top: 0;
+		 left: 0;
+ }
+ 
+ #refs{
+	 padding-left: 100px;
+ }
+ footer {
+		 width: 100%;
+		 height: 60px;
+		 background: grey;
+		 position: fixed;
+		 bottom: 0;
+		 left: 0;
+ }
 
-<style>
-		.node {  
-						cursor: pointer;  
-					}  
-				  
-					.node circle {  
-					  fill: #fff;  
-					  stroke: steelblue;  
-					  stroke-width: 3px;  
-					}  
-				  
-					.node text {  
-					  font: 6px sans-serif;  
-					}  
-				  
-					.link {  
-					  fill: none;  
-					  stroke: #ccc;  
-					  stroke-width: 2px;  
-					}  
-					  
+	.node {
+		cursor: pointer;
+	}
 
+	.node circle {
+	  fill: #fff;
+	  stroke: steelblue;
+	  stroke-width: 2px;
+	}
+
+	.node text {
+	  font: 8px sans-serif;
+	}
+
+	.link {
+	  fill: none;
+	  stroke: #ccc;
+	  stroke-width: 2px;
+	}
+	
+	a {
+  display: inline-block;
+  padding-left:20px;
+  transition: .3s;
+  font-weight:bold;
+  text-decoration:none;
+}
+a:hover {
+  -webkit-transform: scale(1.2);
+  transform: scale(1.2);
+}
+	
     </style>
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    
   </head>
-  </head>
-  
+
   <body>
 
 <svg width="2000" height="2000"></svg>
