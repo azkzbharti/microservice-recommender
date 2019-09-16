@@ -4,27 +4,25 @@ import java.util.List;
 
 public class OverallProjectLibUsageStats {
 
-	int overallLibraryMethodInvocations=0;
-	
-	int overallNonLibraryMethodInvocations=0;
+	int libMethods = 0;
 
-	int totalMethodInvocations=0;
-	
-	double percentageOfLibraryCalls=0.0;
-	
-	List<APIUsageStats> apiUsageStats=null;
+	int nonLibMethods = 0;
+
+	int totalMethods = 0;
+
+	double percentLibMethods = 0.0;
+
+	List<APIUsageStats> apiUsageStats = null;
 
 	public OverallProjectLibUsageStats(int overallLibraryMethodInvocations, int overallNonLibraryMethodInvocations,
 			List<APIUsageStats> apiUsageStatsList) {
 		super();
-		this.overallLibraryMethodInvocations = overallLibraryMethodInvocations;
-		this.overallNonLibraryMethodInvocations = overallNonLibraryMethodInvocations;
-		totalMethodInvocations=overallLibraryMethodInvocations+overallNonLibraryMethodInvocations;
+		this.libMethods = overallLibraryMethodInvocations;
+		this.nonLibMethods = overallNonLibraryMethodInvocations;
+		totalMethods = overallLibraryMethodInvocations + overallNonLibraryMethodInvocations;
 		this.apiUsageStats = apiUsageStatsList;
-		
-		percentageOfLibraryCalls=(overallLibraryMethodInvocations*100.0)/overallNonLibraryMethodInvocations;
+
+		percentLibMethods = (overallLibraryMethodInvocations * 100.0) / overallNonLibraryMethodInvocations;
 	}
-	
-	
-	
+
 }

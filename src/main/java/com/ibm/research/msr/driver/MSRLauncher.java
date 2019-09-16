@@ -13,10 +13,12 @@ import java.util.zip.ZipInputStream;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.Path;
 
+import com.ibm.research.msr.jarlist.APIUsageStats;
+import com.ibm.research.msr.jarlist.APIUsageStatsMiner;
 import com.ibm.research.msr.jarlist.GradleDependencyDownloader;
 import com.ibm.research.msr.jarlist.JarApiList;
 import com.ibm.research.msr.jarlist.POMDependencyDownloader;
-import com.ibm.research.msr.utils.Constants;
+import com.ibm.research.msr.utils.Constants;import com.ibm.research.msr.utils.ReadJarMap;
 
 public class MSRLauncher {
 
@@ -39,6 +41,8 @@ public class MSRLauncher {
 		String jarFolder = outputPath + File.separator + "temp" + File.separator + "jars";
 		String unzipFolder = outputPath + File.separator + "temp" + File.separator + "unzip";
 		String uiFolder = outputPath + File.separator + "ui" ;
+		String jarPackagestoCSV = outputPath + File.separator + "temp" + File.separator + "jar-to-packages.csv";
+		String barDataJSON = uiFolder + File.separator + "data" + File.separator + "bar-data.json" ;
 		
 		
 		String MSR_HOME = System.getProperty("MSR_HOME");
@@ -138,6 +142,8 @@ public class MSRLauncher {
 				MSRdriver.runNaive(rootPath, type, outputPath);
 				
 				// generate stats information
+				APIUsageStatsMiner statsMiner = new APIUsageStatsMiner();
+				statsMiner.mine(rootPath, jarPackagestoCSV, barDataJSON);
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -204,6 +210,9 @@ public class MSRLauncher {
 
 			try {
 				MSRdriver.runNaive(unzipFolder, type, outputPath);
+				
+				APIUsageStatsMiner statsMiner = new APIUsageStatsMiner();
+				statsMiner.mine(rootPath, jarPackagestoCSV, barDataJSON);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

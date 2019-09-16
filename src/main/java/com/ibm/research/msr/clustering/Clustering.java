@@ -447,7 +447,8 @@ public abstract class Clustering {
 					for (String child : childList) {
 						JSONObject childObj = new JSONObject();
 						childObj.put("name", child);
-						childObj.put("size", "10");
+						// TODO: size has to be determined properly, right now using the name of the class 
+						childObj.put("size", child.length());
 
 						childrenArray.add(childObj);
 					}
