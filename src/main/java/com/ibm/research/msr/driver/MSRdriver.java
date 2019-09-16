@@ -303,6 +303,9 @@ public class MSRdriver {
 		}
 		
 		oc.savecLusterJSONALL(d3filename,strBuilder.toString());
+		
+		String d3ClusterPackJSON = argsList2.get(1)+"/clusterall.json";
+		oc.saveClusterAsCirclePackJSON(d3ClusterPackJSON);
 //		analyzer.computeMeasure();
 //		analyzer.saveMeasure(null);
 	}
