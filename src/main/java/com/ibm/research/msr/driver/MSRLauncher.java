@@ -13,6 +13,7 @@ import java.util.zip.ZipInputStream;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.Path;
 
+import com.ibm.research.msr.jarlist.GradleDependencyDownloader;
 import com.ibm.research.msr.jarlist.JarApiList;
 import com.ibm.research.msr.jarlist.POMDependencyDownloader;
 import com.ibm.research.msr.utils.Constants;
@@ -48,38 +49,60 @@ public class MSRLauncher {
 		new File(jarFolder).mkdir();
 		new File(unzipFolder).mkdir();
 
-		Collection<File> xmlFileList = null;
+		Collection<File> buildFieList = null;
 		ArrayList<String> pomFiles = null;
+		ArrayList<String> gradleFiles = null;
 
 		boolean parsedJars = false;
 
 		if (type.trim().toLowerCase().equals(Constants.SRC)) {
-			// src can contain either a pom.xml | a lib folder with jars inside it.
+			// src can contain either a pom.xml, build.gradle | a lib folder with jars
+			// inside it.
 
-			xmlFileList = FileUtils.listFiles(new File(rootPath), new String[] { "xml" }, true);
+			buildFieList = FileUtils.listFiles(new File(rootPath), new String[] { "xml", "gradle" }, true);
 
-			Iterator<File> fileListItr = xmlFileList.iterator();
+			Iterator<File> fileListItr = buildFieList.iterator();
 
 			pomFiles = new ArrayList<String>();
+			gradleFiles = new ArrayList<String>();
+
+			File buildFile = null;
 
 			while (fileListItr.hasNext()) {
-				File xmlFile = fileListItr.next();
-				if (xmlFile.getName().equals("pom.xml")) {
-					pomFiles.add(xmlFile.getAbsolutePath());
+				buildFile = fileListItr.next();
+				if (buildFile.getName().equals("pom.xml")) {
+					pomFiles.add(buildFile.getAbsolutePath());
+				} else if (buildFile.getName().endsWith("gradle")) {
+					gradleFiles.add(buildFile.getAbsolutePath());
 				}
 			}
 
-			if (pomFiles.isEmpty()) {
-				// no pom files found, hence it might contain a jars directly in lib folder
+			if (pomFiles.isEmpty() && gradleFiles.isEmpty()) {
+				// no pom or gradle files found, hence it might contain a jars directly in lib
+				// folder
 				parsedJars = dumpAPIInfo(rootPath, tempFolder);
 
-			} else {
+			} else if (!pomFiles.isEmpty()) {
 				// we have POM, we need to parse pom and download all jar files
 
 				POMDependencyDownloader pomDownloader = new POMDependencyDownloader();
 				pomDownloader.download(pomFiles, jarFolder);
 
 				parsedJars = dumpAPIInfo(jarFolder, tempFolder);
+
+			} else {
+				// we have gradle file, we need to parse gradle and download all jar files
+
+				// create pom files out of gradle file
+				GradleDependencyDownloader gradleDownloader = new GradleDependencyDownloader();
+				pomFiles = gradleDownloader.createPOMFiles(gradleFiles, jarFolder);
+
+				if (!pomFiles.isEmpty()) {
+					// use the pom file logic to download the jars now
+					POMDependencyDownloader pomDownloader = new POMDependencyDownloader();
+					pomDownloader.download(pomFiles, jarFolder);
+					parsedJars = dumpAPIInfo(jarFolder, tempFolder);
+				}
 
 			}
 
@@ -95,7 +118,7 @@ public class MSRLauncher {
 			System.out.println(" Output folder " + outputPath);
 			System.out.println(" Temo Folder " + tempFolder);
 			System.out.println(" Algo to run " + algo);
-			
+
 			try {
 				MSRdriver.runNaive(rootPath, type, outputPath);
 			} catch (IOException e) {
@@ -110,11 +133,10 @@ public class MSRLauncher {
 			// it has to be either packaged as JAR or EAR.
 
 			if (rootPath.endsWith(".jar")) {
-				
+
 				String[] splits = rootPath.split(File.separator);
-				String jarName = splits[splits.length -1];
+				String jarName = splits[splits.length - 1];
 				String dirName = jarName.substring(0, jarName.length() - 4);
-				
 
 				try {
 					unzip(rootPath, unzipFolder + File.separator + dirName);
@@ -161,7 +183,7 @@ public class MSRLauncher {
 			System.out.println(" Output folder " + outputPath);
 			System.out.println(" Temo Folder " + tempFolder);
 			System.out.println(" Algo to run " + algo);
-			
+
 			try {
 				MSRdriver.runNaive(unzipFolder, type, outputPath);
 			} catch (IOException e) {
@@ -235,10 +257,10 @@ public class MSRLauncher {
 	}
 
 	public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
-		System.out.println(" Creating File " + destinationDir.getAbsolutePath() + File.separator +   zipEntry.getName());
-		File destFile = new File(destinationDir.getAbsolutePath() + File.separator +   zipEntry.getName());
-		//create directories for sub directories in zip
-        new File(destFile.getParent()).mkdirs();
+		System.out.println(" Creating File " + destinationDir.getAbsolutePath() + File.separator + zipEntry.getName());
+		File destFile = new File(destinationDir.getAbsolutePath() + File.separator + zipEntry.getName());
+		// create directories for sub directories in zip
+		new File(destFile.getParent()).mkdirs();
 
 		String destDirPath = destinationDir.getCanonicalPath();
 		String destFilePath = destFile.getCanonicalPath();
