@@ -17,18 +17,23 @@ import com.ibm.research.msr.jarlist.APIUsageStats;
 import com.ibm.research.msr.jarlist.APIUsageStatsMiner;
 import com.ibm.research.msr.jarlist.GradleDependencyDownloader;
 import com.ibm.research.msr.jarlist.JarApiList;
+import com.ibm.research.msr.jarlist.MavenCategoryEtAlExtractor;
 import com.ibm.research.msr.jarlist.POMDependencyDownloader;
 import com.ibm.research.msr.utils.Constants;import com.ibm.research.msr.utils.ReadJarMap;
 
 public class MSRLauncher {
+	
+	private static void printUsage() {
+		System.out.println(
+				"Usage: java -DMSR_HOME=<absolute path of the resources folder> MSRLauncher src|bin <path to the root folder> <path to the output folder> <algo to run>");
+	}
 
 	public static void main(String[] args) {
 		// src <root folder path> ( contains .java files)
 		// bin < root folder path> ( contains .class files)
 
 		if (args.length != 4) {
-			System.out.println(
-					"Usage: java -DMSR_HOME=<absolute path of the resources folder> MSRLauncher src|bin <path to the root folder> <path to the output folder> <algo to run>");
+			printUsage();
 			return;
 		}
 
@@ -42,6 +47,7 @@ public class MSRLauncher {
 		String unzipFolder = outputPath + File.separator + "temp" + File.separator + "unzip";
 		String uiFolder = outputPath + File.separator + "ui" ;
 		String jarPackagestoCSV = outputPath + File.separator + "temp" + File.separator + "jar-to-packages.csv";
+		String mavenMetaJSON = outputPath + File.separator + "temp" + File.separator + "maven-meta.json" ;
 		String barDataJSON = uiFolder + File.separator + "data" + File.separator + "bar-data.json" ;
 		
 		
@@ -100,6 +106,8 @@ public class MSRLauncher {
 				// no pom or gradle files found, hence it might contain a jars directly in lib
 				// folder
 				parsedJars = dumpAPIInfo(rootPath, tempFolder);
+				MavenCategoryEtAlExtractor mavenExtractor = new MavenCategoryEtAlExtractor();
+				mavenExtractor.find(rootPath, mavenMetaJSON);
 
 			} else if (!pomFiles.isEmpty()) {
 				// we have POM, we need to parse pom and download all jar files
@@ -108,6 +116,8 @@ public class MSRLauncher {
 				pomDownloader.download(pomFiles, jarFolder);
 
 				parsedJars = dumpAPIInfo(jarFolder, tempFolder);
+				MavenCategoryEtAlExtractor mavenExtractor = new MavenCategoryEtAlExtractor();
+				mavenExtractor.find(jarFolder, mavenMetaJSON);
 
 			} else {
 				// we have gradle file, we need to parse gradle and download all jar files
@@ -122,6 +132,9 @@ public class MSRLauncher {
 					pomDownloader.download(pomFiles, jarFolder);
 					parsedJars = dumpAPIInfo(jarFolder, tempFolder);
 				}
+				
+				MavenCategoryEtAlExtractor mavenExtractor = new MavenCategoryEtAlExtractor();
+				mavenExtractor.find(jarFolder, mavenMetaJSON);
 
 			}
 
@@ -144,6 +157,8 @@ public class MSRLauncher {
 				// generate stats information
 				APIUsageStatsMiner statsMiner = new APIUsageStatsMiner();
 				statsMiner.mine(rootPath, jarPackagestoCSV, barDataJSON);
+				
+				
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -195,8 +210,7 @@ public class MSRLauncher {
 				parsedJars = dumpAPIInfo(unzipFolder, tempFolder);
 
 			} else {
-				System.out.println(
-						"Usage: java MSRLauncher src|bin <path to the root folder> <path to the output folder> <algo to run>");
+				printUsage();
 				System.out.println("We only support .ear and .jar for bin option");
 				return;
 			}
@@ -213,6 +227,9 @@ public class MSRLauncher {
 				
 				APIUsageStatsMiner statsMiner = new APIUsageStatsMiner();
 				statsMiner.mine(rootPath, jarPackagestoCSV, barDataJSON);
+				
+				MavenCategoryEtAlExtractor mavenExtractor = new MavenCategoryEtAlExtractor();
+				mavenExtractor.find(unzipFolder, mavenMetaJSON);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -222,8 +239,7 @@ public class MSRLauncher {
 			}
 
 		} else {
-			System.out.println(
-					"Usage: java MSRLauncher src|bin <path to the root folder> <path to the output folder> <algo to run>");
+			printUsage();
 			return;
 		}
 

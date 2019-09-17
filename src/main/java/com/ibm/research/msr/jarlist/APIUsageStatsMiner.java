@@ -56,23 +56,23 @@ public class APIUsageStatsMiner {
 			
 			classPathEntries=jarsWithPath.toArray(new String[0]);
 			
-			System.out.println("classPathEntries = "+classPathEntries.length);
+			//System.out.println("classPathEntries = "+classPathEntries.length);
 			for (int i=0;i<classPathEntries.length;i++)
 			{
-				System.out.println(classPathEntries[i]);
+				//System.out.println(classPathEntries[i]);
 			}
 			
-			System.out.println("fqClassToJar size="+fqClassToJar.size());
+			//System.out.println("fqClassToJar size="+fqClassToJar.size());
 			for(String c : fqClassToJar.keySet())
 			{
 				String j=fqClassToJar.get(c);
-				System.out.println(c+" "+j);
+				//System.out.println(c+" "+j);
 			}
 			
 			File fRoot = new File(srcRoot);
 			String[] extensions = new String[] { "java"};
-			System.out.println("Getting all .java  in " + fRoot.getPath()
-					+ " including those in subdirectories");
+			//System.out.println("Getting all .java  in " + fRoot.getPath()
+					//+ " including those in subdirectories");
 			List<File> files = (List<File>) FileUtils.listFiles(fRoot, extensions, true);
 			for (File file : files) {
 				processOneFile(file,srcRoot);
@@ -88,10 +88,10 @@ public class APIUsageStatsMiner {
 			for (String jar:jarToSetOfUsedAPIs.keySet())
 			{
 				HashSet<String> usedAPIs = jarToSetOfUsedAPIs.get(jar);
-				System.out.println(usedAPIs.size()+" distinct APIs used in jar="+jar);
+				//System.out.println(usedAPIs.size()+" distinct APIs used in jar="+jar);
 				for (String s:usedAPIs)
 				{
-					System.out.println("\t" + s);
+					//System.out.println("\t" + s);
 				}
 				Integer iAPICnt=jarToAPICount.get(jar);
 				//double percentUse=(usedAPIs.size()*100.0)/iAPICnt.intValue();
@@ -100,7 +100,7 @@ public class APIUsageStatsMiner {
 				apiUsageStatsList.add(a);
 			}
 			
-			System.out.println("apiUsageStatsList size="+apiUsageStatsList.size());
+			//System.out.println("apiUsageStatsList size="+apiUsageStatsList.size());
 			
 //			Gson g=new Gson();
 //			String json=g.toJson(apiUsageStatsList);
@@ -109,15 +109,15 @@ public class APIUsageStatsMiner {
 //			pw.flush();
 //			pw.close();
 			
-			System.out.println("Lib MI="+libraryMI);
-			System.out.println("Non Lib MI="+nonLibraryMI);
+			//System.out.println("Lib MI="+libraryMI);
+			//System.out.println("Non Lib MI="+nonLibraryMI);
 
 			OverallProjectLibUsageStats o=new OverallProjectLibUsageStats(libraryMI, nonLibraryMI, apiUsageStatsList,
 					methodDeclarations,methodDeclarationsWithLibCalls);
 
 			Gson g=new Gson();
 			String json=g.toJson(o);
-			System.out.println("json=\n"+json);
+			//System.out.println("json=\n"+json);
 			pw.println(json);
 			pw.flush();
 			pw.close();
@@ -190,18 +190,18 @@ public class APIUsageStatsMiner {
 			}
 		}
 
-		System.out.println("Total APIs per jar:");
-		for (String j:jarToAPICount.keySet())
-		{
-			System.out.println(j+"->"+jarToAPICount.get(j));
-		}
+//		System.out.println("Total APIs per jar:");
+//		for (String j:jarToAPICount.keySet())
+//		{
+//			System.out.println(j+"->"+jarToAPICount.get(j));
+//		}
 		return jarsWithPath;
 	}
 
 	public void processOneFile(File file, String srcRoot)
 	{
 		String fileNameWPath=file.getAbsolutePath();
-		System.out.println("file: " + file.getName() + " " + fileNameWPath);
+		//System.out.println("file: " + file.getName() + " " + fileNameWPath);
 	
 		StringBuffer sb=new StringBuffer();
 		String line=null;
@@ -331,7 +331,7 @@ public class APIUsageStatsMiner {
 				}
 				else
 				{
-					System.out.println("\t method binding null="+mi.toString());
+					//System.out.println("\t method binding null="+mi.toString());
 					nonLibraryMI++;
 				}
 				return true;
