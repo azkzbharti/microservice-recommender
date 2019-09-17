@@ -88,7 +88,7 @@
                         naturally occuring partitions. We further refine these partitions using metrics like cohesion
                         and coupling, to recommend the final set of candidate micro services / partitions of the monlith
                         application. </p>
-                    <img src="img/method.png" width="900" height="400">
+                    <img src="img/method.png" width="900" height="4	00">
                     <p>&nbsp;</p>
                     <a class="btn btn-primary page-scroll" href="#meta">Click To Scroll Down!</a>
                 </div>
@@ -168,32 +168,37 @@
                       "translate(" + margin.left + "," + margin.top + ")");
             
             // get the data
-            d3.csv("data/bar-data.csv", function(error, data) {
+            d3.json("data/bar-data.json", function(error, data) {
               if (error) throw error;
-            
+              data = data.apiUsageStats;
+              
               // format the data
               data.forEach(function(d) {
-                d.sales = +d.sales;
+                d.usedAPIs = +d.usedAPIs;
               });
             
               // Scale the range of the data in the domains
-              x.domain(data.map(function(d) { return d.salesperson; }));
-              y.domain([0, d3.max(data, function(d) { return d.sales; })]);
+              x.domain(data.map(function(d) { return d.jarName; }));
+              y.domain([0, d3.max(data, function(d) { return d.usedAPIs; })]);
             
               // append the rectangles for the bar chart
               svg1.selectAll(".bar")
                   .data(data)
                 .enter().append("rect")
                   .attr("class", "bar")
-                  .attr("x", function(d) { return x(d.salesperson); })
+                  .attr("x", function(d) { return x(d.jarName); })
                   .attr("width", x.bandwidth())
-                  .attr("y", function(d) { return y(d.sales); })
-                  .attr("height", function(d) { return height - y(d.sales); });
+                  .attr("y", function(d) { return y(d.usedAPIs); })
+                  .attr("height", function(d) { return height - y(d.usedAPIs); });
             
               // add the x Axis
               svg1.append("g")
                   .attr("transform", "translate(0," + height + ")")
-                  .call(d3.axisBottom(x));
+                  .call(d3.axisBottom(x)).selectAll("text").attr("y", 0)
+             	 .attr("x", 9)
+             	 .attr("dy", ".35em")
+             	 .attr("transform", "rotate(-90)")
+             	 .style("text-anchor", "start");
             
               // add the y Axis
               svg1.append("g")
@@ -206,7 +211,6 @@
     <!-- Circle Packing Code -->
     <script>
 
-        var gitURL = $URL$;
         var svg = d3.select("#cluster-graph").append("svg").attr("width", 600).attr("height", 600),
             margin = 20,
             diameter = +svg.attr("width"),
@@ -221,7 +225,7 @@
             .size([diameter - margin, diameter - margin])
             .padding(2);
 
-        d3.json("http://localhost:8081/msr/recommender/clusterJSON?gitURL=" + , function (error, root) {
+        d3.json("data/clusterall.json" , function (error, root) {
             if (error) throw error;
 
             root = d3.hierarchy(root)

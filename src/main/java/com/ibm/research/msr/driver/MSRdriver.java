@@ -216,23 +216,7 @@ public class MSRdriver {
 	}
 	
 	public static void runNaive(String appPath,String appType,String outputPath) throws IOException, Exception {
-//		
-//		try {
-//			JarApiList.createJARFile(appPath); // write to CSV
-//			ReadJarMap.createJARCategoryMap(); // read CSV to map
-//
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			System.out.println("Error while creating jar map"+e.toString());
-//		}
 		
-//		if(new File(outputPath).mkdir()){
-//			System.out.println("Result directory created at "+outputPath);
-//		}
-//		else {
-//			System.out.println("Output directory exists");
-//
-//		}
 		
 		ReadJarMap.createJARCategoryMap(outputPath + File.separator + "temp" + File.separator + "jar-to-packages.csv");
 		
