@@ -16,6 +16,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.google.gson.Gson;
+
 /**
  * extracts category, tags et al from a jar by going to maven repo website
  * (using its group id, artifact id which is
@@ -24,18 +26,74 @@ import org.jsoup.select.Elements;
  *
  */
 public class MavenCategoryEtAlExtractor {
+	
+	/**
+	 * class for GSON transformation
+	 * @author GiriprasadSridhara
+	 *
+	 */
+	class MavenCategoryEtAl
+	{
+		StringBuffer description=new StringBuffer();
+		
+		StringBuffer license=new StringBuffer();
+		
+		StringBuffer categories=new StringBuffer();
+		
+		StringBuffer tags=new StringBuffer();
+		
+		StringBuffer usedBy=new StringBuffer();
 
-	public void find(String jarRootPath)
+		public MavenCategoryEtAl(String description, String license, String categories, String tags, String usedBy) {
+			super();
+			this.description.append(description + " ");
+			this.license.append(license + " ");
+			this.categories.append(categories + " ");
+			this.tags.append(tags + " ");
+			this.usedBy.append(usedBy + " ");
+		}
+		
+		public MavenCategoryEtAl() {
+			// TODO Auto-generated constructor stub
+		}
+
+		public void setDescription(String d)
+		{
+			description.append(d.toString() + " ");
+		}
+		
+		public void setNameValuePairs(String n,String v)
+		{
+			if (n.compareTo("License")==0)
+			{
+				license.append(v+ " ");
+			}
+			else if (n.compareTo("Categories")==0)
+			{
+				categories.append(v+ " ");
+			}
+			else if (n.compareTo("Tags")==0)
+			{
+				tags.append(v+ " ");
+			}
+			else if (n.compareTo("Used By")==0)
+			{
+				usedBy.append(v+ " ");
+			}
+		}
+	}
+
+	public void find(String jarRootPath,String opRoot)
 	{
 		try {
 			
 			//String libFolder="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\lib";
 			//String root="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\";
 			//PrintWriter pw=new PrintWriter(root+File.separator+"jar-to-packages-classes.csv");
-			String csvFile="src/main/resources/jar-to-maven-categories-etal.csv";
+			//String csvFile="src/main/resources/jar-to-maven-categories-etal.csv";
 			//PrintWriter pw=new PrintWriter("src/main/output/jar-to-packages-classes.csv");
-			PrintWriter pw=new PrintWriter(csvFile);
-			pw.println("jarName,license,Categories,tags,used by");
+			//PrintWriter pw=new PrintWriter(csvFile);
+			//pw.println("jarName,license,Categories,tags,used by");
 			//File flf=new File(libFolder);
 			
 			//File[] files=flf.listFiles();
@@ -64,10 +122,10 @@ public class MavenCategoryEtAlExtractor {
 	        	
 //	        	System.out.println(jarName);
 	        	
-				processOneJar(jarName);
-					pw.flush();
+				processOneJar(jarName,opRoot);
+				//pw.flush();
 			}
-			pw.close();
+			//pw.close();
 //			System.out.println("processedJars ="+processedJars.size());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -75,19 +133,36 @@ public class MavenCategoryEtAlExtractor {
 		}
 	}
 
-	public void processOneJar(String jarName)
+	public void processOneJar(String jarName, String opRoot)
 	{
 		JarFile jarFile = null;
 		try {
+			
+			int li=jarName.lastIndexOf(File.separator);
+			String jarWoPath=null;
+			if (li!=-1)
+			{
+				jarWoPath=jarName.substring(li+1);
+			}
+			else
+			{
+				jarWoPath=jarName;
+			}
+
+			String opFileName=opRoot+File.separator+jarWoPath+".maven-category-etal.json";
+			PrintWriter pw=new PrintWriter(opFileName);
+			
 			jarFile = new JarFile(jarName);
             Enumeration<JarEntry> entries = jarFile.entries();
             String groupId=null;
             String artifactId=null;
 
+            MavenCategoryEtAl m=new MavenCategoryEtAl();
+            
             while (entries.hasMoreElements())
             {
                 JarEntry entry = entries.nextElement();
-                System.out.println(entry.getName());
+                //System.out.println(entry.getName());
                 //looking for META-INF/maven/com.google.guava/guava/
                 String name=entry.getName();
                 if (name.contains("META-INF/maven/"))
@@ -119,6 +194,20 @@ public class MavenCategoryEtAlExtractor {
                 String sUrl="https://mvnrepository.com/artifact/"+groupId+"/"+artifactId;
     			Document d = Jsoup.connect(sUrl).get();
     			System.out.println(d.html());
+    			
+    			String descText=null;
+    			Elements desc = d.select("div.im-description");
+    			if (desc !=null)
+    			{
+    				Element descElem = desc.get(0);
+    				if (descElem!=null)
+    				{
+    					System.out.println("description="+descElem.text());
+    					descText=descElem.text();
+    					m.setDescription(descText);
+    				}
+    			}
+    			
     			Elements tables=d.select(".grid");
     			if (tables!=null)
     			{
@@ -132,11 +221,15 @@ public class MavenCategoryEtAlExtractor {
     				        Elements th = row.select("th");
     				        Elements td = row.select("td");
 
-    				        System.out.println("th="+th.get(0).text());
+    				        String rowName=th.get(0).text();
+    				        System.out.println("th="+rowName);
+    				        
     				        for (int j=0;j<td.size();j++)
     				        {
     				        	Element el = td.get(j);
     				        	System.out.println("td " + j + " " + el.text());
+    				        	String rowVal=el.text();
+    				        	m.setNameValuePairs(rowName, rowVal);
     				        }
     				        
     				        //System.out.println("td="+td.get(0).text());
@@ -147,6 +240,12 @@ public class MavenCategoryEtAlExtractor {
     				    }	
     				}
     			}
+    			Gson g=new Gson();
+    			String json=g.toJson(m);
+    			pw.println(json);
+    			pw.flush();
+    			pw.close();
+    			System.out.println("JSON=\n"+json);
     			return;
             }
 
@@ -181,20 +280,23 @@ public class MavenCategoryEtAlExtractor {
 		
 		if (choice==1)
 		{
-			if (args.length < 1)
+			if (args.length < 2)
 			{
-				System.err.println("USAGE: <root folder under which jars are located (recursively searched)");
+				System.err.println("USAGE: <root folder under which jars are located (recursively searched)> <output root where jsons are written>");
 				System.exit(-1);
 			}
 			//root="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\";
 			String root=args[0];
-			m.find(root);
+			String opRoot=args[1];
+			m.find(root,opRoot);
 		}
 		else
 		{
 			//String jarName="C:\\Users\\GiriprasadSridhara\\Documents\\demo-july\\july-30\\guava-27.1-jre.jar";
 			String jarName="C:\\Users\\GiriprasadSridhara\\.m2\\repository\\commons-cli\\commons-cli\\1.4\\commons-cli-1.4.jar";
-			m.processOneJar(jarName);
+			//String opJsonFileName="C:\\temp\\maven-category-etal.json";
+			String opRoot="C:\\temp";
+			m.processOneJar(jarName,opRoot);
 		}
 	}
 
