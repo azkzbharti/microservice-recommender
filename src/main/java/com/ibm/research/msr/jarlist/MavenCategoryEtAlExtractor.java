@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import com.google.gson.Gson;
@@ -228,8 +229,25 @@ public class MavenCategoryEtAlExtractor {
     				        {
     				        	Element el = td.get(j);
     				        	System.out.println("td " + j + " " + el.text());
+    				        	// <th>Tags</th>
+    				        	// <td><a href="/tags/command-line" class="b tag">command-line</a><a href="/tags/cli" class="b tag">cli</a><a href="/tags/parser" class="b tag">parser</a></td>
     				        	String rowVal=el.text();
-    				        	m.setNameValuePairs(rowName, rowVal);
+    				        	// TODO: check if this needs to be done even for "Categories"
+    				        	if (rowName.compareTo("Tags")==0)
+    				        	{
+    				        		StringBuffer sbTags=new StringBuffer();
+    				        		Elements tags = el.select("a");
+    				        		for (Element t:tags)
+    				        		{
+    				        			System.out.println("\t tc="+t.text() + " :href="+t.attr("href"));
+    				        			sbTags.append(t.text() + " ");
+    				        		}
+    				        		m.setNameValuePairs(rowName, sbTags.toString());
+    				        	}
+    				        	else
+    				        	{
+    				        		m.setNameValuePairs(rowName, rowVal);
+    				        	}
     				        }
     				        
     				        //System.out.println("td="+td.get(0).text());
@@ -292,8 +310,8 @@ public class MavenCategoryEtAlExtractor {
 		}
 		else
 		{
-			//String jarName="C:\\Users\\GiriprasadSridhara\\Documents\\demo-july\\july-30\\guava-27.1-jre.jar";
-			String jarName="C:\\Users\\GiriprasadSridhara\\.m2\\repository\\commons-cli\\commons-cli\\1.4\\commons-cli-1.4.jar";
+			String jarName="C:\\Users\\GiriprasadSridhara\\Documents\\demo-july\\july-30\\guava-27.1-jre.jar";
+			//String jarName="C:\\Users\\GiriprasadSridhara\\.m2\\repository\\commons-cli\\commons-cli\\1.4\\commons-cli-1.4.jar";
 			//String opJsonFileName="C:\\temp\\maven-category-etal.json";
 			String opRoot="C:\\temp";
 			m.processOneJar(jarName,opRoot);
