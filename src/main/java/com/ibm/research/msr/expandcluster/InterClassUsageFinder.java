@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,8 @@ import java.util.Stack;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -48,6 +51,7 @@ public class InterClassUsageFinder {
 		String[] extensions = new String[] { "java" };
 //		System.out.println("Getting all .java  in " + fRoot.getPath() + " including those in subdirectories");
 		List<File> files = (List<File>) FileUtils.listFiles(fRoot, extensions, true);
+//		System.out.println("files size="+files.size());
 		for (File file : files) {
 			processOneFile(file, srcFilesRoot);
 		}
@@ -128,6 +132,9 @@ public class InterClassUsageFinder {
 				e.printStackTrace();
 			}
 		}
+//		System.out.println("-----SRC BEGIN-----"+file.getName());
+//		System.out.println(sb);
+//		System.out.println("-----SRC END-----"+file.getName());
 		ASTParser parser = ASTParser.newParser(AST.JLS12);
 
 		parser.setSource(sb.toString().toCharArray());
@@ -161,10 +168,41 @@ public class InterClassUsageFinder {
 		{
 			srcPath[0] = srcFilesRoot;
 		}
+//		System.out.println("srcPath array="+srcPath.length);
+		for (String s: srcPath)
+		{
+//			System.out.println("\t src path arr elem="+s);
+		}
+//		String[] srcPath2=new String[]{"C:\\Users\\GiriprasadSridhara\\sample.plantsbywebsphere\\src\\main"};
 		parser.setEnvironment(null, srcPath, null, true);
+//		String[] classPathEntries=new String[]{"C:\\Users\\GiriprasadSridhara\\sample.plantsbywebsphere-18.0.0.4\\sample.plantsbywebsphere-manual-dependencies\\lib"};
+		//classPathEntries[0]=args[2];
 
+		Hashtable<String, String> options = JavaCore.getDefaultOptions();
+		options.put(JavaCore.COMPILER_SOURCE, JavaCore.VERSION_12);
+		options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_12);
+
+		options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, JavaCore.VERSION_12);
+		parser.setCompilerOptions(options);
+		
+//		//parser.setEnvironment(classPathEntries, srcPath, null, true);
+//		String[] srcPath3 = new String[] {
+//				"C:\\Users\\GiriprasadSridhara\\sample.plantsbywebsphere-18.0.0.4\\sample.plantsbywebsphere-manual-dependencies\\src\\",
+//				"C:\\Users\\GiriprasadSridhara\\sample.plantsbywebsphere-18.0.0.4\\sample.plantsbywebsphere-manual-dependencies\\src\\main"
+////				"C:\\Users\\GiriprasadSridhara\\sample.plantsbywebsphere-18.0.0.4\\sample.plantsbywebsphere-manual-dependencies\\src\\main\\java"
+//////				"C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\"
+//			};
+//		parser.setEnvironment(classPathEntries, srcPath3, null, true);
+//		parser.setEnvironment(null, srcPath3, null, true);
 		final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 
+//		IProblem[] ps = cu.getProblems();
+//		System.out.println("\t problems="+ps.length);
+//		for (IProblem p:ps)
+//		{
+//			System.out.println("\t problem="+p.getMessage());
+//		}
+		
 		final Stack<TypeDeclaration> stackTD = new Stack<TypeDeclaration>();
 
 		final Map<ClassPair, Integer> localFileInterClassUsageMatrix = new HashMap<ClassPair, Integer>();
@@ -405,7 +443,7 @@ public class InterClassUsageFinder {
 			// InterClassUsageFinder i=new InterClassUsageFinder();
 			Map<ClassPair, Integer> m=i.find(srcFilesRoot);
 
-//			System.out.println("\nFinalInterClassUsageMatrix:");
+			System.out.println("\nFinalInterClassUsageMatrix:");
 			for (ClassPair cp: m.keySet())
 			{
 				Integer c=m.get(cp);
@@ -416,7 +454,8 @@ public class InterClassUsageFinder {
 			//String ipf = "C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\com\\ibm\\research\\digdeep\\preventive\\clusterer\\CarrotClusteringEngineImpl.java";
 			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\com\\ibm\\research\\util\\MapUtil.java";
 			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\com\\ibm\\research\\digdeep\\web\\services\\DynamicRecommendationService.java";
-			String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-git-api-web\\src\\com\\ibm\\research\\digdeep\\git\\GitApiResource.java";
+			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-git-api-web\\src\\com\\ibm\\research\\digdeep\\git\\GitApiResource.java";
+			String ipf="C:\\Users\\GiriprasadSridhara\\sample.plantsbywebsphere\\src\\main\\java\\com\\ibm\\websphere\\samples\\pbw\\bean\\BackOrderMgr.java";
 			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\extra\\recommendations\\"
 			// ipf="C:\\Users\\GiriprasadSridhara\\dependency-migration-asistant\\src\\main\\java\\com\\ibm\\research\\appmod\\dma\\impact\\ChangedAPIUsageSiteFinder.java";
 			File file = new File(ipf);
@@ -432,7 +471,7 @@ public class InterClassUsageFinder {
 		    final IOFileFilter srcFolderFilter = new IOFileFilter() {  
 		        @Override
 		        public boolean accept(File dir, String name) {
-		        	System.out.println("accept dir " + name);
+		        	//System.out.println("accept dir " + name);
 		            if (name.compareTo("src")==0)
 		            {
 		            	return true;
@@ -466,18 +505,32 @@ public class InterClassUsageFinder {
 		//			System.out.println("Getting all .java  in " + fRoot.getPath() + " including those in subdirectories");
 		List<File> files = (List<File>) FileUtils.listFiles(root, extensions, true);
 		Set<String> srcRootSet=new HashSet<String>();
-		for (File file : files) {
-			
-			String fileNameWPath=file.getAbsolutePath();
-			int srcIndex=fileNameWPath.indexOf(File.separator+"src"+File.separator);
-			String srcRoot=null;
-			if (srcIndex != -1)
-			{
-				// extract till .../src/ to use as src root
-				srcRoot=fileNameWPath.substring(0,srcIndex+5);
-				srcRootSet.add(srcRoot);
-			}
 
+		// for newer pom based projects, where java files
+		// are under src/main/java etc instead of src/<package> as in say older digdeep
+		
+		// TODO: i have not seen such occurrences but if the source folders are not named
+		// src or src/main/java but names say as "source", "source/main/java" etc, we need to handle
+		// it. In the processOneFile method above, while reading the lines, we can scan 
+		// the package declaration line such as com.ibm.research...., find "com/ibm/research/..." in
+		// the file path and pick the part before com.ibm.research.... as the source folder root for
+		// parsing this java file.
+		// But for now, the logic below suffices.
+		
+		String[] srcPatterns=new String[] {
+				File.separator+"src"+File.separator,
+				File.separator+"src"+File.separator+"main"+File.separator,
+				File.separator+"src"+File.separator+"main"+File.separator+"java"+File.separator
+		};
+		for (File file : files) {
+			for (String srcPattern:srcPatterns)
+			{
+				String srcFolder=extractSourceFoldersHelper(file,srcPattern);
+				if (srcFolder!=null)
+				{
+					srcRootSet.add(srcFolder);
+				}
+			}
 		}
 		
 //		System.out.println("srcRootSet size="+srcRootSet.size());
@@ -488,4 +541,21 @@ public class InterClassUsageFinder {
 		return srcRootSet;
 	}
 
+	private static String extractSourceFoldersHelper(File file,String srcPattern)
+	{
+		//System.out.println("extractSourceFoldersHelper: "+file.getAbsolutePath());
+		//System.out.println("\tsrcPattern: "+srcPattern);
+		String fileNameWPath=file.getAbsolutePath();
+		int srcIndex=fileNameWPath.indexOf(srcPattern);
+		String srcRoot=null;
+		if (srcIndex != -1)
+		{
+			// extract till .../src/ to use as src root
+			srcRoot=fileNameWPath.substring(0,srcIndex+srcPattern.length());
+			//System.out.println("\t returning "+srcRoot);
+			return srcRoot;
+		}
+		//System.out.println("\t returning null");
+		return null;
+	}
 }
