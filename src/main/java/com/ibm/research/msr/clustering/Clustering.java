@@ -15,30 +15,22 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.ibm.research.msr.extraction.Document;
 import com.ibm.research.msr.utils.Constants;
-import com.ibm.research.msr.utils.ReadJarMap;
 
 import weka.core.Instances;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Remove;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 
 /**
  * @author ShreyaKhare
@@ -428,42 +420,15 @@ public abstract class Clustering {
 
 		}
 
+		JSONObject rootObject = null;
+		//TODO: We should not be handling NONE cluters here. Not sure why evern after cluster expansion, we still see NULL. 
 		if (!listofclusters.isEmpty()) {
-			Iterator<ClusterDetails> itr = listofclusters.iterator();
-			JSONObject rootObject = new JSONObject();
-			rootObject.put("name", "clusters");
+			rootObject = createJSON(listofclusters);
+		} else if (!nonelistofclusters.isEmpty()) {
+			rootObject = createJSON(nonelistofclusters);
+		}
 
-			JSONArray rootChildrenArray = new JSONArray();
-
-			while (itr.hasNext()) {
-				ClusterDetails c = itr.next();
-				JSONObject clusterobj = new JSONObject();
-				clusterobj.put("name", c.getClusterName());
-
-				List<String> childList = c.getListOfShortDocumentsNames();
-				if (!childList.isEmpty()) {
-					JSONArray childrenArray = new JSONArray();
-
-					for (String child : childList) {
-						JSONObject childObj = new JSONObject();
-						childObj.put("name", child);
-						// TODO: size has to be determined properly, right now using the name of the class 
-						childObj.put("size", child.length());
-
-						childrenArray.add(childObj);
-					}
-
-					clusterobj.put("children", childrenArray);
-				}
-
-				rootChildrenArray.add(clusterobj);
-
-			}
-
-			rootObject.put("children", rootChildrenArray);
-
-			// now write the json to the file.
-
+		if (rootObject != null) {
 			try {
 				Files.write(Paths.get(writepath), rootObject.toString().getBytes());
 			} catch (IOException e) {
@@ -472,10 +437,51 @@ public abstract class Clustering {
 
 				System.out.println("Error while writing file to  " + writepath);
 			}
+		} else {
+			System.out.println("Error while writing file to  " + writepath);
+		}
 
-			System.out.println("File written at " + writepath);
+		System.out.println("File written at " + writepath);
+
+	}
+
+	private JSONObject createJSON(List<ClusterDetails> listofclusters) {
+
+		Iterator<ClusterDetails> itr = listofclusters.iterator();
+		JSONObject rootObject = new JSONObject();
+		rootObject.put("name", "clusters");
+
+		JSONArray rootChildrenArray = new JSONArray();
+
+		while (itr.hasNext()) {
+			ClusterDetails c = itr.next();
+			JSONObject clusterobj = new JSONObject();
+			clusterobj.put("name", c.getClusterName());
+
+			List<String> childList = c.getListOfShortDocumentsNames();
+			if (!childList.isEmpty()) {
+				JSONArray childrenArray = new JSONArray();
+
+				for (String child : childList) {
+					JSONObject childObj = new JSONObject();
+					childObj.put("name", child);
+					// TODO: size has to be determined properly, right now using the name of the
+					// class
+					childObj.put("size", child.length());
+
+					childrenArray.add(childObj);
+				}
+
+				clusterobj.put("children", childrenArray);
+			}
+
+			rootChildrenArray.add(clusterobj);
 
 		}
+
+		rootObject.put("children", rootChildrenArray);
+
+		return rootObject;
 
 	}
 
