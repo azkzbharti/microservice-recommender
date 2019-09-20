@@ -133,11 +133,11 @@ public class ReferencedClassesExtractor {
 		String jarNameWithFullPath = "/Users/senthil/ms-recomm.jar";
 		Map<String, HashSet<String>> classToRefClasses = r.extractFromJAR(jarNameWithFullPath);
 		for (String c : classToRefClasses.keySet()) {
-			System.out.println("Class = " + c);
-			System.out.println("\tReferenced classes(Imports):");
+			//System.out.println("Class = " + c);
+			//System.out.println("\tReferenced classes(Imports):");
 			HashSet<String> rcs = classToRefClasses.get(c);
 			for (String rc : rcs) {
-				System.out.println("\t " + rc);
+				//System.out.println("\t " + rc);
 			}
 		}
 	}

@@ -50,7 +50,7 @@ public class POMDependencyDownloader {
 			Elements es = xmldoc.getAllElements();
 			for (int i = 0; i < es.size(); i++) {
 				Element e = es.get(i);
-				System.out.println(i + " " + e.tagName() + " " + e.text());
+				//System.out.println(i + " " + e.tagName() + " " + e.text());
 				if (e.tagName().compareTo("dependency") == 0) {
 					Elements depElements = e.getAllElements();
 					if (depElements.size() < 4) {
@@ -72,7 +72,7 @@ public class POMDependencyDownloader {
 
 					for (int j = 0; j < depElements.size(); j++) {
 						Element de = depElements.get(j);
-						System.out.println("\tDependency element " + j + "-" + de.tagName() + "-" + de.text());
+					//	System.out.println("\tDependency element " + j + "-" + de.tagName() + "-" + de.text());
 						
 						if (de.tagName().compareTo("groupId")==0)
 						{
@@ -91,9 +91,9 @@ public class POMDependencyDownloader {
 					
 					if (version==null)
 					{
-						System.out.println("\t version NULL, extracting from maven url");
+						//System.out.println("\t version NULL, extracting from maven url");
 						version=extractLatestVersionNumberFromMaven(groupId, artifactId);
-						System.out.println("\t version NULL, extracted from maven url="+version);
+						//System.out.println("\t version NULL, extracted from maven url="+version);
 					}
 					
 					Dependency d = new Dependency(groupId, artifactId, version);
@@ -105,7 +105,7 @@ public class POMDependencyDownloader {
 			int j=0;
 			for (Dependency d : pomDependencies) {
 				j++;
-				System.out.println(j+"\t"+d);
+				//System.out.println(j+"\t"+d);
 			}
 			int k = 0;
 			for (Dependency d : pomDependencies) {
@@ -146,11 +146,11 @@ public class POMDependencyDownloader {
 
 		File destination = new File(fullPath);
 
-		System.out.println("downloading " + sURL + " -to-" + fullPath);
+		//System.out.println("downloading " + sURL + " -to-" + fullPath);
 
 		try {
 			FileUtils.copyURLToFile(url, destination, Constants.CONNECTION_TIME_OUT, Constants.READ_TIME_OUT);
-			System.out.println("\t successfully downloaded and copied " + fullPath);
+			//System.out.println("\t successfully downloaded and copied " + fullPath);
 		} catch (IOException ioe) {
 			System.err.println("HANDLED IOException while trying to download jar file and copy " + jarFileName);
 			ioe.printStackTrace();
@@ -174,16 +174,16 @@ public class POMDependencyDownloader {
 		if (args.length == 3) {
 			if (args[2].equalsIgnoreCase("0")) {
 				bDownloadJavaDocAndSourcesJarAlso = false;
-				System.out.println("Will download only jar");
+//				System.out.println("Will download only jar");
 			} else {
 				bDownloadJavaDocAndSourcesJarAlso = true;
-				System.out.println("Will download only javadoc and sources jar also");
+//				System.out.println("Will download only javadoc and sources jar also");
 
 			}
 		}
 
 		p.download(pomFileWithPath, downloadPath, bDownloadJavaDocAndSourcesJarAlso);
-		System.out.println("done");
+//		System.out.println("done");
 	}
 
 	public static String extractLatestVersionNumberFromMaven(String groupId,String artifactId)

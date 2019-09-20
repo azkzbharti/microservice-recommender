@@ -88,17 +88,17 @@ public class GradleDependencyDownloader {
 					Matcher m = patArr[i].matcher(s);
 					if (m.matches()) {
 
-						System.out.println("match with " + depPatterns[i]);
-						System.out.println("m.group(1)=" + m.group(1));
+						//System.out.println("match with " + depPatterns[i]);
+						//System.out.println("m.group(1)=" + m.group(1));
 
 						String groupNameVersion = m.group(1);
 
 						Matcher mGNV = pGroupNameVersion.matcher(groupNameVersion);
 						if (mGNV.matches()) {
-							System.out.println("GNV" + mGNV.group(1) + "---" + mGNV.group(2) + "---" + mGNV.group(3));
+							//System.out.println("GNV" + mGNV.group(1) + "---" + mGNV.group(2) + "---" + mGNV.group(3));
 							Dependency dep = null;
 							if (mGNV.group(3).contains("+")) {
-								System.out.println("+ in version");
+								//System.out.println("+ in version");
 								String lv = POMDependencyDownloader.extractLatestVersionNumberFromMaven(mGNV.group(1),
 										mGNV.group(2));
 								dep = new Dependency(mGNV.group(1), mGNV.group(2), lv);
@@ -107,17 +107,17 @@ public class GradleDependencyDownloader {
 							}
 							depList.add(dep);
 						} else {
-							System.out.println("no match for=" + groupNameVersion);
+							//System.out.println("no match for=" + groupNameVersion);
 //						String[] gnvArr=groupNameVersion.split(":");
 							Matcher mGNV2 = pGroupNameVersion2.matcher(groupNameVersion);
 							if (mGNV2.matches()) {
-								System.out.println("\t mGNV2 match = " + mGNV2.group(1) + "---" + mGNV2.group(2) + "---"
-										+ mGNV2.group(3));
+								//System.out.println("\t mGNV2 match = " + mGNV2.group(1) + "---" + mGNV2.group(2) + "---"
+								//		+ mGNV2.group(3));
 
 								Dependency dep = null;
 
 								if (mGNV2.group(3).contains("+")) {
-									System.out.println("+ in version");
+									//System.out.println("+ in version");
 									String lv = POMDependencyDownloader
 											.extractLatestVersionNumberFromMaven(mGNV2.group(1), mGNV2.group(2));
 									dep = new Dependency(mGNV2.group(1), mGNV2.group(2), lv);
@@ -191,14 +191,14 @@ public class GradleDependencyDownloader {
 	}
 
 	private void visitScriptCode(SourceUnit source, GroovyCodeVisitor transformer) {
-		System.out.println("enter visitScriptCode");
+		//System.out.println("enter visitScriptCode");
 		source.getAST().getStatementBlock().visit(transformer);
 
-		System.out.println("source.getAST().getMethods() =" + source.getAST().getMethods().size());
+		//System.out.println("source.getAST().getMethods() =" + source.getAST().getMethods().size());
 
 		for (Object method : source.getAST().getMethods()) {
 			MethodNode methodNode = (MethodNode) method;
-			System.out.println("methodNode to string=" + methodNode.toString());
+			//System.out.println("methodNode to string=" + methodNode.toString());
 			methodNode.getCode().visit(transformer);
 		}
 	}
@@ -231,7 +231,7 @@ public class GradleDependencyDownloader {
 			GradleDependenciesVisitor gv = new GradleDependenciesVisitor();
 
 			for (ASTNode n : nodes) {
-				System.out.println("ASTNode=" + n.getText());
+				//System.out.println("ASTNode=" + n.getText());
 //				n.visit(new CodeVisitorSupport() {
 //			
 //
@@ -292,7 +292,7 @@ public class GradleDependencyDownloader {
 			// StreamResult result = new StreamResult(System.out);
 
 			transformer.transform(source, result);
-			System.out.println("wrote latest pom xml to " + opPOMXMLName);
+			//System.out.println("wrote latest pom xml to " + opPOMXMLName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

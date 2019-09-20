@@ -13,19 +13,19 @@ public class GradleDependenciesVisitor extends CodeVisitorSupport {
 	//@Override
 	public void visitMethodCallExpression​(MethodCallExpression m)
 	{
-		System.out.println("visitMethodCallExpression​ ="+m.getMethodAsString());
+		//System.out.println("visitMethodCallExpression​ ="+m.getMethodAsString());
 		super.visitMethodCallExpression(m);
 	}
 	
 	public void visitMapExpression(MapExpression m)
 	{
-		System.out.println("visitMapExpression​ ="+m.getText());
+		//System.out.println("visitMapExpression​ ="+m.getText());
 		
 		List<MapEntryExpression> mapEntries = m.getMapEntryExpressions();
 		for (MapEntryExpression me:mapEntries)
 		{
-			System.out.println("\t"+me.getKeyExpression().getText());
-			System.out.println("\t"+me.getValueExpression().getText());
+			//System.out.println("\t"+me.getKeyExpression().getText());
+			//System.out.println("\t"+me.getValueExpression().getText());
 		}
 		
 		super.visitMapExpression(m);
@@ -33,7 +33,7 @@ public class GradleDependenciesVisitor extends CodeVisitorSupport {
 	
 	public void visit​ConstantExpression(ConstantExpression m)
 	{
-		System.out.println("visitConstantExpression​ ="+m.getText());
+		//System.out.println("visitConstantExpression​ ="+m.getText());
 		super.visitConstantExpression(m);
 	}
 
