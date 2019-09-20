@@ -397,58 +397,9 @@ public abstract class Clustering {
 
 	public void saveClusterAsCirclePackJSON(String writepath) {
 
-		List<ClusterDetails> listofclusters = new ArrayList<>();
-		List<ClusterDetails> nonelistofclusters = new ArrayList<>();
-
-		Set<ClusterDetails> s = new HashSet<ClusterDetails>();
-		s.addAll(clusters);
-
-		clusters = new ArrayList<ClusterDetails>();
-		clusters.addAll(s);
-
-		clusters = sortClusterOnScore(clusters);
-
-		for (ClusterDetails cls : clusters) {
-//			 if(cls.getClusterName()==null)
-			cls.setClusterName();
-			if (cls.getListOfDocuments().size() > 0) {
-				if (cls.getClusterName().trim().contains("Non") || cls.getClusterName().trim().equals("None"))
-					nonelistofclusters.add(cls);
-				else
-					listofclusters.add(cls);
-			}
-
-		}
-
-		JSONObject rootObject = null;
-		//TODO: We should not be handling NONE cluters here. Not sure why evern after cluster expansion, we still see NULL. 
-		if (!listofclusters.isEmpty()) {
-			rootObject = createJSON(listofclusters);
-		} else if (!nonelistofclusters.isEmpty()) {
-			rootObject = createJSON(nonelistofclusters);
-		}
-
-		if (rootObject != null) {
-			try {
-				Files.write(Paths.get(writepath), rootObject.toString().getBytes());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-
-				System.out.println("Error while writing file to  " + writepath);
-			}
-		} else {
-			System.out.println("Error while writing file to  " + writepath);
-		}
-
-		System.out.println("File written at " + writepath);
-
-	}
-
-	private JSONObject createJSON(List<ClusterDetails> listofclusters) {
-
-		Iterator<ClusterDetails> itr = listofclusters.iterator();
 		JSONObject rootObject = new JSONObject();
+		Iterator<ClusterDetails> itr = clusters.iterator();
+
 		rootObject.put("name", "clusters");
 
 		JSONArray rootChildrenArray = new JSONArray();
@@ -481,7 +432,20 @@ public abstract class Clustering {
 
 		rootObject.put("children", rootChildrenArray);
 
-		return rootObject;
+		if (rootObject != null) {
+			try {
+				Files.write(Paths.get(writepath), rootObject.toString().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+
+				System.out.println("Error while writing file to  " + writepath);
+			}
+		} else {
+			System.out.println("Error while writing file to  " + writepath);
+		}
+
+		System.out.println("File written at " + writepath);
 
 	}
 
