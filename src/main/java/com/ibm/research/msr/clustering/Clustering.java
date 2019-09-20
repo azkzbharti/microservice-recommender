@@ -38,7 +38,7 @@ import weka.filters.unsupervised.attribute.Remove;
  */
 public abstract class Clustering {
 
-	static Map<ClusterDetails, Double> consolidatedClusters = new HashMap<ClusterDetails, Double>();
+	Map<ClusterDetails, Double> consolidatedClusters = new HashMap<ClusterDetails, Double>();
 
 	protected List<Document> listOfDocuments = new ArrayList<Document>();
 	protected List<ClusterDetails> clusters = new ArrayList<>();
@@ -293,10 +293,10 @@ public abstract class Clustering {
 		List<ClusterDetails> newclusters = new ArrayList<>();
 		List<ClusterDetails> newclusters1 = new ArrayList<>();
 
-		for (ClusterDetails cls : Clustering.consolidatedClusters.keySet()) {
+		for (ClusterDetails cls :consolidatedClusters.keySet()) {
 //			System.out.println(Clustering.consolidatedClusters.get(cls));
 			ClusterDetails temp = new ClusterDetails(cls.getListOfDocuments(),
-					Clustering.consolidatedClusters.get(cls));
+					consolidatedClusters.get(cls));
 			temp.removeDuplicates();
 			newclusters.add(temp);
 //			if(temp.getClusterName().equals("commons-math3.3.0")) {
@@ -313,7 +313,7 @@ public abstract class Clustering {
 	 * @param consolidatedClusters the consolidatedClusters to set
 	 */
 	public static void setConsolidatedClusters(Map<ClusterDetails, Double> consolidatedClusters) {
-		Clustering.consolidatedClusters = consolidatedClusters;
+		consolidatedClusters = consolidatedClusters;
 	}
 
 	public List<Document> getListOfDocuments() {
@@ -335,7 +335,7 @@ public abstract class Clustering {
 		listofclusters.addAll(s);
 		for (ClusterDetails cls : clusterslist) {
 //			 cls.showDetails();
-			Clustering.consolidatedClusters.put(cls, cls.getScore());
+			consolidatedClusters.put(cls, cls.getScore());
 		}
 //		 this.clusters=listofclusters;
 //		 Clustering.consolidatedClusters.put(key, value)
