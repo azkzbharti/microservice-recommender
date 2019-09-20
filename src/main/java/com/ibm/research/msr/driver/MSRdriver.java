@@ -75,9 +75,9 @@ public class MSRdriver {
 //		
 //		
 //		String d3filename = "src/main/output/cluster.html"; // TODO : Make argument 
-		String d3filename = args.get(1) + "/cluster.html";
-		d3filename = d3filename.replaceAll(".html", algorithm + combineStrategy + args.get(3) + ".html");
-		oc.savecLusterJSON(d3filename);
+//		String d3filename = args.get(1) + "/cluster.html";
+//		d3filename = d3filename.replaceAll(".html", algorithm + combineStrategy + args.get(3) + ".html");
+//		oc.savecLusterJSON(d3filename);
 		oc.CombineClusters();
 
 		return oc;
