@@ -72,14 +72,14 @@ public class APIUsageStatsMiner {
 			File fRoot = new File(srcRoot);
 			String[] extensions = new String[] { "java"};
 			//System.out.println("Getting all .java  in " + fRoot.getPath()
-					//+ " including those in subdirectories");
+			//		+ " including those in subdirectories");
 			List<File> files = (List<File>) FileUtils.listFiles(fRoot, extensions, true);
 			for (File file : files) {
 				processOneFile(file,srcRoot);
 			}
 			
 			//String opFileName=srcRoot+File.separator+"jar-to-used-apis.csv";
-			System.out.println("writing to op file="+opJSONFileNameWithPath);
+			//System.out.println("writing to op file="+opJSONFileNameWithPath);
 			PrintWriter pw=new PrintWriter(opJSONFileNameWithPath);
 			//pw.println("Jar,DistinctAPIsUsageCount,API");
 			
@@ -190,11 +190,11 @@ public class APIUsageStatsMiner {
 			}
 		}
 
-//		System.out.println("Total APIs per jar:");
-//		for (String j:jarToAPICount.keySet())
-//		{
-//			System.out.println(j+"->"+jarToAPICount.get(j));
-//		}
+		//System.out.println("Total APIs per jar:");
+		for (String j:jarToAPICount.keySet())
+		{
+			//System.out.println(j+"->"+jarToAPICount.get(j));
+		}
 		return jarsWithPath;
 	}
 
@@ -309,7 +309,7 @@ public class APIUsageStatsMiner {
 						libraryMI++;
 						if (fqMIName.equalsIgnoreCase("com.google.common.io.Files.toString"))
 						{
-							System.out.println("\tfound jar "+jar);
+							//System.out.println("\tfound jar "+jar);
 						}
 
 						HashSet<String> setOfUsedAPIs = jarToSetOfUsedAPIs.get(jar);
@@ -325,7 +325,7 @@ public class APIUsageStatsMiner {
 						nonLibraryMI++;
 						if (fqMIName.equalsIgnoreCase("com.google.common.io.Files.toString"))
 						{
-							System.out.println("\t NOT found jar "+jar);
+							//System.out.println("\t NOT found jar "+jar);
 						}
 					}
 				}
