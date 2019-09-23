@@ -391,6 +391,10 @@ public class MavenCategoryEtAlExtractor {
 			Gson g=new Gson();
 			JsonObject jo=g.fromJson(resultJSON.toString(), JsonObject.class);
 			JsonArray ja= jo.getAsJsonArray("items");
+			
+			if(ja == null) {
+				return "";
+			}
 
 			int size=ja.size();
 			for (int i=0;i<size;i++)
