@@ -1,0 +1,9 @@
+Mgr
+Bean
+Servlet
+Select
+Query
+Update
+Delete
+Engine
+Service

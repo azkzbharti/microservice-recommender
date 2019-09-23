@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.zip.ZipEntry;
@@ -13,6 +14,7 @@ import java.util.zip.ZipInputStream;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.Path;
 
+import com.ibm.research.msr.clustering.Affinity;
 import com.ibm.research.msr.jarlist.APIUsageStats;
 import com.ibm.research.msr.jarlist.APIUsageStatsMiner;
 import com.ibm.research.msr.jarlist.GradleDependencyDownloader;
@@ -75,6 +77,8 @@ public class MSRLauncher {
 		String mavenMetaJSON = outputPath + File.separator + "temp" + File.separator + "maven-meta.json";
 		String barDataJSON = uiFolder + File.separator + "data" + File.separator + "bar-data.json";
 
+		String affinityClusterJSON = uiFolder + File.separator + "data" + File.separator + "cluster-affinity.json";
+
 		String MSR_HOME = System.getProperty("MSR_HOME");
 
 		// if output folder allready exist - delete it.
@@ -82,7 +86,8 @@ public class MSRLauncher {
 
 		if (!deleteDirectory(outputFolder)) {
 			System.err.println("************* Unable to Delete TEMP Folder *****************");
-			//throw new Exception("Unable to delete temp directory: " + outputFolder.getAbsolutePath());
+			// throw new Exception("Unable to delete temp directory: " +
+			// outputFolder.getAbsolutePath());
 		}
 
 		// creating the temp folder and jar folders inside output folder.
@@ -180,6 +185,7 @@ public class MSRLauncher {
 
 			try {
 				MSRdriver.runNaive(rootPath, type, outputPath);
+				runAffinity(rootPath, affinityClusterJSON, tempFolder);
 
 				// generate stats information
 				APIUsageStatsMiner statsMiner = new APIUsageStatsMiner();
@@ -249,6 +255,7 @@ public class MSRLauncher {
 
 			try {
 				MSRdriver.runNaive(unzipFolder, type, outputPath);
+				runAffinity(rootPath, affinityClusterJSON, tempFolder);
 
 				APIUsageStatsMiner statsMiner = new APIUsageStatsMiner();
 				statsMiner.mine(rootPath, jarPackagestoCSV, barDataJSON);
@@ -267,6 +274,42 @@ public class MSRLauncher {
 			printUsage();
 			return;
 		}
+
+	}
+
+	private static ArrayList<String> getJavaFileNames(String rootPath) {
+
+		Collection<File> javaFiles = FileUtils.listFiles(new File(rootPath), new String[] { "java" }, true);
+
+		ArrayList<String> javaFileNames = new ArrayList<String>();
+
+		if (!javaFiles.isEmpty()) {
+
+			for (File f : javaFiles) {
+				String name = f.getName();
+				if (name.endsWith(".java")) {
+					name = name.substring(0, name.indexOf("."));
+					javaFileNames.add(name);
+				}
+			}
+
+		}
+
+		return javaFileNames;
+
+	}
+
+	private static void runAffinity(String rootPath, String outputJSONFile, String tempFolder) {
+
+		// check for type and support getting this info from binary
+		ArrayList<String> javaFiles = getJavaFileNames(rootPath);
+
+		Object[] gfg = javaFiles.toArray();
+		String[] str = Arrays.copyOf(gfg, gfg.length, String[].class);
+
+		Affinity affinity = new Affinity(str, tempFolder + File.separator + "cluster-affinity.properties",
+				outputJSONFile);
+		affinity.runClustering();
 
 	}
 
