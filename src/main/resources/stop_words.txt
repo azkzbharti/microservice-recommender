@@ -7,3 +7,7 @@ Update
 Delete
 Engine
 Service
+Insert
+Manager
+Create
+Resource

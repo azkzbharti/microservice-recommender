@@ -191,10 +191,7 @@ public class MSRLauncher {
 				APIUsageStatsMiner statsMiner = new APIUsageStatsMiner();
 				statsMiner.mine(rootPath, jarPackagestoCSV, barDataJSON);
 
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
+			}  catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -262,10 +259,7 @@ public class MSRLauncher {
 
 				MavenCategoryEtAlExtractor mavenExtractor = new MavenCategoryEtAlExtractor();
 				mavenExtractor.find(unzipFolder, mavenMetaJSON);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
+			}  catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

@@ -21,7 +21,7 @@ public class Affinity {
 	String[] words = null;
 	String outputFile = null;
 	String propFile = null;
-	HashMap<String, Integer> stopWordsMap = null;
+	HashMap<String, String> stopWordsMap = null;
 	HashMap<String, String> originalMap = null;
 
 	public Affinity(String[] words, String propFile, String outputFile) {
@@ -80,10 +80,15 @@ public class Affinity {
 	}
 
 	private String getOriginalName(String s) {
+		String returnValue = s;
 		if (originalMap != null) {
-			return originalMap.get(s);
-		} else
+			returnValue =  originalMap.get(s);
+		}
+		
+		if(returnValue == null)
 			return s;
+		
+		return returnValue;
 	}
 
 	private void saveClusterJSON() {
@@ -103,9 +108,9 @@ public class Affinity {
 					Iterator<String> itrs = stopWordsMap.keySet().iterator();
 					while (itrs.hasNext()) {
 						String replace = itrs.next();
-						int find = stopWordsMap.get(replace);
-						key = key.replaceAll(find + "", "-Service");
-						value = value.replaceAll(find + "", replace);
+						String find = stopWordsMap.get(replace);
+						key = key.replaceAll(find, replace);
+						value = value.replaceAll(find, replace);
 
 					}
 
@@ -192,8 +197,8 @@ public class Affinity {
 			Iterator<String> itr = stopWordsMap.keySet().iterator();
 			while (itr.hasNext()) {
 				String find = itr.next();
-				int replace = stopWordsMap.get(find);
-				wordString = wordString.replaceAll(find, replace + "");
+				String replace = stopWordsMap.get(find);
+				wordString = wordString.replaceAll(find, replace);
 
 			}
 
@@ -209,10 +214,11 @@ public class Affinity {
 			reader = new BufferedReader(new FileReader(Util.getStopWordsFile()));
 			String line = reader.readLine();
 			int i = 1;
-			stopWordsMap = new HashMap<String, Integer>();
+			stopWordsMap = new HashMap<String, String>();
 			while (line != null) {
 				line = line.toLowerCase().trim();
-				stopWordsMap.put(line, i);
+				String s = i+"";
+				stopWordsMap.put(line,s+s+s);
 				i++;
 
 				// read next line
