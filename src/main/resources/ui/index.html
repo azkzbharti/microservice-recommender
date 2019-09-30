@@ -2,148 +2,186 @@
 <html lang="en" class="no-js">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="canonical" href="https://html5-templates.com/" />
-    <title>Library Framwork Usage Based Paritioning</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/sticky-menu.css" rel="stylesheet">
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://html5-templates.com/" />
+<title>Library Framwork Usage Based Paritioning</title>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/sticky-menu.css" rel="stylesheet">
 </head>
 <style>
-    /* this is for bar-graph*/
-    .bar {
-        fill: steelblue;
-    }
+/* this is for bar-graph*/
+.bar {
+	fill: steelblue;
+}
 
-    /* everything below is for circle-packing */
-    .node {
-        cursor: pointer;
-    }
+/* everything below is for circle-packing */
+.node {
+	cursor: pointer;
+}
 
-    .node:hover {
-        stroke: #000;
-        stroke-width: 1.5px;
-    }
+.node:hover {
+	stroke: #000;
+	stroke-width: 1.5px;
+}
 
-    .node--leaf {
-        fill: white;
-    }
+.node--leaf {
+	fill: white;
+}
 
-    .label {
-        font: 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
-        text-anchor: middle;
-        text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
-    }
+.label {
+	font: 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
+	text-anchor: middle;
+	text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+}
 
-    .label,
-    .node--root,
-    .node--leaf {
-        pointer-events: none;
-    }
+.label, .node--root, .node--leaf {
+	pointer-events: none;
+}
 </style>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle menu</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand page-scroll" href="#page-top">About</a>
-            </div>
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header page-scroll">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle menu</span> <span class="icon-bar"></span>
+					<span class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand page-scroll" href="#page-top">About</a>
+			</div>
 
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="hidden">
-                        <a class="page-scroll" href="#page-top"></a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#meta">Meta</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#partition">Recommended Natural Seams / Partition</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#comparison">Comparison</a>
-                    </li>
-                </ul>
-            </div> <!-- .navbar-collapse -->
-        </div> <!-- .container -->
-    </nav>
-    <!-- Welcome   -->
-    <section id="welcome" class="welcome-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Library Framework API usage based paritioning </h1>
-                    <p>While implementing business functionalities, we leverage multiple propreitary and open source
-                        library frameworks and APIs in the applications. Analysis of usage of such APIs in the
-                        applications can provide insights on naturally occuring functionality boundaries. </p>
-                    <p>In this approach, we understand the usage of APIs in the application using static code analysis.
-                        Further we apply multiple unsupervised clustering approaches using this information to identify
-                        naturally occuring partitions. We further refine these partitions using metrics like cohesion
-                        and coupling, to recommend the final set of candidate micro services / partitions of the monlith
-                        application. </p>
-                    <img src="img/method.png" width="900" height="4	00">
-                    <p>&nbsp;</p>
-                    <a class="btn btn-primary page-scroll" href="#meta">Click To Scroll Down!</a>
-                </div>
-            </div>
-        </div>
-    </section>
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li class="hidden"><a class="page-scroll" href="#page-top"></a>
+					</li>
+					<li><a class="page-scroll" href="#meta">Meta</a></li>
+					<li><a class="page-scroll" href="#partition">Recommended
+							Natural Seams / Partition</a></li>
+				</ul>
+			</div>
+			<!-- .navbar-collapse -->
+		</div>
+		<!-- .container -->
+	</nav>
+	<!-- Welcome   -->
+	<section id="welcome" class="welcome-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1>Library Framework API usage based paritioning</h1>
+					<p>While implementing business functionalities, we leverage
+						multiple propreitary and open source library frameworks and APIs
+						in the applications. Analysis of usage of such APIs in the
+						applications can provide insights on naturally occuring
+						functionality boundaries.</p>
+					<p>In this approach, we understand the usage of APIs in the
+						application using static code analysis. Further we apply multiple
+						unsupervised clustering approaches using this information to
+						identify naturally occuring partitions. We further refine these
+						partitions using metrics like cohesion and coupling, to recommend
+						the final set of candidate micro services / partitions of the
+						monlith application.</p>
+					<img src="img/method.png" width="900" height="400">
+					<p>&nbsp;</p>
+					<a class="btn btn-primary page-scroll" href="#meta">Click To
+						Scroll Down!</a>
+				</div>
+			</div>
+		</div>
+	</section>
 
-    <!-- Meta -->
-    <section id="meta" class="about-section">
-        <div class="container">
-            <div class="row">
-                <div id="bar-graph" class="col-lg-12">
-                    <h1>Meta Information About Monolith Application</h1>
-                </div>
-            </div>
-        </div>
-    </section>
+	<!-- Meta -->
+	<section id="meta" class="about-section">
+		<div class="container">
+			<div class="row">
+				<div id="bar-graph" class="col-lg-12">
+					<h1>Meta Information About Monolith Application</h1>
+				</div>
+			</div>
+		</div>
+	</section>
 
-    <!-- Partition -->
-    <section id="partition" class="whatwedo-section">
-        <div class="container">
-            <div class="row">
-                <div id="cluster-graph" class="col-lg-12">
-                    <h1>Recommened Candidate Micro Services / Partition</h1>
-                </div>
-            </div>
-        </div>
-    </section>
+	<!-- Partition -->
+	<section id="partition" class="whatwedo-section">
+		<div class="container">
+			<div class="row">
+				<div id="cluster-graph" class="col-lg-6">	
+				<h3>Recommended partitions of monolith application using API Usage information</h3>	
+				</div>
+				<div id="affinity-graph" class="col-lg-6">
+				<h3>Recommended partitions of monolith application using  Affinity Propagation</h3>	
+				</div>
+			</div>
+		</div>
+	</section>
 
-    <!-- Comparison -->
-    <section id="comparison" class="contact-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Comparison of our recommendation with manual approach</h1>
-                </div>
-            </div>
-        </div>
-    </section>
+	<!-- Comparison
+	<section id="comparison" class="contact-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+				<h1>Comparison with  manual approach</h1>
+					<div id="carouselExampleIndicators" class="carousel slide"
+						data-ride="carousel">
+						<ol class="carousel-indicators">
+							<li data-target="#carouselExampleIndicators" data-slide-to="0"
+								class="active"></li>
+							<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+							<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+						</ol>
+						<div class="carousel-inner">
+							<div class="item active">
+								<img src="img/method.png" alt="First slide" >
+								<div class="carousel-caption d-md-block">
+									<h5>First Image</h5>
+								</div>
+							</div>
+							<div class="item">
+								<img src="img/method.png" alt="Second slide" >
+								<div class="carousel-caption d-md-block">
+									<h5>Second Image</h5>
+								</div>
+							</div>
+							<div class="item">
+								<img src="img/method.png" alt="Third slide" >
+								<div class="carousel-caption d-md-block">
+									<h5>Third Image</h5>
+								</div>
+							</div>
+						</div>
+						<a class="carousel-control-prev" href="#carouselExampleIndicators"
+							role="button" data-slide="prev"> <span
+							class="carousel-control-prev-icon" aria-hidden="true"></span> <span
+							class="sr-only">Previous</span>
+						</a> <a class="carousel-control-next"
+							href="#carouselExampleIndicators" role="button" data-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="sr-only">Next</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section> -->
 
-    <a id="back2Top" title="Back to top" href="#">&#10148;</a>
+	<a id="back2Top" title="Back to top" href="#">&#10148;</a>
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+	<!-- jQuery -->
+	<script src="js/jquery.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/bootstrap.min.js"></script>
 
-    <!-- Scrolling Nav JavaScript -->
-    <script src="js/jquery.easing.min.js"></script>
-    <script src="js/sticky-menu.js"></script>
+	<!-- Scrolling Nav JavaScript -->
+	<script src="js/jquery.easing.min.js"></script>
+	<script src="js/sticky-menu.js"></script>
 
-    <!-- D3-->
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script>
+	<!-- D3-->
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script>
         
             // set the dimensions and margins of the graph
             var margin = {top: 20, right: 20, bottom: 30, left: 40},
@@ -207,9 +245,9 @@
             });
             
             </script>
-   
-    <!-- Circle Packing Code -->
-    <script>
+
+	<!-- Circle Packing Code -->
+	<script>
 
         var svg = d3.select("#cluster-graph").append("svg").attr("width", 600).attr("height", 600),
             margin = 20,
@@ -284,7 +322,82 @@
         });
 
     </script>
+	<!-- Affinity Packing Code -->
+	<script>
 
+        var svg3 = d3.select("#affinity-graph").append("svg").attr("width", 600).attr("height", 600),
+            margin = 20,
+            diameter = +svg3.attr("width"),
+            g2 = svg3.append("g").attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+
+        var color1 = d3.scaleLinear()
+            .domain([-1, 5])
+            .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
+            .interpolate(d3.interpolateHcl);
+
+        var pack1 = d3.pack()
+            .size([diameter - margin, diameter - margin])
+            .padding(2);
+
+        d3.json("data/cluster-affinity.json" , function (error, root) {
+            if (error) throw error;
+
+            root = d3.hierarchy(root)
+                .sum(function (d) { return d.size; })
+                .sort(function (a, b) { return b.value - a.value; });
+
+            var focus = root,
+                nodes = pack1(root).descendants(),
+                view;
+
+            var circle2 = g2.selectAll("circle")
+                .data(nodes)
+                .enter().append("circle")
+                .attr("class", function (d) { return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root"; })
+                .style("fill", function (d) { return d.children ? color1(d.depth) : null; })
+                .on("click", function (d) { if (focus !== d) zoom(d), d3.event.stopPropagation(); });
+
+            var text2 = g2.selectAll("text")
+                .data(nodes)
+                .enter().append("text")
+                .attr("class", "label")
+                .style("fill-opacity", function (d) { return d.parent === root ? 1 : 0; })
+                .style("display", function (d) { return d.parent === root ? "inline" : "none"; })
+                .text(function (d) { return d.data.name; });
+
+            var node2 = g2.selectAll("circle,text");
+
+            svg3
+                .style("background", color(-1))
+                .on("click", function () { zoom(root); });
+
+            zoomTo([root.x, root.y, root.r * 2 + margin]);
+
+            function zoom(d) {
+                var focus0 = focus; focus = d;
+
+                var transition = d3.transition()
+                    .duration(d3.event.altKey ? 7500 : 750)
+                    .tween("zoom", function (d) {
+                        var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
+                        return function (t) { zoomTo(i(t)); };
+                    });
+
+                transition.selectAll("text")
+                    .filter(function (d) { return d.parent === focus || this.style.display === "inline"; })
+                    .style("fill-opacity", function (d) { return d.parent === focus ? 1 : 0; })
+                    .on("start", function (d) { if (d.parent === focus) this.style.display = "inline"; })
+                    .on("end", function (d) { if (d.parent !== focus) this.style.display = "none"; });
+            }
+
+            function zoomTo(v) {
+                var k = diameter / v[2]; view = v;
+                node2.attr("transform", function (d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
+                circle2.attr("r", function (d) { return d.r * k; });
+            }
+        });
+
+    </script>
 
 </body>
 

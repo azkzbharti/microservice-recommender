@@ -59,7 +59,16 @@ public class ExpandClusters {
 //		System.out.println("All clusters "+listofclusters.size()); 
 
 		i.find(srcFilesRoot);
-		
+//		System.out.println("Printing the cluster map");
+//		
+//		for (ClassPair cp: mapClasspPair.keySet())
+//		{
+//			Integer c=mapClasspPair.get(cp);
+//			System.out.println(cp.getThisClass()+"-"+cp.getUsedClass()+"="+c);
+//		}
+//		
+//		System.out.println("Printing the cluster map after");
+//		
 	}
 	
 	

@@ -1,0 +1,15 @@
+Mgr
+Bean
+Servlet
+Select
+Query
+Update
+Delete
+Engine
+Service
+Insert
+Manager
+Create
+Resource
+InsertInto
+Validation

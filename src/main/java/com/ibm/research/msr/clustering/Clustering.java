@@ -38,7 +38,7 @@ import weka.filters.unsupervised.attribute.Remove;
  */
 public abstract class Clustering {
 
-	static Map<ClusterDetails, Double> consolidatedClusters = new HashMap<ClusterDetails, Double>();
+	Map<ClusterDetails, Double> consolidatedClusters = new HashMap<ClusterDetails, Double>();
 
 	protected List<Document> listOfDocuments = new ArrayList<Document>();
 	protected List<ClusterDetails> clusters = new ArrayList<>();
@@ -293,10 +293,10 @@ public abstract class Clustering {
 		List<ClusterDetails> newclusters = new ArrayList<>();
 		List<ClusterDetails> newclusters1 = new ArrayList<>();
 
-		for (ClusterDetails cls : Clustering.consolidatedClusters.keySet()) {
+		for (ClusterDetails cls :consolidatedClusters.keySet()) {
 //			System.out.println(Clustering.consolidatedClusters.get(cls));
 			ClusterDetails temp = new ClusterDetails(cls.getListOfDocuments(),
-					Clustering.consolidatedClusters.get(cls));
+					consolidatedClusters.get(cls));
 			temp.removeDuplicates();
 			newclusters.add(temp);
 //			if(temp.getClusterName().equals("commons-math3.3.0")) {
@@ -313,7 +313,7 @@ public abstract class Clustering {
 	 * @param consolidatedClusters the consolidatedClusters to set
 	 */
 	public static void setConsolidatedClusters(Map<ClusterDetails, Double> consolidatedClusters) {
-		Clustering.consolidatedClusters = consolidatedClusters;
+		consolidatedClusters = consolidatedClusters;
 	}
 
 	public List<Document> getListOfDocuments() {
@@ -335,7 +335,7 @@ public abstract class Clustering {
 		listofclusters.addAll(s);
 		for (ClusterDetails cls : clusterslist) {
 //			 cls.showDetails();
-			Clustering.consolidatedClusters.put(cls, cls.getScore());
+			consolidatedClusters.put(cls, cls.getScore());
 		}
 //		 this.clusters=listofclusters;
 //		 Clustering.consolidatedClusters.put(key, value)
@@ -397,58 +397,9 @@ public abstract class Clustering {
 
 	public void saveClusterAsCirclePackJSON(String writepath) {
 
-		List<ClusterDetails> listofclusters = new ArrayList<>();
-		List<ClusterDetails> nonelistofclusters = new ArrayList<>();
-
-		Set<ClusterDetails> s = new HashSet<ClusterDetails>();
-		s.addAll(clusters);
-
-		clusters = new ArrayList<ClusterDetails>();
-		clusters.addAll(s);
-
-		clusters = sortClusterOnScore(clusters);
-
-		for (ClusterDetails cls : clusters) {
-//			 if(cls.getClusterName()==null)
-			cls.setClusterName();
-			if (cls.getListOfDocuments().size() > 0) {
-				if (cls.getClusterName().trim().contains("Non") || cls.getClusterName().trim().equals("None"))
-					nonelistofclusters.add(cls);
-				else
-					listofclusters.add(cls);
-			}
-
-		}
-
-		JSONObject rootObject = null;
-		//TODO: We should not be handling NONE cluters here. Not sure why evern after cluster expansion, we still see NULL. 
-		if (!listofclusters.isEmpty()) {
-			rootObject = createJSON(listofclusters);
-		} else if (!nonelistofclusters.isEmpty()) {
-			rootObject = createJSON(nonelistofclusters);
-		}
-
-		if (rootObject != null) {
-			try {
-				Files.write(Paths.get(writepath), rootObject.toString().getBytes());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-
-				System.out.println("Error while writing file to  " + writepath);
-			}
-		} else {
-			System.out.println("Error while writing file to  " + writepath);
-		}
-
-		System.out.println("File written at " + writepath);
-
-	}
-
-	private JSONObject createJSON(List<ClusterDetails> listofclusters) {
-
-		Iterator<ClusterDetails> itr = listofclusters.iterator();
 		JSONObject rootObject = new JSONObject();
+		Iterator<ClusterDetails> itr = clusters.iterator();
+
 		rootObject.put("name", "clusters");
 
 		JSONArray rootChildrenArray = new JSONArray();
@@ -481,7 +432,20 @@ public abstract class Clustering {
 
 		rootObject.put("children", rootChildrenArray);
 
-		return rootObject;
+		if (rootObject != null) {
+			try {
+				Files.write(Paths.get(writepath), rootObject.toString().getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+
+				System.out.println("Error while writing file to  " + writepath);
+			}
+		} else {
+			System.out.println("Error while writing file to  " + writepath);
+		}
+
+		System.out.println("File written at " + writepath);
 
 	}
 

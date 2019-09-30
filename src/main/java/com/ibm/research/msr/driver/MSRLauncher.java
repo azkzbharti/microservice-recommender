@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.zip.ZipEntry;
@@ -13,19 +14,45 @@ import java.util.zip.ZipInputStream;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.Path;
 
+import com.ibm.research.msr.clustering.Affinity;
 import com.ibm.research.msr.jarlist.APIUsageStats;
 import com.ibm.research.msr.jarlist.APIUsageStatsMiner;
 import com.ibm.research.msr.jarlist.GradleDependencyDownloader;
 import com.ibm.research.msr.jarlist.JarApiList;
 import com.ibm.research.msr.jarlist.MavenCategoryEtAlExtractor;
 import com.ibm.research.msr.jarlist.POMDependencyDownloader;
-import com.ibm.research.msr.utils.Constants;import com.ibm.research.msr.utils.ReadJarMap;
+import com.ibm.research.msr.utils.Constants;
+import com.ibm.research.msr.utils.ReadJarMap;
 
 public class MSRLauncher {
-	
+
 	private static void printUsage() {
 		System.out.println(
 				"Usage: java -DMSR_HOME=<absolute path of the resources folder> MSRLauncher src|bin <path to the root folder> <path to the output folder> <algo to run>");
+	}
+
+	/**
+	 * Deletes a directory on disk by recursively deleting all of its content.
+	 *
+	 * @param directory the root directory to delete
+	 * @return whether this operation was successful
+	 */
+	public static boolean deleteDirectory(File directory) {
+		boolean success = true;
+		if (directory.exists()) { // If it doesn't exist anyway return true
+			File[] files = directory.listFiles();
+			if (files != null) { // some JVMs return null for empty dirs
+				for (File file : files) {
+					if (file.isDirectory()) {
+						success = success && deleteDirectory(file);
+					} else {
+						success = success && file.delete();
+					}
+				}
+			}
+			success = success && directory.delete();
+		}
+		return success; // Will be false if even one item could not be deleted
 	}
 
 	public static void main(String[] args) {
@@ -45,33 +72,38 @@ public class MSRLauncher {
 		String tempFolder = outputPath + File.separator + "temp";
 		String jarFolder = outputPath + File.separator + "temp" + File.separator + "jars";
 		String unzipFolder = outputPath + File.separator + "temp" + File.separator + "unzip";
-		String uiFolder = outputPath + File.separator + "ui" ;
+		String uiFolder = outputPath + File.separator + "ui";
 		String jarPackagestoCSV = outputPath + File.separator + "temp" + File.separator + "jar-to-packages.csv";
-		String mavenMetaJSON = outputPath + File.separator + "temp" + File.separator + "maven-meta.json" ;
-		String barDataJSON = uiFolder + File.separator + "data" + File.separator + "bar-data.json" ;
-		
-		
-		String MSR_HOME = System.getProperty("MSR_HOME");
-	
+		String mavenMetaJSON = outputPath + File.separator + "temp" + File.separator + "maven-meta.json";
+		String barDataJSON = uiFolder + File.separator + "data" + File.separator + "bar-data.json";
 
-		if (!(new File(outputPath).exists())) {
-			// if output folder is not created, create that first.
-			new File(outputPath).mkdir();
+		String affinityClusterJSON = uiFolder + File.separator + "data" + File.separator + "cluster-affinity.json";
+
+		String MSR_HOME = System.getProperty("MSR_HOME");
+
+		// if output folder allready exist - delete it.
+		File outputFolder = new File(outputPath);
+
+		if (!deleteDirectory(outputFolder)) {
+			System.err.println("************* Unable to Delete TEMP Folder *****************");
+			// throw new Exception("Unable to delete temp directory: " +
+			// outputFolder.getAbsolutePath());
 		}
 
 		// creating the temp folder and jar folders inside output folder.
+		outputFolder.mkdir();
 		new File(tempFolder).mkdir();
 		new File(jarFolder).mkdir();
 		new File(unzipFolder).mkdir();
 		new File(uiFolder).mkdir();
-		
+
 		// copy the UI folder to the output folder;
 		try {
-		FileUtils.copyDirectory(new File( MSR_HOME + File.separator + "ui"), new File(uiFolder));
+			FileUtils.copyDirectory(new File(MSR_HOME + File.separator + "ui"), new File(uiFolder));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			System.out.println( " Unable to copy UI folder ");
+			System.out.println(" Unable to copy UI folder ");
 		}
 
 		Collection<File> buildFieList = null;
@@ -132,7 +164,7 @@ public class MSRLauncher {
 					pomDownloader.download(pomFiles, jarFolder);
 					parsedJars = dumpAPIInfo(jarFolder, tempFolder);
 				}
-				
+
 				MavenCategoryEtAlExtractor mavenExtractor = new MavenCategoryEtAlExtractor();
 				mavenExtractor.find(jarFolder, mavenMetaJSON);
 
@@ -153,17 +185,13 @@ public class MSRLauncher {
 
 			try {
 				MSRdriver.runNaive(rootPath, type, outputPath);
-				
+				runAffinity(rootPath, affinityClusterJSON, tempFolder);
+
 				// generate stats information
 				APIUsageStatsMiner statsMiner = new APIUsageStatsMiner();
 				statsMiner.mine(rootPath, jarPackagestoCSV, barDataJSON);
-				
-				
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
+
+			}  catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -224,16 +252,14 @@ public class MSRLauncher {
 
 			try {
 				MSRdriver.runNaive(unzipFolder, type, outputPath);
-				
+				runAffinity(rootPath, affinityClusterJSON, tempFolder);
+
 				APIUsageStatsMiner statsMiner = new APIUsageStatsMiner();
 				statsMiner.mine(rootPath, jarPackagestoCSV, barDataJSON);
-				
+
 				MavenCategoryEtAlExtractor mavenExtractor = new MavenCategoryEtAlExtractor();
 				mavenExtractor.find(unzipFolder, mavenMetaJSON);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
+			}  catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -242,6 +268,42 @@ public class MSRLauncher {
 			printUsage();
 			return;
 		}
+
+	}
+
+	private static ArrayList<String> getJavaFileNames(String rootPath) {
+
+		Collection<File> javaFiles = FileUtils.listFiles(new File(rootPath), new String[] { "java" }, true);
+
+		ArrayList<String> javaFileNames = new ArrayList<String>();
+
+		if (!javaFiles.isEmpty()) {
+
+			for (File f : javaFiles) {
+				String name = f.getName();
+				if (name.endsWith(".java")) {
+					name = name.substring(0, name.indexOf("."));
+					javaFileNames.add(name);
+				}
+			}
+
+		}
+
+		return javaFileNames;
+
+	}
+
+	private static void runAffinity(String rootPath, String outputJSONFile, String tempFolder) {
+
+		// check for type and support getting this info from binary
+		ArrayList<String> javaFiles = getJavaFileNames(rootPath);
+
+		Object[] gfg = javaFiles.toArray();
+		String[] str = Arrays.copyOf(gfg, gfg.length, String[].class);
+
+		Affinity affinity = new Affinity(str, tempFolder + File.separator + "cluster-affinity.properties",
+				outputJSONFile);
+		affinity.runClustering();
 
 	}
 
