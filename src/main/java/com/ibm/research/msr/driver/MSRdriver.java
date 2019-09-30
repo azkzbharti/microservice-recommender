@@ -72,93 +72,8 @@ public class MSRdriver {
 		oc.getClusters();
 		oc.removeDuplicate();
 
-//		
-//		
-//		String d3filename = "src/main/output/cluster.html"; // TODO : Make argument 
-//		String d3filename = args.get(1) + "/cluster.html";
-//		d3filename = d3filename.replaceAll(".html", algorithm + combineStrategy + args.get(3) + ".html");
-//		oc.savecLusterJSON(d3filename);
-		oc.CombineClusters();
 
-		return oc;
-
-	}
-
-	public static Clustering runALLUtility(AnalyzeApp analyzer, List<String> args) throws IOException {
-		Clustering oc = null;
-
-		List<List<ClusterDetails>> allAlgoClusterList = new ArrayList<>();
-
-		args.set(2, Constants.NAIVE); // has 2 variations as below
-		args.add(4, Constants.ONLY_MERGE);
-////
-//		oc=runSingleAlgorithm(analyzer,args);
-//		System.out.println("New clusters size:");
-//		System.out.println(oc.getClusters().size());
-//		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
-//
-//		oc.setClusters(oc.getConsolidatedClusters());
-//		System.out.println(oc.getClusters().size());
-//		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
-
-		args.set(4, Constants.SPLIT);
-		oc = runSingleAlgorithm(analyzer, args);
-		System.out.println("New clusters size:");
-		System.out.println(oc.getClusters().size());
-		System.out.println("Currently total consolidated clusters: " + oc.getConsolidatedClusters().size());
-
-		oc.setClusters(oc.getConsolidatedClusters());
-
-		System.out.println(oc.getClusters().size());
-		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
-
-		String k = Integer.toString(oc.getClusters().size());
-		args.set(2, Constants.KMEANS);
-		args.add(4, k);
-		oc = runSingleAlgorithm(analyzer, args);
-		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
-		oc.setClusters(oc.getConsolidatedClusters());
-
-//		
-		args.set(2, Constants.DBSCAN);
-		args.set(4, "0.0003");
-		args.add(5, "1");
-
-		oc = runSingleAlgorithm(analyzer, args);
-		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
-		oc.setClusters(oc.getConsolidatedClusters());
-
-		args.set(2, Constants.NAIVE_TFIDF); // has 4 variations as below
-
-//			args.set(4, Constants.COSINE);
-//			args.set(5,  Constants.ONLY_MERGE);
-//			oc=runSingleAlgorithm(analyzer,args);
-//			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
-//			oc.setClusters(oc.getConsolidatedClusters());
-//
-//			
-//			args.set(4, Constants.EUCLIDIEAN);
-//			args.set(5,  Constants.ONLY_MERGE);
-//			oc=runSingleAlgorithm(analyzer,args);
-//			oc.setClusters(oc.getConsolidatedClusters());
-//			allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
-
-		args.set(4, Constants.COSINE);
-		args.set(5, Constants.SPLIT);
-		oc = runSingleAlgorithm(analyzer, args);
-		oc.setClusters(oc.getConsolidatedClusters());
-		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
-
-		args.set(4, Constants.EUCLIDIEAN);
-		args.set(5, Constants.SPLIT);
-		oc = runSingleAlgorithm(analyzer, args);
-		oc.setClusters(oc.getConsolidatedClusters());
-		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
-
-		oc.extendClusters(oc.mergeRemainingClusters(allAlgoClusterList));
-		oc.setClusters(oc.getConsolidatedClusters());
-
-//			
+//		oc.CombineClusters();  // for multiple algorithms there is a static variable consolidated clusters 
 
 		return oc;
 
@@ -171,15 +86,6 @@ public class MSRdriver {
 
 		args.set(2, Constants.NAIVE); // has 2 variations as below
 		args.add(4, Constants.ONLY_MERGE);
-////
-//		oc=runSingleAlgorithm(analyzer,args);
-//		System.out.println("New clusters size:");
-//		System.out.println(oc.getClusters().size());
-//		System.out.println("Currently total consolidated clusters: "+oc.getConsolidatedClusters().size());
-//
-//		oc.setClusters(oc.getConsolidatedClusters());
-//		System.out.println(oc.getClusters().size());
-//		allAlgoClusterList.add(oc.getNonScoreClusters().stream().collect(Collectors.toList()));
 
 		args.set(4, Constants.SPLIT);
 		oc = runSingleAlgorithm(analyzer, args);
@@ -357,102 +263,5 @@ public class MSRdriver {
 		return oc;
 	}
 
-//	public static void main(String[] args) throws IOException, Exception {
-//		
-//		String appPath = args[0]; // "/Users/shreya/git/digdeep";
-//		String outputDir= args[1];
-////			
-////		runNaive(appPath,outputDir);	
-////		System.exit(0);
-//		
-//		
-//		List<String> argsList = new ArrayList<String>(Arrays.asList(args));;
-//		List<String> argsList2 = new ArrayList<String>(Arrays.asList(args));;
-//		
-//		
-//
-//		
-//		try {
-//			JarApiList.createJARFile(args[0]);
-//			ReadJarMap.createJARCategoryMap();
-//
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			System.out.println("Error while creating jar map"+e.toString());
-//		}
-//		
-//		
-//		if(new File(outputDir).mkdir()){
-//			System.out.println("Result directory created at "+outputDir);
-//		}
-//		else {
-//			System.out.println("Output directory exists");
-//
-//		}
-//		AnalyzeApp analyzer ;
-//		
-//		
-//		Clustering oc = null;
-//		
-//		if(args[2].equals(Constants.ALL)){
-//			argsList.add("true"); //TODO: remove this
-//			
-//			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
-//			analyzer = new AnalyzeApp(appPath);
-//			
-//			oc=runAllAlgorithms(analyzer, argsList);
-//			oc.CLeanClusters();
-//		
-//			argsList2.add("false"); //TODO: remove this
-//			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList2.get(3)));	
-////			System.out.println("her"+DocumentParserUtil.getIgnoreNone());
-//			analyzer = new AnalyzeApp(appPath);
-//			oc=runAllAlgorithms(analyzer, argsList2);
-//			oc.setCusterListNames();
-//
-//			ExpandClusters ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath());
-//			ec.getUsage();
-//			oc.setClusters(ec.getListofclusters());
-//			oc.CLeanClusters();
-//		
-////			oc.scorePartialClusters(oc.getClusters());	
-//			
-//			String d3filename = argsList2.get(1)+"/clusterall.html";//src/main/output/clusterall.html"; // TODO : Make argument 
-//			
-//			String htmlpath=argsList2.get(1);
-//			File dir = new File(htmlpath);
-//			String[] extensions = new String[] { "html"};
-//			List<File> files = (List<File>) FileUtils.listFiles(dir, extensions, true);
-////			List<String> htmlpaths= new ArrayList<>();
-//			StringBuilder strBuilder =
-//					new StringBuilder();
-//			int count=0;
-//			for (File f:files) {
-//				if(f.getName().contains("all"))
-//					continue;
-//				String temp="<li><a href=\"filepath\" target=\"_blank\">filename</a></li> \n";
-//				temp=temp.replace("filepath", f.getAbsolutePath());
-//				String fname=f.getName();
-//				fname=fname.replace(".html", "");
-//				count=count+1;
-//				fname=fname.replace("cluster", "Approach"+count+": ");
-//				temp=temp.replace("filename",fname);
-//				strBuilder.append(temp);
-////				htmlpaths.add(temp);
-//			}
-//			
-//			oc.savecLusterJSONALL(d3filename,strBuilder.toString());
-//			
-//		}
-//		else {
-//			DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
-//			analyzer = new AnalyzeApp(appPath);
-//			runSingleAlgorithm(analyzer,argsList); // TODO: remove setIgnoreNone from user input always generate both
-//		}
-//
-////		analyzer.computeMeasure();
-////		analyzer.saveMeasure(null);
-//
-//		
-//	}
+
 }
