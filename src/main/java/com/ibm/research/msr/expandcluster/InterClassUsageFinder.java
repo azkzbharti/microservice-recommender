@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,7 +18,6 @@ import java.util.Stack;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -35,13 +35,73 @@ import org.eclipse.jdt.core.dom.TypeParameter;
 import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
+import com.google.gson.Gson;
+
 public class InterClassUsageFinder {
+	
+	class InterClassUsage
+	{
+		public String name;
+		
+		public Map<String,Integer> usedClassesToCount=new HashMap<String,Integer>();
+		
+		public Map<String,Integer> usedByClassesToCount=new HashMap<String,Integer>();
+
+		public String type=null;
+
+		public InterClassUsage(String thisClass) {
+			// TODO Auto-generated constructor stub
+			name=thisClass;
+		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#hashCode()
+		 */
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result + ((name == null) ? 0 : name.hashCode());
+			return result;
+		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			InterClassUsage other = (InterClassUsage) obj;
+			if (!getOuterType().equals(other.getOuterType()))
+				return false;
+			if (name == null) {
+				if (other.name != null)
+					return false;
+			} else if (!name.equals(other.name))
+				return false;
+			return true;
+		}
+
+		private InterClassUsageFinder getOuterType() {
+			return InterClassUsageFinder.this;
+		}
+	}
 
 	Map<ClassPair, Integer> interClassUsageMatrix = new HashMap<ClassPair, Integer>();
 
 	String currentJavaFilePkgName = null;
 	
 	Set<String> srcRootFoldersSet=null;
+
+	Map<String,InterClassUsage> interClassUsageMap=
+			new HashMap<String, InterClassUsage>();
+
 
 	public Map<ClassPair, Integer> find(String srcFilesRoot) {
 
@@ -55,6 +115,9 @@ public class InterClassUsageFinder {
 		for (File file : files) {
 			processOneFile(file, srcFilesRoot);
 		}
+		
+		findTypeAndPrintJson(srcFilesRoot);
+		
 		return interClassUsageMatrix;
 	}
 
@@ -369,7 +432,8 @@ public class InterClassUsageFinder {
 
 						if (thisClassFQName.isEmpty())
 						{
-							System.err.println("thisClassFQName is empty!");
+							// TODO: examine why this happens
+							//System.err.println("thisClassFQName is empty!");
 							return true;
 						}
 						
@@ -424,9 +488,41 @@ public class InterClassUsageFinder {
 			//Integer usageCount = interClassUsageMatrix.get(cp);
 			Integer usageCount = localFileInterClassUsageMatrix.get(cp);
 //			System.out.println("\t"+cp + "->" + usageCount);
+			
+			String userClass=cp.getThisClass();
+			InterClassUsage interClassUsage1 = interClassUsageMap.get(userClass);
+			if (interClassUsage1==null)
+			{
+				interClassUsage1=new InterClassUsage(userClass);
+			}
+			
+			String usedClass=cp.getUsedClass();
+			interClassUsage1.usedClassesToCount.put(usedClass,usageCount);
+			interClassUsageMap.put(userClass, interClassUsage1);
+
+			// TODO: possible duplication of above, refactor into method
+			InterClassUsage interClassUsage2 = interClassUsageMap.get(usedClass);
+			if (interClassUsage2==null)
+			{
+				interClassUsage2=new InterClassUsage(usedClass);
+			}
+			interClassUsage2.usedByClassesToCount.put(userClass,usageCount);
+			interClassUsageMap.put(usedClass, interClassUsage2);
 		}
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param args
+	 * 
+	 * Give the following args to test:
+	 * 
+	 * C:\Users\GiriprasadSridhara\Documents\acmeair-monolithic-java-master
+	 * C:\Users\GiriprasadSridhara\sample.plantsbywebsphere
+	 * C:\Users\GiriprasadSridhara\sample.daytrader7
+	 * C:\Users\GiriprasadSridhara\Downloads\digdeep-master
+	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
@@ -444,12 +540,27 @@ public class InterClassUsageFinder {
 			Map<ClassPair, Integer> m=i.find(srcFilesRoot);
 
 			System.out.println("\nFinalInterClassUsageMatrix:");
+//			Set<String> usesOtherClasses=new HashSet<String>();
+//			Set<String> usedByOtherClasses=new HashSet<String>();
+			
+//			Map<String,InterClassUsage> interClassUsageMap=
+//					new HashMap<String, InterClassUsage>();
+//			
 			for (ClassPair cp: m.keySet())
 			{
 				Integer c=m.get(cp);
-				System.out.println(cp.getThisClass()+"-"+cp.getUsedClass()+"="+c);
+				System.out.println(cp.getThisClass()+","+cp.getUsedClass()+","+c);
+//				usesOtherClasses.add(cp.getThisClass());
+//				usedByOtherClasses.add(cp.getUsedClass());
+//				
+//				String userClass=cp.getThisClass();
+//				String usedClass=cp.getUsedClass();
+//				i.addToInterClassUsageMap(interClassUsageMap,userClass,usedClass,"user");
+//				i.addToInterClassUsageMap(interClassUsageMap,userClass,usedClass,"used");
 			}
-		
+//
+
+			
 		} else if (choice == 2) {
 			//String ipf = "C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\com\\ibm\\research\\digdeep\\preventive\\clusterer\\CarrotClusteringEngineImpl.java";
 			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\com\\ibm\\research\\util\\MapUtil.java";
@@ -491,6 +602,87 @@ public class InterClassUsageFinder {
 		}
 	}
 
+	private void findTypeAndPrintJson(String srcFilesRoot) {
+//		System.out.println("interClassUsageMap size="+interClassUsageMap.size());
+		for (String c:interClassUsageMap.keySet())
+		{
+//			System.out.println("class="+c);
+			InterClassUsage icu = interClassUsageMap.get(c);
+			if ( (icu.usedByClassesToCount.size()>0) &&
+					(icu.usedClassesToCount.size()>0))
+			{
+				//icu.type="UsesOtherClassesAndUsedByOtherClasses";
+				icu.type="both";
+			}
+			else if (icu.usedByClassesToCount.size()>0)
+			{
+				//icu.type="OnlyUsedByOtherClasses";
+				//icu.type="OnlyUsed";
+				icu.type="source";
+			}
+			else if (icu.usedClassesToCount.size()>0)
+			{
+				//icu.type="OnlyUsesOtherClasses";
+				//icu.type="OnlyUses";
+				icu.type="sink";
+			}
+
+		}
+			
+		Gson gson=new Gson();
+		// TODO: check if below is static and add getter
+		String strJson=gson.toJson(interClassUsageMap);
+//		System.out.println("\nJSON="+strJson);
+		String opJsonFileName=srcFilesRoot+File.separator+"inter-class-usage.json";
+		try
+		{
+			PrintWriter pw=new PrintWriter(opJsonFileName);
+			pw.println(strJson);
+			pw.flush();
+			pw.close();
+			System.out.println("Wrote InterClassUsage with source/sink identification to "+opJsonFileName);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Handled exception.");
+			e.printStackTrace();
+		}
+	}
+
+//	public void addToInterClassUsageMap(Map<String,InterClassUsage> interClassUsageMap,
+//			String userClass, String usedClass,String type)
+//	{
+//		InterClassUsage interClassUsage1 = interClassUsageMap.get(userOrUsedByClass);
+//		if (interClassUsage1==null)
+//		{
+//			interClassUsage1=new InterClassUsage(userOrUsedByClass);
+//		}
+//		
+//		Map<String,Integer> usedOrUsedByClassesToCount=null;
+//		if (type.equalsIgnoreCase("user"))
+//		{
+//			usedOrUsedByClassesToCount=interClassUsage1.usedClassesToCount;
+//		}
+//		else
+//		{
+//			// "used"
+//			usedOrUsedByClassesToCount=interClassUsage1.usedByClassesToCount;
+//		}
+//		
+//		Integer cnt1=usedOrUsedByClassesToCount.get(userOrUsedByClass);
+//		if (cnt1==null)
+//		{
+//			Integer cnt2=new Integer(1);
+//			usedOrUsedByClassesToCount.put(userOrUsedByClass,cnt2);
+//		}
+//		else
+//		{
+//			Integer cnt2=new Integer(cnt1.intValue()+1);
+//			usedOrUsedByClassesToCount.put(userOrUsedByClass,cnt2);
+//		}
+//		interClassUsageMap.put(key, interClassUsage1);
+//	}
+	
 	public static Set<String> extractSrcRootFolders(String sRoot) {
 		//File root=new File("C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\");
 		File root=new File(sRoot);
