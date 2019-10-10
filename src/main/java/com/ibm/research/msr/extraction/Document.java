@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.annotations.Expose;
 import com.ibm.research.msr.utils.DocumentParserUtil;
 
 
@@ -20,12 +21,30 @@ import com.ibm.research.msr.utils.DocumentParserUtil;
  */
 public class Document {
 
-	private String fileName;
-	private String packageName;
+	@Expose private String fileName;
+	@Expose private String packageName;
+	@Expose private List<String> tokens;
 	// TODO: remove?
 	private File file;
+	
+	/**
+	 * @return the importapis
+	 */
+	public List<String> getImportapis() {
+		return importapis;
+	}
+
+	/**
+	 * @param importapis the importapis to set
+	 */
+	public void setImportapis(List<String> importapis) {
+		this.importapis = importapis;
+	}
+
+
 	/** contains list of jar files */
-	private List<String> tokens;
+
+	@Expose private List<String> importapis;
 	/** token to count map*/
 	private Map<String, Integer> tokenCountMap = new HashMap<String, Integer>();
 	
@@ -174,8 +193,11 @@ public class Document {
 		return true;
 	}
 
+	
 	public List<Double> getUnitVector() {
 		return unitVector;
 	}
+
+	
 
 }

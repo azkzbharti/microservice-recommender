@@ -45,11 +45,18 @@ public class DocumentParserUtil {
 			JavaPackage pkg = src.getPackage();
 			// set package name
 			document.setPackageName(src.getPackageName());
+			document.setImportapis(imports);
 		} catch (ParseException e) {
 			System.out.println("Parse Error in : " + document.getFile().getAbsolutePath());
 			return;
 		}
+		
 		String category="";
+		if(ReadJarMap.getLibCatMap()==null) {
+			System.out.println("No tokens parsed, as jar-to-packages map doesnt exist..");
+			return;
+		}
+		
 		// parse imports and extract data
 		for (String importName : imports) {
 			 category = ReadJarMap.getLibCatMap().entrySet().stream()
@@ -62,18 +69,12 @@ public class DocumentParserUtil {
 			} else {
 				importCountMap.put(category, importCountMap.get(category) + 1);
 			}
-//			if (DocumentParserUtil.getIgnoreNone() && category == "None") {
 			
 		}
-//		System.out.println(document.getName());
-//		System.out.println(imports);
-//		System.out.println(importCountMap);
-//		System.out.println("tokens"+tokens);
+
 		if(importCountMap.size()>1 && importCountMap.containsKey("None") && importCountMap.get("None")>0 && tokens.size()>1) {
 			tokens.remove("None");
 			importCountMap.remove("None");
-//			continue;
-//		}
 		}
 		if (imports.size()==0) {
 			 category="None";
@@ -89,10 +90,7 @@ public class DocumentParserUtil {
 		document.setTokens(tokens);
 		document.setTokenCountMap(importCountMap);
 
-		// use for debugging
-//		for(Map.Entry<String, Integer> entry : importCountMap.entrySet()) {
-//			System.out.println(entry.getKey() + " " + entry.getValue());
-//		}
+		
 	}
 
 	public static boolean getIgnoreNone() {

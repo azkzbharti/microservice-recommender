@@ -25,7 +25,7 @@ import com.ibm.research.msr.utils.ReadJarMap;
 public class MSRdriver {
 
 		
-	public static Clustering runNaiveUtility(AnalyzeApp analyzer, List<String> args) throws IOException {
+	public static Clustering runNaiveUtility(AnalyzeApp analyzer) throws IOException {
 		Clustering oc = null;
 
 		List<List<ClusterDetails>> allAlgoClusterList = new ArrayList<>();
@@ -40,29 +40,68 @@ public class MSRdriver {
 		return oc;
 
 	}
+	public static void metaExtractor(String appPath, String appType,String outputPath) throws IOException, Exception {
+		// given the appPath it will create jar-to-packages.csv, fileEnumerator.json,tfidf.csv, interclassusage.json
+		ReadJarMap.createJARCategoryMap(outputPath + File.separator + "temp" + File.separator + "jar-to-packages.csv");
+		AnalyzeApp analyzer;
+		DocumentParserUtil.setIgnoreNone(false);
+		String measureFile= outputPath + File.separator + "temp" + File.separator + "measure.csv";
+		String classFiles=outputPath + File.separator + "temp" + File.separator + "ClassList.json";
+		
+		analyzer = new AnalyzeApp(appPath, appType, outputPath);
+		analyzer.savetoFile(measureFile, classFiles);
+	
+		
+	}
+	
+	public static void appClustering(String measurePath, String appType,String outputPath) throws IOException {
+			// read app from files and create the analyzer object
+		    AnalyzeApp analyzer = null;
+		    Clustering oc = null;
+			DocumentParserUtil.setIgnoreNone(false);
+			try {
+				analyzer = new AnalyzeApp(measurePath,appType,outputPath);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			oc = runNaiveUtility(analyzer);
+			oc.setCusterListNames();
+		    // call load interclass loader
+			// do cluster expansion
+			
+			
 
+		
+		
+	}
+	
 	public static void runNaive(String appPath, String appType, String outputPath) throws IOException, Exception {
 
 		ReadJarMap.createJARCategoryMap(outputPath + File.separator + "temp" + File.separator + "jar-to-packages.csv");
 
 		AnalyzeApp analyzer;
 		Clustering oc = null;
-		List<String> argsList = new ArrayList<String>();
-		argsList.add(appPath); // workaround:: argList created just to keep code changes minimal
-		argsList.add(outputPath);
-		argsList.add(Constants.ALL); // TODO: will be removed minimial code changes
-		List<String> argsList2 = new ArrayList<String>(argsList);
-		argsList.add("true"); // "will ignore none category
+//		List<String> argsList = new ArrayList<String>();
+//		argsList.add(appPath); // workaround:: argList created just to keep code changes minimal
+//		argsList.add(outputPath);
+//		argsList.add(Constants.ALL); // TODO: will be removed minimial code changes
+//		List<String> argsList2 = new ArrayList<String>(argsList);
+//		argsList.add("true"); // "will ignore none category
 //		DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
 //		analyzer = new AnalyzeApp(appPath, appType,outputPath);
 //		oc = runNaiveUtility(analyzer, argsList);
 
-		argsList2.add("false"); // TODO: remove this
-		DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList2.get(3)));
+//		argsList2.add("false"); // TODO: remove this
+		DocumentParserUtil.setIgnoreNone(false);
 
 		analyzer = new AnalyzeApp(appPath, appType, outputPath);
-
-		oc = runNaiveUtility(analyzer, argsList2);
+		String measureFile= outputPath + File.separator + "temp" + File.separator + "measure.csv";
+		String classFiles=outputPath + File.separator + "temp" + File.separator + "ClassList.json";
+		
+		analyzer.savetoFile(measureFile, classFiles);
+		oc = runNaiveUtility(analyzer);
 		oc.setCusterListNames();
 
 		System.out.println("Calling Inter class usage");

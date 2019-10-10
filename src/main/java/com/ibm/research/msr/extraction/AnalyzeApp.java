@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -14,6 +17,8 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.ibm.research.msr.utils.Constants;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -79,14 +84,28 @@ public class AnalyzeApp {
 			}
 			computeMeasure();
 			// TODO: add as an input
-			saveMeasure(outputPath + File.separator + "temp" + File.separator + "measure.csv");
-		} else {
+					} else {
+			
 			System.out.println("Reading from CSV file");
 			read_measure_tf_file(appPath);
+			
 
 		}
 	}
-
+	public void savetoFile(String measureFile,String documentFile) throws IOException {
+		serializeDocuments(documentFile);
+		saveMeasure(measureFile);
+	}
+	public void serializeDocuments(String filename) {
+    	Gson objGson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+		String mapToJson = objGson.toJson(listOfDocuments);
+		 try {
+             Files.write(Paths.get(filename), mapToJson.getBytes(), StandardOpenOption.CREATE);
+     } catch (IOException e) {
+             e.printStackTrace();
+     }
+	}
+	
 	public void computeMeasure() throws IOException, Exception {
 		calculateTotalWords();
 		documentToVector();
@@ -190,10 +209,7 @@ public class AnalyzeApp {
 				}
 			}
 			Document doc = new Document(filepath, filename, docVector, documentTokens);
-//			System.out.println(doc.getDocVector().size());
 			listOfDocuments.add(doc);
-//			System.out.println(listOfDocuments.get(0).getDocVector().size());
-//			System.out.println(listOfDocuments.get(0).getName());
 
 		}
 	}
