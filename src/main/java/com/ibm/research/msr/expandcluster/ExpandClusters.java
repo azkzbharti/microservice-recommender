@@ -74,7 +74,7 @@ public class ExpandClusters {
 	
 	public void getUsage() {
 		// TODO break this code in small functions
-		System.out.println("Doing CLuster expansion");
+		System.out.println("Doing Cluster expansion");
 		List<List<Document>> listofDocsinNone= this.nonelistofclusters
 				.stream()
 				.map(ClusterDetails::getListOfDocuments)
@@ -236,7 +236,7 @@ public class ExpandClusters {
 			}
 			listofAllDocsinNone = tempDocs2;
 			if(!isChanged) {
-				System.out.println("No change.. exiting");
+//				System.out.println("No change.. exiting");
 				break;
 			}} catch(Exception e) {
 				System.out.println("Exception");

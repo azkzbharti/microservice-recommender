@@ -104,13 +104,12 @@ public class MSRdriver {
 		oc = runNaiveUtility(analyzer);
 		oc.setCusterListNames();
 
-		System.out.println("Calling Inter class usage");
-
+//
 		ExpandClusters ec = new ExpandClusters(oc.getClusters(), analyzer.getAppath(), false);
 		ec.getUsage();
 		oc.setClusters(ec.getListofclusters());
-
-
+//
+//
         ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath(),true); // runs for single size clusters only -- reassigns them 
         ec.getUsage();
 	  
