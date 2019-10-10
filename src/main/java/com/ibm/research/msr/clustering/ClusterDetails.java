@@ -25,6 +25,7 @@ public class ClusterDetails {
 	List<Document> listOfDocuments = new ArrayList<>();
 	double score;
 	String clusterName;
+	String clusterNameList;
 
 	/**
 	 * @return the score
@@ -127,6 +128,41 @@ public class ClusterDetails {
 		Set<String> intersectionNamesSet = Sets.intersection(docsNames1, docsNames2);
 		return intersectionNamesSet.size();
 	}
+	
+	public void getClusterApiList() {
+		Map<String, Integer> alltokens = new HashMap();
+		String clusterName = "";
+		for (Document doc : listOfDocuments) {
+			Map<String, Integer> tMap = doc.getTokenCountMap();
+			for (String key : tMap.keySet()) {
+				if (alltokens.containsKey(key))
+					alltokens.put(key, alltokens.get(key) + (tMap.get(key) / listOfDocuments.size()));
+				else
+					alltokens.put(key, tMap.get(key) / listOfDocuments.size());
+			}
+			alltokens.putAll(doc.getTokenCountMap());
+		}
+		if (alltokens.containsKey("None") && alltokens.get("None") == listOfDocuments.size()) {
+			this.clusterName = "None, ";
+			return;
+		}
+
+		final Map<String, Integer> sortedTokensByCount = alltokens.entrySet()
+                .stream()
+                .sorted((Map.Entry.<String, Integer>comparingByValue().reversed()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, HashMap::new));
+	
+		for (Entry<String, Integer> entry : sortedTokensByCount.entrySet()) { // Iterate through hashmap
+			if (!entry.getKey().equals("None")) // cases where None and other jar are equal times then give weght to
+									// jar
+				clusterName = clusterName + entry.getKey().replace(".jar", ",");	
+	}
+	if (clusterName.equals("") || clusterName.equals("None"))
+		clusterName = "None ,";
+	
+	clusterName = clusterName.substring(0, clusterName.length() - 1);
+	this.clusterNameList=clusterName;
+	}
 
 	public void setClusterName() {
 		// TODO: improve this logic
@@ -148,32 +184,20 @@ public class ClusterDetails {
 		}
 		
 
-//		int maxValueInMap = (Collections.max(alltokens.values()));
-//		for (Entry<String, Integer> entry : alltokens.entrySet()) { // Iterate through hashmap
-//			if (entry.getValue() == maxValueInMap) {
-//				if (!entry.getKey().equals("None")) // cases where None and other jar are equal times then give weght to
-//													// jar
-//					clusterName = clusterName + entry.getKey().replace(".jar", ",");
-//			}
-//		}
-//		if (clusterName.equals("") || clusterName.equals("None"))
-//			clusterName = "None ,";
-//		
-//		clusterName = clusterName.substring(0, clusterName.length() - 1);
+		int maxValueInMap = (Collections.max(alltokens.values()));
+		for (Entry<String, Integer> entry : alltokens.entrySet()) { // Iterate through hashmap
+			if (entry.getValue() == maxValueInMap) {
+				if (!entry.getKey().equals("None")) // cases where None and other jar are equal times then give weght to
+													// jar
+					clusterName = clusterName + entry.getKey().replace(".jar", ",");
+			}
+		}
+		if (clusterName.equals("") || clusterName.equals("None"))
+			clusterName = "None ,";
 		
-		final Map<String, Integer> sortedTokensByCount = alltokens.entrySet()
-                .stream()
-                .sorted((Map.Entry.<String, Integer>comparingByValue().reversed()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, HashMap::new));
-		for (Entry<String, Integer> entry : sortedTokensByCount.entrySet()) { // Iterate through hashmap
-			if (!entry.getKey().equals("None")) // cases where None and other jar are equal times then give weght to
-									// jar
-				clusterName = clusterName + entry.getKey().replace(".jar", ",");	
-	}
-	if (clusterName.equals("") || clusterName.equals("None"))
-		clusterName = "None ,";
-	
-	clusterName = clusterName.substring(0, clusterName.length() - 1);
+		clusterName = clusterName.substring(0, clusterName.length() - 1);
+		
+		
 		
 		this.clusterName = clusterName;
 	}
