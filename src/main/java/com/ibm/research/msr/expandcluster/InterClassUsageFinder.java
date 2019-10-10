@@ -601,6 +601,26 @@ public class InterClassUsageFinder {
 
 		}
 	}
+	private void saveTofile(String outfile) {
+		Gson gson=new Gson();
+		// TODO: check if below is static and add getter
+		String strJson=gson.toJson(interClassUsageMap);
+//		System.out.println("\nJSON="+strJson);
+		String opJsonFileName=outfile;
+		try
+		{
+			PrintWriter pw=new PrintWriter(opJsonFileName);
+			pw.println(strJson);
+			pw.flush();
+			pw.close();
+			System.out.println("Wrote InterClassUsage with source/sink identification to "+opJsonFileName);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Handled exception.");
+			e.printStackTrace();
+		}
+	}
 
 	private void findTypeAndPrintJson(String srcFilesRoot) {
 //		System.out.println("interClassUsageMap size="+interClassUsageMap.size());
