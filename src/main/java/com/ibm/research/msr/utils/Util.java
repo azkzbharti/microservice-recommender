@@ -90,6 +90,12 @@ public class Util {
 		return MSR_HOME + File.separator + "python" + File.separator + "affinity_algo.py ";
 
 	}
+	
+	public static String getCohesionPythonFile() {
+		String MSR_HOME = System.getProperty("MSR_HOME");
+		return MSR_HOME + File.separator + "python" + File.separator + "recluster_driver.py ";
+
+	}
 
 	public static String getStopWordsFile() {
 		
