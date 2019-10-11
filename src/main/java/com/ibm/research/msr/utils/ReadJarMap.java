@@ -7,14 +7,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import weka.gui.simplecli.Exit;
 
 public class ReadJarMap {
 
-	private static Map<String, String> libCatMap = new HashMap<String, String>();
+	private  Map<String, String> libCatMap = new HashMap<String, String>();
 	
 	
-	public static void createJARCategoryMap(String csvFile) {
+	@SuppressWarnings("resource")
+	public  void createJARCategoryMap(String csvFile) {
 		
 		BufferedReader br = null;
 		String line = "";
@@ -58,23 +58,16 @@ public class ReadJarMap {
 		
 	}
 
-	@SuppressWarnings("resource")
-	public static void createJARCategoryMap() {
-//		String csvFile = "src/main/resources/jar-imp.csv";
-		String csvFile="src/main/resources/jar-to-packges.csv";
-		
-		 createJARCategoryMap(csvFile);
-		
-	}
+
 	
 
 
-	public static Map<String, String> getLibCatMap() {
+	public  Map<String, String> getLibCatMap() {
 		return libCatMap;
 	}
 
-	public static void setLibCatMap(Map<String, String> libCatMap) {
-		ReadJarMap.libCatMap = libCatMap;
+	public  void setLibCatMap(Map<String, String> libCatMap) {
+		this.libCatMap = libCatMap;
 	}
 
 }

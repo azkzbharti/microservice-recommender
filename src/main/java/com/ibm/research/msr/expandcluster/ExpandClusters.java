@@ -29,9 +29,9 @@ public class ExpandClusters {
 	List<ClusterDetails> nonelistofclusters=new ArrayList<>(); 
 	List<ClusterDetails> nonelistofclusters1=new ArrayList<>(); 
 
-	static InterClassUsageFinder i = new InterClassUsageFinder();
+	InterClassUsageFinder i = new InterClassUsageFinder();
 
-	public ExpandClusters(List<ClusterDetails> listofclusters,String srcFilesRoot,boolean SingleClass) {
+	public ExpandClusters(List<ClusterDetails> listofclusters,String srcFilesRoot,boolean SingleClass,InterClassUsageFinder ClassUsage) {
 		// TODO Auto-generated constructor stub
 		// SingleClass -- is false-- will add none clusters to the list for expansion else single class clusters to it 
 		Set<ClusterDetails> s= new HashSet<ClusterDetails>();
@@ -51,24 +51,10 @@ public class ExpandClusters {
 				this.newlistofclusters.add(cls);
 				
 		}
+		i=ClassUsage;
 		
-//		this.nonelistofclusters=listofclusters.stream().filter(cls->cls.getClusterName().trim().equals("None")).collect(Collectors.toList());
-//		System.out.println("None clusters "+nonelistofclusters.size()); 
-
-//		this.listofclusters=listofclusters.stream().filter(cls->!cls.getClusterName().trim().equals("None")).collect(Collectors.toList());
-//		System.out.println("All clusters "+listofclusters.size()); 
-
-		i.find(srcFilesRoot);
-//		System.out.println("Printing the cluster map");
-//		
-//		for (ClassPair cp: mapClasspPair.keySet())
-//		{
-//			Integer c=mapClasspPair.get(cp);
-//			System.out.println(cp.getThisClass()+"-"+cp.getUsedClass()+"="+c);
-//		}
-//		
-//		System.out.println("Printing the cluster map after");
-//		
+//		i.find(srcFilesRoot);
+	
 	}
 	
 	

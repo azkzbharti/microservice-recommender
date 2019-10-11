@@ -13,6 +13,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -20,6 +21,7 @@ import org.apache.commons.io.FileUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ibm.research.msr.utils.Constants;
+import com.ibm.research.msr.utils.DocumentParserUtil;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
@@ -31,40 +33,54 @@ public class AnalyzeApp {
 
 	private String appPath;
 	private String outputPath;
-	/**
-	 * @return the outputPath
-	 */
+	
 	public String getOutputPath() {
 		return outputPath;
 	}
 
-	/**
-	 * @param outputPath the outputPath to set
-	 */
+
 	public void setOutputPath(String outputPath) {
 		this.outputPath = outputPath;
+	}
+
+	/**
+	 * @return the libCatMap
+	 */
+	public Map<String, String> getLibCatMap() {
+		return libCatMap;
+	}
+
+
+	/**
+	 * @param libCatMap the libCatMap to set
+	 */
+	public void setLibCatMap(Map<String, String> libCatMap) {
+		this.libCatMap = libCatMap;
 	}
 
 	private String appType;
 	private List<File> files;
 	private List<Document> listOfDocuments = new ArrayList<Document>();
 	private Set<String> vocab = new LinkedHashSet<String>();
+	private Map<String, String> libCatMap;
 
 	/**
 	 * 
+	 * @param map 
 	 * @param appPath: test use-> /Users/shreya/git/digdeep or
 	 *        src/main/resources/tf_idf-analy.csv
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public AnalyzeApp(String appPath, String appType, String outputPath) throws IOException, Exception {
+	public AnalyzeApp(String appPath, String appType, String outputPath, Map<String, String> map) throws IOException, Exception {
 		this.appPath = appPath;
 		this.appType = appType;
 		this.outputPath=outputPath;
+		this.libCatMap=map;
+		DocumentParserUtil docUtil= new DocumentParserUtil(false, map);
 
 		File dir = new File(appPath);
 		if (dir.isDirectory()) {
-			System.out.println();
 			String[] extensions = null;
 			if (this.appType.equals(Constants.SRC))
 				extensions = new String[] { "java" };
@@ -72,12 +88,10 @@ public class AnalyzeApp {
 				extensions = new String[] { "class" };
 
 			List<File> files = (List<File>) FileUtils.listFiles(dir, extensions, true);
-	
 			for (File file : files) {
-				Document document = new Document(file);
-				
-//				if(file.getAbsolutePath().contains("digdeep-git-common"))
-//					System.out.println("here");
+				Document document = new Document(file,docUtil);
+				System.out.println(file);
+				System.out.println(document.getTokens());
 				if (document.getNumberOfTokens() > 0) {
 					listOfDocuments.add(document);
 				}

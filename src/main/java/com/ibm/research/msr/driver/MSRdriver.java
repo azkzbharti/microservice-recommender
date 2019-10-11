@@ -13,6 +13,7 @@ import com.ibm.research.msr.clustering.KMeans;
 import com.ibm.research.msr.clustering.Naive;
 import com.ibm.research.msr.clustering.NaiveTFIDF;
 import com.ibm.research.msr.expandcluster.ExpandClusters;
+import com.ibm.research.msr.expandcluster.InterClassUsageFinder;
 import com.ibm.research.msr.extraction.AnalyzeApp;
 import com.ibm.research.msr.utils.Constants;
 import com.ibm.research.msr.utils.DocumentParserUtil;
@@ -41,26 +42,26 @@ public class MSRdriver {
 
 	}
 	public static void metaExtractor(String appPath, String appType,String outputPath) throws IOException, Exception {
-		// given the appPath it will create jar-to-packages.csv, fileEnumerator.json,tfidf.csv, interclassusage.json
-		ReadJarMap.createJARCategoryMap(outputPath + File.separator + "temp" + File.separator + "jar-to-packages.csv");
-		AnalyzeApp analyzer;
-		DocumentParserUtil.setIgnoreNone(false);
+		ReadJarMap mapReader= new ReadJarMap();
+		mapReader.createJARCategoryMap(outputPath + File.separator + "temp" + File.separator + "jar-to-packages.csv");
 		String measureFile= outputPath + File.separator + "temp" + File.separator + "measure.csv";
 		String classFiles=outputPath + File.separator + "temp" + File.separator + "ClassList.json";
 		
-		analyzer = new AnalyzeApp(appPath, appType, outputPath);
+		AnalyzeApp analyzer;
+		analyzer = new AnalyzeApp(appPath, appType, outputPath,mapReader.getLibCatMap());
 		analyzer.savetoFile(measureFile, classFiles);
-	
+		
 		
 	}
 	
 	public static void appClustering(String measurePath, String appType,String outputPath) throws IOException {
 			// read app from files and create the analyzer object
+		    ReadJarMap mapReader= new ReadJarMap();
+			mapReader.createJARCategoryMap(outputPath + File.separator + "temp" + File.separator + "jar-to-packages.csv");
 		    AnalyzeApp analyzer = null;
 		    Clustering oc = null;
-			DocumentParserUtil.setIgnoreNone(false);
 			try {
-				analyzer = new AnalyzeApp(measurePath,appType,outputPath);
+				analyzer = new AnalyzeApp(measurePath,appType,outputPath,mapReader.getLibCatMap());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -79,24 +80,13 @@ public class MSRdriver {
 	
 	public static void runNaive(String appPath, String appType, String outputPath) throws IOException, Exception {
 
-		ReadJarMap.createJARCategoryMap(outputPath + File.separator + "temp" + File.separator + "jar-to-packages.csv");
-
+		ReadJarMap mapReader= new ReadJarMap();
+		mapReader.createJARCategoryMap(outputPath + File.separator + "temp" + File.separator + "jar-to-packages.csv");
+	   
 		AnalyzeApp analyzer;
 		Clustering oc = null;
-//		List<String> argsList = new ArrayList<String>();
-//		argsList.add(appPath); // workaround:: argList created just to keep code changes minimal
-//		argsList.add(outputPath);
-//		argsList.add(Constants.ALL); // TODO: will be removed minimial code changes
-//		List<String> argsList2 = new ArrayList<String>(argsList);
-//		argsList.add("true"); // "will ignore none category
-//		DocumentParserUtil.setIgnoreNone(Boolean.parseBoolean(argsList.get(3)));
-//		analyzer = new AnalyzeApp(appPath, appType,outputPath);
-//		oc = runNaiveUtility(analyzer, argsList);
+		analyzer = new AnalyzeApp(appPath,appType,outputPath,mapReader.getLibCatMap());
 
-//		argsList2.add("false"); // TODO: remove this
-		DocumentParserUtil.setIgnoreNone(false);
-
-		analyzer = new AnalyzeApp(appPath, appType, outputPath);
 		String measureFile= outputPath + File.separator + "temp" + File.separator + "measure.csv";
 		String classFiles=outputPath + File.separator + "temp" + File.separator + "ClassList.json";
 		
@@ -104,17 +94,19 @@ public class MSRdriver {
 		oc = runNaiveUtility(analyzer);
 		oc.setCusterListNames();
 
+		String opJsonFileName=outputPath + File.separator + "temp"+File.separator+"inter-class-usage.json";
+		InterClassUsageFinder classUsage = new InterClassUsageFinder();
+		classUsage.find(appPath,opJsonFileName);
+		
+//		ExpandClusters ec = new ExpandClusters(oc.getClusters(), analyzer.getAppath(), false,classUsage);
+//		ec.getUsage();
+//		oc.setClusters(ec.getListofclusters());
 //
-		ExpandClusters ec = new ExpandClusters(oc.getClusters(), analyzer.getAppath(), false);
-		ec.getUsage();
-		oc.setClusters(ec.getListofclusters());
-//
-//
-        ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath(),true); // runs for single size clusters only -- reassigns them 
-        ec.getUsage();
-	  
-		oc.setClusters(ec.getListofclusters());
-		oc.CLeanClusters();
+//        ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath(),true,classUsage); // runs for single size clusters only -- reassigns them 
+//        ec.getUsage();
+//	  
+//		oc.setClusters(ec.getListofclusters());
+//		oc.CLeanClusters();
 
 		String d3ClusterPackJSON = outputPath + File.separator + "ui" + File.separator + "data" + File.separator
 				+ "clusterall.json";

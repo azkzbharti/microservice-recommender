@@ -14,14 +14,20 @@ import com.thoughtworks.qdox.model.JavaSource;
 import com.thoughtworks.qdox.parser.ParseException;
 
 public class DocumentParserUtil {
-	private static boolean ignoreNone;
+	private  boolean ignoreNone;
+	private Map<String, String> libCatMap;
+	 
 
-	public static void processFile(Document document) {
+	public DocumentParserUtil(boolean ignoreNone, Map<String, String> libCatMap) {
+		super();
+		this.ignoreNone = ignoreNone;
+		this.libCatMap = libCatMap;
+	}
+
+	public void processFile(Document document) {
 		try {
-			System.out.println(" Processing file " + document.getFile().getAbsolutePath());
 			if (document.getFile().getAbsolutePath().endsWith(".java"))
 				processJavaFile(document);
-
 			else if (document.getFile().getAbsolutePath().endsWith(".class"))
 				processBinaryFile(document);
 
@@ -32,7 +38,7 @@ public class DocumentParserUtil {
 
 	}
 
-	private static void processJavaFile(Document document) throws IOException {
+	private  void processJavaFile(Document document) throws IOException {
 		List<String> tokens = new ArrayList<String>();
 		Map<String, Integer> importCountMap = new HashMap<String, Integer>();
 
@@ -50,16 +56,21 @@ public class DocumentParserUtil {
 			System.out.println("Parse Error in : " + document.getFile().getAbsolutePath());
 			return;
 		}
-		
+//		System.out.println(imports);
+//		if(imports.size()==0) {
+//			System.out.println("No imports");
+//			System.out.println(document.getName());
+//		}
 		String category="";
-		if(ReadJarMap.getLibCatMap()==null) {
+		if(libCatMap == null) {
+			document.setTokens(tokens);
 			System.out.println("No tokens parsed, as jar-to-packages map doesnt exist..");
 			return;
 		}
 		
 		// parse imports and extract data
 		for (String importName : imports) {
-			 category = ReadJarMap.getLibCatMap().entrySet().stream()
+			 category = libCatMap.entrySet().stream()
 					.filter(entry -> importName.contains(entry.getKey())).map(entry -> entry.getValue()).findFirst()
 					.orElse("None");
 			tokens.add(category);
@@ -77,11 +88,11 @@ public class DocumentParserUtil {
 			importCountMap.remove("None");
 		}
 		if (imports.size()==0) {
-			 category="None";
+			category="None";
 			tokens.add(category);
 			importCountMap.put(category, 1);
 		}
-		if (DocumentParserUtil.getIgnoreNone() && category == "None") {
+		if (ignoreNone && category == "None") {
 			tokens.remove("None");
 			importCountMap.remove("None");
 		}		
@@ -93,15 +104,15 @@ public class DocumentParserUtil {
 		
 	}
 
-	public static boolean getIgnoreNone() {
+	public  boolean getIgnoreNone() {
 		return ignoreNone;
 	}
 
-	public static void setIgnoreNone(boolean ignoreNone) {
-		DocumentParserUtil.ignoreNone = ignoreNone;
+	public  void setIgnoreNone(boolean ignoreNone) {
+		this.ignoreNone = ignoreNone;
 	}
 
-	private static void processBinaryFile(Document document) {
+	private  void processBinaryFile(Document document) {
 
 		List<String> tokens = new ArrayList<String>();
 		Map<String, Integer> importCountMap = new HashMap<String, Integer>();
@@ -110,10 +121,17 @@ public class DocumentParserUtil {
 
 		ReferencedClassesExtractor classExtractor = new ReferencedClassesExtractor();
 		imports = new ArrayList<String>(classExtractor.extractFromClass(document.getFile().getAbsolutePath()));
-
+//		if(imports.size()==0) {
+//			System.out.println("No imports");
+//			System.out.println(document.getName());
+//		}
+		if(libCatMap==null) {
+			System.out.println("No tokens parsed, as jar-to-packages map doesnt exist..");
+			return;
+		}
 		// parse imports and extract data
 		for (String importName : imports) {
-			String category = ReadJarMap.getLibCatMap().entrySet().stream()
+			String category = libCatMap.entrySet().stream()
 					.filter(entry -> importName.contains(entry.getKey())).map(entry -> entry.getValue()).findFirst()
 					.orElse("None");
 			tokens.add(category);
@@ -122,7 +140,7 @@ public class DocumentParserUtil {
 			} else {
 				importCountMap.put(category, importCountMap.get(category) + 1);
 			}
-			if (DocumentParserUtil.getIgnoreNone() && category == "None") {
+			if (ignoreNone && category == "None") {
 				tokens.remove("None");
 				importCountMap.remove("None");
 				continue;

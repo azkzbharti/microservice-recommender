@@ -55,14 +55,12 @@ public class Document {
 
 	
 	// TODO: change file to file path 
-	public Document(File file) throws IOException, Exception {
+	public Document(File file,DocumentParserUtil dpu) throws IOException, Exception {
 		this.file = file;
 		fileName = file.getName();
-		DocumentParserUtil.processFile(this);
-		
-		
+		dpu.processFile(this);
 	}
-
+	
 	public Document(String filepath, String filename, List<Double> docvector, List<String> tokens) {
 		this.file = new File(filepath);
 		this.fileName = filename;
@@ -197,6 +195,8 @@ public class Document {
 	public List<Double> getUnitVector() {
 		return unitVector;
 	}
+	
+	
 
 	
 

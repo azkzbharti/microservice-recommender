@@ -103,7 +103,7 @@ public class InterClassUsageFinder {
 			new HashMap<String, InterClassUsage>();
 
 
-	public Map<ClassPair, Integer> find(String srcFilesRoot) {
+	public Map<ClassPair, Integer> find(String srcFilesRoot,String outPath) {
 
 		srcRootFoldersSet = extractSrcRootFolders(srcFilesRoot);
 		
@@ -116,7 +116,7 @@ public class InterClassUsageFinder {
 			processOneFile(file, srcFilesRoot);
 		}
 		
-		findTypeAndPrintJson(srcFilesRoot);
+		findTypeAndPrintJson(srcFilesRoot,outPath);
 		
 		return interClassUsageMatrix;
 	}
@@ -536,8 +536,10 @@ public class InterClassUsageFinder {
 			}
 
 			String srcFilesRoot = args[0];
+			String opJsonFileName=srcFilesRoot + File.separator + "temp"+File.separator+"inter-class-usage.json";
+
 			// InterClassUsageFinder i=new InterClassUsageFinder();
-			Map<ClassPair, Integer> m=i.find(srcFilesRoot);
+			Map<ClassPair, Integer> m=i.find(srcFilesRoot,opJsonFileName);
 
 			System.out.println("\nFinalInterClassUsageMatrix:");
 //			Set<String> usesOtherClasses=new HashSet<String>();
@@ -622,7 +624,7 @@ public class InterClassUsageFinder {
 		}
 	}
 
-	private void findTypeAndPrintJson(String srcFilesRoot) {
+	private void findTypeAndPrintJson(String srcFilesRoot,String opJsonFileName) {
 //		System.out.println("interClassUsageMap size="+interClassUsageMap.size());
 		for (String c:interClassUsageMap.keySet())
 		{
@@ -653,7 +655,8 @@ public class InterClassUsageFinder {
 		// TODO: check if below is static and add getter
 		String strJson=gson.toJson(interClassUsageMap);
 //		System.out.println("\nJSON="+strJson);
-		String opJsonFileName=srcFilesRoot+File.separator+"inter-class-usage.json";
+//		String opJsonFileName=srcFilesRoot+File.separator+"inter-class-usage.json";
+//		String opJsonFileName;
 		try
 		{
 			PrintWriter pw=new PrintWriter(opJsonFileName);
