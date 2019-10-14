@@ -15,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.Path;
 
 import com.ibm.research.msr.clustering.Affinity;
+import com.ibm.research.msr.clustering.CohesionCouplingProcessing;
 import com.ibm.research.msr.jarlist.APIUsageStats;
 import com.ibm.research.msr.jarlist.APIUsageStatsMiner;
 import com.ibm.research.msr.jarlist.GradleDependencyDownloader;
@@ -304,6 +305,23 @@ public class MSRLauncher {
 		Affinity affinity = new Affinity(str, tempFolder + File.separator + "cluster-affinity.properties",
 				outputJSONFile);
 		affinity.runClustering();
+
+	}
+	
+	private static void runCohesionCoupling(String rootPath, String outputJSONFile, String tempFolder) {
+
+		// check for type and support getting this info from binary
+		ArrayList<String> javaFiles = getJavaFileNames(rootPath);
+
+		Object[] gfg = javaFiles.toArray();
+		String[] str = Arrays.copyOf(gfg, gfg.length, String[].class);
+		
+		String clusterAllJSON = "";
+		String usageJSON = "";
+		String outputFile = "";
+
+		CohesionCouplingProcessing postProcessor = new CohesionCouplingProcessing(clusterAllJSON, usageJSON, outputFile);
+		postProcessor.runClustering();
 
 	}
 
