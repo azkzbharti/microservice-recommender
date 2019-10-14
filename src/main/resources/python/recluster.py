@@ -5,6 +5,7 @@ import json
 
 WTS = True
 debug = False
+coupling_thres = 0.9
 
 class Clustering(object):
 
@@ -190,8 +191,9 @@ class Clustering(object):
             class_scores[classid] = len(clusters_used_by)
 
 
-        for k in sorted(class_scores, key=class_scores.get, reverse=True):
-            print("class:", self._idx2class[k], "score:", class_scores[k])
+        if debug:
+            for k in sorted(class_scores, key=class_scores.get, reverse=True):
+                print("class:", self._idx2class[k], "score:", class_scores[k])
 
         return class_scores
 
@@ -283,8 +285,13 @@ class Clustering(object):
 
         self._couplingscores = self.analyze_coupling()
 
+        num_clusters = len(self._newclusters)
+        coupling_cutoff = int(coupling_thres * num_clusters)
+        highcoupling_classes = [c for c in self._couplingscores.keys() if self._couplingscores[c] > coupling_cutoff]
+        print("Using coupling cutoff:", coupling_cutoff, "Got", len(highcoupling_classes), "classes after cutoff.")
+
         #self._write_clusters_simple(new_clusters, open_classes)
-        self._write_clusters_d3json(new_clusters, open_classes, self._outputfile)
+        self._write_clusters_d3json(new_clusters, open_classes, self._outputfile, highcoupling_classes)
 
     def _write_clusters_simple(self, clusters, open_classes):
         print("\n")
@@ -298,7 +305,7 @@ class Clustering(object):
             if open_classes[c] != -1:
                 print("\t", self._idx2class[c])
 
-    def _write_clusters_d3json(self, new_clusters, open_classes, outputfile):
+    def _write_clusters_d3json(self, new_clusters, open_classes, outputfile, highcoupling_classes):
         jsonobj = []
 
         prefixmap = {}
@@ -341,6 +348,8 @@ class Clustering(object):
                     #         imports.append(prefixmap[i])
                 dictobj['size'] = len(imports)
                 dictobj['imports'] = imports
+                if member in highcoupling_classes:
+                    dictobj['coupling'] = "high"
                 #print(member, classname)
                 jsonobj.append(dictobj)
 
