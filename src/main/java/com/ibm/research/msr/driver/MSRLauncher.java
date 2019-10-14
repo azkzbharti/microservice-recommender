@@ -308,17 +308,7 @@ public class MSRLauncher {
 
 	}
 	
-	private static void runCohesionCoupling(String rootPath, String outputJSONFile, String tempFolder) {
-
-		// check for type and support getting this info from binary
-		ArrayList<String> javaFiles = getJavaFileNames(rootPath);
-
-		Object[] gfg = javaFiles.toArray();
-		String[] str = Arrays.copyOf(gfg, gfg.length, String[].class);
-		
-		String clusterAllJSON = "";
-		String usageJSON = "";
-		String outputFile = "";
+	private static void runCohesionCoupling(String clusterAllJSON, String usageJSON, String outputFile) {
 
 		CohesionCouplingProcessing postProcessor = new CohesionCouplingProcessing(clusterAllJSON, usageJSON, outputFile);
 		postProcessor.runClustering();
