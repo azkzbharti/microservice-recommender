@@ -215,15 +215,6 @@ class Clustering(object):
 
             if debug:
                 print("Cluster:", cluster_name, "Cluster ID:", clusterid, "Mean Cohesion:", cohesion)
-            removal_scores = {}
-            for classid in self._clusterid2classid[clusterid]:
-                new_cohesion = self._find_cluster_cohesion(clusterid=clusterid, ignorelist=[classid])
-                removal_scores[classid] = new_cohesion
-
-            for k in sorted(removal_scores, key=removal_scores.get, reverse=True):
-                change =  removal_scores[k] - cohesion
-                if debug:
-                    print("\tID", k, "\t", self._idx2class[k], "\tScore:", change)
 
             if cohesion == 0.0 or len(cluster_members) < 3:
                 for m in cluster_members:
@@ -231,6 +222,16 @@ class Clustering(object):
                     self._classid2clusterid[m] = -1
                 #new_clusters[clusterid] = (cluster_name, [])
             else:
+                removal_scores = {}
+                for classid in self._clusterid2classid[clusterid]:
+                    new_cohesion = self._find_cluster_cohesion(clusterid=clusterid, ignorelist=[classid])
+                    removal_scores[classid] = new_cohesion
+
+                for k in sorted(removal_scores, key=removal_scores.get, reverse=True):
+                    change =  removal_scores[k] - cohesion
+                    if debug:
+                        print("\tID", k, "\t", self._idx2class[k], "\tScore:", change)
+
                 sorted_idxs = sorted(removal_scores, key=removal_scores.get, reverse=False)
                 open_classes[sorted_idxs[0]] = clusterid
                 new_clusters[clusterid] = (cluster_name, sorted_idxs[1:], False)
