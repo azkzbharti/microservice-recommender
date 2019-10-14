@@ -25,6 +25,8 @@ import com.ibm.research.msr.jarlist.POMDependencyDownloader;
 import com.ibm.research.msr.utils.Constants;
 import com.ibm.research.msr.utils.ReadJarMap;
 
+import weka.gui.explorer.ClustererAssignmentsPlotInstances;
+
 public class MSRLauncher {
 
 	private static void printUsage() {
@@ -79,6 +81,10 @@ public class MSRLauncher {
 		String barDataJSON = uiFolder + File.separator + "data" + File.separator + "bar-data.json";
 
 		String affinityClusterJSON = uiFolder + File.separator + "data" + File.separator + "cluster-affinity.json";
+		
+		String cohesionJSON = uiFolder + File.separator + "data" + File.separator + "cohesion-affinity.json";
+		String cohesionAllJSON = uiFolder + File.separator + "data" + File.separator + "cohesion-all.json";
+		String interClassUsageJSON = outputPath + File.separator + "temp" + File.separator + "inter-class-usage.json";
 
 		String MSR_HOME = System.getProperty("MSR_HOME");
 
@@ -187,6 +193,9 @@ public class MSRLauncher {
 			try {
 				MSRdriver.runNaive(rootPath, type, outputPath);
 				runAffinity(rootPath, affinityClusterJSON, tempFolder);
+				
+				//cohesion-coupling
+				runCohesionCoupling(affinityClusterJSON, interClassUsageJSON, cohesionJSON);
 
 				// generate stats information
 				APIUsageStatsMiner statsMiner = new APIUsageStatsMiner();
