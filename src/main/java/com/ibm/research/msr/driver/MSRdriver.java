@@ -98,15 +98,15 @@ public class MSRdriver {
 		InterClassUsageFinder classUsage = new InterClassUsageFinder();
 		classUsage.find(appPath,opJsonFileName);
 		
-//		ExpandClusters ec = new ExpandClusters(oc.getClusters(), analyzer.getAppath(), false,classUsage);
-//		ec.getUsage();
-//		oc.setClusters(ec.getListofclusters());
-//
-//        ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath(),true,classUsage); // runs for single size clusters only -- reassigns them 
-//        ec.getUsage();
-//	  
-//		oc.setClusters(ec.getListofclusters());
-//		oc.CLeanClusters();
+		ExpandClusters ec = new ExpandClusters(oc.getClusters(), analyzer.getAppath(), false,classUsage);
+		ec.getUsage();
+		oc.setClusters(ec.getListofclusters());
+
+        ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath(),true,classUsage); // runs for single size clusters only -- reassigns them 
+        ec.getUsage();
+	  
+		oc.setClusters(ec.getListofclusters());
+		oc.CLeanClusters();
 
 		String d3ClusterPackJSON = outputPath + File.separator + "ui" + File.separator + "data" + File.separator
 				+ "clusterall.json";
