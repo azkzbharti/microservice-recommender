@@ -15,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.Path;
 
 import com.ibm.research.msr.clustering.Affinity;
+import com.ibm.research.msr.clustering.CohesionCouplingProcessing;
 import com.ibm.research.msr.jarlist.APIUsageStats;
 import com.ibm.research.msr.jarlist.APIUsageStatsMiner;
 import com.ibm.research.msr.jarlist.GradleDependencyDownloader;
@@ -23,6 +24,8 @@ import com.ibm.research.msr.jarlist.MavenCategoryEtAlExtractor;
 import com.ibm.research.msr.jarlist.POMDependencyDownloader;
 import com.ibm.research.msr.utils.Constants;
 import com.ibm.research.msr.utils.ReadJarMap;
+
+import weka.gui.explorer.ClustererAssignmentsPlotInstances;
 
 public class MSRLauncher {
 
@@ -78,6 +81,11 @@ public class MSRLauncher {
 		String barDataJSON = uiFolder + File.separator + "data" + File.separator + "bar-data.json";
 
 		String affinityClusterJSON = uiFolder + File.separator + "data" + File.separator + "cluster-affinity.json";
+		String clusterAllJSON = uiFolder + File.separator + "data" + File.separator + "clusterall.json";
+		
+		String cohesionJSON = uiFolder + File.separator + "data" + File.separator + "cohesion-affinity.json";
+		String cohesionAllJSON = uiFolder + File.separator + "data" + File.separator + "cohesion-all.json";
+		String interClassUsageJSON = outputPath + File.separator + "temp" + File.separator + "inter-class-usage.json";
 
 		String MSR_HOME = System.getProperty("MSR_HOME");
 
@@ -184,8 +192,12 @@ public class MSRLauncher {
 			System.out.println(" Algo to run " + algo);
 
 			try {
-				MSRdriver.runNaive(rootPath, type, outputPath);
+				MSRdriver.runNaive(rootPath, type, outputPath, jarPackagestoCSV);
 				runAffinity(rootPath, affinityClusterJSON, tempFolder);
+				
+				//cohesion-coupling
+				runCohesionCoupling(affinityClusterJSON, interClassUsageJSON, cohesionJSON);
+				runCohesionCoupling(clusterAllJSON, interClassUsageJSON, cohesionAllJSON);
 
 				// generate stats information
 				APIUsageStatsMiner statsMiner = new APIUsageStatsMiner();
@@ -251,8 +263,12 @@ public class MSRLauncher {
 			System.out.println(" Algo to run " + algo);
 
 			try {
-				MSRdriver.runNaive(unzipFolder, type, outputPath);
+				MSRdriver.runNaive(unzipFolder, type, outputPath, jarPackagestoCSV);
 				runAffinity(rootPath, affinityClusterJSON, tempFolder);
+				
+				//cohesion-coupling
+				runCohesionCoupling(affinityClusterJSON, interClassUsageJSON, cohesionJSON);
+				runCohesionCoupling(clusterAllJSON, interClassUsageJSON, cohesionAllJSON);
 
 				APIUsageStatsMiner statsMiner = new APIUsageStatsMiner();
 				statsMiner.mine(rootPath, jarPackagestoCSV, barDataJSON);
@@ -304,6 +320,13 @@ public class MSRLauncher {
 		Affinity affinity = new Affinity(str, tempFolder + File.separator + "cluster-affinity.properties",
 				outputJSONFile);
 		affinity.runClustering();
+
+	}
+	
+	private static void runCohesionCoupling(String clusterAllJSON, String usageJSON, String outputFile) {
+
+		CohesionCouplingProcessing postProcessor = new CohesionCouplingProcessing(clusterAllJSON, usageJSON, outputFile);
+		postProcessor.runClustering();
 
 	}
 

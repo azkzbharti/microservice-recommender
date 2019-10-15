@@ -50,7 +50,7 @@ public class Affinity {
 				+ " --outPutFilePath " + propFile;
 
 		try {
-			// System.out.println(cmd);
+			 System.out.println(cmd);
 			Runtime rt = Runtime.getRuntime();
 
 			// generate the clusters

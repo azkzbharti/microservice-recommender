@@ -41,9 +41,9 @@ public class MSRdriver {
 		return oc;
 
 	}
-	public static void metaExtractor(String appPath, String appType,String outputPath) throws IOException, Exception {
+	public static void metaExtractor(String appPath, String appType,String outputPath, String jarPackagesCsv) throws IOException, Exception {
 		ReadJarMap mapReader= new ReadJarMap();
-		mapReader.createJARCategoryMap(outputPath + File.separator + "temp" + File.separator + "jar-to-packages.csv");
+		mapReader.createJARCategoryMap(jarPackagesCsv);
 		String measureFile= outputPath + File.separator + "temp" + File.separator + "measure.csv";
 		String classFiles=outputPath + File.separator + "temp" + File.separator + "ClassList.json";
 		
@@ -54,10 +54,10 @@ public class MSRdriver {
 		
 	}
 	
-	public static void appClustering(String measurePath, String appType,String outputPath) throws IOException {
+	public static void appClustering(String measurePath, String appType,String outputPath, String jarPackagesCsv) throws IOException {
 			// read app from files and create the analyzer object
 		    ReadJarMap mapReader= new ReadJarMap();
-			mapReader.createJARCategoryMap(outputPath + File.separator + "temp" + File.separator + "jar-to-packages.csv");
+			mapReader.createJARCategoryMap(jarPackagesCsv);
 		    AnalyzeApp analyzer = null;
 		    Clustering oc = null;
 			try {
@@ -78,10 +78,10 @@ public class MSRdriver {
 		
 	}
 	
-	public static void runNaive(String appPath, String appType, String outputPath) throws IOException, Exception {
+	public static void runNaive(String appPath, String appType, String outputPath, String jarPackagesCsv) throws IOException, Exception {
 
 		ReadJarMap mapReader= new ReadJarMap();
-		mapReader.createJARCategoryMap(outputPath + File.separator + "temp" + File.separator + "jar-to-packages.csv");
+		mapReader.createJARCategoryMap(jarPackagesCsv);
 	   
 		AnalyzeApp analyzer;
 		Clustering oc = null;

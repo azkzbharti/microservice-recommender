@@ -39,6 +39,23 @@
 .label, .node--root, .node--leaf {
 	pointer-events: none;
 }
+
+/* bundling */
+.nodeHigh {
+	font: 10px sans-serif;
+	font-weight: bold;
+}
+
+.node {
+	font: 10px sans-serif;
+}
+
+.link {
+	stroke: steelblue;
+	stroke-opacity: 0.5;
+	fill: none;
+	pointer-events: none;
+}
 </style>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
@@ -60,6 +77,8 @@
 					<li><a class="page-scroll" href="#meta">Meta</a></li>
 					<li><a class="page-scroll" href="#partition">Recommended
 							Natural Seams / Partition</a></li>
+					<li><a class="page-scroll" href="#cohesioncoupling">Cohesion
+							and Coupling</a></li>
 				</ul>
 			</div>
 			<!-- .navbar-collapse -->
@@ -108,11 +127,27 @@
 	<section id="partition" class="whatwedo-section">
 		<div class="container">
 			<div class="row">
-				<div id="cluster-graph" class="col-lg-6">	
-				<h3>Recommended partitions of monolith application using API Usage information</h3>	
+				<div id="cluster-graph" class="col-lg-6">
+					<h3>Recommended partitions of monolith application using API
+						Usage information</h3>
 				</div>
 				<div id="affinity-graph" class="col-lg-6">
-				<h3>Recommended partitions of monolith application using  Affinity Propagation</h3>	
+					<h3>Recommended partitions of monolith application using
+						Affinity Propagation</h3>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Partition -->
+	<section id="cohesioncoupling" class="whatwedo-section">
+		<div class="container">
+			<div class="row">
+				<div id="cohesion-all" class="col-lg-6">
+					<h3>Cohesion And Coupling for API Usage Clusters</h3>
+				</div>
+				<div id="cohesion-affinity" class="col-lg-6">
+					<h3>Cohesion And Coupling for Affinity clusters</h3>
 				</div>
 			</div>
 		</div>
@@ -181,6 +216,7 @@
 
 	<!-- D3-->
 	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<!-- bar data -->
 	<script>
         
             // set the dimensions and margins of the graph
@@ -398,6 +434,194 @@
         });
 
     </script>
+	<!--  for bundling -->
+	<script>
+
+			var diameter1 = 600,
+			    radius = diameter1 / 2,
+			    innerRadius = radius - 120;
+			
+			var cluster = d3.cluster()
+			    .size([360, innerRadius]);
+			
+			var line = d3.radialLine()
+			    .curve(d3.curveBundle.beta(0.85))
+			    .radius(function(d) { return d.y; })
+			    .angle(function(d) { return d.x / 180 * Math.PI; });
+			
+			var svg4 = d3.select("#cohesion-all").append("svg")
+			    .attr("width", diameter1)
+			    .attr("height", diameter1)
+			  .append("g")
+			    .attr("transform", "translate(" + radius + "," + radius + ")");
+
+			var link = svg4.append("g").selectAll(".link"),
+			    node = svg4.append("g").selectAll(".node");
+			
+			d3.json("data/cohesion-all.json", function(error, classes) {
+			  if (error) throw error;
+			
+			  var root = packageHierarchy(classes)
+			      .sum(function(d) { return d.size; });
+			
+			  cluster(root);
+			
+			  link = link
+			    .data(packageImports(root.leaves()))
+			    .enter().append("path")
+			      .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
+			      .attr("class", "link")
+			      .attr("d", line);
+			
+			  node = node
+			    .data(root.leaves())
+			    .enter().append("text")
+			      .attr("class", function(d){ return d.data.coupling ? "nodeHigh" : "node"})
+			      .attr("dy", "0.31em")
+			      .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
+			      .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+			      .text(function(d) { return d.data.key; });
+			});
+
+			// Lazily construct the package hierarchy from class names.
+			function packageHierarchy(classes) {
+			  var map = {};
+			
+			  function find(name, data) {
+			    var node = map[name], i;
+			    if (!node) {
+			      node = map[name] = data || {name: name, children: []};
+			      if (name.length) {
+			        node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
+			        node.parent.children.push(node);
+			        node.key = name.substring(i + 1);
+			      }
+			    }
+			    return node;
+			  }
+			
+			  classes.forEach(function(d) {
+			    find(d.name, d);
+			  });
+			
+			  return d3.hierarchy(map[""]);
+			}
+			
+			// Return a list of imports for the given array of nodes.
+			function packageImports(nodes) {
+			  var map = {},
+			      imports = [];
+			
+			  // Compute a map from name to node.
+			  nodes.forEach(function(d) {
+			    map[d.data.name] = d;
+			  });
+			
+			  // For each import, construct a link from the source to target node.
+			  nodes.forEach(function(d) {
+			    if (d.data.imports) d.data.imports.forEach(function(i) {
+			      imports.push(map[d.data.name].path(map[i]));
+			    });
+			  });
+			
+			  return imports;
+			}
+
+</script>
+<!--  for bundling -->
+	<script>
+
+			var diameter2 = 600,
+			    radius2 = diameter2 / 2,
+			    innerRadius2 = radius2 - 120;
+			
+			var cluster1 = d3.cluster()
+			    .size([360, innerRadius2]);
+			
+			var line1 = d3.radialLine()
+			    .curve(d3.curveBundle.beta(0.85))
+			    .radius(function(d) { return d.y; })
+			    .angle(function(d) { return d.x / 180 * Math.PI; });
+			
+			var svg5 = d3.select("#cohesion-affinity").append("svg")
+			    .attr("width", diameter2)
+			    .attr("height", diameter2)
+			  .append("g")
+			    .attr("transform", "translate(" + radius2 + "," + radius2 + ")");
+
+			var link1 = svg5.append("g").selectAll(".link"),
+			    node1 = svg5.append("g").selectAll(".node");
+			
+			d3.json("data/cohesion-affinity.json", function(error, classes) {
+			  if (error) throw error;
+			
+			  var root = packageHierarchy(classes)
+			      .sum(function(d) { return d.size; });
+			
+			  cluster(root);
+			
+			  link = link1
+			    .data(packageImports(root.leaves()))
+			    .enter().append("path")
+			      .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
+			      .attr("class", "link")
+			      .attr("d", line1);
+			
+			  node = node1
+			    .data(root.leaves())
+			    .enter().append("text")
+			      .attr("class", function(d){ return d.data.coupling ? "nodeHigh" : "node"})
+			      .attr("dy", "0.31em")
+			      .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
+			      .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+			      .text(function(d) { return d.data.key; });
+			});
+
+			// Lazily construct the package hierarchy from class names.
+			function packageHierarchy(classes) {
+			  var map = {};
+			
+			  function find(name, data) {
+			    var node = map[name], i;
+			    if (!node) {
+			      node = map[name] = data || {name: name, children: []};
+			      if (name.length) {
+			        node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
+			        node.parent.children.push(node);
+			        node.key = name.substring(i + 1);
+			      }
+			    }
+			    return node;
+			  }
+			
+			  classes.forEach(function(d) {
+			    find(d.name, d);
+			  });
+			
+			  return d3.hierarchy(map[""]);
+			}
+			
+			// Return a list of imports for the given array of nodes.
+			function packageImports(nodes) {
+			  var map = {},
+			      imports = [];
+			
+			  // Compute a map from name to node.
+			  nodes.forEach(function(d) {
+			    map[d.data.name] = d;
+			  });
+			
+			  // For each import, construct a link from the source to target node.
+			  nodes.forEach(function(d) {
+			    if (d.data.imports) d.data.imports.forEach(function(i) {
+			      imports.push(map[d.data.name].path(map[i]));
+			    });
+			  });
+			
+			  return imports;
+			}
+
+</script> 
 
 </body>
 
