@@ -342,8 +342,8 @@ class Clustering(object):
                             imports.append(prefixmap[i])
                         else:
                             imports.append(prefixmap[i])
-                        if debug:
-                            print( "--", prefixmap[member], "-", prefixmap[i], "-", c)
+                        #if debug:
+                        #    print( "--", prefixmap[member], "-", prefixmap[i], "-", c)
                     # else:
                     #     if self._usage_matrix[i,member] > 0:
                     #         imports.append(prefixmap[i])
@@ -366,8 +366,8 @@ class Clustering(object):
                     imports.append(prefixmap[i])
                 # else:
                 #     imports.append(prefixmap[i])
-                if debug:
-                    print( "-- -open- --", prefixmap[classid], "-", prefixmap[i], "-", c)
+                #if debug:
+                #    print( "-- -open- --", prefixmap[classid], "-", prefixmap[i], "-", c)
                 # else:
                 #     if self._usage_matrix[i,classid] > 0:
                 #         imports.append(prefixmap[i])
@@ -376,8 +376,9 @@ class Clustering(object):
             dictobj['imports'] = imports
             jsonobj.append(dictobj)
 
-            with open(outputfile, 'w') as fp:
-                json.dump(jsonobj, fp)
+        with open(outputfile, 'w') as fp:
+            json.dump(jsonobj, fp)
+            print("Successfully written to:" + str(outputfile), file=sys.stderr)
 
 
     def get_class_info(self):
