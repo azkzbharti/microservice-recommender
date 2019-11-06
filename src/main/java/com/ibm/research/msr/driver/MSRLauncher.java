@@ -24,6 +24,7 @@ import com.ibm.research.msr.jarlist.MavenCategoryEtAlExtractor;
 import com.ibm.research.msr.jarlist.POMDependencyDownloader;
 import com.ibm.research.msr.utils.Constants;
 import com.ibm.research.msr.utils.ReadJarMap;
+import com.ibm.research.msr.utils.Util;
 
 import weka.gui.explorer.ClustererAssignmentsPlotInstances;
 
@@ -145,7 +146,7 @@ public class MSRLauncher {
 			if (pomFiles.isEmpty() && gradleFiles.isEmpty()) {
 				// no pom or gradle files found, hence it might contain a jars directly in lib
 				// folder
-				parsedJars = dumpAPIInfo(rootPath, tempFolder);
+				parsedJars = Util.dumpAPIInfo(rootPath, tempFolder);
 				MavenCategoryEtAlExtractor mavenExtractor = new MavenCategoryEtAlExtractor();
 				mavenExtractor.find(rootPath, mavenMetaJSON);
 
@@ -155,7 +156,7 @@ public class MSRLauncher {
 				POMDependencyDownloader pomDownloader = new POMDependencyDownloader();
 				pomDownloader.download(pomFiles, jarFolder);
 
-				parsedJars = dumpAPIInfo(jarFolder, tempFolder);
+				parsedJars = Util.dumpAPIInfo(jarFolder, tempFolder);
 				MavenCategoryEtAlExtractor mavenExtractor = new MavenCategoryEtAlExtractor();
 				mavenExtractor.find(jarFolder, mavenMetaJSON);
 
@@ -170,7 +171,7 @@ public class MSRLauncher {
 					// use the pom file logic to download the jars now
 					POMDependencyDownloader pomDownloader = new POMDependencyDownloader();
 					pomDownloader.download(pomFiles, jarFolder);
-					parsedJars = dumpAPIInfo(jarFolder, tempFolder);
+					parsedJars = Util.dumpAPIInfo(jarFolder, tempFolder);
 				}
 
 				MavenCategoryEtAlExtractor mavenExtractor = new MavenCategoryEtAlExtractor();
@@ -247,7 +248,7 @@ public class MSRLauncher {
 					e.printStackTrace();
 				}
 
-				parsedJars = dumpAPIInfo(unzipFolder, tempFolder);
+				parsedJars = Util.dumpAPIInfo(unzipFolder, tempFolder);
 
 			} else {
 				printUsage();
@@ -330,37 +331,7 @@ public class MSRLauncher {
 
 	}
 
-	private static boolean dumpAPIInfo(String folderPath, String outputPath) {
-
-		Collection<File> jarList = null;
-		ArrayList<String> jarFiles = null;
-
-		jarList = FileUtils.listFiles(new File(folderPath), new String[] { "jar" }, true);
-
-		Iterator<File> jarListItr = jarList.iterator();
-
-		if (jarList.isEmpty())
-			return false;
-
-		jarFiles = new ArrayList<String>();
-
-		while (jarListItr.hasNext()) {
-
-			jarFiles.add(jarListItr.next().getAbsolutePath());
-
-		}
-
-		if (!jarFiles.isEmpty()) {
-
-			// jar files found. Extract the api information
-			JarApiList jarAPIList = new JarApiList();
-			jarAPIList.dumpAPIInfoForJars(jarFiles, outputPath);
-
-		}
-
-		return true;
-
-	}
+	
 
 	public static void unzip(String zipFile, String destDirPath) throws IOException {
 		String fileZip = zipFile;
