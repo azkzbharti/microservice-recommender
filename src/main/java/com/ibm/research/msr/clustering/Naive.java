@@ -63,7 +63,7 @@ public class Naive extends Clustering {
 
 	public void runClustering() {
 		ArrayList<ClusterDetails> clusters = calculate_initial_clusters(listOfDocuments);
-	
+		System.out.println("Initial unique Docs: "+getUniquedocs(clusters));
 		Quartet quartet;
 		Quartet selquartet;
 		Comparator<Quartet> comparator = new Comparator<Quartet>() {
@@ -151,6 +151,8 @@ public class Naive extends Clustering {
 //
 //		}
 		this.clusters = clusters;
+		System.out.println("At End unique Docs: "+getUniquedocs(clusters));
+
 		int count = 0;
 		JSONObject clusterobj = new JSONObject();
 		clusterobj.put("name", "root");

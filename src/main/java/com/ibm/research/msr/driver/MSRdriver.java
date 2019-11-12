@@ -30,9 +30,10 @@ public class MSRdriver {
 		Clustering oc = null;
 
 		List<List<ClusterDetails>> allAlgoClusterList = new ArrayList<>();
-		oc = new Naive(analyzer.getListOfDocuments(), Constants.SPLIT);
+//		oc = new Naive(analyzer.getListOfDocuments(), Constants.SPLIT);
+		oc = new NaiveTFIDF(analyzer.getListOfDocuments(), Constants.EUCLIDIEAN,Constants.SPLIT);
 		oc.runClustering();
-		oc.getClusters();
+		System.out.println(oc.getUniquedocs(oc.getClusters()));
 		oc.removeDuplicate();		
 		System.out.println("New clusters size:");
 		System.out.println(oc.getClusters().size());	
@@ -42,7 +43,7 @@ public class MSRdriver {
 
 	}
 	public static void metaExtractor(String appPath, String appType,String outputPath, String jarPackagesCsv) throws IOException, Exception {
-		ReadJarMap mapReader= new ReadJarMap();
+		ReadJarMap mapReader= new ReadJarMap();	
 		mapReader.createJARCategoryMap(jarPackagesCsv);
 		String measureFile= outputPath + File.separator + "temp" + File.separator + "measure.csv";
 		String classFiles=outputPath + File.separator + "temp" + File.separator + "ClassList.json";
@@ -95,15 +96,20 @@ public class MSRdriver {
 		oc.setCusterListNames();
 
 		String opJsonFileName=outputPath + File.separator + "temp"+File.separator+"inter-class-usage.json";
+
 		InterClassUsageFinder classUsage = new InterClassUsageFinder();
 		classUsage.find(appPath,opJsonFileName);
-		
+
+		System.out.println(oc.getUniquedocs(oc.getClusters()));
 		ExpandClusters ec = new ExpandClusters(oc.getClusters(), analyzer.getAppath(), false,classUsage);
 		ec.getUsage();
 		oc.setClusters(ec.getListofclusters());
-
+		System.out.println(oc.getUniquedocs(ec.getListofclusters()));
+		
         ec= new ExpandClusters(oc.getClusters(),analyzer.getAppath(),true,classUsage); // runs for single size clusters only -- reassigns them 
         ec.getUsage();
+		System.out.println(oc.getUniquedocs(ec.getListofclusters()));
+
 	  
 		oc.setClusters(ec.getListofclusters());
 		oc.CLeanClusters();

@@ -2,6 +2,7 @@ package com.ibm.research.msr.expandcluster;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -34,8 +35,13 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.TypeParameter;
 import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class InterClassUsageFinder {
 	
@@ -102,7 +108,45 @@ public class InterClassUsageFinder {
 	Map<String,InterClassUsage> interClassUsageMap=
 			new HashMap<String, InterClassUsage>();
 
-
+	
+	public  Map<ClassPair,Integer> loader(String jsonPath){
+		FileReader fileReader = null;
+		Map<ClassPair, Integer> m = new HashMap<ClassPair, Integer>();
+		try {
+			fileReader = new FileReader(jsonPath);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JSONParser jsonParser = new JSONParser();
+		try {
+			Object obj = jsonParser.parse(fileReader);
+			
+			JSONObject jsonobj = (JSONObject) obj;
+			Set<String> keys = jsonobj.keySet();
+			for(String k:keys) {
+				
+				JSONObject entry = (JSONObject) jsonobj.get(k);
+				String name=(String) entry.get("name");
+				JSONObject vals = (JSONObject) entry.get("usedClassesToCount");
+				if(vals!=null) {
+				Set<String> vkeys = vals.keySet();
+				for(String v:vkeys) {
+					Long q=(Long) vals.get(v);
+					m.put(new ClassPair(name, v),q.intValue());
+				}
+				}
+			}		
+			interClassUsageMatrix=m;
+		} catch (IOException | ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return m;
+		
+	
+	}
 	public Map<ClassPair, Integer> find(String srcFilesRoot,String outPath) {
 
 		srcRootFoldersSet = extractSrcRootFolders(srcFilesRoot);
@@ -510,6 +554,7 @@ public class InterClassUsageFinder {
 			interClassUsageMap.put(usedClass, interClassUsage2);
 		}
 	}
+	
 
 	/**
 	 * 
@@ -524,90 +569,104 @@ public class InterClassUsageFinder {
 	 * C:\Users\GiriprasadSridhara\Downloads\digdeep-master
 	 */
 	public static void main(String[] args) {
+		Map<ClassPair, Integer> m1=null;
+//		loader("/Users/shreya/eclipse-workspace/outputs/daytrader7/temp/inter-class-usage.json");
+		for (ClassPair cp: m1.keySet())
+		{
+			Integer c=m1.get(cp);
+			System.out.println(cp.getThisClass()+","+cp.getUsedClass()+","+c);
+//			usesOtherClasses.add(cp.getThisClass());
+//			usedByOtherClasses.add(cp.getUsedClass());
+//			
+//			String userClass=cp.getThisClass();
+//			String usedClass=cp.getUsedClass();
+//			i.addToInterClassUsageMap(interClassUsageMap,userClass,usedClass,"user");
+//			i.addToInterClassUsageMap(interClassUsageMap,userClass,usedClass,"used");
+		}
+		return;
 		// TODO Auto-generated method stub
 
-		int choice = 1;
-		//int choice = 2;
-		InterClassUsageFinder i = new InterClassUsageFinder();
-		if (choice == 1) {
-			if (args.length < 1) {
-				System.err.println("USAGE: <root of source files for project>");
-				System.exit(-1);
-			}
-
-			String srcFilesRoot = args[0];
-			String opJsonFileName=srcFilesRoot + File.separator + "temp"+File.separator+"inter-class-usage.json";
-
-			// InterClassUsageFinder i=new InterClassUsageFinder();
-			Map<ClassPair, Integer> m=i.find(srcFilesRoot,opJsonFileName);
-
-			System.out.println("\nFinalInterClassUsageMatrix:");
-//			Set<String> usesOtherClasses=new HashSet<String>();
-//			Set<String> usedByOtherClasses=new HashSet<String>();
-			
-//			Map<String,InterClassUsage> interClassUsageMap=
-//					new HashMap<String, InterClassUsage>();
-//			
-			for (ClassPair cp: m.keySet())
-			{
-				Integer c=m.get(cp);
-				System.out.println(cp.getThisClass()+","+cp.getUsedClass()+","+c);
-//				usesOtherClasses.add(cp.getThisClass());
-//				usedByOtherClasses.add(cp.getUsedClass());
-//				
-//				String userClass=cp.getThisClass();
-//				String usedClass=cp.getUsedClass();
-//				i.addToInterClassUsageMap(interClassUsageMap,userClass,usedClass,"user");
-//				i.addToInterClassUsageMap(interClassUsageMap,userClass,usedClass,"used");
-			}
+//		int choice = 1;
+//		//int choice = 2;
+//		InterClassUsageFinder i = new InterClassUsageFinder();
+//		if (choice == 1) {
+//			if (args.length < 1) {
+//				System.err.println("USAGE: <root of source files for project>");
+//				System.exit(-1);
+//			}
 //
+//			String srcFilesRoot = args[0];
+//			String opJsonFileName=srcFilesRoot + File.separator + "temp"+File.separator+"inter-class-usage.json";
+//
+//			// InterClassUsageFinder i=new InterClassUsageFinder();
+//			Map<ClassPair, Integer> m=i.find(srcFilesRoot,opJsonFileName);
+//
+//			System.out.println("\nFinalInterClassUsageMatrix:");
+////			Set<String> usesOtherClasses=new HashSet<String>();
+////			Set<String> usedByOtherClasses=new HashSet<String>();
+//			
+////			Map<String,InterClassUsage> interClassUsageMap=
+////					new HashMap<String, InterClassUsage>();
+////			
+//			for (ClassPair cp: m.keySet())
+//			{
+//				Integer c=m.get(cp);
+//				System.out.println(cp.getThisClass()+","+cp.getUsedClass()+","+c);
+////				usesOtherClasses.add(cp.getThisClass());
+////				usedByOtherClasses.add(cp.getUsedClass());
+////				
+////				String userClass=cp.getThisClass();
+////				String usedClass=cp.getUsedClass();
+////				i.addToInterClassUsageMap(interClassUsageMap,userClass,usedClass,"user");
+////				i.addToInterClassUsageMap(interClassUsageMap,userClass,usedClass,"used");
+//			}
+////
+//
+//			
+//		} else if (choice == 2) {
+//			//String ipf = "C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\com\\ibm\\research\\digdeep\\preventive\\clusterer\\CarrotClusteringEngineImpl.java";
+//			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\com\\ibm\\research\\util\\MapUtil.java";
+//			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\com\\ibm\\research\\digdeep\\web\\services\\DynamicRecommendationService.java";
+//			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-git-api-web\\src\\com\\ibm\\research\\digdeep\\git\\GitApiResource.java";
+//			String ipf="C:\\Users\\GiriprasadSridhara\\sample.plantsbywebsphere\\src\\main\\java\\com\\ibm\\websphere\\samples\\pbw\\bean\\BackOrderMgr.java";
+//			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\extra\\recommendations\\"
+//			// ipf="C:\\Users\\GiriprasadSridhara\\dependency-migration-asistant\\src\\main\\java\\com\\ibm\\research\\appmod\\dma\\impact\\ChangedAPIUsageSiteFinder.java";
+//			File file = new File(ipf);
+//			//String srcFilesRoot = "C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\";
+//			//String srcFilesRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\";
+//			//String srcFilesRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\";
+//			String srcFilesRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-git-api-web\\src\\";
+//			i.processOneFile(file, srcFilesRoot);
+//		}
+//		else if (choice==3)
+//		{
+//			//Make a filter that matches files and directories
+//		    final IOFileFilter srcFolderFilter = new IOFileFilter() {  
+//		        @Override
+//		        public boolean accept(File dir, String name) {
+//		        	//System.out.println("accept dir " + name);
+//		            if (name.compareTo("src")==0)
+//		            {
+//		            	return true;
+//		            }
+//		            return false;
+//		        }
+//
+//		        @Override
+//		        public boolean accept(File file) {
+//		            return false;
+//
+//		        }
+//		    };
+//
+//		    extractSrcRootFolders("C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\");
 
-			
-		} else if (choice == 2) {
-			//String ipf = "C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\com\\ibm\\research\\digdeep\\preventive\\clusterer\\CarrotClusteringEngineImpl.java";
-			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\com\\ibm\\research\\util\\MapUtil.java";
-			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\com\\ibm\\research\\digdeep\\web\\services\\DynamicRecommendationService.java";
-			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-git-api-web\\src\\com\\ibm\\research\\digdeep\\git\\GitApiResource.java";
-			String ipf="C:\\Users\\GiriprasadSridhara\\sample.plantsbywebsphere\\src\\main\\java\\com\\ibm\\websphere\\samples\\pbw\\bean\\BackOrderMgr.java";
-			//String ipf="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\extra\\recommendations\\"
-			// ipf="C:\\Users\\GiriprasadSridhara\\dependency-migration-asistant\\src\\main\\java\\com\\ibm\\research\\appmod\\dma\\impact\\ChangedAPIUsageSiteFinder.java";
-			File file = new File(ipf);
-			//String srcFilesRoot = "C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\";
-			//String srcFilesRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-web-common\\src\\";
-			//String srcFilesRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\";
-			String srcFilesRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-git-api-web\\src\\";
-			i.processOneFile(file, srcFilesRoot);
-		}
-		else if (choice==3)
-		{
-			//Make a filter that matches files and directories
-		    final IOFileFilter srcFolderFilter = new IOFileFilter() {  
-		        @Override
-		        public boolean accept(File dir, String name) {
-		        	//System.out.println("accept dir " + name);
-		            if (name.compareTo("src")==0)
-		            {
-		            	return true;
-		            }
-		            return false;
-		        }
-
-		        @Override
-		        public boolean accept(File file) {
-		            return false;
-
-		        }
-		    };
-
-		    extractSrcRootFolders("C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\");
-
-		}
+//		}
 	}
-	private void saveTofile(String outfile) {
+	public void saveTofile(String outfile) {
 		Gson gson=new Gson();
 		// TODO: check if below is static and add getter
-		String strJson=gson.toJson(interClassUsageMap);
-//		System.out.println("\nJSON="+strJson);
+		String strJson=gson.toJson(interClassUsageMatrix);
 		String opJsonFileName=outfile;
 		try
 		{
@@ -625,7 +684,7 @@ public class InterClassUsageFinder {
 	}
 
 	private void findTypeAndPrintJson(String srcFilesRoot,String opJsonFileName) {
-//		System.out.println("interClassUsageMap size="+interClassUsageMap.size());
+		System.out.println("interClassUsageMap size="+interClassUsageMap.size());
 		for (String c:interClassUsageMap.keySet())
 		{
 //			System.out.println("class="+c);

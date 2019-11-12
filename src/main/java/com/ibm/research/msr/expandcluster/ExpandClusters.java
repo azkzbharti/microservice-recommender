@@ -19,6 +19,7 @@ import org.apache.commons.collections.MapIterator;
 import org.apache.commons.collections.iterators.EntrySetMapIterator;
 
 import com.ibm.research.msr.clustering.ClusterDetails;
+import com.ibm.research.msr.clustering.Clustering;
 import com.ibm.research.msr.extraction.Document;
 import com.ibm.research.msr.utils.Constants;
 
@@ -38,6 +39,8 @@ public class ExpandClusters {
 		s.addAll(listofclusters);
 		listofclusters = new ArrayList<ClusterDetails>();
 		listofclusters.addAll(s); 
+		Clustering oc1=null;
+		System.out.println(getUniquedocs(listofclusters));
 		for(ClusterDetails cls:listofclusters) {
 			// if the metric is whater you want reassignment add it to nonlist 
 		//	this.nonelistofclusters.add(cls);
@@ -52,12 +55,28 @@ public class ExpandClusters {
 				
 		}
 		i=ClassUsage;
-		
+		System.out.println(getUniquedocs(this.listofclusters));
+		System.out.println(getUniquedocs(this.newlistofclusters));
+		System.out.println(getUniquedocs(this.nonelistofclusters));
 //		i.find(srcFilesRoot);
 	
 	}
 	
 	
+	private int getUniquedocs(List<ClusterDetails> listofclusters2) {
+		// TODO Auto-generated method stub
+		HashSet<Document> doclist = new HashSet<>();
+		for(ClusterDetails cls:listofclusters2) {
+			for(Document doc: cls.getListOfDocuments()) {
+				doclist.add(doc);
+			}
+		}
+		return doclist.size();
+		
+		
+	}
+
+
 	public void getUsage() {
 		// TODO break this code in small functions
 		System.out.println("Doing Cluster expansion");

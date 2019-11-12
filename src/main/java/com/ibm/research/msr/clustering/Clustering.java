@@ -128,6 +128,16 @@ public abstract class Clustering {
 		remove.setInputFormat(data);
 		return Filter.useFilter(data, remove);
 	}
+	public int getUniquedocs( List<ClusterDetails>  list) {
+		HashSet<Document> doclist = new HashSet<>();
+		for(ClusterDetails cls:list) {
+			for(Document doc: cls.getListOfDocuments()) {
+				doclist.add(doc);
+			}
+		}
+		return doclist.size();
+		
+	}
 
 	/**
 	 * 
@@ -152,6 +162,7 @@ public abstract class Clustering {
 	public void saveClusterAsCirclePackJSON(String writepath) {
 
 		JSONObject rootObject = new JSONObject();
+		
 		Iterator<ClusterDetails> itr = clusters.iterator();
 
 		rootObject.put("name", "clusters");
