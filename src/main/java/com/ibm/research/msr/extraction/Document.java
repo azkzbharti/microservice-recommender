@@ -66,8 +66,17 @@ public class Document {
 		this.fileName = filename;
 		this.docVector = docvector;
 		this.tokens = tokens;
+		Map<String, Integer> importCountMap = new HashMap<String, Integer>();
+		for (String tok:this.tokens) {
+		if (!importCountMap.containsKey(tok)) {
+			importCountMap.put(tok, 1);
+		} else {
+			importCountMap.put(tok, importCountMap.get(tok) + 1);
+		}
+		this.tokenCountMap=importCountMap;
 		this.packageName = "";
 	}
+		}
 
 	public List<Double> getDocVector() {
 		return docVector;

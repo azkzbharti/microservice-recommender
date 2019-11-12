@@ -4,6 +4,7 @@
 package com.ibm.research.msr.extraction;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,6 +21,9 @@ import org.apache.commons.io.FileUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.ibm.research.msr.utils.Constants;
 import com.ibm.research.msr.utils.DocumentParserUtil;
 import com.opencsv.CSVReader;
@@ -106,6 +110,15 @@ public class AnalyzeApp {
 
 		}
 	}
+	public AnalyzeApp(String documentFile,String measureFile) {
+		readDocuments(documentFile);
+		try {
+			read_measure_tf_file(measureFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public void savetoFile(String measureFile,String documentFile) throws IOException {
 		serializeDocuments(documentFile);
 		saveMeasure(measureFile);
@@ -119,7 +132,18 @@ public class AnalyzeApp {
              e.printStackTrace();
      }
 	}
-	
+	public void readDocuments(String filename) {
+    	Gson objGson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+		try {
+			this.listOfDocuments = objGson.fromJson(new FileReader(filename), new TypeToken<ArrayList<Document>>(){}.getType());
+			System.out.println(listOfDocuments.size());
+		} catch (JsonIOException | JsonSyntaxException | FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
+	}
 	public void computeMeasure() throws IOException, Exception {
 		calculateTotalWords();
 		documentToVector();
@@ -195,6 +219,7 @@ public class AnalyzeApp {
 		csvWriter.close();
 	}
 
+
 	public void read_measure_tf_file(String appPath2) throws IOException {
 		// reads from csv file and creates a list of documents
 		this.listOfDocuments = new ArrayList<>();
@@ -210,7 +235,7 @@ public class AnalyzeApp {
 
 			String filepath = line[0];
 			String filename = line[1];
-
+			
 			List<Double> docVector = new ArrayList<Double>();
 			List<String> documentTokens = new ArrayList<String>();
 			for (int i = 2; i < line.length; i++) {
@@ -224,7 +249,7 @@ public class AnalyzeApp {
 			}
 			Document doc = new Document(filepath, filename, docVector, documentTokens);
 			listOfDocuments.add(doc);
-
+			
 		}
 	}
 

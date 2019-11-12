@@ -85,6 +85,7 @@ public class MSRdriver {
 		mapReader.createJARCategoryMap(jarPackagesCsv);
 	   
 		AnalyzeApp analyzer;
+
 		Clustering oc = null;
 		analyzer = new AnalyzeApp(appPath,appType,outputPath,mapReader.getLibCatMap());
 
@@ -92,6 +93,9 @@ public class MSRdriver {
 		String classFiles=outputPath + File.separator + "temp" + File.separator + "ClassList.json";
 		
 		analyzer.savetoFile(measureFile, classFiles);
+//		AnalyzeApp analyzer2 = new AnalyzeApp(classFiles, measureFile);
+
+//		oc = runNaiveUtility(analyzer2);
 		oc = runNaiveUtility(analyzer);
 		oc.setCusterListNames();
 
