@@ -104,9 +104,9 @@ public class AnalyzeApp {
 			// TODO: add as an input
 					} else {
 			
-			System.out.println("Reading from CSV file");
-			read_measure_tf_file(appPath);
-			
+//			System.out.println("Reading from CSV file");
+//			read_measure_tf_file(appPath);
+//			
 
 		}
 	}

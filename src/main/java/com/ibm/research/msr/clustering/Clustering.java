@@ -154,12 +154,13 @@ public abstract class Clustering {
 
 	/**
 	 * Cluster save as Circle-pack D3 viz JSON
+	 * @return 
 	 * 
 	 * 
 	 */
 
 	@SuppressWarnings("unchecked")
-	public void saveClusterAsCirclePackJSON(String writepath) {
+	public String saveClusterAsCirclePackJSON(String writepath) {
 
 		JSONObject rootObject = new JSONObject();
 		
@@ -196,7 +197,7 @@ public abstract class Clustering {
 		}
 
 		rootObject.put("children", rootChildrenArray);
-
+		
 		if (rootObject != null) {
 			try {
 				Files.write(Paths.get(writepath), rootObject.toString().getBytes());
@@ -211,7 +212,7 @@ public abstract class Clustering {
 		}
 
 		System.out.println("File written at " + writepath);
-
+		return rootObject.toString();
 	}
 
 	public void removeDuplicate() {
