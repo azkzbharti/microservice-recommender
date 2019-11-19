@@ -30,8 +30,8 @@ public class MSRdriver {
 		Clustering oc = null;
 
 		List<List<ClusterDetails>> allAlgoClusterList = new ArrayList<>();
-//		oc = new Naive(analyzer.getListOfDocuments(), Constants.SPLIT);
-		oc = new NaiveTFIDF(analyzer.getListOfDocuments(), Constants.EUCLIDIEAN,Constants.SPLIT);
+		oc = new Naive(analyzer.getListOfDocuments(), Constants.SPLIT);
+//		oc = new NaiveTFIDF(analyzer.getListOfDocuments(), Constants.EUCLIDIEAN,Constants.SPLIT);
 		oc.runClustering();
 		System.out.println(oc.getUniquedocs(oc.getClusters()));
 		oc.removeDuplicate();		
@@ -93,7 +93,7 @@ public class MSRdriver {
 		String classFiles=outputPath + File.separator + "temp" + File.separator + "ClassList.json";
 		
 		analyzer.savetoFile(measureFile, classFiles);
-//		AnalyzeApp analyzer2 = new AnalyzeApp(classFiles, measureFile);
+		AnalyzeApp analyzer2 = new AnalyzeApp(classFiles, measureFile);
 
 //		oc = runNaiveUtility(analyzer2);
 		oc = runNaiveUtility(analyzer);
