@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 
+import com.ibm.research.msr.clustering.Affinity;
 import com.ibm.research.msr.jarlist.JarApiList;
 
 public class Util {
@@ -21,29 +23,16 @@ public class Util {
 		if (prop == null) {
 
 			String MSR_HOME = System.getProperty("MSR_HOME");
-
-			Collection<File> propList = FileUtils.listFiles(new File(MSR_HOME), new String[] { "properties" }, true);
-
-			Iterator<File> fileListItr = propList.iterator();
-			File propFile = null;
-
-			while (fileListItr.hasNext()) {
-				propFile = fileListItr.next();
-				break;
-			}
+			String propFile = MSR_HOME + File.separator + "msr.properties";
 
 			prop = new Properties();
 
-			if (propFile != null) {
+			try {
+				prop.load(new FileReader(propFile));
+			} catch (IOException e) {
+				System.out.println(" Issues while reading msr.properties");
+				e.printStackTrace();
 
-				try {
-					prop.load(new FileReader(propFile));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} else {
-				System.out.println(" Properties file not found");
 			}
 
 		}
@@ -93,7 +82,7 @@ public class Util {
 		return MSR_HOME + File.separator + "python" + File.separator + "affinity_algo.py ";
 
 	}
-	
+
 	public static String getCohesionPythonFile() {
 		String MSR_HOME = System.getProperty("MSR_HOME");
 		return MSR_HOME + File.separator + "python" + File.separator + "recluster_driver.py ";
@@ -101,13 +90,13 @@ public class Util {
 	}
 
 	public static String getStopWordsFile() {
-		
+
 		String MSR_HOME = System.getProperty("MSR_HOME");
-		
+
 		return MSR_HOME + File.separator + "stop_words.txt";
-		
+
 	}
-	
+
 	public static boolean dumpAPIInfo(String folderPath, String outputPath) {
 
 		Collection<File> jarList = null;
