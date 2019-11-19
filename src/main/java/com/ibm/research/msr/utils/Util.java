@@ -23,29 +23,16 @@ public class Util {
 		if (prop == null) {
 
 			String MSR_HOME = System.getProperty("MSR_HOME");
-
-			Collection<File> propList = FileUtils.listFiles(new File(MSR_HOME), new String[] { "properties" }, true);
-
-			Iterator<File> fileListItr = propList.iterator();
-			File propFile = null;
-
-			while (fileListItr.hasNext()) {
-				propFile = fileListItr.next();
-				break;
-			}
+			String propFile = MSR_HOME + File.separator + "msr.properties";
 
 			prop = new Properties();
 
-			if (propFile != null) {
+			try {
+				prop.load(new FileReader(propFile));
+			} catch (IOException e) {
+				System.out.println(" Issues while reading msr.properties");
+				e.printStackTrace();
 
-				try {
-					prop.load(new FileReader(propFile));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} else {
-				System.out.println(" Properties file not found");
 			}
 
 		}
@@ -141,8 +128,5 @@ public class Util {
 		return true;
 
 	}
-
-	
-
 
 }
