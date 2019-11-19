@@ -324,7 +324,7 @@ public class MSRLauncher {
 
 	}
 	
-	private static void runCohesionCoupling(String clusterAllJSON, String usageJSON, String outputFile) {
+	public static void runCohesionCoupling(String clusterAllJSON, String usageJSON, String outputFile) {
 
 		CohesionCouplingProcessing postProcessor = new CohesionCouplingProcessing(clusterAllJSON, usageJSON, outputFile);
 		postProcessor.runClustering();
