@@ -24,6 +24,7 @@ import com.ibm.research.msr.jarlist.MavenCategoryEtAlExtractor;
 import com.ibm.research.msr.jarlist.POMDependencyDownloader;
 import com.ibm.research.msr.utils.Constants;
 import com.ibm.research.msr.utils.ReadJarMap;
+import com.ibm.research.msr.utils.UnzipUtility;
 import com.ibm.research.msr.utils.Util;
 
 import weka.gui.explorer.ClustererAssignmentsPlotInstances;
@@ -83,7 +84,7 @@ public class MSRLauncher {
 
 		String affinityClusterJSON = uiFolder + File.separator + "data" + File.separator + "cluster-affinity.json";
 		String clusterAllJSON = uiFolder + File.separator + "data" + File.separator + "clusterall.json";
-		
+
 		String cohesionJSON = uiFolder + File.separator + "data" + File.separator + "cohesion-affinity.json";
 		String cohesionAllJSON = uiFolder + File.separator + "data" + File.separator + "cohesion-all.json";
 		String interClassUsageJSON = outputPath + File.separator + "temp" + File.separator + "inter-class-usage.json";
@@ -195,8 +196,8 @@ public class MSRLauncher {
 			try {
 				MSRdriver.runNaive(rootPath, type, outputPath, jarPackagestoCSV);
 				runAffinity(rootPath, affinityClusterJSON, tempFolder);
-				
-				//cohesion-coupling
+
+				// cohesion-coupling
 				runCohesionCoupling(affinityClusterJSON, interClassUsageJSON, cohesionJSON);
 				runCohesionCoupling(clusterAllJSON, interClassUsageJSON, cohesionAllJSON);
 
@@ -204,7 +205,7 @@ public class MSRLauncher {
 				APIUsageStatsMiner statsMiner = new APIUsageStatsMiner();
 				statsMiner.mine(rootPath, jarPackagestoCSV, barDataJSON);
 
-			}  catch (Exception e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -218,34 +219,23 @@ public class MSRLauncher {
 				String jarName = splits[splits.length - 1];
 				String dirName = jarName.substring(0, jarName.length() - 4);
 
-				try {
-					unzip(rootPath, unzipFolder + File.separator + dirName);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				UnzipUtility.unzip(rootPath, unzipFolder + File.separator + dirName);
 
 			} else if (rootPath.endsWith(".ear")) {
 
-				try {
+				// unzip the mar ear file
+				UnzipUtility.unzip(rootPath, unzipFolder);
 
-					// unzip the mar ear file
-					unzip(rootPath, unzipFolder);
+				// check if the folder now contains wars and ejb-jar files
 
-					// check if the folder now contains wars and ejb-jar files
-
-					Collection<File> warjarList = FileUtils.listFiles(new File(unzipFolder),
-							new String[] { "war", "jar" }, true);
-					if (!warjarList.isEmpty()) {
-						Iterator<File> warjarListItr = warjarList.iterator();
-						while (warjarListItr.hasNext()) {
-							unzip(warjarListItr.next().getAbsolutePath(), unzipFolder);
-						}
-
+				Collection<File> warjarList = FileUtils.listFiles(new File(unzipFolder), new String[] { "war", "jar" },
+						true);
+				if (!warjarList.isEmpty()) {
+					Iterator<File> warjarListItr = warjarList.iterator();
+					while (warjarListItr.hasNext()) {
+						UnzipUtility.unzip(warjarListItr.next().getAbsolutePath(), unzipFolder);
 					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
 				}
 
 				parsedJars = Util.dumpAPIInfo(unzipFolder, tempFolder);
@@ -266,8 +256,8 @@ public class MSRLauncher {
 			try {
 				MSRdriver.runNaive(unzipFolder, type, outputPath, jarPackagestoCSV);
 				runAffinity(rootPath, affinityClusterJSON, tempFolder);
-				
-				//cohesion-coupling
+
+				// cohesion-coupling
 				runCohesionCoupling(affinityClusterJSON, interClassUsageJSON, cohesionJSON);
 				runCohesionCoupling(clusterAllJSON, interClassUsageJSON, cohesionAllJSON);
 
@@ -276,7 +266,7 @@ public class MSRLauncher {
 
 				MavenCategoryEtAlExtractor mavenExtractor = new MavenCategoryEtAlExtractor();
 				mavenExtractor.find(unzipFolder, mavenMetaJSON);
-			}  catch (Exception e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -323,52 +313,13 @@ public class MSRLauncher {
 		affinity.runClustering();
 
 	}
-	
+
 	public static void runCohesionCoupling(String clusterAllJSON, String usageJSON, String outputFile) {
 
-		CohesionCouplingProcessing postProcessor = new CohesionCouplingProcessing(clusterAllJSON, usageJSON, outputFile);
+		CohesionCouplingProcessing postProcessor = new CohesionCouplingProcessing(clusterAllJSON, usageJSON,
+				outputFile);
 		postProcessor.runClustering();
 
-	}
-
-	
-
-	public static void unzip(String zipFile, String destDirPath) throws IOException {
-		String fileZip = zipFile;
-		File destDir = new File(destDirPath);
-		byte[] buffer = new byte[1024];
-		ZipInputStream zis = new ZipInputStream(new FileInputStream(fileZip));
-		ZipEntry zipEntry = zis.getNextEntry();
-		while (zipEntry != null) {
-			File newFile = newFile(destDir, zipEntry);
-
-			FileOutputStream fos = new FileOutputStream(newFile);
-			int len;
-			while ((len = zis.read(buffer)) > 0) {
-
-				fos.write(buffer, 0, len);
-			}
-			fos.close();
-			zipEntry = zis.getNextEntry();
-		}
-		zis.closeEntry();
-		zis.close();
-	}
-
-	public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
-		System.out.println(" Creating File " + destinationDir.getAbsolutePath() + File.separator + zipEntry.getName());
-		File destFile = new File(destinationDir.getAbsolutePath() + File.separator + zipEntry.getName());
-		// create directories for sub directories in zip
-		new File(destFile.getParent()).mkdirs();
-
-		String destDirPath = destinationDir.getCanonicalPath();
-		String destFilePath = destFile.getCanonicalPath();
-
-		if (!destFilePath.startsWith(destDirPath + File.separator)) {
-			throw new IOException("Entry is outside of the target dir: " + zipEntry.getName());
-		}
-
-		return destFile;
 	}
 
 }
