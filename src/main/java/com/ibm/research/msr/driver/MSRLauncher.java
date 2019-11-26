@@ -195,7 +195,7 @@ public class MSRLauncher {
 
 			try {
 				MSRdriver.runNaive(rootPath, type, outputPath, jarPackagestoCSV);
-				runAffinity(rootPath, affinityClusterJSON, tempFolder);
+				runAffinity(rootPath, affinityClusterJSON, tempFolder, type);
 
 				// cohesion-coupling
 				runCohesionCoupling(affinityClusterJSON, interClassUsageJSON, cohesionJSON);
@@ -255,14 +255,14 @@ public class MSRLauncher {
 
 			try {
 				MSRdriver.runNaive(unzipFolder, type, outputPath, jarPackagestoCSV);
-				runAffinity(rootPath, affinityClusterJSON, tempFolder);
+				runAffinity(unzipFolder, affinityClusterJSON, tempFolder, type);
 
 				// cohesion-coupling
 				runCohesionCoupling(affinityClusterJSON, interClassUsageJSON, cohesionJSON);
 				runCohesionCoupling(clusterAllJSON, interClassUsageJSON, cohesionAllJSON);
 
 				APIUsageStatsMiner statsMiner = new APIUsageStatsMiner();
-				statsMiner.mine(rootPath, jarPackagestoCSV, barDataJSON);
+				statsMiner.mine(unzipFolder, jarPackagestoCSV, barDataJSON);
 
 				MavenCategoryEtAlExtractor mavenExtractor = new MavenCategoryEtAlExtractor();
 				mavenExtractor.find(unzipFolder, mavenMetaJSON);
@@ -278,9 +278,18 @@ public class MSRLauncher {
 
 	}
 
-	private static ArrayList<String> getJavaFileNames(String rootPath) {
+	private static ArrayList<String> getJavaFileNames(String rootPath, String type) {
 
-		Collection<File> javaFiles = FileUtils.listFiles(new File(rootPath), new String[] { "java" }, true);
+		Collection<File> javaFiles = null;
+		String endsWith = "";
+		if (type.equals(Constants.SRC)) {
+			javaFiles = FileUtils.listFiles(new File(rootPath), new String[] { "java" }, true);
+			endsWith = ".java";
+
+		} else {
+			javaFiles = FileUtils.listFiles(new File(rootPath), new String[] { "class" }, true);
+			endsWith = ".class";
+		}
 
 		ArrayList<String> javaFileNames = new ArrayList<String>();
 
@@ -288,7 +297,7 @@ public class MSRLauncher {
 
 			for (File f : javaFiles) {
 				String name = f.getName();
-				if (name.endsWith(".java")) {
+				if (name.endsWith(endsWith)) {
 					name = name.substring(0, name.indexOf("."));
 					javaFileNames.add(name);
 				}
@@ -300,10 +309,10 @@ public class MSRLauncher {
 
 	}
 
-	private static void runAffinity(String rootPath, String outputJSONFile, String tempFolder) {
+	private static void runAffinity(String rootPath, String outputJSONFile, String tempFolder, String type) {
 
 		// check for type and support getting this info from binary
-		ArrayList<String> javaFiles = getJavaFileNames(rootPath);
+		ArrayList<String> javaFiles = getJavaFileNames(rootPath, type);
 
 		Object[] gfg = javaFiles.toArray();
 		String[] str = Arrays.copyOf(gfg, gfg.length, String[].class);
