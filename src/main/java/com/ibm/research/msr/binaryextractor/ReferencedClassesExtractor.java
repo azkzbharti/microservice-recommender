@@ -97,6 +97,26 @@ public class ReferencedClassesExtractor {
 		
 	}
 
+	public String getFullyQualifiedClassName(String classFileLocationOnDisk)
+	{
+		ClassParser parser = new ClassParser(classFileLocationOnDisk);
+		
+		JavaClass javaClass = null;
+		String fqClassName=null;
+		try {
+			javaClass = parser.parse();
+			//System.out.println("apache bcel parse class success="+javaClass.getClassName()+"-"+javaClass.getPackageName());
+			fqClassName=javaClass.getClassName();
+		} catch (ClassFormatException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return fqClassName;
+	}
+	
 	public Map<String, HashSet<String>> extractFromJAR(String jarNameWithFullPath) {
 		Map<String, HashSet<String>> classToRefClasses = new HashMap<String, HashSet<String>>();
 

@@ -17,7 +17,6 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.IOFileFilter;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -35,13 +34,12 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.TypeParameter;
 import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.ibm.research.msr.binaryextractor.ReferencedClassesExtractor;
 
 public class InterClassUsageFinder {
 	
@@ -99,12 +97,16 @@ public class InterClassUsageFinder {
 		}
 	}
 
+	// this is the inter class usage matrix, while the interClassUsageMap
+	// field below is for source/sink/both type of identification
 	Map<ClassPair, Integer> interClassUsageMatrix = new HashMap<ClassPair, Integer>();
 
 	String currentJavaFilePkgName = null;
 	
 	Set<String> srcRootFoldersSet=null;
 
+	// for source/sink/both type of identification as distinct from
+	// the interClassUsageMatrix field above
 	Map<String,InterClassUsage> interClassUsageMap=
 			new HashMap<String, InterClassUsage>();
 
@@ -149,6 +151,7 @@ public class InterClassUsageFinder {
 	}
 	public Map<ClassPair, Integer> find(String srcFilesRoot,String outPath) {
 
+		System.out.println("enter interclassusagefinder find "+srcFilesRoot+"-"+outPath);
 		srcRootFoldersSet = extractSrcRootFolders(srcFilesRoot);
 		
 		File fRoot = new File(srcFilesRoot);
@@ -492,21 +495,7 @@ public class InterClassUsageFinder {
 							// same class usage (ie in type name declatation ie declatation like Class A {
 							return true;
 						}
-						
-						
-						ClassPair cp = new ClassPair(thisClassFQName, usedClassName);
-//						ClassPair cp=new ClassPair(curClassName,usedClassName);
-
-						Integer usageCount = interClassUsageMatrix.get(cp);
-						if (usageCount == null) {
-							usageCount = new Integer(1);
-							interClassUsageMatrix.put(cp, usageCount);
-							localFileInterClassUsageMatrix.put(cp, usageCount);
-						} else {
-							Integer uc2 = new Integer(usageCount.intValue() + 1);
-							interClassUsageMatrix.put(cp, uc2);
-							localFileInterClassUsageMatrix.put(cp, uc2);
-						}
+						populateInterClassUsageMatrix(localFileInterClassUsageMatrix, usedClassName, thisClassFQName);
 
 					}
 
@@ -519,6 +508,7 @@ public class InterClassUsageFinder {
 				return true;
 			}
 
+
 			public boolean visit(TypeParameter e)
 			{
 				//System.out.println("visit type parameter " +e.getName().getFullyQualifiedName());
@@ -528,6 +518,39 @@ public class InterClassUsageFinder {
 
 //		System.out.println("\tLocalFileInterClassUsageMatrix");
 		//for (ClassPair cp : interClassUsageMatrix.keySet()) {
+		populateInterClassUsageMap(localFileInterClassUsageMatrix);
+	}
+	
+
+	/**
+	 * NOTE: localFileInterClassUsageMatrix is an OUT parameter
+	 * it could have been a return value but eclipse extract-method refactoring created
+	 * it as a parameter and I didn't want to change that
+	 *
+	 * the other 2 params are proper in params.
+	 *  
+	 * @param localFileInterClassUsageMatrix
+	 * @param usedClassName
+	 * @param thisClassFQName
+	 */
+	private void populateInterClassUsageMatrix(final Map<ClassPair, Integer> localFileInterClassUsageMatrix,
+			String usedClassName, String thisClassFQName) {
+		ClassPair cp = new ClassPair(thisClassFQName, usedClassName);
+//				ClassPair cp=new ClassPair(curClassName,usedClassName);
+
+		Integer usageCount = interClassUsageMatrix.get(cp);
+		if (usageCount == null) {
+			usageCount = new Integer(1);
+			interClassUsageMatrix.put(cp, usageCount);
+			localFileInterClassUsageMatrix.put(cp, usageCount);
+		} else {
+			Integer uc2 = new Integer(usageCount.intValue() + 1);
+			interClassUsageMatrix.put(cp, uc2);
+			localFileInterClassUsageMatrix.put(cp, uc2);
+		}
+	}
+
+	private void populateInterClassUsageMap(final Map<ClassPair, Integer> localFileInterClassUsageMatrix) {
 		for (ClassPair cp : localFileInterClassUsageMatrix.keySet()) {
 			//Integer usageCount = interClassUsageMatrix.get(cp);
 			Integer usageCount = localFileInterClassUsageMatrix.get(cp);
@@ -554,8 +577,46 @@ public class InterClassUsageFinder {
 			interClassUsageMap.put(usedClass, interClassUsage2);
 		}
 	}
-	
 
+	
+	public Map<ClassPair, Integer> findFromBinaryClassFiles(String classFilesRoot,String outPath) {
+
+		System.out.println("enter interclassusagefinder findFromBinaryClassFiles find "+classFilesRoot+"-"+outPath);
+		
+		File fRoot = new File(classFilesRoot);
+		String[] extensions = new String[] { "class" };
+//		System.out.println("Getting all .java  in " + fRoot.getPath() + " including those in subdirectories");
+		List<File> files = (List<File>) FileUtils.listFiles(fRoot, extensions, true);
+		System.out.println("files size="+files.size());
+		for (File file : files) {
+			System.out.println("processing file="+file.getAbsolutePath());
+			processOneFileForBinaryClassFiles(file, classFilesRoot);
+		}
+		
+		findTypeAndPrintJson(classFilesRoot,outPath);
+		
+		return interClassUsageMatrix;
+	}
+
+	
+	private void processOneFileForBinaryClassFiles(File file, String classFilesRoot) {
+		// TODO Auto-generated method stub
+		ReferencedClassesExtractor r=new ReferencedClassesExtractor();
+
+		String classFileLocationOnDisk=file.getAbsolutePath();
+
+		HashSet<String> referencedClasses = r.extractFromClass(classFileLocationOnDisk);
+
+		String thisClassFQName=r.getFullyQualifiedClassName(classFileLocationOnDisk);
+
+		Map<ClassPair, Integer> localFileInterClassUsageMatrix=new HashMap<ClassPair,Integer>();
+		for (String usedClassName:referencedClasses)
+		{
+			populateInterClassUsageMatrix(localFileInterClassUsageMatrix, usedClassName, thisClassFQName);
+		}
+
+		populateInterClassUsageMap(localFileInterClassUsageMatrix);
+	}
 	/**
 	 * 
 	 * 
@@ -569,6 +630,16 @@ public class InterClassUsageFinder {
 	 * C:\Users\GiriprasadSridhara\Downloads\digdeep-master
 	 */
 	public static void main(String[] args) {
+		
+		// test for binary inter-class usage
+		//String classFilesRoot="C:\\temp\\mobile-ear-1.0.23-output\\temp\\unzip\\WEB-INF\\classes\\com\\ff\\sys\\v3\\cellphone\\webservices\\bean\\CellPhoneQualifiedBean.class";
+		String classFilesRoot="C:\\temp\\mobile-ear-1.0.23-output\\temp\\unzip\\WEB-INF\\classes\\";
+		InterClassUsageFinder i=new InterClassUsageFinder();
+		String outPath="C:\\temp\\inter-class-usage-from-class-files.json";
+		i.findFromBinaryClassFiles(classFilesRoot, outPath);
+		System.exit(0);
+		
+		
 		Map<ClassPair, Integer> m1=null;
 //		loader("/Users/shreya/eclipse-workspace/outputs/daytrader7/temp/inter-class-usage.json");
 		for (ClassPair cp: m1.keySet())
