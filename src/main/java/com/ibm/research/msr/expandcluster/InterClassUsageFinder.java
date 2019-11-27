@@ -105,6 +105,10 @@ public class InterClassUsageFinder {
 	
 	Set<String> srcRootFoldersSet=null;
 
+	// for use in the .class mode of inter class usage
+	// 
+	Set<String> fullyQualifiedClassNamesInProject=new HashSet<String>();
+	
 	// for source/sink/both type of identification as distinct from
 	// the interClassUsageMatrix field above
 	Map<String,InterClassUsage> interClassUsageMap=
@@ -588,6 +592,15 @@ public class InterClassUsageFinder {
 //		System.out.println("Getting all .java  in " + fRoot.getPath() + " including those in subdirectories");
 		List<File> files = (List<File>) FileUtils.listFiles(fRoot, extensions, true);
 		System.out.println("files size="+files.size());
+
+		ReferencedClassesExtractor r=new ReferencedClassesExtractor(); 
+		for (File file : files) {
+			String classFileLocationOnDisk=file.getAbsolutePath();
+			String thisClassFQName=r.getFullyQualifiedClassName(classFileLocationOnDisk);
+			fullyQualifiedClassNamesInProject.add(thisClassFQName);
+		}
+
+		
 		for (File file : files) {
 			System.out.println("processing file="+file.getAbsolutePath());
 			processOneFileForBinaryClassFiles(file, classFilesRoot);
@@ -612,6 +625,19 @@ public class InterClassUsageFinder {
 		Map<ClassPair, Integer> localFileInterClassUsageMatrix=new HashMap<ClassPair,Integer>();
 		for (String usedClassName:referencedClasses)
 		{
+			// referencedClasses returned by Javassist library containes both
+			// source and lib classes, we want only source classes
+			if (!fullyQualifiedClassNamesInProject.contains(usedClassName))
+			{
+				continue;
+			}
+			
+			//javassist returns this class name say InterClassUsageFinder as a used
+			// class when the input class is InterClassUsageFinder!. This will upset our source/sink calculation
+			if (usedClassName.compareTo(thisClassFQName)==0)
+			{
+				continue;
+			}
 			populateInterClassUsageMatrix(localFileInterClassUsageMatrix, usedClassName, thisClassFQName);
 		}
 
