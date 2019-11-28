@@ -121,6 +121,8 @@ public class DocumentParserUtil {
 
 		ReferencedClassesExtractor classExtractor = new ReferencedClassesExtractor();
 		imports = new ArrayList<String>(classExtractor.extractFromClass(document.getFile().getAbsolutePath()));
+		// here the packageName is fullyclassfiedName and not package Name
+		document.setPackageName(classExtractor.getFullyQualifiedClassName(document.getFile().getAbsolutePath()));
 //		if(imports.size()==0) {
 //			System.out.println("No imports");
 //			System.out.println(document.getName());
