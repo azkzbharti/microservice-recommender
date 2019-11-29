@@ -189,7 +189,7 @@ public class ReferencedClassesExtractor {
 		return classToRefClasses;
 	}
 
-	private static String getClassPathToInsert(String docAbsolutePath, String fullyQualifiedClassName)
+	public static String getClassPathToInsert(String docAbsolutePath, String fullyQualifiedClassName)
 	{
 		StringBuffer sbDotReplacedWithSlash=new StringBuffer();
 		for (int i=0;i<fullyQualifiedClassName.length();i++)

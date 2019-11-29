@@ -14,16 +14,27 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IMethodBinding;
+import org.eclipse.jdt.core.dom.IModuleBinding;
+import org.eclipse.jdt.core.dom.IPackageBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import com.google.gson.Gson;
+import com.ibm.research.msr.binaryextractor.ReferencedClassesExtractor;
+
+import javassist.CannotCompileException;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtMethod;
+import javassist.expr.ExprEditor;
+import javassist.expr.MethodCall;
 
 public class APIUsageStatsMiner {
 	
@@ -56,10 +67,10 @@ public class APIUsageStatsMiner {
 			
 			classPathEntries=jarsWithPath.toArray(new String[0]);
 			
-			//System.out.println("classPathEntries = "+classPathEntries.length);
+			System.out.println("classPathEntries = "+classPathEntries.length);
 			for (int i=0;i<classPathEntries.length;i++)
 			{
-				//System.out.println(classPathEntries[i]);
+				System.out.println(classPathEntries[i]);
 			}
 			
 			//System.out.println("fqClassToJar size="+fqClassToJar.size());
@@ -301,33 +312,18 @@ public class APIUsageStatsMiner {
 				if (imb!=null)
 				{
 					ITypeBinding dc = imb.getDeclaringClass();
+//					IModuleBinding imob2 = dc.getModule();
+//					IPackageBinding ipb = dc.getPackage();
+//					IModuleBinding imob = ipb.getModule();
+//					
+//					//imob.
+//					System.out.println("IModuleBinding="+imob.getName());
+//					System.out.println("IModuleBinding2="+imob2.getName());
+//					System.out.println("IModuleBinding tostring="+imob.toString());
+					
 					String fqMIName=dc.getQualifiedName()+"."+miName;
 					//System.out.println("fqMIName = " + fqMIName);
-					String jar=fqClassToJar.get(dc.getQualifiedName());
-					if (jar!=null)
-					{
-						libraryMI++;
-						if (fqMIName.equalsIgnoreCase("com.google.common.io.Files.toString"))
-						{
-							//System.out.println("\tfound jar "+jar);
-						}
-
-						HashSet<String> setOfUsedAPIs = jarToSetOfUsedAPIs.get(jar);
-						if (setOfUsedAPIs==null)
-						{
-							setOfUsedAPIs=new HashSet<String>();
-						}
-						setOfUsedAPIs.add(fqMIName);
-						jarToSetOfUsedAPIs.put(jar, setOfUsedAPIs);
-					}
-					else
-					{
-						nonLibraryMI++;
-						if (fqMIName.equalsIgnoreCase("com.google.common.io.Files.toString"))
-						{
-							//System.out.println("\t NOT found jar "+jar);
-						}
-					}
+					handleLibOrNonLibCalls(dc.getQualifiedName(), fqMIName);
 				}
 				else
 				{
@@ -336,26 +332,210 @@ public class APIUsageStatsMiner {
 				}
 				return true;
 			}
-		});
+		}
+);
+	}
 		
+		
+	private void handleLibOrNonLibCalls(String className, String fqMIName) {
+			String jar=fqClassToJar.get(className);
+			if (jar!=null)
+			{
+				libraryMI++;
 
+				HashSet<String> setOfUsedAPIs = jarToSetOfUsedAPIs.get(jar);
+				if (setOfUsedAPIs==null)
+				{
+					setOfUsedAPIs=new HashSet<String>();
+				}
+				setOfUsedAPIs.add(fqMIName);
+				jarToSetOfUsedAPIs.put(jar, setOfUsedAPIs);
+			}
+			else
+			{
+				nonLibraryMI++;
+			}
+	}
+	
+	public void mineFromClassFiles(String classFilesRoot,String jarToPkgsClassesCsv,String opJSONFileNameWithPath)
+	{
+		try
+		{
+			libraryMI=0;
+			nonLibraryMI=0;
+			prevLibraryMI=0;
+			methodDeclarations=0;
+			methodDeclarationsWithLibCalls=0;
+			Set<String> jarsWithPath = read(jarToPkgsClassesCsv);
+			
+//			classPathEntries=jarsWithPath.toArray(new String[0]);
+//			
+//			System.out.println("classPathEntries = "+classPathEntries.length);
+//			for (int i=0;i<classPathEntries.length;i++)
+//			{
+//				System.out.println(classPathEntries[i]);
+//			}
+			
+//			//System.out.println("fqClassToJar size="+fqClassToJar.size());
+//			for(String c : fqClassToJar.keySet())
+//			{
+//				String j=fqClassToJar.get(c);
+//				//System.out.println(c+" "+j);
+//			}
+			
+			File fRoot = new File(classFilesRoot);
+			String[] extensions = new String[] { "class"};
+			//System.out.println("Getting all .java  in " + fRoot.getPath()
+			//		+ " including those in subdirectories");
+			List<File> files = (List<File>) FileUtils.listFiles(fRoot, extensions, true);
+			for (File file : files) {
+				processOneClassFile(file.getAbsolutePath());
+			}
+			
+			//String opFileName=srcRoot+File.separator+"jar-to-used-apis.csv";
+			//System.out.println("writing to op file="+opJSONFileNameWithPath);
+			PrintWriter pw=new PrintWriter(opJSONFileNameWithPath);
+			//pw.println("Jar,DistinctAPIsUsageCount,API");
+			
+			List<APIUsageStats> apiUsageStatsList=new ArrayList<APIUsageStats>();
+			
+			for (String jar:jarToSetOfUsedAPIs.keySet())
+			{
+				HashSet<String> usedAPIs = jarToSetOfUsedAPIs.get(jar);
+				//System.out.println(usedAPIs.size()+" distinct APIs used in jar="+jar);
+				for (String s:usedAPIs)
+				{
+					//System.out.println("\t" + s);
+				}
+				Integer iAPICnt=jarToAPICount.get(jar);
+				//double percentUse=(usedAPIs.size()*100.0)/iAPICnt.intValue();
+				//pw.println(jar+","+usedAPIs.size()+","+s+","+percentUse);
+				APIUsageStats a=new APIUsageStats(jar,iAPICnt.intValue(),usedAPIs.size());
+				apiUsageStatsList.add(a);
+			}
+			
+			//System.out.println("apiUsageStatsList size="+apiUsageStatsList.size());
+			
+//			Gson g=new Gson();
+//			String json=g.toJson(apiUsageStatsList);
+//			System.out.println("json=\n"+json);
+//			pw.println(json);
+//			pw.flush();
+//			pw.close();
+			
+			//System.out.println("Lib MI="+libraryMI);
+			//System.out.println("Non Lib MI="+nonLibraryMI);
+
+			OverallProjectLibUsageStats o=new OverallProjectLibUsageStats(libraryMI, nonLibraryMI, apiUsageStatsList,
+					methodDeclarations,methodDeclarationsWithLibCalls);
+
+			Gson g=new Gson();
+			String json=g.toJson(o);
+			//System.out.println("json=\n"+json);
+			pw.println(json);
+			pw.flush();
+			pw.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	
+	//public void processOneClassFile(File file, String classFilesRoot)
+	public void processOneClassFile(String classFileLocation)
+	{
+		ReferencedClassesExtractor r=new ReferencedClassesExtractor();
+		//String classFileLocation=file.getAbsolutePath();
+		String fqcn = r.getFullyQualifiedClassName(classFileLocation);
+		String cpToInsert=ReferencedClassesExtractor.getClassPathToInsert(classFileLocation, fqcn);
+
+		ClassPool cp = ClassPool.getDefault();
+		CtClass ctc = null;
+		
+		try
+		{
+			cp.insertClassPath(cpToInsert);
+			ctc = cp.get(fqcn);
+			
+			CtMethod[] methods = ctc.getDeclaredMethods();
+			for (CtMethod method:methods)
+			{
+				String mdName=method.getName();
+						
+				if (mdName.startsWith("get") || mdName.startsWith("set"))
+				{
+					continue;
+				}
+				methodDeclarations++;
+				
+				System.out.println("MD="+method.getName());
+				
+				method.instrument(
+				        new ExprEditor() {
+				            public void edit(MethodCall m)
+				                          throws CannotCompileException
+				            {
+				                System.out.println("\t"+m.getClassName() + "---" + m.getMethodName() + "-----" + m.getSignature());
+				                
+				                String className=m.getClassName();
+				                String fqMIName=className+"."+m.getMethodName();
+				                handleLibOrNonLibCalls(className, fqMIName);
+				            }
+				        });
+				
+				if (prevLibraryMI<libraryMI)
+				{
+					methodDeclarationsWithLibCalls++;
+				}
+				prevLibraryMI=libraryMI;
+			}
+		}
+		catch(Exception e )
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		APIUsageStatsMiner a=new APIUsageStatsMiner();
-		//String srcRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\";
-//		String srcRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master";
-//		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\jar-to-packages-classes.csv";
-//		String srcRoot="C:\\Users\\GiriprasadSridhara\\sample.plantsbywebsphere-18.0.0.4\\sample.plantsbywebsphere-manual-dependencies\\src";
-//		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\msr\\microservice-recommender\\src\\main\\resources\\jar-to-packages-classes-public-methods.csv";
-		String opJSONFileNameWithPath="C:\\temp\\api-usage.json";
-//		String srcRoot="C:\\Users\\GiriprasadSridhara\\Documents\\acmeair-monolithic-java-master\\acmeair-monolithic-java-master\\src";
-//		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\Documents\\acmeair-monolithic-java-master\\acmeair-monolithic-java-master\\acme-jar-to-apis.csv";
-		String srcRoot="C:\\Users\\GiriprasadSridhara\\sample.daytrader7\\daytrader-ee7-ejb\\";
-		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\sample.daytrader7\\daytrader-ee7-ejb\\lib-dma\\daytrader-ee7-ejb-jar-to-apis.csv";
 		
-		a.mine(srcRoot, jarToPkgsClassesCsv,opJSONFileNameWithPath);
+		int ch=2;
+		
+		if (ch==1)
+		{
+			//String srcRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\";
+	//		String srcRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master";
+	//		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\jar-to-packages-classes.csv";
+	
+			String srcRoot="C:\\Users\\GiriprasadSridhara\\sample.plantsbywebsphere-18.0.0.4\\sample.plantsbywebsphere-manual-dependencies\\src";
+			String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\msr\\microservice-recommender\\src\\main\\resources\\jar-to-packages-classes-public-methods.csv";
+			String opJSONFileNameWithPath="C:\\temp\\api-usage-2.json";
+	//		String srcRoot="C:\\Users\\GiriprasadSridhara\\Documents\\acmeair-monolithic-java-master\\acmeair-monolithic-java-master\\src";
+	//		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\Documents\\acmeair-monolithic-java-master\\acmeair-monolithic-java-master\\acme-jar-to-apis.csv";
+	//		String srcRoot="C:\\Users\\GiriprasadSridhara\\sample.daytrader7\\daytrader-ee7-ejb\\";
+	//		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\sample.daytrader7\\daytrader-ee7-ejb\\lib-dma\\daytrader-ee7-ejb-jar-to-apis.csv";
+			
+	//		a.mine(srcRoot, jarToPkgsClassesCsv,opJSONFileNameWithPath);
+		}
+		else if (ch==2)
+		{
+			String classFileLocation ="C:\\temp\\mobile-ear-1.0.23-output\\temp\\unzip\\WEB-INF\\classes\\com\\ff\\sys\\v3\\cellphone\\webservices\\bean\\CellPhoneQualifiedBean.class";;
+
+			String classFilesRoot="C:\\temp\\mobile-ear-1.0.23-output\\temp\\unzip\\WEB-INF\\classes";
+			String jarToPkgsClassesCsv="C:\\temp\\mobile-ear-1.0.23-output\\temp\\jar-to-packages.csv";
+			String opJSONFileNameWithPath="C:\\temp\\api-usage-3.json";
+
+			a.mineFromClassFiles(classFilesRoot, jarToPkgsClassesCsv, opJSONFileNameWithPath);
+			//a.processOneClassFile(classFileLocation);
+		}
+		else if (ch==3)
+		{
+			String classFileLocation ="C:\\temp\\mobile-ear-1.0.23-output\\temp\\unzip\\WEB-INF\\classes\\com\\ff\\sys\\v3\\cellphone\\webservices\\bean\\CellPhoneQualifiedBean.class";;
+			a.processOneClassFile(classFileLocation);
+		}
 	}
 
 }
