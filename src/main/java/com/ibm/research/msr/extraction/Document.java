@@ -111,7 +111,11 @@ public class Document {
 	}
 	
 	public String getUniqueName() {
-		return this.packageName+"."+this.fileName.replace(".java", "");
+		if(this.fileName.endsWith(".java")){
+			return this.packageName+"."+this.fileName.replace(".java", "");
+		}
+		else 
+			return this.packageName;
 	}
 	public String getName() {
 		return fileName;

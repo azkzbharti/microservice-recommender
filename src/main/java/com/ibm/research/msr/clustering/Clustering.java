@@ -147,8 +147,8 @@ public abstract class Clustering {
 
 	public void setCusterListNames() {
 		for (ClusterDetails cls : this.clusters) {
-			cls.setClusterName();
 			cls.getClusterApiList();
+			cls.setClusterName();
 		}
 	}
 

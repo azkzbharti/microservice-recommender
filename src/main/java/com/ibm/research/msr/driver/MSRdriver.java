@@ -102,8 +102,13 @@ public class MSRdriver {
 		String opJsonFileName=outputPath + File.separator + "temp"+File.separator+"inter-class-usage.json";
 
 		InterClassUsageFinder classUsage = new InterClassUsageFinder();
-		classUsage.find(appPath,opJsonFileName);
-
+		if	(appType=="java") {
+			classUsage.find(appPath,opJsonFileName);
+			}
+		else {
+			classUsage.findFromBinaryClassFiles(appPath,opJsonFileName);
+			}
+		
 		System.out.println(oc.getUniquedocs(oc.getClusters()));
 		ExpandClusters ec = new ExpandClusters(oc.getClusters(), analyzer.getAppath(), false,classUsage);
 		ec.getUsage();

@@ -187,9 +187,12 @@ public class ClusterDetails {
 		int maxValueInMap = (Collections.max(alltokens.values()));
 		for (Entry<String, Integer> entry : alltokens.entrySet()) { // Iterate through hashmap
 			if (entry.getValue() == maxValueInMap) {
-				if (!entry.getKey().equals("None")) // cases where None and other jar are equal times then give weght to
+				if (!entry.getKey().equals("None")) // cases where None and other jar are equal times then give weight to
 													// jar
 					clusterName = clusterName + entry.getKey().replace(".jar", ",");
+			}
+			if(entry.getKey().equals("None") && alltokens.keySet().size()>0) { 
+				clusterName = clusterName+this.clusterNameList.toString();
 			}
 		}
 		if (clusterName.equals("") || clusterName.equals("None"))
