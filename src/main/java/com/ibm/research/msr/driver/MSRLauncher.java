@@ -213,13 +213,15 @@ public class MSRLauncher {
 		} else if (type.trim().toLowerCase().equals(Constants.BIN)) {
 			// it has to be either packaged as JAR or EAR.
 
-			if (rootPath.endsWith(".jar")) {
+			if (rootPath.endsWith(".jar") || rootPath.endsWith(".war")) {
 
 				String[] splits = rootPath.split(File.separator);
 				String jarName = splits[splits.length - 1];
 				String dirName = jarName.substring(0, jarName.length() - 4);
 
 				UnzipUtility.unzip(rootPath, unzipFolder + File.separator + dirName);
+				
+				parsedJars = Util.dumpAPIInfo(unzipFolder, tempFolder);
 
 			} else if (rootPath.endsWith(".ear")) {
 
