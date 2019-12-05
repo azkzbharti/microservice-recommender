@@ -111,6 +111,7 @@ public class JarApiList {
 			// PrintWriter pw=new
 			// PrintWriter("src/main/output/jar-to-packages-classes.csv");
 			PrintWriter pw = new PrintWriter(csvFile);
+			System.out.println("writing to op file="+csvFile);
 			//pw.println("jarName,packageName,className");
 			pw.println("jarName,packageName,className,publicMethodName");
 			// File flf=new File(libFolder);
@@ -173,40 +174,37 @@ public class JarApiList {
 //		            new LinkedHashMap<String, JavaClass>();
 		Enumeration<JarEntry> entries = jarFile.entries();
 		while (entries.hasMoreElements()) {
-			JarEntry entry = entries.nextElement();
-			// System.out.println("jar entry name="+entry.getName());
-
-			if (!entry.getName().endsWith(".class")) {
-				continue;
-			}
-			
-			// for module-info.class, the parse method throws an
-			// Invalid byte tag in constant pool: 19 exception, so skipping it.
-			if (entry.getName().compareTo("module-info.class")==0)
-			{
-				continue;
-			}
-			
-			
 			//System.out.println("\t jar entry name="+entry.getName());
-
-			ClassParser parser = new ClassParser(jarName, entry.getName());
-			JavaClass javaClass = parser.parse();
-			String cName = javaClass.getClassName();
-			String pName = javaClass.getPackageName();
-			// System.out.println(javaClass.getPackageName());
-			// packages.add(javaClass.getPackageName());
-			// System.out.println("\t super class name = " + javaClass.getSuperclassName());
-			// javaClasses.put(javaClass.getClassName(), javaClass);
-			
-			Method[] javaClassMethods = javaClass.getMethods();
-			for (Method m : javaClassMethods)
-            {
-				if (m.isPublic())
-				{
-					pw.println(jarName + "," + pName + "," + cName+","+m.getName());
+			try {
+				JarEntry entry = entries.nextElement();
+				// System.out.println("jar entry name="+entry.getName());
+				if (!entry.getName().endsWith(".class")) {
+					continue;
 				}
-            }
+				// for module-info.class, the parse method throws an
+				// Invalid byte tag in constant pool: 19 exception, so skipping it.
+				if (entry.getName().compareTo("module-info.class") == 0) {
+					continue;
+				}
+				ClassParser parser = new ClassParser(jarName, entry.getName());
+				JavaClass javaClass = parser.parse();
+				String cName = javaClass.getClassName();
+				String pName = javaClass.getPackageName();
+				// System.out.println(javaClass.getPackageName());
+				// packages.add(javaClass.getPackageName());
+				// System.out.println("\t super class name = " + javaClass.getSuperclassName());
+				// javaClasses.put(javaClass.getClassName(), javaClass);
+				Method[] javaClassMethods = javaClass.getMethods();
+				for (Method m : javaClassMethods) {
+					if (m.isPublic()) {
+						pw.println(jarName + "," + pName + "," + cName + "," + m.getName());
+					}
+				} 
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.err.println("handled exception.");
+				e.printStackTrace();
+			}
 			
 			//pw.println(jarName + "," + pName + "," + cName);
 		}
