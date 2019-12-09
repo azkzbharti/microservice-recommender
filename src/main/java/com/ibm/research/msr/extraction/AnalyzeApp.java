@@ -200,6 +200,7 @@ public class AnalyzeApp {
 		List<String> header = new ArrayList<>(vocab);
 		header.add(0, "docsName");
 		header.add(1, "ClassName");
+		header.add(2, "PackageName");
 		System.out.println(vocab.size());
 		System.out.println(vocab.toString());
 		csvWriter.writeNext(header.toArray(new String[0]));
@@ -208,7 +209,8 @@ public class AnalyzeApp {
 			String[] line = new String[vocab.size() + 2];
 			line[0] = document.getFile().getAbsolutePath();
 			line[1] = document.getName();
-			for (int i = 2; i < vocab.size() + 2; i++) {
+			line[2] = document.getPackageName();
+			for (int i = 3; i < vocab.size() + 2; i++) {
 				List<Double> docVector = document.getDocVector();
 				double termScore = docVector.get(i - 2);
 				String res = Double.toString(termScore);
@@ -235,10 +237,10 @@ public class AnalyzeApp {
 
 			String filepath = line[0];
 			String filename = line[1];
-			
+			String packageName = line[2];
 			List<Double> docVector = new ArrayList<Double>();
 			List<String> documentTokens = new ArrayList<String>();
-			for (int i = 2; i < line.length; i++) {
+			for (int i = 3; i < line.length; i++) {
 				if (line[i] != " ") {
 					Double val = Double.parseDouble(line[i]);
 					docVector.add(val);
@@ -247,7 +249,7 @@ public class AnalyzeApp {
 					}
 				}
 			}
-			Document doc = new Document(filepath, filename, docVector, documentTokens);
+			Document doc = new Document(filepath, filename, docVector, documentTokens,packageName);
 			listOfDocuments.add(doc);
 			
 		}

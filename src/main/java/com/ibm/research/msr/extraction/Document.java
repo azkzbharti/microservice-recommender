@@ -61,7 +61,7 @@ public class Document {
 		dpu.processFile(this);
 	}
 	
-	public Document(String filepath, String filename, List<Double> docvector, List<String> tokens) {
+	public Document(String filepath, String filename, List<Double> docvector, List<String> tokens,String packageName) {
 		this.file = new File(filepath);
 		this.fileName = filename;
 		this.docVector = docvector;
@@ -74,7 +74,7 @@ public class Document {
 			importCountMap.put(tok, importCountMap.get(tok) + 1);
 		}
 		this.tokenCountMap=importCountMap;
-		this.packageName = "";
+		this.packageName = packageName;
 	}
 		}
 
@@ -115,8 +115,8 @@ public class Document {
 			return this.packageName+"."+this.fileName.replace(".java", "");
 		}
 		else 
-			return this.packageName;
-	}
+			return this.packageName+"."+this.fileName.replace(".class", "");
+		}
 	public String getName() {
 		return fileName;
 	}
