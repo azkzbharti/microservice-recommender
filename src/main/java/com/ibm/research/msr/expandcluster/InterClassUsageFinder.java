@@ -155,7 +155,7 @@ public class InterClassUsageFinder {
 	}
 	public Map<ClassPair, Integer> find(String srcFilesRoot,String outPath) {
 
-		System.out.println("enter interclassusagefinder find "+srcFilesRoot+"-"+outPath);
+//		System.out.println("enter interclassusagefinder find "+srcFilesRoot+"-"+outPath);
 		srcRootFoldersSet = extractSrcRootFolders(srcFilesRoot);
 		
 		File fRoot = new File(srcFilesRoot);

@@ -225,7 +225,6 @@ public class AnalyzeApp {
 	public void read_measure_tf_file(String appPath2) throws IOException {
 		// reads from csv file and creates a list of documents
 		this.listOfDocuments = new ArrayList<>();
-
 		CSVReader reader = new CSVReader(new FileReader(appPath2));
 		String[] header = reader.readNext();
 		List<String> headers = new ArrayList<>();

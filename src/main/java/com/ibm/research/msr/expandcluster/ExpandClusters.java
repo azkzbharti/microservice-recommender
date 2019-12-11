@@ -79,7 +79,7 @@ public class ExpandClusters {
 
 	public void getUsage() {
 		// TODO break this code in small functions
-		System.out.println("Doing Cluster expansion");
+//		System.out.println("Doing Cluster expansion");
 		List<List<Document>> listofDocsinNone= this.nonelistofclusters
 				.stream()
 				.map(ClusterDetails::getListOfDocuments)

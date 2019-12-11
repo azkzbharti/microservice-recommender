@@ -102,9 +102,11 @@ public class MSRdriver {
 		String opJsonFileName=outputPath + File.separator + "temp"+File.separator+"inter-class-usage.json";
 
 		InterClassUsageFinder classUsage = new InterClassUsageFinder();
-		if	(appType=="java") {
+		if	(appType.equals(Constants.SRC)) {
 			classUsage.find(appPath,opJsonFileName);
-			}
+//			classUsage.find(appPath,"/Users/shreya/eclipse-workspace/app-moder/appHome/apps/git/5dd23cafacdb162b6536dd2b/temp/inter-class-usage.json);
+//			classUsage.loader("/Users/shreya/eclipse-workspace/app-moder/appHome/apps/git/5dd23cafacdb162b6536dd2b/temp/inter-class-usage.json");
+		}
 		else {
 			classUsage.findFromBinaryClassFiles(appPath,opJsonFileName);
 			}
