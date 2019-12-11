@@ -153,7 +153,7 @@ public class InterClassUsageFinder {
 		
 	
 	}
-	public Map<ClassPair, Integer> find(String srcFilesRoot,String outPath) {
+	public Map<ClassPair, Integer> find(String srcFilesRoot,String outPath, String optionalUserPath){
 
 //		System.out.println("enter interclassusagefinder find "+srcFilesRoot+"-"+outPath);
 		srcRootFoldersSet = extractSrcRootFolders(srcFilesRoot);
@@ -583,7 +583,7 @@ public class InterClassUsageFinder {
 	}
 
 	
-	public Map<ClassPair, Integer> findFromBinaryClassFiles(String classFilesRoot,String outPath) {
+	public Map<ClassPair, Integer> findFromBinaryClassFiles(String classFilesRoot,String outPath, String optionalUserPath) {
 
 		System.out.println("enter interclassusagefinder findFromBinaryClassFiles find "+classFilesRoot+"-"+outPath);
 		
@@ -662,7 +662,7 @@ public class InterClassUsageFinder {
 		String classFilesRoot="C:\\temp\\mobile-ear-1.0.23-output\\temp\\unzip\\WEB-INF\\classes\\";
 		InterClassUsageFinder i=new InterClassUsageFinder();
 		String outPath="C:\\temp\\inter-class-usage-from-class-files.json";
-		i.findFromBinaryClassFiles(classFilesRoot, outPath);
+		i.findFromBinaryClassFiles(classFilesRoot, outPath, null);
 		System.exit(0);
 		
 		
