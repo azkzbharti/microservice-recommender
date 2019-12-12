@@ -290,7 +290,15 @@ public class InterClassUsageFinder {
 		}
 		else
 		{
-			srcPath[0]=optionalUserPath;
+			if (srcFilesRoot.endsWith(File.separator))
+			{
+				srcPath[0]=srcFilesRoot+optionalUserPath;
+			}
+			else
+			{
+				srcPath[0]=srcFilesRoot+File.separator+optionalUserPath;
+			}
+			
 		}
 //		System.out.println("srcPath array="+srcPath.length);
 		for (String s: srcPath)
