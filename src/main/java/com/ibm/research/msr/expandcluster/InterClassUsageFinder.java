@@ -153,7 +153,7 @@ public class InterClassUsageFinder {
 		
 	
 	}
-	public Map<ClassPair, Integer> find(String srcFilesRoot,String outPath) {
+	public Map<ClassPair, Integer> find(String srcFilesRoot,String outPath, String optionalUserPath){
 
 //		System.out.println("enter interclassusagefinder find "+srcFilesRoot+"-"+outPath);
 		srcRootFoldersSet = extractSrcRootFolders(srcFilesRoot);
@@ -164,7 +164,7 @@ public class InterClassUsageFinder {
 		List<File> files = (List<File>) FileUtils.listFiles(fRoot, extensions, true);
 //		System.out.println("files size="+files.size());
 		for (File file : files) {
-			processOneFile(file, srcFilesRoot);
+			processOneFile(file, srcFilesRoot,optionalUserPath);
 		}
 		
 		findTypeAndPrintJson(srcFilesRoot,outPath);
@@ -196,18 +196,21 @@ public class InterClassUsageFinder {
 
 	}
 
-	public void processOneFile(File file, String srcFilesRoot) {
+	public void processOneFile(File file, String srcFilesRoot, String optionalUserPath) {
 
 		String fileNameWPath = file.getAbsolutePath();
 //		System.out.println("file: " + file.getName() + " " + fileNameWPath);
 
-		// iff file is under /src/
-		if (!fileNameWPath.contains(File.separator+"src"+File.separator))
+		if (optionalUserPath == null)
 		{
-//			System.out.println("Ignoring java file not under src folder");
-			return;
+			// iff file is under /src/
+			// DO the check iff user given path is null
+			if (!fileNameWPath.contains(File.separator+"src"+File.separator))
+			{
+	//			System.out.println("Ignoring java file not under src folder");
+				return;
+			}
 		}
-
 		// NOTE: 
 		// srcFilesRoot is something like C:\digdeep-master ie root under which 
 		// all *java files must be processed.
@@ -267,20 +270,35 @@ public class InterClassUsageFinder {
 		String[] srcPath=new String[srcRootFoldersSetArr.length+1];
 		// srcPath[0]="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src";
 		//srcPath[0] = srcFilesRoot;
-		if (srcRoot != null)
+		if (optionalUserPath==null)
 		{
-			srcPath[0]=srcRoot;
-//			srcPath[1]="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-common\\src\\";
-//			srcPath[2]="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-git-common\\src\\";
-//			//srcPath[1]="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\";
-			for (int i=0;i<srcRootFoldersSetArr.length;i++)
+			if (srcRoot != null)
 			{
-				srcPath[i+1]=srcRootFoldersSetArr[i];
+				srcPath[0]=srcRoot;
+	//			srcPath[1]="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-common\\src\\";
+	//			srcPath[2]="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-git-common\\src\\";
+	//			//srcPath[1]="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\";
+				for (int i=0;i<srcRootFoldersSetArr.length;i++)
+				{
+					srcPath[i+1]=srcRootFoldersSetArr[i];
+				}
+			}
+			else
+			{
+				srcPath[0] = srcFilesRoot;
 			}
 		}
 		else
 		{
-			srcPath[0] = srcFilesRoot;
+			if (srcFilesRoot.endsWith(File.separator))
+			{
+				srcPath[0]=srcFilesRoot+optionalUserPath;
+			}
+			else
+			{
+				srcPath[0]=srcFilesRoot+File.separator+optionalUserPath;
+			}
+			
 		}
 //		System.out.println("srcPath array="+srcPath.length);
 		for (String s: srcPath)
@@ -583,7 +601,7 @@ public class InterClassUsageFinder {
 	}
 
 	
-	public Map<ClassPair, Integer> findFromBinaryClassFiles(String classFilesRoot,String outPath) {
+	public Map<ClassPair, Integer> findFromBinaryClassFiles(String classFilesRoot,String outPath, String optionalUserPath) {
 
 		System.out.println("enter interclassusagefinder findFromBinaryClassFiles find "+classFilesRoot+"-"+outPath);
 		
@@ -662,7 +680,7 @@ public class InterClassUsageFinder {
 		String classFilesRoot="C:\\temp\\mobile-ear-1.0.23-output\\temp\\unzip\\WEB-INF\\classes\\";
 		InterClassUsageFinder i=new InterClassUsageFinder();
 		String outPath="C:\\temp\\inter-class-usage-from-class-files.json";
-		i.findFromBinaryClassFiles(classFilesRoot, outPath);
+		i.findFromBinaryClassFiles(classFilesRoot, outPath, null);
 		System.exit(0);
 		
 		
