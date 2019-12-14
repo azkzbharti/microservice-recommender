@@ -15,6 +15,7 @@ class Clustering(object):
 
         self._cohesion_improv_threshold = cohesion_improv_threshold
         self._cohesion_threshold = cohesion_threshold
+
         if project is not None:
             clustering = utils.get_clusters(project=project)
         elif clusterjson is not None:
@@ -27,6 +28,7 @@ class Clustering(object):
         self._clusters = [(utils.parse_cluster(c)) for c in clustering]
         self._clusters_map = None
 
+        # get the unique classnames present in the clustering
         self._classnames = utils.get_unique_classnames(self._clusters)
         print("Unique classes found:", len(self._classnames))
 
@@ -39,6 +41,7 @@ class Clustering(object):
             sys.exit(1)
         self._usage_matrix, self._class2idx, self._idx2class = utils.get_usage_matrix(usage_map, self._classnames)
 
+        # generate a set of maps to keep track of which class belongs to which cluster and vice versa
         self._clusterid2classid, self._classid2clusterid, self._max_clusterid = self._generate_ids()
 
         print("Finished parsing clusters.")
@@ -294,6 +297,26 @@ class Clustering(object):
         #self._write_clusters_simple(new_clusters, open_classes)
         self._write_clusters_d3json(new_clusters, open_classes, self._outputfile, highcoupling_classes)
 
+        # just for this usecase, remove all high coupling classes and put them in separate clusters
+        new_clusters, new_open_classes = self.rearrange(new_clusters, open_classes, highcoupling_classes)
+
+        outputfile = self._outputfile.replace(".json", "_rearrange.json")
+        self._write_clusters_d3json(new_clusters, new_open_classes, outputfile, [])
+
+    def rearrange(self, clusters, open_classes, highcoupling_classes):
+        new_clusters = {}
+
+        for clusterid in clusters.keys():
+            (cluster_name, members, locked) = clusters[clusterid]
+            for m in members:
+                if m in highcoupling_classes:
+                    members.remove(m)
+                    open_classes[m] = clusterid
+
+            new_clusters[clusterid] = (cluster_name, members, locked)
+        return new_clusters, open_classes
+
+
     def _write_clusters_simple(self, clusters, open_classes):
         print("\n")
         for cid in clusters:
@@ -305,6 +328,7 @@ class Clustering(object):
         for c in open_classes:
             if open_classes[c] != -1:
                 print("\t", self._idx2class[c])
+
 
     def _write_clusters_d3json(self, new_clusters, open_classes, outputfile, highcoupling_classes):
         jsonobj = []
