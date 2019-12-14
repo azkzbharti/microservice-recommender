@@ -201,18 +201,19 @@ public class AnalyzeApp {
 		header.add(0, "docsName");
 		header.add(1, "ClassName");
 		header.add(2, "PackageName");
+		int cols=3;
 		System.out.println(vocab.size());
 		System.out.println(vocab.toString());
 		csvWriter.writeNext(header.toArray(new String[0]));
 
 		for (Document document : listOfDocuments) {
-			String[] line = new String[vocab.size() + 2];
+			String[] line = new String[vocab.size() + cols]; // columns  numbers
 			line[0] = document.getFile().getAbsolutePath();
 			line[1] = document.getName();
 			line[2] = document.getPackageName();
-			for (int i = 3; i < vocab.size() + 2; i++) {
+			for (int i = 3; i < vocab.size() + cols; i++) {
 				List<Double> docVector = document.getDocVector();
-				double termScore = docVector.get(i - 2);
+				double termScore = docVector.get(i - cols);
 				String res = Double.toString(termScore);
 				line[i] = res;
 			}

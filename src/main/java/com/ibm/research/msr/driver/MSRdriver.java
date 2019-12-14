@@ -93,7 +93,7 @@ public class MSRdriver {
 		String classFiles=outputPath + File.separator + "temp" + File.separator + "ClassList.json";
 		
 		analyzer.savetoFile(measureFile, classFiles);
-		AnalyzeApp analyzer2 = new AnalyzeApp(classFiles, measureFile);
+//		AnalyzeApp analyzer2 = new AnalyzeApp(classFiles, measureFile);
 
 //		oc = runNaiveUtility(analyzer2);
 		oc = runNaiveUtility(analyzer);
@@ -103,12 +103,10 @@ public class MSRdriver {
 
 		InterClassUsageFinder classUsage = new InterClassUsageFinder();
 		if	(appType.equals(Constants.SRC)) {
-			classUsage.find(appPath,opJsonFileName);
-//			classUsage.find(appPath,"/Users/shreya/eclipse-workspace/app-moder/appHome/apps/git/5dd23cafacdb162b6536dd2b/temp/inter-class-usage.json);
-//			classUsage.loader("/Users/shreya/eclipse-workspace/app-moder/appHome/apps/git/5dd23cafacdb162b6536dd2b/temp/inter-class-usage.json");
+			classUsage.find(appPath,opJsonFileName,null);
 		}
 		else {
-			classUsage.findFromBinaryClassFiles(appPath,opJsonFileName);
+			classUsage.findFromBinaryClassFiles(appPath,opJsonFileName,null);
 			}
 		
 		System.out.println(oc.getUniquedocs(oc.getClusters()));
