@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ibm.research.appmod.pa.expandcluster.ClassPair;
+import com.ibm.research.appmod.pa.expandcluster.InterClassUsageFinder;
 import com.ibm.research.msr.clustering.ClusterDetails;
 import com.ibm.research.msr.extraction.Document;
 
@@ -28,14 +30,14 @@ public class MetricComputation {
 		
 		for (Document doc :cls.getListOfDocuments()) {
 	
-		List<ClassPair> cp=i.getAssociatedClassPairForClass(doc.getUniqueName());
+		List<com.ibm.research.appmod.pa.expandcluster.ClassPair> cp=i.getAssociatedClassPairForClass(doc.getUniqueName());
 		
 		for (ClassPair pair : cp) {
-			if(!pair.thisClass.equals(doc.getUniqueName())) {
-				docUsageMap.put(pair.thisClass, i.interClassUsageMatrix.get(pair));
+			if(!pair.getThisClass().equals(doc.getUniqueName())) {
+				docUsageMap.put(pair.getThisClass(), i.interClassUsageMatrix.get(pair));
 			}
-			if(!pair.usedClass.equals(doc.getUniqueName())) {
-				docUsageMap.put(pair.usedClass, i.interClassUsageMatrix.get(pair));
+			if(!pair.getUsedClass().equals(doc.getUniqueName())) {
+				docUsageMap.put(pair.getUsedClass(), i.interClassUsageMatrix.get(pair));
 			}
 
 		}

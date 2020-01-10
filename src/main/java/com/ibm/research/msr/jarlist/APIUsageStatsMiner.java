@@ -27,7 +27,8 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import com.google.gson.Gson;
-import com.ibm.research.msr.binaryextractor.ReferencedClassesExtractor;
+import com.ibm.research.appmod.pa.binaryextractor.ReferencedClassesExtractor;
+import com.ibm.research.appmod.pa.jarlist.APIUsageStats;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;

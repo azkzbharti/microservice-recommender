@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ibm.research.msr.binaryextractor.ReferencedClassesExtractor;
+import com.ibm.research.appmod.pa.binaryextractor.ReferencedClassesExtractor;
 import com.ibm.research.msr.extraction.Document;
 import com.thoughtworks.qdox.JavaProjectBuilder;
 import com.thoughtworks.qdox.model.JavaPackage;

@@ -25,8 +25,8 @@ import org.json.simple.JSONObject;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.ibm.research.appmod.pa.utils.Constants;
 import com.ibm.research.msr.extraction.Document;
-import com.ibm.research.msr.utils.Constants;
 
 import weka.core.Instances;
 import weka.filters.Filter;

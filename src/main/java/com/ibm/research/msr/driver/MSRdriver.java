@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ibm.research.appmod.pa.expandcluster.InterClassUsageFinder;
+import com.ibm.research.appmod.pa.utils.Constants;
 import com.ibm.research.msr.clustering.ClusterDetails;
 import com.ibm.research.msr.clustering.Clustering;
 import com.ibm.research.msr.clustering.DBSCAN;
@@ -13,9 +15,7 @@ import com.ibm.research.msr.clustering.KMeans;
 import com.ibm.research.msr.clustering.Naive;
 import com.ibm.research.msr.clustering.NaiveTFIDF;
 import com.ibm.research.msr.expandcluster.ExpandClusters;
-import com.ibm.research.msr.expandcluster.InterClassUsageFinder;
 import com.ibm.research.msr.extraction.AnalyzeApp;
-import com.ibm.research.msr.utils.Constants;
 import com.ibm.research.msr.utils.DocumentParserUtil;
 import com.ibm.research.msr.utils.ReadJarMap;
 

@@ -18,10 +18,12 @@ import javax.swing.text.StyleConstants.CharacterConstants;
 import org.apache.commons.collections.MapIterator;
 import org.apache.commons.collections.iterators.EntrySetMapIterator;
 
+import com.ibm.research.appmod.pa.expandcluster.ClassPair;
+import com.ibm.research.appmod.pa.expandcluster.InterClassUsageFinder;
+import com.ibm.research.appmod.pa.utils.Constants;
 import com.ibm.research.msr.clustering.ClusterDetails;
 import com.ibm.research.msr.clustering.Clustering;
 import com.ibm.research.msr.extraction.Document;
-import com.ibm.research.msr.utils.Constants;
 
 public class ExpandClusters {
 
@@ -118,11 +120,11 @@ public class ExpandClusters {
 				List<ClassPair> cp=i.getAssociatedClassPairForClass(doc.getUniqueName());
 				
 				for (ClassPair pair : cp) {
-					if(!pair.thisClass.equals(doc.getUniqueName())) {
-						docUsageMap.put(pair.thisClass, i.interClassUsageMatrix.get(pair));
+					if(!pair.getThisClass().equals(doc.getUniqueName())) {
+						docUsageMap.put(pair.getThisClass(), i.interClassUsageMatrix.get(pair));
 					}
-					if(!pair.usedClass.equals(doc.getUniqueName())) {
-						docUsageMap.put(pair.usedClass, i.interClassUsageMatrix.get(pair));
+					if(!pair.getUsedClass().equals(doc.getUniqueName())) {
+						docUsageMap.put(pair.getUsedClass(), i.interClassUsageMatrix.get(pair));
 					}
 		
 				}
@@ -323,11 +325,11 @@ public class ExpandClusters {
 			for(ClassPair pair:cp) {
 //				System.out.println(pair.usedClass);
 //				System.out.println(doc.getUniqueName());
-				if(!pair.thisClass.equals(doc.getUniqueName())) {
-					docUsageMap.put(pair.thisClass, i.interClassUsageMatrix.get(pair));
+				if(!pair.getThisClass().equals(doc.getUniqueName())) {
+					docUsageMap.put(pair.getThisClass(), i.interClassUsageMatrix.get(pair));
 				}
-				if(!pair.usedClass.equals(doc.getUniqueName()))
-					docUsageMap2.put(pair.usedClass, i.interClassUsageMatrix.get(pair));
+				if(!pair.getUsedClass().equals(doc.getUniqueName()))
+					docUsageMap2.put(pair.getUsedClass(), i.interClassUsageMatrix.get(pair));
 //				else {
 //					notusedDocs.add(doc);
 //				}

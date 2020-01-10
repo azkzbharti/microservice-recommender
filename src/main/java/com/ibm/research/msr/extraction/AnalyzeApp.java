@@ -24,7 +24,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.ibm.research.msr.utils.Constants;
+import com.ibm.research.appmod.pa.utils.Constants;
 import com.ibm.research.msr.utils.DocumentParserUtil;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;

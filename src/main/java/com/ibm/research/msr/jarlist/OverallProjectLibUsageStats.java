@@ -3,6 +3,7 @@ package com.ibm.research.msr.jarlist;
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
+import com.ibm.research.appmod.pa.jarlist.APIUsageStats;
 
 public class OverallProjectLibUsageStats {
 

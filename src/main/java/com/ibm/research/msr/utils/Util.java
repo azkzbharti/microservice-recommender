@@ -11,8 +11,8 @@ import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 
+import com.ibm.research.appmod.pa.jarlist.JarApiList;
 import com.ibm.research.msr.clustering.Affinity;
-import com.ibm.research.msr.jarlist.JarApiList;
 
 public class Util {
 
