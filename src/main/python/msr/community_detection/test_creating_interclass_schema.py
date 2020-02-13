@@ -1,3 +1,17 @@
+"""*******************************************************************************
+* Licensed Materials - Property of IBM
+* (c) Copyright IBM Corporation ${year}. All Rights Reserved.
+*
+* Note to U.S. Government Users Restricted Rights:
+* Use, duplication or disclosure restricted by GSA ADP Schedule
+* Contract with IBM Corp.
+*******************************************************************************"""
+
+"""
+Author: Raunak Sinha
+Maintenance: Raunak Sinha
+"""
+
 import unittest
 import json
 from creating_interclass_schema import node_used_to, node_used_by, find_node_id
