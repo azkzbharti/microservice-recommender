@@ -22,7 +22,7 @@ with open('inter-class-usage.json') as json_file:
 
 def node_used_to(node):
 	"""
-	Number of out-going edges 
+	Extracting number of out-going edges for determining frequency of usage information
 	Input: Nodes from intern class
 	Output: Count of out-going edges 
 	"""
@@ -33,7 +33,7 @@ def node_used_to(node):
 
 def node_used_by(node):
 	"""
-	Number of in-coming edges 
+	Extracting number of in-coming edges for determining frequency of usage information
 	Input: Nodes from intern class
 	Output: Count of in-coming edges 
 	"""
@@ -44,7 +44,8 @@ def node_used_by(node):
 
 def make_node(current_node):
 	"""
-	Creating a new node following schema rules
+	Function to make and add node to the schema nodes data-type. 
+	Each node is assigned unique-id determined by the counter. This id is used to represent nodes used in other constructs in the schema.
 	Input: Node data from inter-class-usage
 	Output: Node data in schema format
 	"""
@@ -68,7 +69,8 @@ def make_node(current_node):
 
 def find_node_id(inp):
 	"""
-	Accessing node id from give node label
+	Finding the node-id for forming edges in the schema JSON given the node-name.
+	This function checks nodes infromation present in nodes data-type in schema and return the appropriate ids.
 	Input: Label of node to find from inte-class-usage
 	Output: Id of node given its label
 	"""
@@ -78,6 +80,12 @@ def find_node_id(inp):
 	print (inp,"somthing is off")
 
 def make_edge_func(source, sink, frequency):
+	"""
+	Function to make and add edge to the schema edges data-type. 
+	Each edge is assigned unique-id determined by the counter. This id is used to represent edges used in other constructs in the schema.
+	Input: Informatio of source node, sink node and frequency of call (as the graph is directed)
+	Output: Edge
+	"""
 	global count_edge
 	
 	make_edge = {}
@@ -95,23 +103,19 @@ def make_edge_func(source, sink, frequency):
 count_node = 0
 count_edge = 0
 
-# Converting to schema of given format
+""" Converting to schema of given format """
 schema = {}
 schema["clusters"] = []
 schema["edges"] = []
 schema["nodes"] = []
 
 
-# Making Nodes
+""" Making Nodes """
 for i in data.keys():
-	# print ("---------------")
-	# print (i)
-	# print (data[i])
 	current_node = data[i]
 	schema["nodes"].append(make_node(current_node))
 
-# Making Edges
-
+""" Making Edges """
 make_edge = {}
 make_edge["type"] = "inter_class_connections"
 make_edge["weight"] = ""
