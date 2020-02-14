@@ -1,3 +1,17 @@
+"""*******************************************************************************
+* Licensed Materials - Property of IBM
+* (c) Copyright IBM Corporation ${year}. All Rights Reserved.
+*
+* Note to U.S. Government Users Restricted Rights:
+* Use, duplication or disclosure restricted by GSA ADP Schedule
+* Contract with IBM Corp.
+*******************************************************************************"""
+
+"""
+Author: Raunak Sinha
+Maintenance: Raunak Sinha
+"""
+
 import unittest
 import json
 from community_detection import find_node, find_node_id
