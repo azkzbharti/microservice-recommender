@@ -1,21 +1,3 @@
-"""*******************************************************************************
-* Licensed Materials - Property of IBM
-* (c) Copyright IBM Corporation ${year}. All Rights Reserved.
-*
-* Note to U.S. Government Users Restricted Rights:
-* Use, duplication or disclosure restricted by GSA ADP Schedule
-* Contract with IBM Corp.
-*******************************************************************************"""
-
-"""
-Author: Raunak Sinha
-Maintenance: Raunak Sinha
-"""
-
-"""
-Code for finding communities given inter-class usage JSON
-"""
-
 from queue import Queue
 from operator import itemgetter
 import networkx as nx
