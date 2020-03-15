@@ -3,6 +3,36 @@ import argparse
 import numpy as np
 import sklearn.cluster
 import distance
+import json
+
+def dump_additional_json_output(distances, words):
+    """Only used to genaret graph json for the multigraph. Not in usual m2m flow"""
+    outfile = "/Users/utkarsh/testoutput/affinitygraph.json"
+    edges = []
+    nodes = []
+    for i in distances[0]:
+        w = words[i]
+        node = {"label": w, "id":w}
+        nodes.append(node)
+    for i,row in enumerate(distances):
+        for j,score in enumerate(row):
+            if i == j:
+                continue
+            word1 = words[i]
+            word2 = words[j]
+            edge = {}
+            edge["label"] = "affinity"
+            edge["id"] = word1+word2
+            prop = {}
+            prop["start"] = word1
+            prop["end"] = word2
+            prop["frequency"] = str(score)
+            edge["properties"] = prop
+            edges.append(edge)
+    outjson = {"edges":edges}
+    outjson["nodes"] = nodes
+    with open(outfile, "w") as f:
+        json.dump(obj=outjson, fp =f)
 
 # words = "BackOrder Help1 Catalog2 Account1 OrderInfo Order Util BackOrder2 ValidatorUtils Account3 Admin3 OrderItem Image3 ValidatePassword ShoppingCart1 Shopping1 LogInfo Suppliers1 PopulateDB1 ShoppingItem Customer2 Customer ResetDB1 MailAction Mailer1 Inventory Supplier".split(
 #     " ")  # Replace this line
@@ -23,8 +53,10 @@ def process_data(words, file):
         outF.write("\n")
 
     # write line to output file
-    
-   
+
+    # uncomment this line to generate json for multi-graph
+    # dump_additional_json_output(lev_similarity, words)
+
     outF.close()
 
 
@@ -35,8 +67,8 @@ if __name__ == "__main__":
     parser.add_argument("--outPutFilePath", help="path of output file",type=str)
     args = parser.parse_args()
 
-    try: 
+    try:
       process_data(args.inputArray ,args.outPutFilePath)
     except Exception as error:
-        print("ERR: "+repr(error))  
+        print("ERR: "+repr(error))
         sys.exit(-1)
