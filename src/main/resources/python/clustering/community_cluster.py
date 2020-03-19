@@ -1,3 +1,22 @@
+"""*******************************************************************************
+* Licensed Materials - Property of IBM
+* (c) Copyright IBM Corporation ${year}. All Rights Reserved.
+*
+* Note to U.S. Government Users Restricted Rights:
+* Use, duplication or disclosure restricted by GSA ADP Schedule
+* Contract with IBM Corp.
+*******************************************************************************"""
+
+"""
+Author: Raunak Sinha
+Maintenance: Raunak Sinha
+"""
+
+"""
+Code for finding communities given inter-class usage JSON and seeds
+"""
+
+
 import networkx as nx
 import sys
 import argparse
@@ -9,6 +28,7 @@ import pprgrow_min_cond
 import json
 import os
 import pickle
+
 INF = float('inf')
 
 def pprgrow(args):
