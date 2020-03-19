@@ -12,10 +12,6 @@ Author: Raunak Sinha
 Maintenance: Raunak Sinha
 """
 
-"""
-Code for finding communities given inter-class usage JSON
-"""
-
 from queue import Queue
 from operator import itemgetter
 import networkx as nx
