@@ -50,6 +50,10 @@ public class Constants {
 	public static final String clusteraffinity="cluster-affinity";
 	public static final String clustercommunity="vis_graph_clustering";
 	
+	public static final String MSR_PROPERTIES = "msr.properties";
+	
+	public static final String STOP_WORDS_FILE ="stop_words.txt";
+	
 	public enum ProjectStatus {
 
 		OK(200, "OK"),

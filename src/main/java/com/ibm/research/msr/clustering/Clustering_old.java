@@ -27,6 +27,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.ibm.research.appmod.pa.utils.Constants;
 import com.ibm.research.msr.extraction.Document;
+import com.ibm.research.msr.utils.Util;
 
 import weka.core.Instances;
 import weka.filters.Filter;
@@ -520,7 +521,7 @@ public abstract class Clustering_old {
 
 		System.out.println(clusterobj);
 
-		String MSR_HOME = System.getProperty("MSR_HOME");
+		String MSR_HOME = Util.getMSRBaseDir();
 		String d3Html = MSR_HOME + File.separator + "d3.html";
 
 		String fileString = new String(Files.readAllBytes(Paths.get(d3Html)), StandardCharsets.UTF_8);
@@ -618,7 +619,7 @@ public abstract class Clustering_old {
 //		clusterobj.put("children", clusterArray);
 ////		System.out.println(clusterobj);
 
-		String MSR_HOME = System.getProperty("MSR_HOME");
+		String MSR_HOME = Util.getMSRBaseDir();
 		String clusterAllHtml = MSR_HOME + File.separator + "clusterall.html";
 
 		String fileString = new String(Files.readAllBytes(Paths.get(clusterAllHtml)), StandardCharsets.UTF_8);
