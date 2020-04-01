@@ -87,7 +87,7 @@ public class MSRLauncher {
 		String cohesionAllJSON = uiFolder + File.separator + "data" + File.separator + "cohesion-all.json";
 		String interClassUsageJSON = outputPath + File.separator + "temp" + File.separator + "inter-class-usage.json";
 
-		String MSR_HOME = System.getProperty("MSR_HOME");
+		String MSR_HOME = Util.getMSRBaseDir();
 
 		// if output folder allready exist - delete it.
 		File outputFolder = new File(outputPath);
