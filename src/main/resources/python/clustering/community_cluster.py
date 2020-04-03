@@ -238,10 +238,10 @@ if __name__ == "__main__":
 	with open(args.seed_file,'r') as f:
 		seeds = f.readlines()
 		seeds = [x.strip() for x in seeds]
-		seeds = [x.split() for x in seeds]
+		seeds = [[x.split(",")[0]] for x in seeds]
 		print ("Seeds Loaded\n")
-		
-
+	print (seeds)
+	# exit()
 	# print seeds
 	if args.ninf==True:
 		seeds = neighbor_inflation(G,seeds)
@@ -305,11 +305,15 @@ if __name__ == "__main__":
 
 		new_temp_dict["metrics"] = {}
 		new_temp_dict["metrics"]["cohesion_score"] = ""
-		new_temp_dict["metrics"]["semantic_relatedness_score"] = ""
+		new_temp_dict["metrics"]["conceptual_independence"] = ""
 		new_temp_dict["metrics"]["coupling_score"] = ""
 		new_temp_dict["metrics"]["independence_score"] = ""
 		new_temp_dict["metrics"]["data_independence_score"] = ""
-		new_temp_dict["metrics"]["business_entity_affect"] = ""
+		new_temp_dict["metrics"]["volume_inter-partition calls"] = ""
+		new_temp_dict["metrics"]["transacton_independence_score"] = ""
+		new_temp_dict["metrics"]["functional_encapsulation"] = ""
+		new_temp_dict["metrics"]["modularity"] = ""
+		new_temp_dict["metrics"]["structural_cohesivity"] = ""
 
 		new_temp_dict["nodes"] = []
 		for j in i:

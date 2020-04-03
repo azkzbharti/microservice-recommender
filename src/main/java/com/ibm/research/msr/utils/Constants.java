@@ -13,7 +13,7 @@ public class Constants {
 	public static final String ONLY_MERGE = "onlyMerge";
 	public static final String EUCLIDIEAN = "euclidiean";
 	
-	public static final String unusedClusterName = "Unused/Entry Points";
+	public static final String UNUSED_CLUSTER_NAME = "Unused/Entry Points";
 
 	
 	public static final String TYPE_SRC = "src"; //files
@@ -28,30 +28,32 @@ public class Constants {
 	public static final int READ_TIME_OUT=60*1000;
 	public static final String URL_BASE="https://repo.maven.apache.org/maven2/";
 	
+	public static final String TRANSACTIONS="transactions";
 	
 	// Constants used in Analysis Types
-	public static final String interclassUsage="InterClassUsage";
-	public static final String jarUsage="jar_api";
-	public static final String measure="measure";
-	public static final String classDetails="classDetails";
-	public static final String mavenAnalysis="MavenMeta";
-	public static final String barData="BarData";
+	public static final String INTER_CLASS_USAGE="inter_class_usage";
+	public static final String JAR_USAGE="jar_api";
+	public static final String MEASURE="measure";
+	public static final String CLASS_DETAILS="classDetails";
+	public static final String MAVEN_ANALYSIS="MavenMeta";
+	public static final String BAR_DATA="BarData";
 	
 	//Constants for clustering types
-	public static final String affinityclustering="AFFINITY_CLUSTERING";
-	public static final String apiclustering="API_CLUSTERING";
-	public static final String communityclustering="COMMUNITY_CLUSTERING";
+	public static final String AFFINITY_CLUSTERING="AFFINITY_CLUSTERING";
+	public static final String API_CLUSTERING="API_CLUSTERING";
+	public static final String COMMUNITY_CLUSTERING="COMMUNITY_CLUSTERING";
+	
 	
 	
 	//Keys for clustering
-	public static final String clustercohesionAffinity="cohesion-affinity";
-	public static final String clustercohesionAPI="cohesion-clustering";
-	public static final String clusterAPI="clusterAPI";
-	public static final String clusteraffinity="cluster-affinity";
-	public static final String clustercommunity="vis_graph_clustering";
+	public static final String CLUSTER_COHESION_AFFINITY="cohesion-affinity";
+	public static final String CLUSTER_COHESION_API="cohesion-clustering";
+	public static final String CLUSTER_API="clusterAPI";
+	public static final String CLUSTER_AFFINITY="cluster-affinity";
+	public static final String CLUSTER_COMMUNITY="microservice";
+	public static final String COMMUNITY_CLUSTER_JSON="graph_clustering";
 	
 	public static final String MSR_PROPERTIES = "msr.properties";
-	
 	public static final String STOP_WORDS_FILE ="stop_words.txt";
 	
 	public enum ProjectStatus {
