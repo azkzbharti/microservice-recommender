@@ -23,7 +23,7 @@ public class CohesionCouplingProcessing {
 		
 		String cohesionPythonFile = Util.getCohesionPythonFile();
 		
-		String cmd = Util.getPythonCommand() + " " + cohesionPythonFile + " " + this.clusterAllJSONFile + " "
+		String cmd = Util.getProperty("PYTHON_HOME") + " " + cohesionPythonFile + " " + this.clusterAllJSONFile + " "
 		+ usageJSONFile + " " + outputFile;
 		
 		try {
