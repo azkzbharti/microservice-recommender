@@ -135,17 +135,21 @@ if __name__ == "__main__":
 		make_edge["relationship"] = []
 		schema["edges"].append(make_edge)
 
+		edge_list = []
 		for i in data.keys():
 			current_node = data[i]
 			if current_node['type'] == 'sink' or current_node['type'] == 'both':
 				for j in current_node['usedClassesToCount'].keys():
+					if (find_node_id(current_node['name']), find_node_id(j)) not in edge_list:
 					# print (current_node['usedClassesToCount'][j])
-					make_edge["relationship"].append(make_edge_func(find_node_id(current_node['name']), find_node_id(j), current_node['usedClassesToCount'][j]))
+						make_edge["relationship"].append(make_edge_func(find_node_id(current_node['name']), find_node_id(j), current_node['usedClassesToCount'][j]))
+						edge_list.append((find_node_id(current_node['name']), find_node_id(j)))
 
 			if data[i]['type'] == 'source' or data[i]['type'] == 'both':
 				for j in current_node['usedByClassesToCount'].keys():
-					make_edge["relationship"].append(make_edge_func(find_node_id(j), find_node_id(current_node['name']), current_node['usedByClassesToCount'][j]))
-
+					if (find_node_id(j), find_node_id(current_node['name'])) not in edge_list:
+						make_edge["relationship"].append(make_edge_func(find_node_id(j), find_node_id(current_node['name']), current_node['usedByClassesToCount'][j]))
+						edge_list.append((find_node_id(j), find_node_id(current_node['name'])))
 
 		with open(args.outPutFilePath, 'w') as f:
 			json.dump(schema, f)
