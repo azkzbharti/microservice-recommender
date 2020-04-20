@@ -28,6 +28,7 @@ import pprgrow_min_cond
 import json
 import os
 import pickle
+import re 
 
 INF = float('inf')
 
@@ -194,6 +195,7 @@ if __name__ == "__main__":
 	parser.add_argument('--seed_file')
 	parser.add_argument('--tempFilePath')
 	parser.add_argument('--visFilePath')
+	parser.add_argument('--filterFilePath')
 	
 
 	# parser.add_argument('graph_file',type=str,help='Input Graph File Path')
@@ -220,7 +222,11 @@ if __name__ == "__main__":
 	# try: 
 		# with open(args.inPutFilePath) as json_file:
 		# 	data = json.load(json_file)
-		
+	
+	with open(args.filterFilePath) as f:
+		filter_read = f.readlines()
+		regexp = re.compile(filter_read[0].strip())
+
 	args = parser.parse_args()
 
 	with open(args.outPutFilePath) as json_file:
@@ -283,7 +289,7 @@ if __name__ == "__main__":
 	# print (final_community)
 	
 	# save_communities.append([x.encode('UTF8') for x in final_community])
-	save_communities.append([x for x in final_community])
+
 	# print (save_communities)
 	# exit()
 	print ("this is ",count)
@@ -295,7 +301,7 @@ if __name__ == "__main__":
 		new_temp_dict["label"] = "cluster"+str(counter)
 		new_temp_dict["id"] = str(counter)
 		counter += 1
-
+		new_temp_dict["type"] = "microservices_group"
 		new_temp_dict["description"] = ""
 		new_temp_dict["properties"] = {}
 		new_temp_dict["properties"]["affected_business_domains"] = [""]
@@ -310,16 +316,49 @@ if __name__ == "__main__":
 		new_temp_dict["metrics"]["independence_score"] = ""
 		new_temp_dict["metrics"]["data_independence_score"] = ""
 		new_temp_dict["metrics"]["volume_inter-partition calls"] = ""
-		new_temp_dict["metrics"]["transacton_independence_score"] = ""
+		new_temp_dict["metrics"]["transaction_independence_score"] = ""
 		new_temp_dict["metrics"]["functional_encapsulation"] = ""
 		new_temp_dict["metrics"]["modularity"] = ""
 		new_temp_dict["metrics"]["structural_cohesivity"] = ""
 
 		new_temp_dict["nodes"] = []
 		for j in i:
-			print (find_node_id(j,data))
+			# print (find_node_id(j,data))
 			new_temp_dict["nodes"].append(find_node_id(j,data))
 		data["clusters"].append(new_temp_dict)
+
+	# Adding final_community
+	new_temp_dict = {}
+	new_temp_dict["label"] = "cluster"+str(counter)
+	new_temp_dict["id"] = str(counter)
+	counter += 1
+	new_temp_dict["type"] = "unassigned_group"
+	new_temp_dict["description"] = ""
+	new_temp_dict["properties"] = {}
+	new_temp_dict["properties"]["affected_business_domains"] = [""]
+	new_temp_dict["properties"]["db_dependence"] = {}
+	new_temp_dict["properties"]["db_dependence"]["db"] = ""
+	new_temp_dict["properties"]["db_dependence"]["tables"] = [""]
+
+	new_temp_dict["metrics"] = {}
+	new_temp_dict["metrics"]["cohesion_score"] = ""
+	new_temp_dict["metrics"]["conceptual_independence"] = ""
+	new_temp_dict["metrics"]["coupling_score"] = ""
+	new_temp_dict["metrics"]["independence_score"] = ""
+	new_temp_dict["metrics"]["data_independence_score"] = ""
+	new_temp_dict["metrics"]["volume_inter-partition calls"] = ""
+	new_temp_dict["metrics"]["transaction_independence_score"] = ""
+	new_temp_dict["metrics"]["functional_encapsulation"] = ""
+	new_temp_dict["metrics"]["modularity"] = ""
+	new_temp_dict["metrics"]["structural_cohesivity"] = ""
+
+	new_temp_dict["nodes"] = []
+	for j in final_community:
+		# print (find_node_id(j,data))
+		new_temp_dict["nodes"].append(find_node_id(j,data))
+	data["clusters"].append(new_temp_dict)
+
+	save_communities.append([x for x in final_community])
 
 	with open(args.outPutFilePath, 'w') as f:
 		json.dump(data, f)
@@ -403,52 +442,53 @@ if __name__ == "__main__":
 			# i = i.split('.')[-1].encode('UTF8')
 			# i = i.encode('UTF8')
 			
-
-			node_1 = "cluster"+str(cluster_mapping[data[i]['name'].split('.')[-1]])+"."+data[i]['name'].split('.')[-1]
-			# print (node_1)
-			node_2 = "cluster"+str(cluster_mapping[list(data[i]['usedClassesToCount'].keys())[0].split('.')[-1]])+"."+list(data[i]['usedClassesToCount'].keys())[0].split('.')[-1]
-			
-			print (node_1, str(cluster_mapping[data[i]['name'].split('.')[-1]]))
-			print (node_2,str(cluster_mapping[list(data[i]['usedClassesToCount'].keys())[0].split('.')[-1]]))
-			# exit()
-			if node_2 not in temp_dict[node_1]['imports']:
-				print ("added1--------------")
-				print (node_1)
-				print (node_2)
-				# print (temp_dict[node_1]['imports'])
-				# exit()
-				print ("--------------")
-				temp_dict[node_1]['imports'].append(node_2)
-				temp_dict[node_1]['size'] += 1
-				print (temp_dict[node_1])
+			if not regexp.search(data[i]['name']) and not regexp.search(list(data[i]['usedClassesToCount'].keys())[0]):
+				node_1 = "cluster"+str(cluster_mapping[data[i]['name'].split('.')[-1]])+"."+data[i]['name'].split('.')[-1]
+				# print (node_1)
+				node_2 = "cluster"+str(cluster_mapping[list(data[i]['usedClassesToCount'].keys())[0].split('.')[-1]])+"."+list(data[i]['usedClassesToCount'].keys())[0].split('.')[-1]
 				
-			if node_1 not in temp_dict[node_2]['imports']:
-				print ("added1--------------")
-				print (node_1)
-				print (node_2)
-				print ("--------------")
-				temp_dict[node_2]['imports'].append(node_1)
-				temp_dict[node_2]['size'] += 1
+				print (node_1, str(cluster_mapping[data[i]['name'].split('.')[-1]]))
+				print (node_2,str(cluster_mapping[list(data[i]['usedClassesToCount'].keys())[0].split('.')[-1]]))
+				# exit()
+				if node_2 not in temp_dict[node_1]['imports']:
+					print ("added1--------------")
+					print (node_1)
+					print (node_2)
+					# print (temp_dict[node_1]['imports'])
+					# exit()
+					print ("--------------")
+					temp_dict[node_1]['imports'].append(node_2)
+					temp_dict[node_1]['size'] += 1
+					print (temp_dict[node_1])
+					
+				if node_1 not in temp_dict[node_2]['imports']:
+					print ("added1--------------")
+					print (node_1)
+					print (node_2)
+					print ("--------------")
+					temp_dict[node_2]['imports'].append(node_1)
+					temp_dict[node_2]['size'] += 1
 
 			# exit()
 
 		if data[i]['type'] == 'source' or data[i]['type'] == 'both':
 			# g.add_edge(list(data[i]['usedByClassesToCount'].keys())[0],data[i]['name'])
-			node_1 = "cluster"+str(cluster_mapping[list(data[i]['usedByClassesToCount'].keys())[0].split('.')[-1]])+"."+list(data[i]['usedByClassesToCount'].keys())[0].split('.')[-1]
-			node_2 = "cluster"+str(cluster_mapping[data[i]['name'].split('.')[-1]])+"."+data[i]['name'].split('.')[-1]
-			
-			if node_2 not in temp_dict[node_1]['imports']:
-				print ("added2")
-				# print (node_1)
-				# print (node_2)
-				temp_dict[node_1]['imports'].append(node_2)
-				temp_dict[node_1]['size'] += 1
-				# print (temp_dict[node_1])
+			if not regexp.search(data[i]['name']) and not regexp.search(list(data[i]['usedByClassesToCount'].keys())[0]):
+				node_1 = "cluster"+str(cluster_mapping[list(data[i]['usedByClassesToCount'].keys())[0].split('.')[-1]])+"."+list(data[i]['usedByClassesToCount'].keys())[0].split('.')[-1]
+				node_2 = "cluster"+str(cluster_mapping[data[i]['name'].split('.')[-1]])+"."+data[i]['name'].split('.')[-1]
 				
-			if node_1 not in temp_dict[node_2]['imports']:
-				print ("added")
-				temp_dict[node_2]['imports'].append(node_1)
-				temp_dict[node_2]['size'] += 1
+				if node_2 not in temp_dict[node_1]['imports']:
+					print ("added2")
+					# print (node_1)
+					# print (node_2)
+					temp_dict[node_1]['imports'].append(node_2)
+					temp_dict[node_1]['size'] += 1
+					# print (temp_dict[node_1])
+					
+				if node_1 not in temp_dict[node_2]['imports']:
+					print ("added")
+					temp_dict[node_2]['imports'].append(node_1)
+					temp_dict[node_2]['size'] += 1
 
 	#Mading json structure
 
