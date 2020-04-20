@@ -24,6 +24,7 @@ import json
 import matplotlib.pyplot as plt
 from networkx.algorithms import community
 import pickle
+import re
 
 def node_used_to(node):
 	"""
@@ -33,7 +34,8 @@ def node_used_to(node):
 	"""
 	count = 0
 	for i in node["usedClassesToCount"].keys():
-		count += int(node["usedClassesToCount"][i])
+		if not regexp.search(i):
+			count += int(node["usedClassesToCount"][i])
 	return count
 
 def node_used_by(node):
@@ -44,7 +46,8 @@ def node_used_by(node):
 	"""
 	count = 0
 	for i in node["usedByClassesToCount"].keys():
-		count += int(node["usedByClassesToCount"][i])
+		if not regexp.search(i):
+			count += int(node["usedByClassesToCount"][i])
 	return count
 
 def make_node(current_node):
@@ -55,7 +58,7 @@ def make_node(current_node):
 	"""
 	global count_node
 	make_node = {}
-
+	make_node["entity_type"] = "class"
 	make_node["label"] = current_node["name"]
 	make_node["id"] = str(count_node)
 	count_node += 1
@@ -97,17 +100,48 @@ def make_edge_func(source, sink, frequency):
 	make_edge["methods"] = [""]
 	return make_edge
 
+def make_table(current_node_name):
+	"""
+	Creating a new node following schema rules
+	Input: Node data from inter-class-usage
+	Output: Node data in schema format
+	"""
+	global count_node
+	make_node = {}
+	make_node["entity_type"] = "table"
+	make_node["label"] = current_node_name
+	make_node["id"] = str(count_node)
+	count_node += 1
+	make_node["description"]=""
+
+	make_node["properties"] = {}
+	
+	make_node["properties"]["used_by"] = node_used_by(current_node)
+	make_node["properties"]["used_to"] = node_used_to(current_node)
+
+	make_node["properties"]["crud_operations"] = ""
+	return make_node
+
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--inPutFilePath')
 	parser.add_argument("--outPutFilePath")
 	parser.add_argument("--graphInputForSeed")
+	parser.add_argument("--transactionName")
+	parser.add_argument('--filterFilePath')
 	
 	args = parser.parse_args()
 
 	try: 
+		with open(args.filterFilePath) as f:
+			filter_read = f.readlines()
+			regexp = re.compile(filter_read[0].strip())
+
 		with open(args.inPutFilePath) as json_file:
 			data = json.load(json_file)
+
+		with open(args.transactionName) as json_file:
+			trasaction_file = json.load(json_file)
 
 		count_node = 0
 		count_edge = 0
@@ -123,9 +157,20 @@ if __name__ == "__main__":
 			# print ("---------------")
 			# print (i)
 			# print (data[i])
-			current_node = data[i]
-			schema["nodes"].append(make_node(current_node))
+			if not regexp.search(data[i]["name"]):
+				current_node = data[i]
+				schema["nodes"].append(make_node(current_node))
 
+		# Making Transaction Nodes
+		table_names = set()
+		for i in trasaction_file:
+			for j in i["transaction"]:
+				name = j["table"]
+				table_names.add(name)
+
+		for i in list(table_names):
+			schema["nodes"].append(make_table(i))
+		
 		# Making Edges
 
 		make_edge = {}
@@ -135,16 +180,37 @@ if __name__ == "__main__":
 		make_edge["relationship"] = []
 		schema["edges"].append(make_edge)
 
+		edge_list = []
 		for i in data.keys():
 			current_node = data[i]
 			if current_node['type'] == 'sink' or current_node['type'] == 'both':
 				for j in current_node['usedClassesToCount'].keys():
-					# print (current_node['usedClassesToCount'][j])
-					make_edge["relationship"].append(make_edge_func(find_node_id(current_node['name']), find_node_id(j), current_node['usedClassesToCount'][j]))
+					if not regexp.search(current_node['name']) and not regexp.search(j):
+						if (find_node_id(current_node['name']), find_node_id(j)) not in edge_list:
+						# print (current_node['usedClassesToCount'][j])
+							make_edge["relationship"].append(make_edge_func(find_node_id(current_node['name']), find_node_id(j), current_node['usedClassesToCount'][j]))
+							edge_list.append((find_node_id(current_node['name']), find_node_id(j)))
 
 			if data[i]['type'] == 'source' or data[i]['type'] == 'both':
 				for j in current_node['usedByClassesToCount'].keys():
-					make_edge["relationship"].append(make_edge_func(find_node_id(j), find_node_id(current_node['name']), current_node['usedByClassesToCount'][j]))
+					if not regexp.search(j) and not regexp.search(current_node['name']):
+						if (find_node_id(j), find_node_id(current_node['name'])) not in edge_list:
+							make_edge["relationship"].append(make_edge_func(find_node_id(j), find_node_id(current_node['name']), current_node['usedByClassesToCount'][j]))
+							edge_list.append((find_node_id(j), find_node_id(current_node['name'])))
+
+		make_t_edge = {}
+		make_t_edge["type"] = "transaction_relatedeness"
+		make_t_edge["weight"] = ""
+		make_t_edge["description"] = ""
+		make_t_edge["relationship"] = []
+		schema["edges"].append(make_t_edge)
+
+		for i in trasaction_file:
+			for j in i["transaction"]:
+				end = j["table"]
+				for k in j["callgraph"]:
+					if (find_node_id(k), find_node_id(end)) not in edge_list:
+						make_t_edge["relationship"].append(make_edge_func(find_node_id(k), find_node_id(end),"1"))
 
 
 		with open(args.outPutFilePath, 'w') as f:
@@ -193,7 +259,10 @@ if __name__ == "__main__":
 		# Creating the graph given the nodes and edges
 		nodes = data["nodes"]
 		for i in nodes:
-			g.add_node(i["label"])
+			if i["entity_type"] == "class":
+				if not regexp.search(i["label"]):
+					g.add_node(i["label"])
+
 
 		for i in data_read:
 			g.add_edge(find_node(i["properties"]["start"]), find_node(i["properties"]["end"]), frequency = int(i["frequency"]))
@@ -205,4 +274,3 @@ if __name__ == "__main__":
 	except Exception as error:
 		print("ERR: "+repr(error))  
 		sys.exit(-1)
-
