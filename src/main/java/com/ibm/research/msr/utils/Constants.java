@@ -53,7 +53,6 @@ public class Constants {
 	public static final String CLUSTER_COMMUNITY="microservice";
 	public static final String COMMUNITY_CLUSTER_JSON="graph_clustering";
 	
-	public static final String MSR_PROPERTIES = "msr.properties";
 	public static final String STOP_WORDS_FILE ="stop_words.txt";
 	
 	public enum ProjectStatus {
