@@ -783,9 +783,10 @@ public class InterClassUsageFinder {
 		// TODO: check if below is static and add getter
 		String strJson=gson.toJson(interClassUsageMatrix);
 		String opJsonFileName=outfile;
+		PrintWriter pw = null;
 		try
 		{
-			PrintWriter pw=new PrintWriter(opJsonFileName);
+			pw = new PrintWriter(opJsonFileName);
 			pw.println(strJson);
 			pw.flush();
 			pw.close();
@@ -795,6 +796,10 @@ public class InterClassUsageFinder {
 		{
 			System.out.println("Handled exception.");
 			e.printStackTrace();
+		}
+		finally {
+			if (pw!=null)
+				pw.close();
 		}
 	}
 
@@ -831,9 +836,10 @@ public class InterClassUsageFinder {
 //		System.out.println("\nJSON="+strJson);
 //		String opJsonFileName=srcFilesRoot+File.separator+"inter-class-usage.json";
 //		String opJsonFileName;
+		PrintWriter pw = null;
 		try
 		{
-			PrintWriter pw=new PrintWriter(opJsonFileName);
+			pw = new PrintWriter(opJsonFileName);
 			pw.println(strJson);
 			pw.flush();
 			pw.close();
@@ -843,6 +849,10 @@ public class InterClassUsageFinder {
 		{
 			System.out.println("Handled exception.");
 			e.printStackTrace();
+		}
+		finally {
+			if(pw!=null)
+				pw.close();
 		}
 	}
 

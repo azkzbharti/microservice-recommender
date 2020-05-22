@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -54,11 +55,12 @@ public class GradleDependencyDownloader {
 	}
 
 	public void createPOMFile(String gradleBuildFile, String pomFile) {
+		BufferedReader br = null;
 		try {
 			// String gradleFileToString = IOUtils.toString( new FileInputStream(
 			// gradleBuildFile ), "UTF-8" );
 
-			BufferedReader br = new BufferedReader(new FileReader(gradleBuildFile));
+			br = new BufferedReader(new FileReader(gradleBuildFile));
 			// StringBuffer sb=new StringBuffer();
 			String s = null;
 
@@ -141,6 +143,13 @@ public class GradleDependencyDownloader {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if(br!=null)
+				try {
+					br.close();
+				} catch (IOException e) {
+					System.err.println("Exception while closing reader." + e.getMessage());
+				}
 		}
 	}
 
@@ -213,8 +222,9 @@ public class GradleDependencyDownloader {
 			gradleBuildFile = projectRoot;
 		}
 
+		BufferedReader br = null;
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(gradleBuildFile));
+			br = new BufferedReader(new FileReader(gradleBuildFile));
 			StringBuffer sb = new StringBuffer();
 			String s = null;
 			while ((s = br.readLine()) != null) {
@@ -240,6 +250,13 @@ public class GradleDependencyDownloader {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(br!= null)
+				try {
+					br.close();
+				} catch (IOException e) {
+					System.err.println("Exception while closing reader. " + e.getMessage());
+				}
 		}
 
 		return true;
@@ -249,6 +266,8 @@ public class GradleDependencyDownloader {
 			throws TransformerFactoryConfigurationError {
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			docFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
+			docFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, ""); // compliant
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
 			// root elements
@@ -282,6 +301,8 @@ public class GradleDependencyDownloader {
 
 			// write the content into xml file
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
+			transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, ""); // Compliant
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
 			// StreamResult result = new StreamResult(new

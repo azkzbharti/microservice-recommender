@@ -38,7 +38,7 @@ import javassist.expr.ExprEditor;
 import javassist.expr.MethodCall;
 
 public class APIUsageStatsMiner {
-	
+
 	String[] classPathEntries=null;
 	Map<String,String> fqClassToJar=new HashMap<String,String>();
 	Map<String,String> fqMethodNameToJar=new HashMap<String,String>();
@@ -46,17 +46,18 @@ public class APIUsageStatsMiner {
 	Map<String,Integer> jarToAPICount=new HashMap<String,Integer>();
 
 	static int libraryMI=0;
-	
+
 	static int nonLibraryMI=0;
-	
+
 	static int prevLibraryMI=0;
-	
+
 	static int methodDeclarations=0;
-	
+
 	static int methodDeclarationsWithLibCalls=0;
-	
+
 	public void mine(String srcRoot,String jarToPkgsClassesCsv,String opJSONFileNameWithPath)
 	{
+		PrintWriter pw = null;
 		try
 		{
 			libraryMI=0;
@@ -65,22 +66,22 @@ public class APIUsageStatsMiner {
 			methodDeclarations=0;
 			methodDeclarationsWithLibCalls=0;
 			Set<String> jarsWithPath = read(jarToPkgsClassesCsv);
-			
+
 			classPathEntries=jarsWithPath.toArray(new String[0]);
-			
+
 			System.out.println("classPathEntries = "+classPathEntries.length);
 			for (int i=0;i<classPathEntries.length;i++)
 			{
 				System.out.println(classPathEntries[i]);
 			}
-			
+
 			//System.out.println("fqClassToJar size="+fqClassToJar.size());
 			for(String c : fqClassToJar.keySet())
 			{
 				String j=fqClassToJar.get(c);
 				//System.out.println(c+" "+j);
 			}
-			
+
 			File fRoot = new File(srcRoot);
 			String[] extensions = new String[] { "java"};
 			//System.out.println("Getting all .java  in " + fRoot.getPath()
@@ -89,14 +90,14 @@ public class APIUsageStatsMiner {
 			for (File file : files) {
 				processOneFile(file,srcRoot);
 			}
-			
+
 			//String opFileName=srcRoot+File.separator+"jar-to-used-apis.csv";
 			//System.out.println("writing to op file="+opJSONFileNameWithPath);
-			PrintWriter pw=new PrintWriter(opJSONFileNameWithPath);
+			pw = new PrintWriter(opJSONFileNameWithPath);
 			//pw.println("Jar,DistinctAPIsUsageCount,API");
-			
+
 			List<APIUsageStats> apiUsageStatsList=new ArrayList<APIUsageStats>();
-			
+
 			for (String jar:jarToSetOfUsedAPIs.keySet())
 			{
 				HashSet<String> usedAPIs = jarToSetOfUsedAPIs.get(jar);
@@ -111,16 +112,16 @@ public class APIUsageStatsMiner {
 				APIUsageStats a=new APIUsageStats(jar,iAPICnt.intValue(),usedAPIs.size());
 				apiUsageStatsList.add(a);
 			}
-			
+
 			//System.out.println("apiUsageStatsList size="+apiUsageStatsList.size());
-			
-//			Gson g=new Gson();
-//			String json=g.toJson(apiUsageStatsList);
-//			System.out.println("json=\n"+json);
-//			pw.println(json);
-//			pw.flush();
-//			pw.close();
-			
+
+			//			Gson g=new Gson();
+			//			String json=g.toJson(apiUsageStatsList);
+			//			System.out.println("json=\n"+json);
+			//			pw.println(json);
+			//			pw.flush();
+			//			pw.close();
+
 			//System.out.println("Lib MI="+libraryMI);
 			//System.out.println("Non Lib MI="+nonLibraryMI);
 
@@ -132,21 +133,21 @@ public class APIUsageStatsMiner {
 			//System.out.println("json=\n"+json);
 			pw.println(json);
 			pw.flush();
-			pw.close();
-
-			
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+		} finally {
+			if(pw != null)
+				pw.close();
 		}
 	}
 
 	private Set<String> read(String jarToPkgsClassesCsv) throws FileNotFoundException, IOException {
-		BufferedReader br=new BufferedReader(new FileReader(jarToPkgsClassesCsv));
+		BufferedReader br = new BufferedReader(new FileReader(jarToPkgsClassesCsv));
 		String line=null;
 		Set<String> jarsWithPath= new HashSet<String>();
-		
+
 		int lineNum=0;
 		while ((line=br.readLine())!=null)
 		{
@@ -158,13 +159,13 @@ public class APIUsageStatsMiner {
 			String[] arr=line.split(",");
 			String jarWithPath=arr[0];
 			String fqClassName=arr[2];
-			
+
 			String methodName=null;
 			if (arr.length==4)
 			{
 				methodName=arr[3];
 			}
-			
+
 			int li=jarWithPath.lastIndexOf(File.separator);
 			String jarWoPath=null;
 			if (li!=-1)
@@ -184,8 +185,8 @@ public class APIUsageStatsMiner {
 				fqMethodNameToJar.put(fqMethName, jarWoPath);
 			}
 		}
-		
-		
+
+
 		for (String fqmn:fqMethodNameToJar.keySet())
 		{
 			String jar=fqMethodNameToJar.get(fqmn);
@@ -214,11 +215,11 @@ public class APIUsageStatsMiner {
 	{
 		String fileNameWPath=file.getAbsolutePath();
 		//System.out.println("file: " + file.getName() + " " + fileNameWPath);
-	
+
 		StringBuffer sb=new StringBuffer();
 		String line=null;
 		BufferedReader br=null;
-		
+
 		try
 		{
 			br=new BufferedReader(new FileReader(fileNameWPath));
@@ -251,8 +252,8 @@ public class APIUsageStatsMiner {
 		String[] classPathEntries2=new String[] {
 				"C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\lib\\guava-14.0.1.jar",
 				"C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\lib\\carrot2-mini-3.6.2.jar"
-			};
-		
+		};
+
 		ArrayList<String> cp3=new ArrayList<String>();
 		for (String c:classPathEntries)
 		{
@@ -265,13 +266,13 @@ public class APIUsageStatsMiner {
 		parser.setEnvironment(classPathEntries, srcRootArr, null, true);
 		//parser.setEnvironment(cp3.toArray(new String[0]), srcRootArr, null, true);
 
-		
+
 		final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 
-		
-		
+
+
 		cu.accept(new ASTVisitor() {
-			
+
 			public boolean visit(MethodDeclaration m)
 			{
 				String mdName=m.getName().getFullyQualifiedName();
@@ -286,7 +287,7 @@ public class APIUsageStatsMiner {
 				}
 				return true;
 			}
-			
+
 			public void endVisit(MethodDeclaration m)
 			{
 				String mdName=m.getName().getFullyQualifiedName();
@@ -304,7 +305,7 @@ public class APIUsageStatsMiner {
 				}
 				prevLibraryMI=libraryMI;
 			}
-			
+
 			public boolean visit(MethodInvocation mi)
 			{
 				String miName=mi.getName().getFullyQualifiedName();
@@ -313,15 +314,15 @@ public class APIUsageStatsMiner {
 				if (imb!=null)
 				{
 					ITypeBinding dc = imb.getDeclaringClass();
-//					IModuleBinding imob2 = dc.getModule();
-//					IPackageBinding ipb = dc.getPackage();
-//					IModuleBinding imob = ipb.getModule();
-//					
-//					//imob.
-//					System.out.println("IModuleBinding="+imob.getName());
-//					System.out.println("IModuleBinding2="+imob2.getName());
-//					System.out.println("IModuleBinding tostring="+imob.toString());
-					
+					//					IModuleBinding imob2 = dc.getModule();
+					//					IPackageBinding ipb = dc.getPackage();
+					//					IModuleBinding imob = ipb.getModule();
+					//					
+					//					//imob.
+					//					System.out.println("IModuleBinding="+imob.getName());
+					//					System.out.println("IModuleBinding2="+imob2.getName());
+					//					System.out.println("IModuleBinding tostring="+imob.toString());
+
 					String fqMIName=dc.getQualifiedName()+"."+miName;
 					//System.out.println("fqMIName = " + fqMIName);
 					handleLibOrNonLibCalls(dc.getQualifiedName(), fqMIName);
@@ -334,32 +335,33 @@ public class APIUsageStatsMiner {
 				return true;
 			}
 		}
-);
+				);
 	}
-		
-		
-	private void handleLibOrNonLibCalls(String className, String fqMIName) {
-			String jar=fqClassToJar.get(className);
-			if (jar!=null)
-			{
-				libraryMI++;
 
-				HashSet<String> setOfUsedAPIs = jarToSetOfUsedAPIs.get(jar);
-				if (setOfUsedAPIs==null)
-				{
-					setOfUsedAPIs=new HashSet<String>();
-				}
-				setOfUsedAPIs.add(fqMIName);
-				jarToSetOfUsedAPIs.put(jar, setOfUsedAPIs);
-			}
-			else
+
+	private void handleLibOrNonLibCalls(String className, String fqMIName) {
+		String jar=fqClassToJar.get(className);
+		if (jar!=null)
+		{
+			libraryMI++;
+
+			HashSet<String> setOfUsedAPIs = jarToSetOfUsedAPIs.get(jar);
+			if (setOfUsedAPIs==null)
 			{
-				nonLibraryMI++;
+				setOfUsedAPIs=new HashSet<String>();
 			}
+			setOfUsedAPIs.add(fqMIName);
+			jarToSetOfUsedAPIs.put(jar, setOfUsedAPIs);
+		}
+		else
+		{
+			nonLibraryMI++;
+		}
 	}
-	
+
 	public void mineFromClassFiles(String classFilesRoot,String jarToPkgsClassesCsv,String opJSONFileNameWithPath)
 	{
+		PrintWriter pw = null;
 		try
 		{
 			libraryMI=0;
@@ -368,22 +370,22 @@ public class APIUsageStatsMiner {
 			methodDeclarations=0;
 			methodDeclarationsWithLibCalls=0;
 			Set<String> jarsWithPath = read(jarToPkgsClassesCsv);
-			
-//			classPathEntries=jarsWithPath.toArray(new String[0]);
-//			
-//			System.out.println("classPathEntries = "+classPathEntries.length);
-//			for (int i=0;i<classPathEntries.length;i++)
-//			{
-//				System.out.println(classPathEntries[i]);
-//			}
-			
-//			//System.out.println("fqClassToJar size="+fqClassToJar.size());
-//			for(String c : fqClassToJar.keySet())
-//			{
-//				String j=fqClassToJar.get(c);
-//				//System.out.println(c+" "+j);
-//			}
-			
+
+			//			classPathEntries=jarsWithPath.toArray(new String[0]);
+			//			
+			//			System.out.println("classPathEntries = "+classPathEntries.length);
+			//			for (int i=0;i<classPathEntries.length;i++)
+			//			{
+			//				System.out.println(classPathEntries[i]);
+			//			}
+
+			//			//System.out.println("fqClassToJar size="+fqClassToJar.size());
+			//			for(String c : fqClassToJar.keySet())
+			//			{
+			//				String j=fqClassToJar.get(c);
+			//				//System.out.println(c+" "+j);
+			//			}
+
 			File fRoot = new File(classFilesRoot);
 			String[] extensions = new String[] { "class"};
 			//System.out.println("Getting all .java  in " + fRoot.getPath()
@@ -392,14 +394,14 @@ public class APIUsageStatsMiner {
 			for (File file : files) {
 				processOneClassFile(file.getAbsolutePath());
 			}
-			
+
 			//String opFileName=srcRoot+File.separator+"jar-to-used-apis.csv";
 			//System.out.println("writing to op file="+opJSONFileNameWithPath);
-			PrintWriter pw=new PrintWriter(opJSONFileNameWithPath);
+			pw  = new PrintWriter(opJSONFileNameWithPath);
 			//pw.println("Jar,DistinctAPIsUsageCount,API");
-			
+
 			List<APIUsageStats> apiUsageStatsList=new ArrayList<APIUsageStats>();
-			
+
 			for (String jar:jarToSetOfUsedAPIs.keySet())
 			{
 				HashSet<String> usedAPIs = jarToSetOfUsedAPIs.get(jar);
@@ -414,16 +416,16 @@ public class APIUsageStatsMiner {
 				APIUsageStats a=new APIUsageStats(jar,iAPICnt.intValue(),usedAPIs.size());
 				apiUsageStatsList.add(a);
 			}
-			
+
 			//System.out.println("apiUsageStatsList size="+apiUsageStatsList.size());
-			
-//			Gson g=new Gson();
-//			String json=g.toJson(apiUsageStatsList);
-//			System.out.println("json=\n"+json);
-//			pw.println(json);
-//			pw.flush();
-//			pw.close();
-			
+
+			//			Gson g=new Gson();
+			//			String json=g.toJson(apiUsageStatsList);
+			//			System.out.println("json=\n"+json);
+			//			pw.println(json);
+			//			pw.flush();
+			//			pw.close();
+
 			//System.out.println("Lib MI="+libraryMI);
 			//System.out.println("Non Lib MI="+nonLibraryMI);
 
@@ -435,15 +437,17 @@ public class APIUsageStatsMiner {
 			//System.out.println("json=\n"+json);
 			pw.println(json);
 			pw.flush();
-			pw.close();
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+		} finally {
+			if(pw != null)
+				pw.close();
 		}
 	}
 
-	
+
 	//public void processOneClassFile(File file, String classFilesRoot)
 	public void processOneClassFile(String classFileLocation)
 	{
@@ -454,38 +458,38 @@ public class APIUsageStatsMiner {
 
 		ClassPool cp = ClassPool.getDefault();
 		CtClass ctc = null;
-		
+
 		try
 		{
 			cp.insertClassPath(cpToInsert);
 			ctc = cp.get(fqcn);
-			
+
 			CtMethod[] methods = ctc.getDeclaredMethods();
 			for (CtMethod method:methods)
 			{
 				String mdName=method.getName();
-						
+
 				if (mdName.startsWith("get") || mdName.startsWith("set"))
 				{
 					continue;
 				}
 				methodDeclarations++;
-				
+
 				System.out.println("MD="+method.getName());
-				
+
 				method.instrument(
-				        new ExprEditor() {
-				            public void edit(MethodCall m)
-				                          throws CannotCompileException
-				            {
-				                System.out.println("\t"+m.getClassName() + "---" + m.getMethodName() + "-----" + m.getSignature());
-				                
-				                String className=m.getClassName();
-				                String fqMIName=className+"."+m.getMethodName();
-				                handleLibOrNonLibCalls(className, fqMIName);
-				            }
-				        });
-				
+						new ExprEditor() {
+							public void edit(MethodCall m)
+									throws CannotCompileException
+							{
+								System.out.println("\t"+m.getClassName() + "---" + m.getMethodName() + "-----" + m.getSignature());
+
+								String className=m.getClassName();
+								String fqMIName=className+"."+m.getMethodName();
+								handleLibOrNonLibCalls(className, fqMIName);
+							}
+						});
+
 				if (prevLibraryMI<libraryMI)
 				{
 					methodDeclarationsWithLibCalls++;
@@ -498,28 +502,28 @@ public class APIUsageStatsMiner {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		APIUsageStatsMiner a=new APIUsageStatsMiner();
-		
+
 		int ch=2;
-		
+
 		if (ch==1)
 		{
 			//String srcRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\src\\";
-	//		String srcRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master";
-	//		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\jar-to-packages-classes.csv";
-	
+			//		String srcRoot="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master";
+			//		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\jar-to-packages-classes.csv";
+
 			String srcRoot="C:\\Users\\GiriprasadSridhara\\sample.plantsbywebsphere-18.0.0.4\\sample.plantsbywebsphere-manual-dependencies\\src";
 			String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\msr\\microservice-recommender\\src\\main\\resources\\jar-to-packages-classes-public-methods.csv";
 			String opJSONFileNameWithPath="C:\\temp\\api-usage-2.json";
-	//		String srcRoot="C:\\Users\\GiriprasadSridhara\\Documents\\acmeair-monolithic-java-master\\acmeair-monolithic-java-master\\src";
-	//		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\Documents\\acmeair-monolithic-java-master\\acmeair-monolithic-java-master\\acme-jar-to-apis.csv";
-	//		String srcRoot="C:\\Users\\GiriprasadSridhara\\sample.daytrader7\\daytrader-ee7-ejb\\";
-	//		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\sample.daytrader7\\daytrader-ee7-ejb\\lib-dma\\daytrader-ee7-ejb-jar-to-apis.csv";
-			
-	//		a.mine(srcRoot, jarToPkgsClassesCsv,opJSONFileNameWithPath);
+			//		String srcRoot="C:\\Users\\GiriprasadSridhara\\Documents\\acmeair-monolithic-java-master\\acmeair-monolithic-java-master\\src";
+			//		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\Documents\\acmeair-monolithic-java-master\\acmeair-monolithic-java-master\\acme-jar-to-apis.csv";
+			//		String srcRoot="C:\\Users\\GiriprasadSridhara\\sample.daytrader7\\daytrader-ee7-ejb\\";
+			//		String jarToPkgsClassesCsv="C:\\Users\\GiriprasadSridhara\\sample.daytrader7\\daytrader-ee7-ejb\\lib-dma\\daytrader-ee7-ejb-jar-to-apis.csv";
+
+			//		a.mine(srcRoot, jarToPkgsClassesCsv,opJSONFileNameWithPath);
 		}
 		else if (ch==2)
 		{
