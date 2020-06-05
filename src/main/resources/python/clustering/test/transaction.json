@@ -1,0 +1,1538 @@
+[
+  {
+    "transaction_name": "TradeSLSBBean.getQuote",
+    "service_name": "TradeSLSBBean.getQuote",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeSLSBBean.getOrders",
+    "service_name": "TradeSLSBBean.getOrders",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeSLSBBean.pingTwoPhase",
+    "service_name": "TradeSLSBBean.pingTwoPhase",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeSLSBBean.getHoldings",
+    "service_name": "TradeSLSBBean.getHoldings",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "holdingejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeSLSBBean.getAccountProfileData",
+    "service_name": "TradeSLSBBean.getAccountProfileData",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeAction.getClosedOrders",
+    "service_name": "TradeAction.getClosedOrders",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "orderejb",
+        "operation": "RUD",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "orderejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.direct.TradeDirect"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeServletAction.doRegister",
+    "service_name": "TradeServletAction.doRegister",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "CU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "CRU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.AccountDataBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.AccountDataBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "holdingejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeServletAction.doAccount",
+    "service_name": "TradeServletAction.doAccount",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeServletAction.doHome",
+    "service_name": "TradeServletAction.doHome",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "holdingejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeServletAction.doLogin",
+    "service_name": "TradeServletAction.doLogin",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.AccountDataBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.AccountDataBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "holdingejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeServletAction.doAccountUpdate",
+    "service_name": "TradeServletAction.doAccountUpdate",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "RU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeServletAction.doLogout",
+    "service_name": "TradeServletAction.doLogout",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.AccountDataBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeServletAction.doSell",
+    "service_name": "TradeServletAction.doSell",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "RU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "holdingejb",
+        "operation": "RU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "orderejb",
+        "operation": "CU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "holdingejb",
+        "operation": "RD",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "orderejb",
+        "operation": "RU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "orderejb",
+        "operation": "C",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "holdingejb",
+        "operation": "C",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "orderejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.OrderDataBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeServletAction.doPortfolio",
+    "service_name": "TradeServletAction.doPortfolio",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "holdingejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeServletAction.doBuy",
+    "service_name": "TradeServletAction.doBuy",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "RU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "holdingejb",
+        "operation": "RD",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "orderejb",
+        "operation": "RU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "orderejb",
+        "operation": "C",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "holdingejb",
+        "operation": "C",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "orderejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.OrderDataBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeAction.createQuote",
+    "service_name": "TradeAction.createQuote",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "C",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "QuoteJSF.getQuotesBySymbols",
+    "service_name": "order.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeAppJSF.logout",
+    "service_name": "order.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.AccountDataBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "QuoteJSF.getQuotesBySymbols",
+    "service_name": "account.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeAppJSF.updateProfile",
+    "service_name": "account.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "RU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeAppJSF.logout",
+    "service_name": "account.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.AccountDataBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "QuoteJSF.getQuotesBySymbols",
+    "service_name": "quote.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "QuoteJSF.buy",
+    "service_name": "quote.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "RU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "holdingejb",
+        "operation": "RD",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "orderejb",
+        "operation": "RU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "orderejb",
+        "operation": "C",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "holdingejb",
+        "operation": "C",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "orderejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.OrderDataBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeAppJSF.logout",
+    "service_name": "quote.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.AccountDataBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "QuoteJSF.getQuotesBySymbols",
+    "service_name": "portfolio.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "PortfolioJSF.sell",
+    "service_name": "portfolio.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "RU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "holdingejb",
+        "operation": "RU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "orderejb",
+        "operation": "CU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "holdingejb",
+        "operation": "RD",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "orderejb",
+        "operation": "RU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "orderejb",
+        "operation": "C",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "holdingejb",
+        "operation": "C",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "orderejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.OrderDataBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeAppJSF.logout",
+    "service_name": "portfolio.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.AccountDataBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "QuoteJSF.getQuotesBySymbols",
+    "service_name": "tradehome.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeAppJSF.logout",
+    "service_name": "tradehome.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.AccountDataBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeAppJSF.login",
+    "service_name": "welcome.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.AccountDataBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.AccountDataBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeAppJSF.register",
+    "service_name": "register.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "CU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "CRU",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.AccountDataBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.AccountDataBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "QuoteJSF.getQuotesBySymbols",
+    "service_name": "marketSummary.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "quoteejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      }
+    ]
+  },
+  {
+    "transaction_name": "TradeAppJSF.logout",
+    "service_name": "marketSummary.xhtml",
+    "transaction": [
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountprofileejb",
+        "operation": "R",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean"
+        ]
+      },
+      {
+        "order": "0",
+        "table": "accountejb",
+        "operation": "U",
+        "callgraph": [
+          "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+          "com.ibm.websphere.samples.daytrader.TradeAction",
+          "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+          "com.ibm.websphere.samples.daytrader.entities.AccountDataBean"
+        ]
+      }
+    ]
+  }
+]

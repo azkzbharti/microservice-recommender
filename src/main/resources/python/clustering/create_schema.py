@@ -211,11 +211,23 @@ if __name__ == "__main__":
 				for k in j["callgraph"]:
 					if (find_node_id(k), find_node_id(end)) not in edge_list:
 						make_t_edge["relationship"].append(make_edge_func(find_node_id(k), find_node_id(end),"1"))
+						edge_list.append((find_node_id(k), find_node_id(end)))
 
+		
+
+		""" To cross-check duplicates in edges """
+		edge_list_check = []
+		for i in make_t_edge["relationship"]:
+			edge_list_check.append((i['properties']['start'], i['properties']['end']))
+		for i in make_edge["relationship"]:
+			edge_list_check.append((i['properties']['start'], i['properties']['end']))
+
+		if len(edge_list_check) != len(set(edge_list_check)):
+			print ("Duplicate Edges")
 
 		with open(args.outPutFilePath, 'w') as f:
 			json.dump(schema, f)
-		print ("Doneeeeee")
+		print ("Done")
 
 
 		"""For making the edge list input to the seed expansion code"""
