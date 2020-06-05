@@ -54,7 +54,7 @@ public class UnzipUtility {
                 // if the entry is a file, extracts it
                 try {
 					extractFile(zipIn, filePath);
-				} catch (IOException e) {
+				} catch (Exception e) {
 					System.out.println(" Unable to extract file" + filePath);
 					e.printStackTrace();
 				}
@@ -89,15 +89,26 @@ public class UnzipUtility {
      * @param filePath
      * @throws IOException
      */
-    private static void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
-    	System.out.println("Extracting File: " + filePath);
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
-        byte[] bytesIn = new byte[BUFFER_SIZE];
-        int read = 0;
-        while ((read = zipIn.read(bytesIn)) != -1) {
-            bos.write(bytesIn, 0, read);
-        }
-        bos.close();
+    private static void extractFile(ZipInputStream zipIn, String filePath) {
+    	BufferedOutputStream bos = null;
+    	try {
+	    	System.out.println("Extracting File: " + filePath);
+	        bos = new BufferedOutputStream(new FileOutputStream(filePath));
+	        byte[] bytesIn = new byte[BUFFER_SIZE];
+	        int read = 0;
+	        while ((read = zipIn.read(bytesIn)) != -1) {
+	            bos.write(bytesIn, 0, read);
+	        }
+    	}catch(Exception e) {
+    		System.err.println("Error reading file. " + e.getMessage());
+    	} finally {
+    		if(bos!=null)
+				try {
+					bos.close();
+				} catch (IOException e) {
+					System.err.println("Exception while closing file handle. " + e.getMessage());
+				}
+    	}
     }
     
     

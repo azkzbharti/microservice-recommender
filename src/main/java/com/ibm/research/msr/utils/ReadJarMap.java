@@ -27,6 +27,16 @@ public class ReadJarMap {
 				System.out.println("Empty jar mapping error while parsing jar's.");
 				System.exit(-1);
 			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				br.close();
+			} catch (IOException e) {
+				System.err.println("Error closing file handle. " + e.getMessage());
+			}
+		}
+		try {
 			br = new BufferedReader(new FileReader(csvFile));	
 			while ((line = br.readLine()) != null) {
 				String[] libCat = line.split(cvsSplitBy);
