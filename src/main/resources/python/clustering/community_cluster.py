@@ -17,7 +17,7 @@ Code for finding communities given inter-class usage JSON and seeds
 """
 
 """
-This has closure, utility and island+dead_code
+This has closure, utility and island+dead_code + step-0 for checking seeds
 """
 
 import networkx as nx
@@ -31,7 +31,7 @@ import pprgrow_min_cond
 import json
 import os
 import pickle
-import re 
+import re
 
 INF = float('inf')
 
@@ -394,6 +394,9 @@ if __name__ == "__main__":
 			temp.append(find_node(j))
 		save_communities.append(temp)
 
+	with open('mufg.pkl', 'wb') as f:
+		pickle.dump((save_communities,final_community), f)
+
 	"""
 	Closure detection gets over
 
@@ -475,7 +478,7 @@ if __name__ == "__main__":
 			dead_code.append(i)
 			for j in i:
 				if j in entry_points:
-					print ("Yikes")
+					print ("Yikes") #Develop this
 			# print (i)
 	for i in dead_code:
 		if i in group:
@@ -493,6 +496,15 @@ if __name__ == "__main__":
 
 	[Processing 3] Utitlity Detection
 	"""
+	with open(args.seed_file,'r') as f:
+		seed_filter = f.readlines()
+		seed_filter = [x.strip() for x in seed_filter]
+		seed_filter_create = [x.split(",") for x in seed_filter]
+	seed_filter = []
+	for i in seed_filter_create:
+		seed_filter += i
+	seed_filter_all = seed_filter
+
 	print ("Utility Detection ************************")
 	node_list = data["nodes"]
 
@@ -650,7 +662,7 @@ if __name__ == "__main__":
 	coverage_seen = []
 	utility_cluster = set()
 	node_list = data["nodes"]
-	for i in dead_code:
+	for i in dead_code: #Adding dead_code
 		for j in i:
 			for k in node_list:
 				if find_node_id(j,data) == k["id"]:
@@ -662,10 +674,11 @@ if __name__ == "__main__":
 			for k in node_list:
 				if find_node_id(j,data) == k["id"]:
 					if not ("entity" in j.lower() or "entities" in j.lower() or "model" in j.lower() or "jpa" in j.lower()):
-						k['properties']['utility_type'] = "utility"
-						count_properties += 1
-						coverage_seen.append(k["id"])
-						utility_cluster.add(j)
+						if j not in seed_filter:
+							k['properties']['utility_type'] = "utility"
+							count_properties += 1
+							coverage_seen.append(k["id"])
+							utility_cluster.add(j)
 					else:
 						print (k)
 
@@ -673,10 +686,11 @@ if __name__ == "__main__":
 		for k in node_list:
 			if i[0] == k["id"]:
 				if not ("entity" in i[1].lower() or "entities" in i[1].lower() or "model" in i[1].lower() or "jpa" in i[1].lower()):
-					k['properties']['utility_type'] = "shared_util"
-					coverage_seen.append(i[0])
-					count_properties += 1
-					utility_cluster.add(i[1])
+					if i[1] not in seed_filter:
+						k['properties']['utility_type'] = "shared_util"
+						coverage_seen.append(i[0])
+						count_properties += 1
+						utility_cluster.add(i[1])
 				else:
 					print (k)
 
@@ -684,10 +698,11 @@ if __name__ == "__main__":
 		for k in node_list:
 			if i[0] == k["id"]:
 				if not ("entity" in i[1].lower() or "entities" in i[1].lower() or "model" in i[1].lower() or "jpa" in i[1].lower()):
-					k['properties']['utility_type'] = "shared_view"
-					count_properties += 1
-					coverage_seen.append(i[0])
-					utility_cluster.add(i[1])
+					if i[1] not in seed_filter:
+						k['properties']['utility_type'] = "shared_view"
+						count_properties += 1
+						coverage_seen.append(i[0])
+						utility_cluster.add(i[1])
 				else:
 					print (k)
 
@@ -734,35 +749,112 @@ if __name__ == "__main__":
 	# 					refactor.add(i)
 	# print ("88888888888")
 	# print (len(refactor))
+	print ("Step-0")
+	with open(args.seed_file,'r') as f:
+		seed_filter = f.readlines()
+		seed_filter = [x.strip() for x in seed_filter]
+		seed_filter = [x.split(",") for x in seed_filter]
+
 	
+	zero_filter_decision = []
+	for i_iter, i in enumerate(seed_filter):
+		for j_iter, j in enumerate(save_communities):
+			intersection = set.intersection(set(i), set(j))
+			if intersection:
+				zero_filter_decision.append((i_iter,j_iter, len(intersection), len(i)))
+	
+	second_pass = []
+	final_decision_zero = []
+	flag = 1
+
+	compatibility_check = []
+	while flag:
+		history = []
+		for i in compatibility_check:
+			history.append(i)
+		flag = 0
+		for i in range(len(seed_filter)):
+			to_consider = []
+			for j in zero_filter_decision:
+				if j[0] == i:
+					to_consider.append(j)
+			to_consider = sorted(to_consider, key = lambda x: x[2], reverse=True) 
+			if to_consider:
+				count_max = 0
+				max_val = to_consider[0][2] #-- will have to see if all the max are in sync and pick the appropraite
+				for j in to_consider:
+					if j[2] == max_val:
+						count_max += 1
+				if count_max == 1:
+					compatibility_check.append((to_consider[0][0],to_consider[0][1],to_consider[0][2], to_consider[0][3]))
+					flag = 1
+
+		to_remove = []
+		for i in compatibility_check:
+			for j in compatibility_check:
+				if i != j:
+					if i[0] == j[0] or i[1] == j[1]:
+						if i[2] > j[2]:
+							to_remove.append(j)
+						elif i[2] < j[2]:
+							to_remove.append(i)
+						else:
+							to_remove.append(i)
+							to_remove.append(j)
+		for i in to_remove:
+			if i in compatibility_check:
+				compatibility_check.remove(i)
+			
+		to_remove = []
+		for i in compatibility_check:
+			for j in zero_filter_decision:
+				if i[0] == j[0] or i[1] == j[1]:
+					to_remove.append(j)
+
+		for i in to_remove:
+			if i in zero_filter_decision:
+				zero_filter_decision.remove(i)
+
+		if flag == 1:
+			if sorted(history) == sorted(compatibility_check):
+				flag = 0
+		print (len(compatibility_check), len(zero_filter_decision))
+	# print ("0000000000000000000000000000")
+	# for i in save_communities:
+	# 	print (i)
+	for i in compatibility_check:
+		intersection = set.intersection(set(seed_filter[i[0]]), set(save_communities[i[1]]))
+		for j in list(intersection):
+			for k_iter,k in enumerate(save_communities):
+				if k_iter != i[1]:
+					if j in k:
+						k.remove(j)
+
+	# Step-1 for refactoring
 	refactor_first_filter = {}
 	for j_eval,j in enumerate(save_communities): 
 		for k_eval,k in enumerate(save_communities):
 			if j != k:
 				intersection = set.intersection(set(j), set(k)) 
 				if intersection:
-					# print (intersection)
-					# print (save_communities.index(j) == save_communities.index(k))
-					# print ("****************")
 					for i in intersection:
 						if i not in refactor_first_filter.keys():
 							refactor_first_filter[i] = set()
 						refactor_first_filter[i].add(j_eval)
 						refactor_first_filter[i].add(k_eval)
-
+	# print ("0000000000000000000000000000")					
+	# for i in save_communities:
+	# 	print (i)
 	refactor = set()
 	refactor_second_filter = set()
 
 	for i in refactor_first_filter.keys():
 		if len(refactor_first_filter[i]) > len(save_communities)/2:
-			refactor.add(i)
+			if i not in seed_filter_all:
+				refactor.add(i)
 		else:
 			refactor_second_filter.add(i)
-	print ("This")
-	print (refactor)
-
-	print ("step-2")
-	print (refactor_second_filter)
+	
 	
 	refactor_candidate = []
 	for i in refactor:
@@ -774,6 +866,150 @@ if __name__ == "__main__":
 			if i in j:
 				j.remove(i)
 
+	# Phase-2 in step-1
+
+	compatibility_check = []
+	if zero_filter_decision:
+		print ("Zero filter decision")
+		print (zero_filter_decision)
+		left_out = set()
+		for i in zero_filter_decision:
+			left_out.add(i[0])
+		#Check frequency based
+		
+		
+		for i in list(left_out):
+			consider = []
+			for j in zero_filter_decision:
+				if i == j[0]:
+					consider.append(j)
+			max_count = -1
+			updation = -1
+			print (i)
+			for j in consider:
+				current_sum = 0
+				for k in save_communities[j[1]]:
+					if k not in seed_filter[j[0]]:
+						for m in edge_list:
+							if find_node(m[0]) in seed_filter[j[0]] and m[1] == find_node_id(k,data):
+								current_sum += int(m[2])
+							elif find_node(m[1]) in seed_filter[j[0]] and m[0] == find_node_id(k,data):
+								current_sum += int(m[2])
+				# print (j, current_sum, max_count)
+				if current_sum > max_count:
+					# print ("Updated")
+					max_count = current_sum
+					updation = j
+			compatibility_check.append(updation)
+		print (compatibility_check)
+		if -1 in compatibility_check:
+			print ("Needs to be checked for frequency sum based")
+			exit()
+
+		to_remove = []
+		for i in compatibility_check:
+			for j in compatibility_check:
+				if i != j:
+					if i[0] == j[0] or i[1] == j[1]:
+						if i[2] > j[2]:
+							to_remove.append(j)
+						elif i[2] < j[2]:
+							to_remove.append(i)
+						else:
+							to_remove.append(i)
+							to_remove.append(j)
+		for i in to_remove:
+			if i in compatibility_check:
+				compatibility_check.remove(i)
+			
+		to_remove = []
+		for i in compatibility_check:
+			for j in zero_filter_decision:
+				if i[0] == j[0] or i[1] == j[1]:
+					to_remove.append(j)
+
+		for i in to_remove:
+			if i in zero_filter_decision:
+				zero_filter_decision.remove(i)
+
+		if zero_filter_decision:
+			left_out = set()
+			for i in zero_filter_decision:
+				left_out.add(i[0])
+			#Check degree sum based
+			for i in list(left_out):
+				consider = []
+				for j in zero_filter_decision:
+					if i == j[0]:
+						consider.append(j)
+				max_count = -1
+				updation = -1
+				for j in consider:
+					current_sum = 0
+					for k in save_communities[j[1]]:
+						if k not in seed_filter[j[0]]:
+							for m in edge_list:
+								if find_node(m[0]) in seed_filter[j[0]] and m[1] == find_node_id(k,data):
+									current_sum += 1
+								elif find_node(m[1]) in seed_filter[j[0]] and m[0] == find_node_id(k,data):
+									current_sum += 1
+					if current_sum > max_count:
+						max_count = current_sum
+						updation = j
+				compatibility_check.append(updation)
+			print (compatibility_check)
+			if -1 in compatibility_check:
+				print ("Needs to be checked for degree sum based")
+				exit()
+
+			to_remove = []
+			for i in compatibility_check:
+				for j in compatibility_check:
+					if i != j:
+						if i[0] == j[0] or i[1] == j[1]:
+							if i[2] > j[2]:
+								to_remove.append(j)
+							elif i[2] < j[2]:
+								to_remove.append(i)
+							else:
+								to_remove.append(i)
+								to_remove.append(j)
+			for i in to_remove:
+				if i in compatibility_check:
+					compatibility_check.remove(i)
+				
+			to_remove = []
+			for i in compatibility_check:
+				for j in zero_filter_decision:
+					if i[0] == j[0] or i[1] == j[1]:
+						to_remove.append(j)
+
+			for i in to_remove:
+				if i in zero_filter_decision:
+					zero_filter_decision.remove(i)
+
+		if zero_filter_decision:
+			print ("Random toss")
+			# exit()
+			# print (zero_filter_decision)
+		# 	for i in zero_filter_decision:
+		# 		print ("8888888888888888888888888888")
+		# 		print (i)
+		# 		print (save_communities[i[1]])
+		# 		print ("seeds")
+		# 		print (seed_filter[i[0]])
+		# 	print ("Something is going really wrong")
+
+		for i in compatibility_check:
+			intersection = set.intersection(set(seed_filter[i[0]]), set(save_communities[i[1]]))
+			for j in list(intersection):
+			# for j in seed_filter[i[0]]:
+				for k_iter,k in enumerate(save_communities):
+					if k_iter != i[1]:
+						if j in k:
+							k.remove(j)
+
+	# Step-2 in refactoring
 	degree_refactor = {}
 	# refactor_second_filter = [find_node_id(x) for x in refactor_second_filter]
 	for i in refactor_second_filter:
@@ -834,14 +1070,16 @@ if __name__ == "__main__":
 		i2 = i_iter[1]
 		for j2,j in enumerate(save_communities):
 			if j2 != i2 and find_node(i) in j:
-				j.remove(find_node(i))
+				if find_node(i) not in seed_filter_all: #***This added***
+					j.remove(find_node(i))
 	
 
 	for i_iter in refactor_candidate:
 		i = i_iter[0]
 		for j in save_communities:
 			if i in j:
-				j.remove(i)
+				if i not in seed_filter_all: #***This added***
+					j.remove(i)
 	
 	# print (refactor_candidate)
 	# print ("cluster_decision")
@@ -922,11 +1160,15 @@ if __name__ == "__main__":
 	"""
 	data["clusters"] = []
 	counter = 0
+	ids = []
 	for i in save_communities:
 		new_temp_dict = {}
-		new_temp_dict["label"] = "cluster"+str(counter)
-		new_temp_dict["id"] = str(counter)
-		counter += 1
+		
+
+		new_temp_dict["id"] = str(int(time.time()*10**16))
+		ids.append(new_temp_dict["id"])
+		new_temp_dict["label"] = "cluster"+str(new_temp_dict["id"])
+		# counter += 1
 		new_temp_dict["type"] = "microservices_group"
 		new_temp_dict["description"] = ""
 		new_temp_dict["properties"] = {}
@@ -948,6 +1190,7 @@ if __name__ == "__main__":
 		new_temp_dict["metrics"]["structural_cohesivity"] = ""
 
 		new_temp_dict["nodes"] = []
+		new_temp_dict["transactions"] = []
 		for j in i:
 			# print (find_node_id(j,data))
 			new_temp_dict["nodes"].append(find_node_id(j,data))
@@ -956,8 +1199,10 @@ if __name__ == "__main__":
 	# Adding final_community
 	new_temp_dict = {}
 	new_temp_dict["label"] = "unassigned_group"
-	new_temp_dict["id"] = str(counter)
-	counter += 1
+
+	new_temp_dict["id"] = str(int(time.time()*10**16))
+	ids.append(new_temp_dict["id"])
+	# counter += 1
 	new_temp_dict["type"] = "unassigned_group"
 	new_temp_dict["description"] = ""
 	new_temp_dict["properties"] = {}
@@ -979,6 +1224,7 @@ if __name__ == "__main__":
 	new_temp_dict["metrics"]["structural_cohesivity"] = ""
 
 	new_temp_dict["nodes"] = []
+	new_temp_dict["transactions"] = []
 	for j in final_community:
 		# print (find_node_id(j,data))
 		new_temp_dict["nodes"].append(find_node_id(j,data))
@@ -991,10 +1237,14 @@ if __name__ == "__main__":
 
 	# Adding utility cluster
 	new_temp_dict = {}
-	new_temp_dict["label"] = "utility_cluster"
-	new_temp_dict["id"] = str(counter)
-	counter += 1
-	new_temp_dict["type"] = "utility_cluster"
+	new_temp_dict["label"] = "utility_group"
+
+	# new_temp_dict["id"] = str(counter)
+	# counter += 1
+	new_temp_dict["id"] = str(int(time.time()*10**16))
+	ids.append(new_temp_dict["id"])
+
+	new_temp_dict["type"] = "utility_group"
 	new_temp_dict["description"] = ""
 	new_temp_dict["properties"] = {}
 	new_temp_dict["properties"]["affected_business_domains"] = [""]
@@ -1015,6 +1265,7 @@ if __name__ == "__main__":
 	new_temp_dict["metrics"]["structural_cohesivity"] = ""
 	
 	new_temp_dict["nodes"] = []
+	new_temp_dict["transactions"] = []
 	for j in utility_cluster:
 		# print (find_node_id(j,data))
 		new_temp_dict["nodes"].append(find_node_id(j,data))
@@ -1022,10 +1273,15 @@ if __name__ == "__main__":
 
 	# Adding refactor cluster
 	new_temp_dict = {}
-	new_temp_dict["label"] = "refactor_candidates_cluster"
-	new_temp_dict["id"] = str(counter)
-	counter += 1
-	new_temp_dict["type"] = "refactor_candidates_cluster"
+	new_temp_dict["label"] = "refactor_candidates_group"
+
+	# new_temp_dict["id"] = str(counter)
+	# counter += 1
+
+	new_temp_dict["id"] = str(int(time.time()*10**16))
+	ids.append(new_temp_dict["id"])
+
+	new_temp_dict["type"] = "refactor_candidates_group"
 	new_temp_dict["description"] = ""
 	new_temp_dict["properties"] = {}
 	new_temp_dict["properties"]["affected_business_domains"] = [""]
@@ -1046,6 +1302,7 @@ if __name__ == "__main__":
 	new_temp_dict["metrics"]["structural_cohesivity"] = ""
 	
 	new_temp_dict["nodes"] = []
+	new_temp_dict["transactions"] = []
 	for j_data in refactor_candidate:
 		# print (find_node_id(j,data))
 		j = j_data[0]
@@ -1054,10 +1311,14 @@ if __name__ == "__main__":
 
 	# Adding dead code
 	new_temp_dict = {}
-	new_temp_dict["label"] = "unreachable_classes"
-	new_temp_dict["id"] = str(counter)
-	counter += 1
-	new_temp_dict["type"] = "unreachable_classes"
+	new_temp_dict["label"] = "unreachable_group"
+	# new_temp_dict["id"] = str(counter)
+	# counter += 1
+
+	new_temp_dict["id"] = str(int(time.time()*10**16))
+	ids.append(new_temp_dict["id"])
+
+	new_temp_dict["type"] = "unreachable_group"
 	new_temp_dict["description"] = ""
 	new_temp_dict["properties"] = {}
 	new_temp_dict["properties"]["affected_business_domains"] = [""]
@@ -1083,7 +1344,9 @@ if __name__ == "__main__":
 			new_temp_dict["nodes"].append(find_node_id(j,data))
 	data["clusters"].append(new_temp_dict)
 
-	
+	if len(data['clusters']) != len(set(ids)):
+		print ("problem not unique ids")
+
 	print ("******************************")
 
 	count_check_2 = len(final_community)
@@ -1111,7 +1374,7 @@ if __name__ == "__main__":
 	with open(args.outPutFilePath, 'w') as f:
 		json.dump(data, f)
 	print ("Saved")
-
+	# exit()
 	"""
 	For visualisation
 	"""
@@ -1236,7 +1499,7 @@ if __name__ == "__main__":
 	# print (sorted(map(sorted, next_level_communities)))
 	with open(args.visFilePath, 'w') as f:
 		json.dump(universal, f)
-
+	print ("Done")
 	# except Exception as error:
 	# 	print("ERR: "+repr(error))  
 	# 	sys.exit(-1)

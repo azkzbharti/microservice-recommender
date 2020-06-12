@@ -1,0 +1,712 @@
+[
+  {
+    "service_entry_name": "Log.trace",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.Log.trace"
+    ]
+  },
+  {
+    "service_entry_name": "Log.<clinit>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.Log.<clinit>"
+    ]
+  },
+  {
+    "service_entry_name": "Log.doTrace",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.Log.doTrace"
+    ]
+  },
+  {
+    "service_entry_name": "Log.error",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.Log.error"
+    ]
+  },
+  {
+    "service_entry_name": "PingManagedExecutor$1.<init>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.prims.PingManagedExecutor$1.<init>"
+    ]
+  },
+  {
+    "service_entry_name": "PingBean.getMsg",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.prims.PingBean.getMsg"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.<clinit>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.<clinit>"
+    ]
+  },
+  {
+    "service_entry_name": "TradeDirect.updateQuotePriceVolumeInt",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.direct.TradeDirect.updateQuotePriceVolumeInt"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.rndSymbol",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.rndSymbol"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.getPrimIterations",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.getPrimIterations"
+    ]
+  },
+  {
+    "service_entry_name": "QuoteDataBean.toHTML",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.entities.QuoteDataBean.toHTML"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.getRandomPriceChangeFactor",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.getRandomPriceChangeFactor"
+    ]
+  },
+  {
+    "service_entry_name": "TradeDirect.<init>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.direct.TradeDirect.<init>"
+    ]
+  },
+  {
+    "service_entry_name": "TradeDirect.<clinit>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.direct.TradeDirect.<clinit>"
+    ]
+  },
+  {
+    "service_entry_name": "PingEJBLocal.getMsg",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.prims.PingEJBLocal.getMsg"
+    ]
+  },
+  {
+    "service_entry_name": "PingCDIBean.hello",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.prims.PingCDIBean.hello"
+    ]
+  },
+  {
+    "service_entry_name": "PingEJBLocalDecorator.getMsg",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.prims.PingEJBLocalDecorator.getMsg"
+    ]
+  },
+  {
+    "service_entry_name": "PingBean.<init>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.prims.PingBean.<init>"
+    ]
+  },
+  {
+    "service_entry_name": "PingBean.setMsg",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.prims.PingBean.setMsg"
+    ]
+  },
+  {
+    "service_entry_name": "PingCDIBean.getBeanMangerViaJNDI",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.prims.PingCDIBean.getBeanMangerViaJNDI"
+    ]
+  },
+  {
+    "service_entry_name": "PingSession3Object.<init>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.prims.PingSession3Object.<init>"
+    ]
+  },
+  {
+    "service_entry_name": "PingServlet31AsyncRead$ReadListenerImpl.<init>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.prims.PingServlet31AsyncRead$ReadListenerImpl.<init>"
+    ]
+  },
+  {
+    "service_entry_name": "PingManagedThread$1.<init>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.prims.PingManagedThread$1.<init>"
+    ]
+  },
+  {
+    "service_entry_name": "PingServlet31Async$ReadListenerImpl.<init>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.prims.PingServlet31Async$ReadListenerImpl.<init>"
+    ]
+  },
+  {
+    "service_entry_name": "TradeDirect.getQuote",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.direct.TradeDirect.getQuote"
+    ]
+  },
+  {
+    "service_entry_name": "PingJSONP$1.<clinit>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.prims.PingJSONP$1.<clinit>"
+    ]
+  },
+  {
+    "service_entry_name": "PingCDIBean.getBeanMangerViaCDICurrent",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.prims.PingCDIBean.getBeanMangerViaCDICurrent"
+    ]
+  },
+  {
+    "service_entry_name": "TradeDirect.getConnPublic",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.direct.TradeDirect.getConnPublic"
+    ]
+  },
+  {
+    "service_entry_name": "TradeSLSBBean.getQuote",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean.getQuote"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.rndUserID",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.rndUserID"
+    ]
+  },
+  {
+    "service_entry_name": "OrderDataBean.toHTML",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.entities.OrderDataBean.toHTML"
+    ]
+  },
+  {
+    "service_entry_name": "TradeSLSBBean.getOrders",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean.getOrders"
+    ]
+  },
+  {
+    "service_entry_name": "TradeSLSBBean.pingTwoPhase",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean.pingTwoPhase"
+    ]
+  },
+  {
+    "service_entry_name": "TradeSLSBBean.getHoldings",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean.getHoldings"
+    ]
+  },
+  {
+    "service_entry_name": "HoldingDataBean.toHTML",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.entities.HoldingDataBean.toHTML"
+    ]
+  },
+  {
+    "service_entry_name": "TradeSLSBBean.investmentReturn",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean.investmentReturn"
+    ]
+  },
+  {
+    "service_entry_name": "TradeSLSBBean.getAccountProfileData",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean.getAccountProfileData"
+    ]
+  },
+  {
+    "service_entry_name": "AccountProfileDataBean.toHTML",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.entities.AccountProfileDataBean.toHTML"
+    ]
+  },
+  {
+    "service_entry_name": "ChaFramework.doFilter",
+    "class_method_name": [
+      "com.ibm.research.crudgen.cha.ChaFramework.doFilter"
+    ]
+  },
+  {
+    "service_entry_name": "TradeAction.<clinit>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.TradeAction.<clinit>"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.getDisplayOrderAlerts",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.getDisplayOrderAlerts"
+    ]
+  },
+  {
+    "service_entry_name": "TradeAction.getClosedOrders",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.TradeAction.getClosedOrders"
+    ]
+  },
+  {
+    "service_entry_name": "Log.printCollection",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.Log.printCollection"
+    ]
+  },
+  {
+    "service_entry_name": "TradeAction.<init>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.TradeAction.<init>"
+    ]
+  },
+  {
+    "service_entry_name": "TradeServletAction.doQuotes",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.TradeServletAction.doQuotes"
+    ]
+  },
+  {
+    "service_entry_name": "TradeServletAction.doRegister",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.TradeServletAction.doRegister"
+    ]
+  },
+  {
+    "service_entry_name": "TradeServletAction.doAccount",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.TradeServletAction.doAccount"
+    ]
+  },
+  {
+    "service_entry_name": "TradeServletAction.doWelcome",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.TradeServletAction.doWelcome"
+    ]
+  },
+  {
+    "service_entry_name": "TradeServletAction.<init>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.TradeServletAction.<init>"
+    ]
+  },
+  {
+    "service_entry_name": "TradeServletAction.doHome",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.TradeServletAction.doHome"
+    ]
+  },
+  {
+    "service_entry_name": "TradeServletAction.doLogin",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.TradeServletAction.doLogin"
+    ]
+  },
+  {
+    "service_entry_name": "TradeServletAction.doAccountUpdate",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.TradeServletAction.doAccountUpdate"
+    ]
+  },
+  {
+    "service_entry_name": "TradeServletAction.doMarketSummary",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.TradeServletAction.doMarketSummary"
+    ]
+  },
+  {
+    "service_entry_name": "TradeServletAction.doLogout",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.TradeServletAction.doLogout"
+    ]
+  },
+  {
+    "service_entry_name": "TradeServletAction.doSell",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.TradeServletAction.doSell"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.setConfigParam",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.setConfigParam"
+    ]
+  },
+  {
+    "service_entry_name": "TradeServletAction.doPortfolio",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.TradeServletAction.doPortfolio"
+    ]
+  },
+  {
+    "service_entry_name": "TradeServletAction.doBuy",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.TradeServletAction.doBuy"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.setLongRun",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.setLongRun"
+    ]
+  },
+  {
+    "service_entry_name": "Log.setTrace",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.Log.setTrace"
+    ]
+  },
+  {
+    "service_entry_name": "TradeBuildDB.<init>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.TradeBuildDB.<init>"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.setUseRemoteEJBInterface",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.setUseRemoteEJBInterface"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.setRunTimeMode",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.setRunTimeMode"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.<init>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.<init>"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.setPublishQuotePriceChange",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.setPublishQuotePriceChange"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.getPercentSentToWebsocket",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.getPercentSentToWebsocket"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.setMarketSummaryInterval",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.setMarketSummaryInterval"
+    ]
+  },
+  {
+    "service_entry_name": "Log.setActionTrace",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.Log.setActionTrace"
+    ]
+  },
+  {
+    "service_entry_name": "TradeAction.resetTrade",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.TradeAction.resetTrade"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.setDisplayOrderAlerts",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.setDisplayOrderAlerts"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.useRemoteEJBInterface",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.useRemoteEJBInterface"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.setWebInterface",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.setWebInterface"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.getPublishQuotePriceChange",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.getPublishQuotePriceChange"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.setPrimIterations",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.setPrimIterations"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.getActionTrace",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.getActionTrace"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.setMAX_QUOTES",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.setMAX_QUOTES"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.setPercentSentToWebsocket",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.setPercentSentToWebsocket"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.getMarketSummaryInterval",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.getMarketSummaryInterval"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.getPage",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.getPage"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.setOrderProcessingMode",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.setOrderProcessingMode"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.getMAX_USERS",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.getMAX_USERS"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.setMAX_USERS",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.setMAX_USERS"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.getLongRun",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.getLongRun"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.getMAX_QUOTES",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.getMAX_QUOTES"
+    ]
+  },
+  {
+    "service_entry_name": "RunStatsDataBean.<init>",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.beans.RunStatsDataBean.<init>"
+    ]
+  },
+  {
+    "service_entry_name": "TradeDirect.checkDBProductName",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.direct.TradeDirect.checkDBProductName"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.getTrace",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.getTrace"
+    ]
+  },
+  {
+    "service_entry_name": "TradeAction.createQuote",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.TradeAction.createQuote"
+    ]
+  },
+  {
+    "service_entry_name": "Log.debug",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.Log.debug"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.rndSymbols",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.rndSymbols"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.incrementSellDeficit",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.incrementSellDeficit"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.rndFullName",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.rndFullName"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.rndBalance",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.rndBalance"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.rndNewUserID",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.rndNewUserID"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.rndAddress",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.rndAddress"
+    ]
+  },
+  {
+    "service_entry_name": "HoldingDataBean.getHoldingID",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.entities.HoldingDataBean.getHoldingID"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.rndEmail",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.rndEmail"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.rndCreditCard",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.rndCreditCard"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.rndQuantity",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.rndQuantity"
+    ]
+  },
+  {
+    "service_entry_name": "HoldingDataBean.getPurchaseDate",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.entities.HoldingDataBean.getPurchaseDate"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.getScenarioAction",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.getScenarioAction"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.incrementScenarioCount",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.incrementScenarioCount"
+    ]
+  },
+  {
+    "service_entry_name": "TradeConfig.getUserID",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.util.TradeConfig.getUserID"
+    ]
+  },
+  {
+    "service_entry_name": "config.xhtml",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.jsf.TradeConfigJSF.updateConfig"
+    ]
+  },
+  {
+    "service_entry_name": "order.xhtml",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF.logout",
+      "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF.getQuotesBySymbols"
+    ]
+  },
+  {
+    "service_entry_name": "index.xhtml",
+    "class_method_name": []
+  },
+  {
+    "service_entry_name": "account.xhtml",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF.logout",
+      "com.ibm.websphere.samples.daytrader.web.jsf.AccountDataJSF.toggleShowAllRows",
+      "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF.updateProfile",
+      "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF.getQuotesBySymbols"
+    ]
+  },
+  {
+    "service_entry_name": "quote.xhtml",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF.logout",
+      "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF.buy",
+      "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF.getQuotesBySymbols"
+    ]
+  },
+  {
+    "service_entry_name": "portfolio.xhtml",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF.logout",
+      "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF.sell",
+      "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF.getQuotesBySymbols"
+    ]
+  },
+  {
+    "service_entry_name": "tradehome.xhtml",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF.logout",
+      "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF.getQuotesBySymbols"
+    ]
+  },
+  {
+    "service_entry_name": "PingCDIJSF.xhtml",
+    "class_method_name": []
+  },
+  {
+    "service_entry_name": "PingJsf.xhtml",
+    "class_method_name": []
+  },
+  {
+    "service_entry_name": "tradeFAQ.xhtml",
+    "class_method_name": []
+  },
+  {
+    "service_entry_name": "welcome.xhtml",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF.login"
+    ]
+  },
+  {
+    "service_entry_name": "web_prmtv.xhtml",
+    "class_method_name": []
+  },
+  {
+    "service_entry_name": "configure.xhtml",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.jsf.TradeConfigJSF.resetTrade",
+      "com.ibm.websphere.samples.daytrader.web.jsf.TradeConfigJSF.buildDatabaseTables",
+      "com.ibm.websphere.samples.daytrader.web.jsf.TradeConfigJSF.populateDatabase"
+    ]
+  },
+  {
+    "service_entry_name": "register.xhtml",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF.register"
+    ]
+  },
+  {
+    "service_entry_name": "marketSummary.xhtml",
+    "class_method_name": [
+      "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF.logout",
+      "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF.getQuotesBySymbols"
+    ]
+  }
+]

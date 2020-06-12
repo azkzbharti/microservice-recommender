@@ -1,0 +1,7 @@
+com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean
+com.ibm.websphere.samples.daytrader.direct.TradeDirect
+com.ibm.websphere.samples.daytrader.entities.OrderDataBean
+com.ibm.websphere.samples.daytrader.entities.HoldingDataBean
+com.ibm.websphere.samples.daytrader.entities.AccountProfileDataBean
+com.ibm.websphere.samples.daytrader.entities.AccountDataBean
+com.ibm.websphere.samples.daytrader.entities.QuoteDataBean
