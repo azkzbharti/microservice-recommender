@@ -31,7 +31,7 @@ import pprgrow_min_cond
 import json
 import os
 import pickle
-import re 
+import re
 
 INF = float('inf')
 
@@ -1160,11 +1160,15 @@ if __name__ == "__main__":
 	"""
 	data["clusters"] = []
 	counter = 0
+	ids = []
 	for i in save_communities:
 		new_temp_dict = {}
-		new_temp_dict["label"] = "cluster"+str(counter)
-		new_temp_dict["id"] = str(counter)
-		counter += 1
+		
+
+		new_temp_dict["id"] = str(int(time.time()*10**16))
+		ids.append(new_temp_dict["id"])
+		new_temp_dict["label"] = "cluster"+str(new_temp_dict["id"])
+		# counter += 1
 		new_temp_dict["type"] = "microservices_group"
 		new_temp_dict["description"] = ""
 		new_temp_dict["properties"] = {}
@@ -1186,6 +1190,7 @@ if __name__ == "__main__":
 		new_temp_dict["metrics"]["structural_cohesivity"] = ""
 
 		new_temp_dict["nodes"] = []
+		new_temp_dict["transactions"] = []
 		for j in i:
 			# print (find_node_id(j,data))
 			new_temp_dict["nodes"].append(find_node_id(j,data))
@@ -1194,8 +1199,10 @@ if __name__ == "__main__":
 	# Adding final_community
 	new_temp_dict = {}
 	new_temp_dict["label"] = "unassigned_group"
-	new_temp_dict["id"] = str(counter)
-	counter += 1
+
+	new_temp_dict["id"] = str(int(time.time()*10**16))
+	ids.append(new_temp_dict["id"])
+	# counter += 1
 	new_temp_dict["type"] = "unassigned_group"
 	new_temp_dict["description"] = ""
 	new_temp_dict["properties"] = {}
@@ -1217,6 +1224,7 @@ if __name__ == "__main__":
 	new_temp_dict["metrics"]["structural_cohesivity"] = ""
 
 	new_temp_dict["nodes"] = []
+	new_temp_dict["transactions"] = []
 	for j in final_community:
 		# print (find_node_id(j,data))
 		new_temp_dict["nodes"].append(find_node_id(j,data))
@@ -1230,8 +1238,12 @@ if __name__ == "__main__":
 	# Adding utility cluster
 	new_temp_dict = {}
 	new_temp_dict["label"] = "utility_group"
-	new_temp_dict["id"] = str(counter)
-	counter += 1
+
+	# new_temp_dict["id"] = str(counter)
+	# counter += 1
+	new_temp_dict["id"] = str(int(time.time()*10**16))
+	ids.append(new_temp_dict["id"])
+
 	new_temp_dict["type"] = "utility_group"
 	new_temp_dict["description"] = ""
 	new_temp_dict["properties"] = {}
@@ -1253,6 +1265,7 @@ if __name__ == "__main__":
 	new_temp_dict["metrics"]["structural_cohesivity"] = ""
 	
 	new_temp_dict["nodes"] = []
+	new_temp_dict["transactions"] = []
 	for j in utility_cluster:
 		# print (find_node_id(j,data))
 		new_temp_dict["nodes"].append(find_node_id(j,data))
@@ -1261,8 +1274,13 @@ if __name__ == "__main__":
 	# Adding refactor cluster
 	new_temp_dict = {}
 	new_temp_dict["label"] = "refactor_candidates_group"
-	new_temp_dict["id"] = str(counter)
-	counter += 1
+
+	# new_temp_dict["id"] = str(counter)
+	# counter += 1
+
+	new_temp_dict["id"] = str(int(time.time()*10**16))
+	ids.append(new_temp_dict["id"])
+
 	new_temp_dict["type"] = "refactor_candidates_group"
 	new_temp_dict["description"] = ""
 	new_temp_dict["properties"] = {}
@@ -1284,6 +1302,7 @@ if __name__ == "__main__":
 	new_temp_dict["metrics"]["structural_cohesivity"] = ""
 	
 	new_temp_dict["nodes"] = []
+	new_temp_dict["transactions"] = []
 	for j_data in refactor_candidate:
 		# print (find_node_id(j,data))
 		j = j_data[0]
@@ -1293,8 +1312,12 @@ if __name__ == "__main__":
 	# Adding dead code
 	new_temp_dict = {}
 	new_temp_dict["label"] = "unreachable_group"
-	new_temp_dict["id"] = str(counter)
-	counter += 1
+	# new_temp_dict["id"] = str(counter)
+	# counter += 1
+
+	new_temp_dict["id"] = str(int(time.time()*10**16))
+	ids.append(new_temp_dict["id"])
+
 	new_temp_dict["type"] = "unreachable_group"
 	new_temp_dict["description"] = ""
 	new_temp_dict["properties"] = {}
@@ -1321,7 +1344,9 @@ if __name__ == "__main__":
 			new_temp_dict["nodes"].append(find_node_id(j,data))
 	data["clusters"].append(new_temp_dict)
 
-	
+	if len(data['clusters']) != len(set(ids)):
+		print ("problem not unique ids")
+
 	print ("******************************")
 
 	count_check_2 = len(final_community)

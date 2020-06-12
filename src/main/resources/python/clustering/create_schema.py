@@ -19,9 +19,6 @@ import json
 import argparse
 import sys
 import networkx as nx
-import networkx as nx
-import json
-import matplotlib.pyplot as plt
 from networkx.algorithms import community
 import pickle
 import re
