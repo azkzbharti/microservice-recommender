@@ -43,8 +43,6 @@ public class Constants {
 	public static final String API_CLUSTERING="API_CLUSTERING";
 	public static final String COMMUNITY_CLUSTERING="COMMUNITY_CLUSTERING";
 	
-	
-	
 	//Keys for clustering
 	public static final String CLUSTER_COHESION_AFFINITY="cohesion-affinity";
 	public static final String CLUSTER_COHESION_API="cohesion-clustering";
@@ -52,9 +50,15 @@ public class Constants {
 	public static final String CLUSTER_AFFINITY="cluster-affinity";
 	public static final String CLUSTER_COMMUNITY="microservice";
 	public static final String COMMUNITY_CLUSTER_JSON="graph_clustering";
+	public static final String SOURCE_USER="user";
+	public static final String SOURCE_ALGO="algo";
+	
+//	public static final String COMMUNITY_CLUSTER_JSON="graph_clustering";
+//	clusterType
 	
 	public static final String MSR_PROPERTIES = "msr.properties";
-	public static final String STOP_WORDS_FILE ="stop_words.txt";
+	public static final String STOP_WORDS_FILE = "stop_words.txt";
+	public static final String SEEDS_FILE = "seeds.txt";
 	
 	public enum ProjectStatus {
 
