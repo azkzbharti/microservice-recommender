@@ -58,7 +58,7 @@ public class Document {
 	public Document(File file,DocumentParserUtil dpu) throws IOException, Exception {
 		this.file = file;
 		fileName = file.getName();
-		dpu.processFile(this);
+//		dpu.processFile(this);
 	}
 	
 	public Document(String filepath, String filename, List<Double> docvector, List<String> tokens,String packageName) {
