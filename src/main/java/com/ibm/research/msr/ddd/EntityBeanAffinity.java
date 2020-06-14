@@ -190,7 +190,7 @@ public class EntityBeanAffinity {
 			}
 			//number of rows will be a separate argument to Python program
 			String affinityPythonFile = Util.getAffinityAlgoPythonFile();
-			String cmd = Util.getPythonCommand() + " " + affinityPythonFile +" --dimension"+ rows + " --inputArray " + pyparam.trim()
+			String cmd = Util.getProperty("PYTHON_HOME") + " " + affinityPythonFile +" --dimension"+ rows + " --inputArray " + pyparam.trim()
 			+ " --outPutFilePath " + propFile;
 
 			try {

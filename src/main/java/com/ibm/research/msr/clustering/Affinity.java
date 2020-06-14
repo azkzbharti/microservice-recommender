@@ -46,7 +46,7 @@ public class Affinity {
 			words_cmd = words_cmd + word + " ";
 		}
 
-		String cmd = Util.getPythonCommand() + " " + affinityPythonFile + " --inputArray " + words_cmd.trim()
+		String cmd = Util.getProperty("PYTHON_HOME") + " " + affinityPythonFile + " --inputArray " + words_cmd.trim()
 				+ " --outPutFilePath " + propFile;
 
 		try {
