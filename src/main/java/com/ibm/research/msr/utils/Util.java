@@ -12,8 +12,9 @@ import com.ibm.research.appmod.pa.jarlist.JarApiList;
 public class Util {
 
 	public static String getProperty(String key) {
-		System.out.println("Looking for +"+key+ " "+System.getenv(key));
-		return System.getenv(key);
+		if(System.getenv(key) != null) //by default look for environment variable else system property
+			return System.getenv(key);
+		return System.getProperty(key);
 	}
 
 	public static String getAffinityAlgoPythonFile() {
@@ -69,6 +70,8 @@ public class Util {
 	}
 	
 	public static String getMSRBaseDir() {
+		if(System.getenv("MSR_HOME") != null) //by default look for environment variable else system property
+			return System.getenv("MSR_HOME");
 		return System.getProperty("MSR_HOME");
 	}
 

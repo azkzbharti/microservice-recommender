@@ -36,8 +36,9 @@ public class POMDependencyDownloader {
 	}
 
 	public void download(String pomFileWithPath, String downloadPath, boolean bDownloadJavaDocAndSourcesJarAlso) {
+		BufferedReader br = null;
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(pomFileWithPath));
+			br = new BufferedReader(new FileReader(pomFileWithPath));
 			String l = null;
 			StringBuffer sb = new StringBuffer();
 			while ((l = br.readLine()) != null) {
@@ -129,6 +130,13 @@ public class POMDependencyDownloader {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if (br!= null)
+				try {
+					br.close();
+				} catch (IOException e) {
+					System.err.println("Error closing file handle. " + e.getMessage());
+				}
 		}
 
 	}

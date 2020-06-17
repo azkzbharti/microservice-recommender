@@ -36,9 +36,9 @@ public class Affinity {
 		String affinityPythonFile = Util.getAffinityAlgoPythonFile();
 
 		// get the stop words
-		populateStopWords();
+		//populateStopWords();
 		// replace stop words
-		replaceStopWords();
+		//replaceStopWords();
 
 		String words_cmd = "";
 
@@ -187,7 +187,7 @@ public class Affinity {
 		originalMap = new HashMap<String, String>();
 		for (String word : words) {
 			originalMap.put(word.toLowerCase(), word);
-			buff.append(word.toLowerCase() + " ");
+			buff.append(word + " ");
 		}
 
 		String wordString = buff.toString().trim();
@@ -198,7 +198,7 @@ public class Affinity {
 			while (itr.hasNext()) {
 				String find = itr.next();
 				String replace = stopWordsMap.get(find);
-				wordString = wordString.replaceAll(find, replace);
+				wordString = wordString.replaceAll("(?i)"+find, replace);
 
 			}
 
@@ -224,9 +224,17 @@ public class Affinity {
 				// read next line
 				line = reader.readLine();
 			}
-			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					System.err.println("Exception while closing file handle:" + e.getMessage());
+				}
+
+			}
 		}
 	}
 

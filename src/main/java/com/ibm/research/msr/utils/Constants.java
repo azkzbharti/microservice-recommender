@@ -38,11 +38,17 @@ public class Constants {
 	public static final String MAVEN_ANALYSIS="MavenMeta";
 	public static final String BAR_DATA="BarData";
 	
-	//Constants for clustering types
+	//Constants for clustering methods
 	public static final String AFFINITY_CLUSTERING="AFFINITY_CLUSTERING";
 	public static final String API_CLUSTERING="API_CLUSTERING";
 	public static final String COMMUNITY_CLUSTERING="COMMUNITY_CLUSTERING";
 	
+	//Constants for cluster types
+	public static final String FUNCTIONAL_GROUP="microservices_group";
+	public static final String UTILITY_GROUP="utility_group";
+	public static final String UNASSIGNED_GROUP="unassigned_group";
+	public static final String REFACTOR_GROUP="refactor_candidates_group";
+	public static final String UNREACHABLE_GROUP="unreachable_group";
 	
 	
 	//Keys for clustering
@@ -51,9 +57,18 @@ public class Constants {
 	public static final String CLUSTER_API="clusterAPI";
 	public static final String CLUSTER_AFFINITY="cluster-affinity";
 	public static final String CLUSTER_COMMUNITY="microservice";
-	public static final String COMMUNITY_CLUSTER_JSON="graph_clustering";
 	
-	public static final String STOP_WORDS_FILE ="stop_words.txt";
+	
+	public static final String COMMUNITY_CLUSTER_JSON="graph_clustering";
+	public static final String SOURCE_USER="user";
+	public static final String SOURCE_ALGO="algo";
+	
+//	public static final String COMMUNITY_CLUSTER_JSON="graph_clustering";
+//	clusterType
+	
+	public static final String MSR_PROPERTIES = "msr.properties";
+	public static final String STOP_WORDS_FILE = "stop_words.txt";
+	public static final String SEEDS_FILE = "seeds.txt";
 	
 	public enum ProjectStatus {
 

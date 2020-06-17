@@ -120,8 +120,9 @@ public class ReferencedClassesExtractor {
 	public Map<String, HashSet<String>> extractFromJAR(String jarNameWithFullPath) {
 		Map<String, HashSet<String>> classToRefClasses = new HashMap<String, HashSet<String>>();
 
+		JarFile jarFile = null;
 		try {
-			JarFile jarFile = new JarFile(jarNameWithFullPath);
+			jarFile = new JarFile(jarNameWithFullPath);
 
 			Enumeration<JarEntry> entries = jarFile.entries();
 			while (entries.hasMoreElements()) {
@@ -178,13 +179,19 @@ public class ReferencedClassesExtractor {
 					System.err.println("ctc null for " + javaClass.getClassName());
 				}
 			}
-			jarFile.close();
 		} catch (ClassFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if (jarFile != null)
+				try {
+					jarFile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 		}
 		return classToRefClasses;
 	}

@@ -134,12 +134,20 @@ public class AnalyzeApp {
 	}
 	public void readDocuments(String filename) {
     	Gson objGson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+    	FileReader freader = null;
 		try {
-			this.listOfDocuments = objGson.fromJson(new FileReader(filename), new TypeToken<ArrayList<Document>>(){}.getType());
+			freader = new FileReader(filename);
+			this.listOfDocuments = objGson.fromJson(freader, new TypeToken<ArrayList<Document>>(){}.getType());
 			System.out.println(listOfDocuments.size());
 		} catch (JsonIOException | JsonSyntaxException | FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if(freader != null)
+				try {
+					freader.close();
+				} catch (IOException e) {
+					System.err.println("Exception while closing file " + filename + ". " + e.getMessage());
+				}
 		}
 		
 

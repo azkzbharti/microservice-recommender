@@ -25,9 +25,9 @@ import org.eclipse.core.runtime.Path;
  * and save it in "src/main/resources/jar-to-packges.csv"
  */
 public class JarApiList {
-	
+
 	String outputFileName=null;
-	
+
 	public void setOutputFileName(String o)
 	{
 		outputFileName=o;
@@ -61,35 +61,35 @@ public class JarApiList {
 		try {
 			pw = new PrintWriter(csvFile);
 			pw.println("jarName,packageName,className");
+
+			while (itr.hasNext()) {
+				jarName = itr.next();
+				if (processedJars.contains(jarName)) {
+					continue;
+				}
+				try {
+					jarFile = new JarFile(jarName);
+					collectJavaPackagesAndClasses(jarName, jarFile, pw);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				processedJars.add(jarName);
+
+			}
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
-
-		while (itr.hasNext()) {
-			jarName = itr.next();
-			if (processedJars.contains(jarName)) {
-				continue;
+		} finally {
+			if (pw != null) {
+				pw.flush();
+				pw.close();
 			}
-			try {
-				jarFile = new JarFile(jarName);
-				collectJavaPackagesAndClasses(jarName, jarFile, pw);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			processedJars.add(jarName);
-
 		}
-		
-		if (pw != null) {
-			pw.flush();
-			pw.close();
-		}
-
 	}
 
 	public void find(String root) {
+		PrintWriter pw = null;
 		try {
 
 			// String
@@ -99,7 +99,7 @@ public class JarApiList {
 			// PrintWriter(root+File.separator+"jar-to-packages-classes.csv");
 			//String csvFile = "src/main/resources/jar-to-packages.csv";
 			String csvFile = null;
-			
+
 			if (outputFileName==null)
 			{
 				csvFile="src/main/resources/jar-to-packages-classes-public-methods.csv";
@@ -110,7 +110,7 @@ public class JarApiList {
 			}
 			// PrintWriter pw=new
 			// PrintWriter("src/main/output/jar-to-packages-classes.csv");
-			PrintWriter pw = new PrintWriter(csvFile);
+			pw = new PrintWriter(csvFile);
 			System.out.println("writing to op file="+csvFile);
 			//pw.println("jarName,packageName,className");
 			pw.println("jarName,packageName,className,publicMethodName");
@@ -120,8 +120,8 @@ public class JarApiList {
 
 			File fRoot = new File(root);
 			String[] extensions = new String[] { "jar" };
-//			System.out.println("Getting all .jar  in " + fRoot.getPath()
-//					+ " including those in subdirectories");
+			//			System.out.println("Getting all .jar  in " + fRoot.getPath()
+			//					+ " including those in subdirectories");
 			List<File> files = (List<File>) FileUtils.listFiles(fRoot, extensions, true);
 			Set<String> processedJars = new HashSet<String>();
 			for (File f : files) {
@@ -137,7 +137,7 @@ public class JarApiList {
 				// jarName="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\digdeep-master\\digdeep-tickets-processing\\lib\\guava-14.0.1.jar";
 				String jarName = f.getAbsolutePath();
 
-//	        	System.out.println(jarName);
+				//	        	System.out.println(jarName);
 
 				JarFile jarFile = new JarFile(jarName);
 
@@ -150,18 +150,23 @@ public class JarApiList {
 				// System.out.println(f.getAbsolutePath());
 				// System.out.println("jar name=" + fn);
 				// System.out.println("Packages=");
-//					for (String p:pkgs)
-//					{
-//						//System.out.println(fn+","+p);
-//						pw.println(fn+","+p);
-//					}
+				//					for (String p:pkgs)
+				//					{
+				//						//System.out.println(fn+","+p);
+				//						pw.println(fn+","+p);
+				//					}
 				pw.flush();
 			}
 			pw.close();
-//			System.out.println("processedJars ="+processedJars.size());
+			//			System.out.println("processedJars ="+processedJars.size());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if (pw!=null) {
+				pw.flush();
+				pw.close();
+			}
 		}
 	}
 
@@ -169,9 +174,9 @@ public class JarApiList {
 			throws ClassFormatException, IOException {
 		Set<String> packages = new HashSet<String>();
 		//System.out.println("collectJavaPackagesAndClasses for jar="+jarName);
-		
-//		        Map<String, JavaClass> javaClasses =
-//		            new LinkedHashMap<String, JavaClass>();
+
+		//		        Map<String, JavaClass> javaClasses =
+		//		            new LinkedHashMap<String, JavaClass>();
 		Enumeration<JarEntry> entries = jarFile.entries();
 		while (entries.hasMoreElements()) {
 			//System.out.println("\t jar entry name="+entry.getName());
@@ -205,7 +210,7 @@ public class JarApiList {
 				System.err.println("handled exception.");
 				e.printStackTrace();
 			}
-			
+
 			//pw.println(jarName + "," + pName + "," + cName);
 		}
 		// return packages;
@@ -221,7 +226,7 @@ public class JarApiList {
 		}
 		// root="C:\\Users\\GiriprasadSridhara\\Downloads\\digdeep-master\\";
 		String root = args[0];
-		
+
 		if (args.length==2)
 		{
 			String opFileName=args[1];
