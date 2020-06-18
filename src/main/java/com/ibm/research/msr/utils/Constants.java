@@ -70,6 +70,10 @@ public class Constants {
 	public static final String STOP_WORDS_FILE = "stop_words.txt";
 	public static final String SEEDS_FILE = "seeds.txt";
 	
+	public static final String CMA_ANALYZING_STATUS_MSG = "Analyzing";
+	public static final String CMA_ANALYZED_STATUS_MSG = "Analyzed";
+	public static final String CMA_FAILED_STATUS_MSG = "Failed";
+	
 	public enum ProjectStatus {
 
 		OK(200, "OK"),
