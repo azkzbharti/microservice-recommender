@@ -206,9 +206,11 @@ if __name__ == "__main__":
 			for j in i["transaction"]:
 				end = j["table"]
 				for k in j["callgraph"]:
-					if (find_node_id(k), find_node_id(end)) not in edge_list:
-						make_t_edge["relationship"].append(make_edge_func(find_node_id(k), find_node_id(end),"1"))
-						edge_list.append((find_node_id(k), find_node_id(end)))
+					val_k = ".".join(k.split(".")[:-1])
+					val_end = end
+					if (find_node_id(val_k), find_node_id(val_end)) not in edge_list:
+						make_t_edge["relationship"].append(make_edge_func(find_node_id(val_k), find_node_id(val_end),"1"))
+						edge_list.append((find_node_id(val_k), find_node_id(val_end)))
 
 		
 
