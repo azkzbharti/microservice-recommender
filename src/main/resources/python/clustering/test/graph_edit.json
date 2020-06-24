@@ -1,0 +1,6704 @@
+{
+  "clusters": [
+    {
+      "label": "cluster0",
+      "id": "0",
+      "type": "microservices_group",
+      "description": "",
+      "properties": {
+        "affected_business_domains": [
+          ""
+        ],
+        "db_dependence": {
+          "db": "",
+          "tables": [
+            ""
+          ]
+        }
+      },
+      "metrics": {
+        "cohesion_score": "",
+        "conceptual_independence": "",
+        "coupling_score": "",
+        "independence_score": "",
+        "data_independence_score": "",
+        "volume_inter_partition_calls": "",
+        "transaction_independence_score": "",
+        "functional_encapsulation": "",
+        "modularity": "",
+        "structural_cohesivity": ""
+      },
+      "nodes": [
+        "100",
+        "91"
+      ]
+    },
+    {
+      "label": "cluster1",
+      "id": "1",
+      "type": "microservices_group",
+      "description": "",
+      "properties": {
+        "affected_business_domains": [
+          ""
+        ],
+        "db_dependence": {
+          "db": "",
+          "tables": [
+            ""
+          ]
+        }
+      },
+      "metrics": {
+        "cohesion_score": "",
+        "conceptual_independence": "",
+        "coupling_score": "",
+        "independence_score": "",
+        "data_independence_score": "",
+        "volume_inter_partition_calls": "",
+        "transaction_independence_score": "",
+        "functional_encapsulation": "",
+        "modularity": "",
+        "structural_cohesivity": ""
+      },
+      "nodes": [
+        "53",
+        "0",
+        "24",
+        "103",
+        "14",
+        "96",
+        "66",
+        "25"
+      ]
+    },
+    {
+      "label": "cluster2",
+      "id": "2",
+      "type": "microservices_group",
+      "description": "",
+      "properties": {
+        "affected_business_domains": [
+          ""
+        ],
+        "db_dependence": {
+          "db": "",
+          "tables": [
+            ""
+          ]
+        }
+      },
+      "metrics": {
+        "cohesion_score": "",
+        "conceptual_independence": "",
+        "coupling_score": "",
+        "independence_score": "",
+        "data_independence_score": "",
+        "volume_inter_partition_calls": "",
+        "transaction_independence_score": "",
+        "functional_encapsulation": "",
+        "modularity": "",
+        "structural_cohesivity": ""
+      },
+      "nodes": [
+        "43",
+        "36",
+        "61",
+        "26",
+        "93"
+      ]
+    },
+    {
+      "label": "cluster3",
+      "id": "3",
+      "type": "microservices_group",
+      "description": "",
+      "properties": {
+        "affected_business_domains": [
+          ""
+        ],
+        "db_dependence": {
+          "db": "",
+          "tables": [
+            ""
+          ]
+        }
+      },
+      "metrics": {
+        "cohesion_score": "",
+        "conceptual_independence": "",
+        "coupling_score": "",
+        "independence_score": "",
+        "data_independence_score": "",
+        "volume_inter_partition_calls": "",
+        "transaction_independence_score": "",
+        "functional_encapsulation": "",
+        "modularity": "",
+        "structural_cohesivity": ""
+      },
+      "nodes": [
+        "95",
+        "54",
+        "38"
+      ]
+    },
+    {
+      "label": "cluster4",
+      "id": "4",
+      "type": "microservices_group",
+      "description": "",
+      "properties": {
+        "affected_business_domains": [
+          ""
+        ],
+        "db_dependence": {
+          "db": "",
+          "tables": [
+            ""
+          ]
+        }
+      },
+      "metrics": {
+        "cohesion_score": "",
+        "conceptual_independence": "",
+        "coupling_score": "",
+        "independence_score": "",
+        "data_independence_score": "",
+        "volume_inter_partition_calls": "",
+        "transaction_independence_score": "",
+        "functional_encapsulation": "",
+        "modularity": "",
+        "structural_cohesivity": ""
+      },
+      "nodes": [
+        "57",
+        "31",
+        "104",
+        "59",
+        "101"
+      ]
+    },
+    {
+      "label": "cluster5",
+      "id": "5",
+      "type": "microservices_group",
+      "description": "",
+      "properties": {
+        "affected_business_domains": [
+          ""
+        ],
+        "db_dependence": {
+          "db": "",
+          "tables": [
+            ""
+          ]
+        }
+      },
+      "metrics": {
+        "cohesion_score": "",
+        "conceptual_independence": "",
+        "coupling_score": "",
+        "independence_score": "",
+        "data_independence_score": "",
+        "volume_inter_partition_calls": "",
+        "transaction_independence_score": "",
+        "functional_encapsulation": "",
+        "modularity": "",
+        "structural_cohesivity": ""
+      },
+      "nodes": [
+        "74",
+        "79",
+        "32"
+      ]
+    },
+    {
+      "label": "unassigned_group",
+      "id": "6",
+      "type": "unassigned_group",
+      "description": "",
+      "properties": {
+        "affected_business_domains": [
+          ""
+        ],
+        "db_dependence": {
+          "db": "",
+          "tables": [
+            ""
+          ]
+        }
+      },
+      "metrics": {
+        "cohesion_score": "",
+        "conceptual_independence": "",
+        "coupling_score": "",
+        "independence_score": "",
+        "data_independence_score": "",
+        "volume_inter_partition_calls": "",
+        "transaction_independence_score": "",
+        "functional_encapsulation": "",
+        "modularity": "",
+        "structural_cohesivity": ""
+      },
+      "nodes": [
+        "52",
+        "56",
+        "58",
+        "64",
+        "67",
+        "73",
+        "77",
+        "83",
+        "88",
+        "92",
+        "106",
+        "105",
+        "111",
+        "112",
+        "113",
+        "114",
+        "115"
+      ]
+    },
+    {
+      "label": "cluster6",
+      "id": "6",
+      "type": "microservices_group",
+      "description": "",
+      "properties": {
+        "affected_business_domains": [
+          ""
+        ],
+        "db_dependence": {
+          "db": "",
+          "tables": [
+            ""
+          ]
+        }
+      },
+      "metrics": {
+        "cohesion_score": "",
+        "conceptual_independence": "",
+        "coupling_score": "",
+        "independence_score": "",
+        "data_independence_score": "",
+        "volume_inter_partition_calls": "",
+        "transaction_independence_score": "",
+        "functional_encapsulation": "",
+        "modularity": "",
+        "structural_cohesivity": ""
+      },
+      "nodes": [
+        "7",
+        "94",
+        "8",
+        "51",
+        "18",
+        "65",
+        "20",
+        "97",
+        "33",
+        "34",
+        "37"
+      ]
+    },
+    {
+      "label": "utility_group",
+      "id": "7",
+      "type": "utility_group",
+      "description": "",
+      "properties": {
+        "affected_business_domains": [
+          ""
+        ],
+        "db_dependence": {
+          "db": "",
+          "tables": [
+            ""
+          ]
+        }
+      },
+      "metrics": {
+        "cohesion_score": "",
+        "conceptual_independence": "",
+        "coupling_score": "",
+        "independence_score": "",
+        "data_independence_score": "",
+        "volume_inter_partition_calls": "",
+        "transaction_independence_score": "",
+        "functional_encapsulation": "",
+        "modularity": "",
+        "structural_cohesivity": ""
+      },
+      "nodes": [
+        "69",
+        "86",
+        "98",
+        "63",
+        "6",
+        "110",
+        "76",
+        "21",
+        "89",
+        "46",
+        "16",
+        "81",
+        "2",
+        "107",
+        "29",
+        "5",
+        "39",
+        "48",
+        "84",
+        "68",
+        "1",
+        "11",
+        "42",
+        "70",
+        "109",
+        "12",
+        "3",
+        "82",
+        "35",
+        "102",
+        "87",
+        "41"
+      ]
+    },
+    {
+      "label": "refactor_candidates_group",
+      "id": "8",
+      "type": "refactor_candidates_group",
+      "description": "",
+      "properties": {
+        "affected_business_domains": [
+          ""
+        ],
+        "db_dependence": {
+          "db": "",
+          "tables": [
+            ""
+          ]
+        }
+      },
+      "metrics": {
+        "cohesion_score": "",
+        "conceptual_independence": "",
+        "coupling_score": "",
+        "independence_score": "",
+        "data_independence_score": "",
+        "volume_inter_partition_calls": "",
+        "transaction_independence_score": "",
+        "functional_encapsulation": "",
+        "modularity": "",
+        "structural_cohesivity": ""
+      },
+      "nodes": [
+        "13",
+        "9",
+        "27",
+        "71",
+        "45",
+        "47",
+        "17",
+        "4",
+        "49",
+        "40",
+        "85",
+        "90",
+        "28",
+        "72",
+        "22",
+        "55",
+        "10",
+        "75",
+        "15",
+        "80",
+        "108",
+        "99",
+        "60",
+        "19",
+        "78"
+      ]
+    },
+    {
+      "label": "unreachable_group",
+      "id": "9",
+      "type": "unreachable_group",
+      "description": "",
+      "properties": {
+        "affected_business_domains": [
+          ""
+        ],
+        "db_dependence": {
+          "db": "",
+          "tables": [
+            ""
+          ]
+        }
+      },
+      "metrics": {
+        "cohesion_score": "",
+        "conceptual_independence": "",
+        "coupling_score": "",
+        "independence_score": "",
+        "data_independence_score": "",
+        "volume_inter_partition_calls": "",
+        "transaction_independence_score": "",
+        "functional_encapsulation": "",
+        "modularity": "",
+        "structural_cohesivity": ""
+      },
+      "nodes": [
+        "50",
+        "30",
+        "23",
+        "62",
+        "44"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "type": "inter_class_connections",
+      "weight": "",
+      "description": "",
+      "relationship": [
+        {
+          "label": "",
+          "id": "0",
+          "description": "",
+          "properties": {
+            "start": "13",
+            "end": "0"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "1",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "0"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "2",
+          "description": "",
+          "properties": {
+            "start": "53",
+            "end": "0"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "3",
+          "description": "",
+          "properties": {
+            "start": "14",
+            "end": "0"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "4",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "0"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "5",
+          "description": "",
+          "properties": {
+            "start": "24",
+            "end": "0"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "6",
+          "description": "",
+          "properties": {
+            "start": "90",
+            "end": "0"
+          },
+          "frequency": "13",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "7",
+          "description": "",
+          "properties": {
+            "start": "1",
+            "end": "110"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "8",
+          "description": "",
+          "properties": {
+            "start": "1",
+            "end": "12"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "9",
+          "description": "",
+          "properties": {
+            "start": "110",
+            "end": "1"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "10",
+          "description": "",
+          "properties": {
+            "start": "2",
+            "end": "84"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "11",
+          "description": "",
+          "properties": {
+            "start": "2",
+            "end": "98"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "12",
+          "description": "",
+          "properties": {
+            "start": "3",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "13",
+          "description": "",
+          "properties": {
+            "start": "4",
+            "end": "84"
+          },
+          "frequency": "7",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "14",
+          "description": "",
+          "properties": {
+            "start": "4",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "15",
+          "description": "",
+          "properties": {
+            "start": "4",
+            "end": "57"
+          },
+          "frequency": "3",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "16",
+          "description": "",
+          "properties": {
+            "start": "49",
+            "end": "4"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "17",
+          "description": "",
+          "properties": {
+            "start": "13",
+            "end": "4"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "18",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "4"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "19",
+          "description": "",
+          "properties": {
+            "start": "31",
+            "end": "4"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "20",
+          "description": "",
+          "properties": {
+            "start": "19",
+            "end": "4"
+          },
+          "frequency": "8",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "21",
+          "description": "",
+          "properties": {
+            "start": "71",
+            "end": "4"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "22",
+          "description": "",
+          "properties": {
+            "start": "14",
+            "end": "4"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "23",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "4"
+          },
+          "frequency": "12",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "24",
+          "description": "",
+          "properties": {
+            "start": "57",
+            "end": "4"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "25",
+          "description": "",
+          "properties": {
+            "start": "40",
+            "end": "4"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "26",
+          "description": "",
+          "properties": {
+            "start": "90",
+            "end": "4"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "27",
+          "description": "",
+          "properties": {
+            "start": "5",
+            "end": "29"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "28",
+          "description": "",
+          "properties": {
+            "start": "5",
+            "end": "41"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "29",
+          "description": "",
+          "properties": {
+            "start": "6",
+            "end": "84"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "30",
+          "description": "",
+          "properties": {
+            "start": "6",
+            "end": "98"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "31",
+          "description": "",
+          "properties": {
+            "start": "7",
+            "end": "94"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "32",
+          "description": "",
+          "properties": {
+            "start": "7",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "33",
+          "description": "",
+          "properties": {
+            "start": "8",
+            "end": "51"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "34",
+          "description": "",
+          "properties": {
+            "start": "51",
+            "end": "8"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "35",
+          "description": "",
+          "properties": {
+            "start": "20",
+            "end": "8"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "36",
+          "description": "",
+          "properties": {
+            "start": "97",
+            "end": "8"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "37",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "95"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "38",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "13"
+          },
+          "frequency": "19",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "39",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "71"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "40",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "84"
+          },
+          "frequency": "10",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "41",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "98"
+          },
+          "frequency": "47",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "42",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "27"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "43",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "90"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "44",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "91"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "45",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "32"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "46",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "22"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "47",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "57"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "48",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "40"
+          },
+          "frequency": "3",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "49",
+          "description": "",
+          "properties": {
+            "start": "43",
+            "end": "9"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "50",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "9"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "51",
+          "description": "",
+          "properties": {
+            "start": "88",
+            "end": "9"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "52",
+          "description": "",
+          "properties": {
+            "start": "74",
+            "end": "9"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "53",
+          "description": "",
+          "properties": {
+            "start": "90",
+            "end": "9"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "54",
+          "description": "",
+          "properties": {
+            "start": "49",
+            "end": "9"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "55",
+          "description": "",
+          "properties": {
+            "start": "77",
+            "end": "9"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "56",
+          "description": "",
+          "properties": {
+            "start": "31",
+            "end": "9"
+          },
+          "frequency": "8",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "57",
+          "description": "",
+          "properties": {
+            "start": "52",
+            "end": "9"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "58",
+          "description": "",
+          "properties": {
+            "start": "19",
+            "end": "9"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "59",
+          "description": "",
+          "properties": {
+            "start": "104",
+            "end": "9"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "60",
+          "description": "",
+          "properties": {
+            "start": "53",
+            "end": "9"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "61",
+          "description": "",
+          "properties": {
+            "start": "54",
+            "end": "9"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "62",
+          "description": "",
+          "properties": {
+            "start": "36",
+            "end": "9"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "63",
+          "description": "",
+          "properties": {
+            "start": "24",
+            "end": "9"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "64",
+          "description": "",
+          "properties": {
+            "start": "10",
+            "end": "84"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "65",
+          "description": "",
+          "properties": {
+            "start": "10",
+            "end": "85"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "66",
+          "description": "",
+          "properties": {
+            "start": "10",
+            "end": "98"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "67",
+          "description": "",
+          "properties": {
+            "start": "10",
+            "end": "27"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "68",
+          "description": "",
+          "properties": {
+            "start": "63",
+            "end": "11"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "69",
+          "description": "",
+          "properties": {
+            "start": "29",
+            "end": "11"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "70",
+          "description": "",
+          "properties": {
+            "start": "12",
+            "end": "110"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "71",
+          "description": "",
+          "properties": {
+            "start": "110",
+            "end": "12"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "72",
+          "description": "",
+          "properties": {
+            "start": "13",
+            "end": "91"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "73",
+          "description": "",
+          "properties": {
+            "start": "13",
+            "end": "71"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "74",
+          "description": "",
+          "properties": {
+            "start": "13",
+            "end": "27"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "75",
+          "description": "",
+          "properties": {
+            "start": "13",
+            "end": "57"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "76",
+          "description": "",
+          "properties": {
+            "start": "13",
+            "end": "40"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "77",
+          "description": "",
+          "properties": {
+            "start": "49",
+            "end": "13"
+          },
+          "frequency": "13",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "78",
+          "description": "",
+          "properties": {
+            "start": "52",
+            "end": "13"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "79",
+          "description": "",
+          "properties": {
+            "start": "32",
+            "end": "13"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "80",
+          "description": "",
+          "properties": {
+            "start": "22",
+            "end": "13"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "81",
+          "description": "",
+          "properties": {
+            "start": "55",
+            "end": "13"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "82",
+          "description": "",
+          "properties": {
+            "start": "61",
+            "end": "13"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "83",
+          "description": "",
+          "properties": {
+            "start": "90",
+            "end": "13"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "84",
+          "description": "",
+          "properties": {
+            "start": "14",
+            "end": "84"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "85",
+          "description": "",
+          "properties": {
+            "start": "14",
+            "end": "98"
+          },
+          "frequency": "5",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "86",
+          "description": "",
+          "properties": {
+            "start": "14",
+            "end": "27"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "87",
+          "description": "",
+          "properties": {
+            "start": "14",
+            "end": "40"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "88",
+          "description": "",
+          "properties": {
+            "start": "14",
+            "end": "90"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "89",
+          "description": "",
+          "properties": {
+            "start": "53",
+            "end": "14"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "90",
+          "description": "",
+          "properties": {
+            "start": "24",
+            "end": "14"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "91",
+          "description": "",
+          "properties": {
+            "start": "15",
+            "end": "84"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "92",
+          "description": "",
+          "properties": {
+            "start": "15",
+            "end": "85"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "93",
+          "description": "",
+          "properties": {
+            "start": "15",
+            "end": "98"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "94",
+          "description": "",
+          "properties": {
+            "start": "15",
+            "end": "27"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "95",
+          "description": "",
+          "properties": {
+            "start": "16",
+            "end": "29"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "96",
+          "description": "",
+          "properties": {
+            "start": "47",
+            "end": "17"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "97",
+          "description": "",
+          "properties": {
+            "start": "18",
+            "end": "95"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "98",
+          "description": "",
+          "properties": {
+            "start": "54",
+            "end": "18"
+          },
+          "frequency": "12",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "99",
+          "description": "",
+          "properties": {
+            "start": "19",
+            "end": "95"
+          },
+          "frequency": "5",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "100",
+          "description": "",
+          "properties": {
+            "start": "19",
+            "end": "65"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "101",
+          "description": "",
+          "properties": {
+            "start": "19",
+            "end": "84"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "102",
+          "description": "",
+          "properties": {
+            "start": "19",
+            "end": "40"
+          },
+          "frequency": "19",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "103",
+          "description": "",
+          "properties": {
+            "start": "20",
+            "end": "51"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "104",
+          "description": "",
+          "properties": {
+            "start": "20",
+            "end": "97"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "105",
+          "description": "",
+          "properties": {
+            "start": "20",
+            "end": "98"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "106",
+          "description": "",
+          "properties": {
+            "start": "51",
+            "end": "20"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "107",
+          "description": "",
+          "properties": {
+            "start": "21",
+            "end": "41"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "108",
+          "description": "",
+          "properties": {
+            "start": "22",
+            "end": "27"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "109",
+          "description": "",
+          "properties": {
+            "start": "83",
+            "end": "22"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "110",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "22"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "111",
+          "description": "",
+          "properties": {
+            "start": "61",
+            "end": "22"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "112",
+          "description": "",
+          "properties": {
+            "start": "23",
+            "end": "50"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "113",
+          "description": "",
+          "properties": {
+            "start": "23",
+            "end": "30"
+          },
+          "frequency": "3",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "114",
+          "description": "",
+          "properties": {
+            "start": "23",
+            "end": "44"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "115",
+          "description": "",
+          "properties": {
+            "start": "23",
+            "end": "62"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "116",
+          "description": "",
+          "properties": {
+            "start": "50",
+            "end": "23"
+          },
+          "frequency": "6",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "117",
+          "description": "",
+          "properties": {
+            "start": "24",
+            "end": "84"
+          },
+          "frequency": "32",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "118",
+          "description": "",
+          "properties": {
+            "start": "24",
+            "end": "98"
+          },
+          "frequency": "8",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "119",
+          "description": "",
+          "properties": {
+            "start": "24",
+            "end": "90"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "120",
+          "description": "",
+          "properties": {
+            "start": "25",
+            "end": "84"
+          },
+          "frequency": "14",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "121",
+          "description": "",
+          "properties": {
+            "start": "25",
+            "end": "98"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "122",
+          "description": "",
+          "properties": {
+            "start": "25",
+            "end": "90"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "123",
+          "description": "",
+          "properties": {
+            "start": "26",
+            "end": "93"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "124",
+          "description": "",
+          "properties": {
+            "start": "66",
+            "end": "26"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "125",
+          "description": "",
+          "properties": {
+            "start": "93",
+            "end": "26"
+          },
+          "frequency": "10",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "126",
+          "description": "",
+          "properties": {
+            "start": "27",
+            "end": "84"
+          },
+          "frequency": "8",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "127",
+          "description": "",
+          "properties": {
+            "start": "27",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "128",
+          "description": "",
+          "properties": {
+            "start": "71",
+            "end": "27"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "129",
+          "description": "",
+          "properties": {
+            "start": "43",
+            "end": "27"
+          },
+          "frequency": "8",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "130",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "27"
+          },
+          "frequency": "25",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "131",
+          "description": "",
+          "properties": {
+            "start": "99",
+            "end": "27"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "132",
+          "description": "",
+          "properties": {
+            "start": "100",
+            "end": "27"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "133",
+          "description": "",
+          "properties": {
+            "start": "74",
+            "end": "27"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "134",
+          "description": "",
+          "properties": {
+            "start": "60",
+            "end": "27"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "135",
+          "description": "",
+          "properties": {
+            "start": "28",
+            "end": "27"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "136",
+          "description": "",
+          "properties": {
+            "start": "90",
+            "end": "27"
+          },
+          "frequency": "20",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "137",
+          "description": "",
+          "properties": {
+            "start": "49",
+            "end": "27"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "138",
+          "description": "",
+          "properties": {
+            "start": "77",
+            "end": "27"
+          },
+          "frequency": "8",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "139",
+          "description": "",
+          "properties": {
+            "start": "91",
+            "end": "27"
+          },
+          "frequency": "18",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "140",
+          "description": "",
+          "properties": {
+            "start": "78",
+            "end": "27"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "141",
+          "description": "",
+          "properties": {
+            "start": "32",
+            "end": "27"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "142",
+          "description": "",
+          "properties": {
+            "start": "79",
+            "end": "27"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "143",
+          "description": "",
+          "properties": {
+            "start": "54",
+            "end": "27"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "144",
+          "description": "",
+          "properties": {
+            "start": "80",
+            "end": "27"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "145",
+          "description": "",
+          "properties": {
+            "start": "40",
+            "end": "27"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "146",
+          "description": "",
+          "properties": {
+            "start": "28",
+            "end": "84"
+          },
+          "frequency": "3",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "147",
+          "description": "",
+          "properties": {
+            "start": "28",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "148",
+          "description": "",
+          "properties": {
+            "start": "28",
+            "end": "90"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "149",
+          "description": "",
+          "properties": {
+            "start": "68",
+            "end": "29"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "150",
+          "description": "",
+          "properties": {
+            "start": "50",
+            "end": "30"
+          },
+          "frequency": "3",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "151",
+          "description": "",
+          "properties": {
+            "start": "44",
+            "end": "30"
+          },
+          "frequency": "3",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "152",
+          "description": "",
+          "properties": {
+            "start": "62",
+            "end": "30"
+          },
+          "frequency": "3",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "153",
+          "description": "",
+          "properties": {
+            "start": "31",
+            "end": "98"
+          },
+          "frequency": "6",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "154",
+          "description": "",
+          "properties": {
+            "start": "31",
+            "end": "57"
+          },
+          "frequency": "6",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "155",
+          "description": "",
+          "properties": {
+            "start": "33",
+            "end": "32"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "156",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "32"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "157",
+          "description": "",
+          "properties": {
+            "start": "33",
+            "end": "84"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "158",
+          "description": "",
+          "properties": {
+            "start": "33",
+            "end": "98"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "159",
+          "description": "",
+          "properties": {
+            "start": "34",
+            "end": "49"
+          },
+          "frequency": "15",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "160",
+          "description": "",
+          "properties": {
+            "start": "34",
+            "end": "84"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "161",
+          "description": "",
+          "properties": {
+            "start": "35",
+            "end": "98"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "162",
+          "description": "",
+          "properties": {
+            "start": "36",
+            "end": "65"
+          },
+          "frequency": "7",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "163",
+          "description": "",
+          "properties": {
+            "start": "36",
+            "end": "84"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "164",
+          "description": "",
+          "properties": {
+            "start": "36",
+            "end": "40"
+          },
+          "frequency": "18",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "165",
+          "description": "",
+          "properties": {
+            "start": "37",
+            "end": "69"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "166",
+          "description": "",
+          "properties": {
+            "start": "37",
+            "end": "98"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "167",
+          "description": "",
+          "properties": {
+            "start": "104",
+            "end": "37"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "168",
+          "description": "",
+          "properties": {
+            "start": "38",
+            "end": "71"
+          },
+          "frequency": "3",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "169",
+          "description": "",
+          "properties": {
+            "start": "38",
+            "end": "84"
+          },
+          "frequency": "14",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "170",
+          "description": "",
+          "properties": {
+            "start": "38",
+            "end": "98"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "171",
+          "description": "",
+          "properties": {
+            "start": "39",
+            "end": "41"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "172",
+          "description": "",
+          "properties": {
+            "start": "40",
+            "end": "71"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "173",
+          "description": "",
+          "properties": {
+            "start": "40",
+            "end": "84"
+          },
+          "frequency": "8",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "174",
+          "description": "",
+          "properties": {
+            "start": "40",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "175",
+          "description": "",
+          "properties": {
+            "start": "72",
+            "end": "40"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "176",
+          "description": "",
+          "properties": {
+            "start": "43",
+            "end": "40"
+          },
+          "frequency": "8",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "177",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "40"
+          },
+          "frequency": "29",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "178",
+          "description": "",
+          "properties": {
+            "start": "61",
+            "end": "40"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "179",
+          "description": "",
+          "properties": {
+            "start": "90",
+            "end": "40"
+          },
+          "frequency": "20",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "180",
+          "description": "",
+          "properties": {
+            "start": "49",
+            "end": "40"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "181",
+          "description": "",
+          "properties": {
+            "start": "54",
+            "end": "40"
+          },
+          "frequency": "8",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "182",
+          "description": "",
+          "properties": {
+            "start": "55",
+            "end": "40"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "183",
+          "description": "",
+          "properties": {
+            "start": "42",
+            "end": "81"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "184",
+          "description": "",
+          "properties": {
+            "start": "81",
+            "end": "42"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "185",
+          "description": "",
+          "properties": {
+            "start": "43",
+            "end": "65"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "186",
+          "description": "",
+          "properties": {
+            "start": "43",
+            "end": "84"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "187",
+          "description": "",
+          "properties": {
+            "start": "43",
+            "end": "86"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "188",
+          "description": "",
+          "properties": {
+            "start": "43",
+            "end": "98"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "189",
+          "description": "",
+          "properties": {
+            "start": "45",
+            "end": "69"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "190",
+          "description": "",
+          "properties": {
+            "start": "69",
+            "end": "45"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "191",
+          "description": "",
+          "properties": {
+            "start": "46",
+            "end": "98"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "192",
+          "description": "",
+          "properties": {
+            "start": "47",
+            "end": "98"
+          },
+          "frequency": "3",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "193",
+          "description": "",
+          "properties": {
+            "start": "48",
+            "end": "98"
+          },
+          "frequency": "3",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "194",
+          "description": "",
+          "properties": {
+            "start": "49",
+            "end": "71"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "195",
+          "description": "",
+          "properties": {
+            "start": "49",
+            "end": "84"
+          },
+          "frequency": "19",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "196",
+          "description": "",
+          "properties": {
+            "start": "49",
+            "end": "98"
+          },
+          "frequency": "11",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "197",
+          "description": "",
+          "properties": {
+            "start": "49",
+            "end": "57"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "198",
+          "description": "",
+          "properties": {
+            "start": "51",
+            "end": "97"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "199",
+          "description": "",
+          "properties": {
+            "start": "51",
+            "end": "98"
+          },
+          "frequency": "6",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "200",
+          "description": "",
+          "properties": {
+            "start": "97",
+            "end": "51"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "201",
+          "description": "",
+          "properties": {
+            "start": "52",
+            "end": "84"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "202",
+          "description": "",
+          "properties": {
+            "start": "52",
+            "end": "98"
+          },
+          "frequency": "3",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "203",
+          "description": "",
+          "properties": {
+            "start": "53",
+            "end": "84"
+          },
+          "frequency": "46",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "204",
+          "description": "",
+          "properties": {
+            "start": "53",
+            "end": "98"
+          },
+          "frequency": "16",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "205",
+          "description": "",
+          "properties": {
+            "start": "53",
+            "end": "90"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "206",
+          "description": "",
+          "properties": {
+            "start": "54",
+            "end": "95"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "207",
+          "description": "",
+          "properties": {
+            "start": "54",
+            "end": "65"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "208",
+          "description": "",
+          "properties": {
+            "start": "54",
+            "end": "71"
+          },
+          "frequency": "10",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "209",
+          "description": "",
+          "properties": {
+            "start": "54",
+            "end": "84"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "210",
+          "description": "",
+          "properties": {
+            "start": "55",
+            "end": "84"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "211",
+          "description": "",
+          "properties": {
+            "start": "55",
+            "end": "85"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "212",
+          "description": "",
+          "properties": {
+            "start": "55",
+            "end": "90"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "213",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "55"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "214",
+          "description": "",
+          "properties": {
+            "start": "90",
+            "end": "55"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "215",
+          "description": "",
+          "properties": {
+            "start": "56",
+            "end": "94"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "216",
+          "description": "",
+          "properties": {
+            "start": "56",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "217",
+          "description": "",
+          "properties": {
+            "start": "57",
+            "end": "84"
+          },
+          "frequency": "7",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "218",
+          "description": "",
+          "properties": {
+            "start": "57",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "219",
+          "description": "",
+          "properties": {
+            "start": "108",
+            "end": "57"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "220",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "57"
+          },
+          "frequency": "30",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "221",
+          "description": "",
+          "properties": {
+            "start": "90",
+            "end": "57"
+          },
+          "frequency": "10",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "222",
+          "description": "",
+          "properties": {
+            "start": "58",
+            "end": "101"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "223",
+          "description": "",
+          "properties": {
+            "start": "58",
+            "end": "102"
+          },
+          "frequency": "10",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "224",
+          "description": "",
+          "properties": {
+            "start": "58",
+            "end": "96"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "225",
+          "description": "",
+          "properties": {
+            "start": "58",
+            "end": "84"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "226",
+          "description": "",
+          "properties": {
+            "start": "58",
+            "end": "98"
+          },
+          "frequency": "11",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "227",
+          "description": "",
+          "properties": {
+            "start": "104",
+            "end": "59"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "228",
+          "description": "",
+          "properties": {
+            "start": "60",
+            "end": "85"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "229",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "60"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "230",
+          "description": "",
+          "properties": {
+            "start": "61",
+            "end": "96"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "231",
+          "description": "",
+          "properties": {
+            "start": "61",
+            "end": "102"
+          },
+          "frequency": "10",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "232",
+          "description": "",
+          "properties": {
+            "start": "61",
+            "end": "98"
+          },
+          "frequency": "13",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "233",
+          "description": "",
+          "properties": {
+            "start": "61",
+            "end": "90"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "234",
+          "description": "",
+          "properties": {
+            "start": "64",
+            "end": "67"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "235",
+          "description": "",
+          "properties": {
+            "start": "67",
+            "end": "64"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "236",
+          "description": "",
+          "properties": {
+            "start": "66",
+            "end": "84"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "237",
+          "description": "",
+          "properties": {
+            "start": "66",
+            "end": "98"
+          },
+          "frequency": "3",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "238",
+          "description": "",
+          "properties": {
+            "start": "90",
+            "end": "66"
+          },
+          "frequency": "3",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "239",
+          "description": "",
+          "properties": {
+            "start": "67",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "240",
+          "description": "",
+          "properties": {
+            "start": "69",
+            "end": "98"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "241",
+          "description": "",
+          "properties": {
+            "start": "104",
+            "end": "69"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "242",
+          "description": "",
+          "properties": {
+            "start": "70",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "243",
+          "description": "",
+          "properties": {
+            "start": "71",
+            "end": "84"
+          },
+          "frequency": "5",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "244",
+          "description": "",
+          "properties": {
+            "start": "71",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "245",
+          "description": "",
+          "properties": {
+            "start": "95",
+            "end": "71"
+          },
+          "frequency": "3",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "246",
+          "description": "",
+          "properties": {
+            "start": "75",
+            "end": "71"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "247",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "71"
+          },
+          "frequency": "6",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "248",
+          "description": "",
+          "properties": {
+            "start": "90",
+            "end": "71"
+          },
+          "frequency": "7",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "249",
+          "description": "",
+          "properties": {
+            "start": "72",
+            "end": "84"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "250",
+          "description": "",
+          "properties": {
+            "start": "72",
+            "end": "85"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "251",
+          "description": "",
+          "properties": {
+            "start": "72",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "252",
+          "description": "",
+          "properties": {
+            "start": "73",
+            "end": "94"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "253",
+          "description": "",
+          "properties": {
+            "start": "73",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "254",
+          "description": "",
+          "properties": {
+            "start": "74",
+            "end": "84"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "255",
+          "description": "",
+          "properties": {
+            "start": "74",
+            "end": "98"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "256",
+          "description": "",
+          "properties": {
+            "start": "75",
+            "end": "85"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "257",
+          "description": "",
+          "properties": {
+            "start": "75",
+            "end": "84"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "258",
+          "description": "",
+          "properties": {
+            "start": "75",
+            "end": "98"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "259",
+          "description": "",
+          "properties": {
+            "start": "76",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "260",
+          "description": "",
+          "properties": {
+            "start": "77",
+            "end": "95"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "261",
+          "description": "",
+          "properties": {
+            "start": "77",
+            "end": "91"
+          },
+          "frequency": "6",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "262",
+          "description": "",
+          "properties": {
+            "start": "77",
+            "end": "86"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "263",
+          "description": "",
+          "properties": {
+            "start": "78",
+            "end": "84"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "264",
+          "description": "",
+          "properties": {
+            "start": "78",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "265",
+          "description": "",
+          "properties": {
+            "start": "78",
+            "end": "90"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "266",
+          "description": "",
+          "properties": {
+            "start": "79",
+            "end": "84"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "267",
+          "description": "",
+          "properties": {
+            "start": "79",
+            "end": "98"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "268",
+          "description": "",
+          "properties": {
+            "start": "80",
+            "end": "84"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "269",
+          "description": "",
+          "properties": {
+            "start": "80",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "270",
+          "description": "",
+          "properties": {
+            "start": "80",
+            "end": "90"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "271",
+          "description": "",
+          "properties": {
+            "start": "82",
+            "end": "89"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "272",
+          "description": "",
+          "properties": {
+            "start": "89",
+            "end": "82"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "273",
+          "description": "",
+          "properties": {
+            "start": "83",
+            "end": "84"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "274",
+          "description": "",
+          "properties": {
+            "start": "83",
+            "end": "98"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "275",
+          "description": "",
+          "properties": {
+            "start": "84",
+            "end": "98"
+          },
+          "frequency": "11",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "276",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "84"
+          },
+          "frequency": "11",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "277",
+          "description": "",
+          "properties": {
+            "start": "87",
+            "end": "84"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "278",
+          "description": "",
+          "properties": {
+            "start": "90",
+            "end": "84"
+          },
+          "frequency": "13",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "279",
+          "description": "",
+          "properties": {
+            "start": "91",
+            "end": "84"
+          },
+          "frequency": "3",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "280",
+          "description": "",
+          "properties": {
+            "start": "99",
+            "end": "84"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "281",
+          "description": "",
+          "properties": {
+            "start": "98",
+            "end": "84"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "282",
+          "description": "",
+          "properties": {
+            "start": "100",
+            "end": "84"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "283",
+          "description": "",
+          "properties": {
+            "start": "108",
+            "end": "84"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "284",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "95"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "285",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "98"
+          },
+          "frequency": "69",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "286",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "100"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "287",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "90"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "288",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "91"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "289",
+          "description": "",
+          "properties": {
+            "start": "108",
+            "end": "85"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "290",
+          "description": "",
+          "properties": {
+            "start": "99",
+            "end": "85"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "291",
+          "description": "",
+          "properties": {
+            "start": "86",
+            "end": "95"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "292",
+          "description": "",
+          "properties": {
+            "start": "87",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "293",
+          "description": "",
+          "properties": {
+            "start": "90",
+            "end": "96"
+          },
+          "frequency": "4",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "294",
+          "description": "",
+          "properties": {
+            "start": "90",
+            "end": "95"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "295",
+          "description": "",
+          "properties": {
+            "start": "90",
+            "end": "98"
+          },
+          "frequency": "130",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "296",
+          "description": "",
+          "properties": {
+            "start": "90",
+            "end": "91"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "297",
+          "description": "",
+          "properties": {
+            "start": "103",
+            "end": "90"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "298",
+          "description": "",
+          "properties": {
+            "start": "91",
+            "end": "95"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "299",
+          "description": "",
+          "properties": {
+            "start": "91",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "300",
+          "description": "",
+          "properties": {
+            "start": "104",
+            "end": "91"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "301",
+          "description": "",
+          "properties": {
+            "start": "100",
+            "end": "91"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "302",
+          "description": "",
+          "properties": {
+            "start": "92",
+            "end": "106"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "303",
+          "description": "",
+          "properties": {
+            "start": "92",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "304",
+          "description": "",
+          "properties": {
+            "start": "106",
+            "end": "92"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "305",
+          "description": "",
+          "properties": {
+            "start": "105",
+            "end": "94"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "306",
+          "description": "",
+          "properties": {
+            "start": "100",
+            "end": "95"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "307",
+          "description": "",
+          "properties": {
+            "start": "96",
+            "end": "102"
+          },
+          "frequency": "10",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "308",
+          "description": "",
+          "properties": {
+            "start": "97",
+            "end": "98"
+          },
+          "frequency": "6",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "309",
+          "description": "",
+          "properties": {
+            "start": "99",
+            "end": "98"
+          },
+          "frequency": "2",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "310",
+          "description": "",
+          "properties": {
+            "start": "100",
+            "end": "98"
+          },
+          "frequency": "5",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "311",
+          "description": "",
+          "properties": {
+            "start": "103",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "312",
+          "description": "",
+          "properties": {
+            "start": "104",
+            "end": "98"
+          },
+          "frequency": "13",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "313",
+          "description": "",
+          "properties": {
+            "start": "105",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "314",
+          "description": "",
+          "properties": {
+            "start": "107",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "315",
+          "description": "",
+          "properties": {
+            "start": "108",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "316",
+          "description": "",
+          "properties": {
+            "start": "109",
+            "end": "98"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "317",
+          "description": "",
+          "properties": {
+            "start": "104",
+            "end": "101"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "type": "transaction_relatedeness",
+      "weight": "",
+      "description": "",
+      "relationship": [
+        {
+          "label": "",
+          "id": "318",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "112"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "319",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "115"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "320",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "114"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "321",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "113"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "322",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "111"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "323",
+          "description": "",
+          "properties": {
+            "start": "85",
+            "end": "111"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "324",
+          "description": "",
+          "properties": {
+            "start": "90",
+            "end": "111"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "325",
+          "description": "",
+          "properties": {
+            "start": "49",
+            "end": "115"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "326",
+          "description": "",
+          "properties": {
+            "start": "49",
+            "end": "114"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "327",
+          "description": "",
+          "properties": {
+            "start": "4",
+            "end": "115"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "328",
+          "description": "",
+          "properties": {
+            "start": "4",
+            "end": "114"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "329",
+          "description": "",
+          "properties": {
+            "start": "49",
+            "end": "113"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "330",
+          "description": "",
+          "properties": {
+            "start": "49",
+            "end": "111"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "331",
+          "description": "",
+          "properties": {
+            "start": "49",
+            "end": "112"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "332",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "112"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "333",
+          "description": "",
+          "properties": {
+            "start": "40",
+            "end": "111"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "334",
+          "description": "",
+          "properties": {
+            "start": "43",
+            "end": "112"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "335",
+          "description": "",
+          "properties": {
+            "start": "31",
+            "end": "115"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "336",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "115"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "337",
+          "description": "",
+          "properties": {
+            "start": "31",
+            "end": "114"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "338",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "114"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "339",
+          "description": "",
+          "properties": {
+            "start": "43",
+            "end": "115"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "340",
+          "description": "",
+          "properties": {
+            "start": "43",
+            "end": "114"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "341",
+          "description": "",
+          "properties": {
+            "start": "43",
+            "end": "113"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "342",
+          "description": "",
+          "properties": {
+            "start": "9",
+            "end": "113"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "343",
+          "description": "",
+          "properties": {
+            "start": "43",
+            "end": "111"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "344",
+          "description": "",
+          "properties": {
+            "start": "54",
+            "end": "115"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "345",
+          "description": "",
+          "properties": {
+            "start": "54",
+            "end": "114"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "346",
+          "description": "",
+          "properties": {
+            "start": "54",
+            "end": "113"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "347",
+          "description": "",
+          "properties": {
+            "start": "54",
+            "end": "111"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        },
+        {
+          "label": "",
+          "id": "348",
+          "description": "",
+          "properties": {
+            "start": "54",
+            "end": "112"
+          },
+          "frequency": "1",
+          "methods": [
+            ""
+          ]
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.beans.RunStatsDataBean",
+      "id": "0",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 19,
+        "used_to": 0,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.1"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServlet31Async$ReadListenerImpl",
+      "id": "1",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 2,
+        "num_ext_dependency": "",
+        "utility_type": "utility"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.ejb3.PingServlet2MDBQueue",
+      "id": "2",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 3,
+        "num_ext_dependency": "",
+        "utility_type": "shared_view"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServletSetContentLength",
+      "id": "3",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 1,
+        "num_ext_dependency": "",
+        "utility_type": "shared_view"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.entities.AccountDataBean",
+      "id": "4",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 32,
+        "used_to": 11,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.1",
+          "cluster.2",
+          "cluster.3",
+          "cluster.4"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServletCDI",
+      "id": "5",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 2,
+        "num_ext_dependency": "",
+        "utility_type": "utility"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.ejb3.PingServlet2MDBTopic",
+      "id": "6",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 3,
+        "num_ext_dependency": "",
+        "utility_type": "shared_view"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServlet2PDF",
+      "id": "7",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 3,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingUpgradeServlet$1",
+      "id": "8",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 3,
+        "used_to": 1,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.TradeAction",
+      "id": "9",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 35,
+        "used_to": 94,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.1",
+          "cluster.2",
+          "cluster.3",
+          "cluster.4",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.ejb3.PingServlet2Session2Entity",
+      "id": "10",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 9,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingInterceptorBinding",
+      "id": "11",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 2,
+        "used_to": 0,
+        "num_ext_dependency": "",
+        "utility_type": "utility"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServlet31Async$WriteListenerImpl",
+      "id": "12",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 2,
+        "used_to": 1,
+        "num_ext_dependency": "",
+        "utility_type": "utility"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.TradeServices",
+      "id": "13",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 38,
+        "used_to": 7,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.1",
+          "cluster.2",
+          "cluster.3",
+          "cluster.4",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.TradeBuildDB",
+      "id": "14",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 4,
+        "used_to": 11,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.1",
+          "cluster.2",
+          "cluster.4"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.ejb3.PingServlet2Session2Entity2JSP",
+      "id": "15",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 9,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServletCDIBeanManagerViaJNDI",
+      "id": "16",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 1,
+        "num_ext_dependency": "",
+        "utility_type": "utility"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingSession3Object",
+      "id": "17",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 2,
+        "used_to": 0,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.jsf.HoldingData",
+      "id": "18",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 12,
+        "used_to": 1,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.jsf.AccountDataJSF",
+      "id": "19",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 42,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.2",
+          "cluster.4"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingUpgradeServlet$Handler",
+      "id": "20",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 7,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingEJBLocal",
+      "id": "21",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 1,
+        "num_ext_dependency": "",
+        "utility_type": "utility"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBLocal",
+      "id": "22",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 7,
+        "used_to": 2,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingWebSocketJson",
+      "id": "23",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 6,
+        "used_to": 6,
+        "num_ext_dependency": "",
+        "dead_code": "1"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.jsf.TradeConfigJSF",
+      "id": "24",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 47,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.TradeWebContextListener",
+      "id": "25",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 17,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.util.KeyBlock",
+      "id": "26",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 11,
+        "used_to": 1,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.entities.QuoteDataBean",
+      "id": "27",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 106,
+        "used_to": 9,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.1",
+          "cluster.2",
+          "cluster.3",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingJDBCWrite",
+      "id": "28",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 7,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.1",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingCDIBean",
+      "id": "29",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 3,
+        "used_to": 1,
+        "num_ext_dependency": "",
+        "utility_type": "utility"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.websocket.JsonMessage",
+      "id": "30",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 12,
+        "used_to": 0,
+        "num_ext_dependency": "",
+        "dead_code": "1"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
+      "id": "31",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 21,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBRemote",
+      "id": "32",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 5,
+        "used_to": 2,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.ejb3.PingServlet2SessionRemote",
+      "id": "33",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 7,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.TradeAppServlet",
+      "id": "34",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 16,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.jsf.LoginValidator",
+      "id": "35",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 2,
+        "num_ext_dependency": "",
+        "utility_type": "shared_view"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.jsf.OrderDataJSF",
+      "id": "36",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 27,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.websocket.ActionDecoder",
+      "id": "37",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 4,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.TradeScenarioServlet",
+      "id": "38",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 21,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingEJBLocalDecorator",
+      "id": "39",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 1,
+        "num_ext_dependency": "",
+        "utility_type": "utility"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.entities.OrderDataBean",
+      "id": "40",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 112,
+        "used_to": 12,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.1",
+          "cluster.2",
+          "cluster.3",
+          "cluster.4",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingEJBIFace",
+      "id": "41",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 3,
+        "used_to": 0,
+        "num_ext_dependency": "",
+        "utility_type": "utility"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingManagedExecutor$1",
+      "id": "42",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 1,
+        "num_ext_dependency": "",
+        "utility_type": "utility"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.jsf.QuoteJSF",
+      "id": "43",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 26,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.websocket.JsonDecoder",
+      "id": "44",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 3,
+        "num_ext_dependency": "",
+        "dead_code": "1"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.websocket.ActionMessage$1",
+      "id": "45",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 1,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingSession1",
+      "id": "46",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 2,
+        "num_ext_dependency": "",
+        "utility_type": "shared_view"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingSession3",
+      "id": "47",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 5,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingSession2",
+      "id": "48",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 3,
+        "num_ext_dependency": "",
+        "utility_type": "shared_view"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
+      "id": "49",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 15,
+        "used_to": 50,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.2",
+          "cluster.3",
+          "cluster.4",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingWebSocketJson$1",
+      "id": "50",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 9,
+        "num_ext_dependency": "",
+        "dead_code": "1"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingUpgradeServlet",
+      "id": "51",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 3,
+        "used_to": 9,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.OrdersAlertFilter",
+      "id": "52",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 6,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.TradeConfigServlet",
+      "id": "53",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 69,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF",
+      "id": "54",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 40,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.2",
+          "cluster.3",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.util.CompleteOrderThread",
+      "id": "55",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 2,
+        "used_to": 5,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.1",
+          "cluster.2"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServlet2Jsp",
+      "id": "56",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 3,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.entities.AccountProfileDataBean",
+      "id": "57",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 53,
+        "used_to": 9,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.1",
+          "cluster.4"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.ejb3.DTStreamer3MDB",
+      "id": "58",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 26,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.websocket.RecentStockChangeList",
+      "id": "59",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 4,
+        "used_to": 0,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean$quotePriceComparator",
+      "id": "60",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 5,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.ejb3.DTBroker3MDB",
+      "id": "61",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 29,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.1",
+          "cluster.2"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.websocket.JsonEncoder",
+      "id": "62",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 3,
+        "num_ext_dependency": "",
+        "dead_code": "1"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingInterceptor",
+      "id": "63",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 1,
+        "num_ext_dependency": "",
+        "utility_type": "utility"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingManagedThread$1",
+      "id": "64",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 1,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.jsf.OrderData",
+      "id": "65",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 13,
+        "used_to": 0,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.direct.KeySequenceDirect",
+      "id": "66",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 3,
+        "used_to": 6,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingManagedThread",
+      "id": "67",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 2,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServletCDIBeanManagerViaCDICurrent",
+      "id": "68",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 1,
+        "num_ext_dependency": "",
+        "utility_type": "utility"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.websocket.ActionMessage",
+      "id": "69",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 4,
+        "used_to": 5,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.ExplicitGC",
+      "id": "70",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 1,
+        "num_ext_dependency": "",
+        "utility_type": "shared_view"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.entities.HoldingDataBean",
+      "id": "71",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 36,
+        "used_to": 8,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.1",
+          "cluster.2",
+          "cluster.3",
+          "cluster.4"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.ejb3.PingServlet2Session2CMROne2Many",
+      "id": "72",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 6,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.2"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServlet2ServletRcv",
+      "id": "73",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 3,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.TestServlet",
+      "id": "74",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 6,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.ejb3.PingServlet2Session2EntityCollection",
+      "id": "75",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 7,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.3"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServletWriter",
+      "id": "76",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 1,
+        "num_ext_dependency": "",
+        "utility_type": "shared_view"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.jsf.MarketSummaryJSF",
+      "id": "77",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 20,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingJDBCRead2JSP",
+      "id": "78",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 6,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.1",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.ejb3.PingServlet2Entity",
+      "id": "79",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 6,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingJDBCRead",
+      "id": "80",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 6,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.1",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingManagedExecutor",
+      "id": "81",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 1,
+        "num_ext_dependency": "",
+        "utility_type": "utility"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServlet31AsyncRead$ReadListenerImpl",
+      "id": "82",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 2,
+        "num_ext_dependency": "",
+        "utility_type": "utility"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.ejb3.PingServlet2SessionLocal",
+      "id": "83",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 7,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.util.TradeConfig",
+      "id": "84",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 242,
+        "used_to": 11,
+        "num_ext_dependency": "",
+        "utility_type": "shared_util"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
+      "id": "85",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 10,
+        "used_to": 195,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.1",
+          "cluster.2",
+          "cluster.3",
+          "cluster.4",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.jsf.QuoteData",
+      "id": "86",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 8,
+        "used_to": 2,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServlet2Include",
+      "id": "87",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 2,
+        "num_ext_dependency": "",
+        "utility_type": "shared_view"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.jsf.TradeActionProducer",
+      "id": "88",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 1,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServlet31AsyncRead",
+      "id": "89",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 2,
+        "used_to": 1,
+        "num_ext_dependency": "",
+        "utility_type": "utility"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.direct.TradeDirect",
+      "id": "90",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 19,
+        "used_to": 230,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.1",
+          "cluster.2",
+          "cluster.3",
+          "cluster.4",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.beans.MarketSummaryDataBean",
+      "id": "91",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 12,
+        "used_to": 23,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.1",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingJSONP",
+      "id": "92",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 2,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.util.KeyBlock$KeyBlockIterator",
+      "id": "93",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 10,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingBean",
+      "id": "94",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 8,
+        "used_to": 0,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.util.FinancialUtils",
+      "id": "95",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 20,
+        "used_to": 3,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.1",
+          "cluster.3"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.util.MDBStats",
+      "id": "96",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 8,
+        "used_to": 10,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingUpgradeServlet$Listener",
+      "id": "97",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 2,
+        "used_to": 8,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.util.Log",
+      "id": "98",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 443,
+        "used_to": 4,
+        "num_ext_dependency": "",
+        "utility_type": "shared_util"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.ejb3.PingServlet2TwoPhase",
+      "id": "99",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 6,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.ejb3.MarketSummarySingleton",
+      "id": "100",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 13,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.3",
+          "cluster.5"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.util.WebSocketJMSMessage",
+      "id": "101",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 2,
+        "used_to": 0,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.util.TimerStat",
+      "id": "102",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 30,
+        "used_to": 0,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServlet2DB",
+      "id": "103",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 3,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.websocket.MarketSummaryWebSocket",
+      "id": "104",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 23,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServlet2Servlet",
+      "id": "105",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 3,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingJSONP$1",
+      "id": "106",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 1,
+        "used_to": 1,
+        "num_ext_dependency": ""
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServlet",
+      "id": "107",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 1,
+        "num_ext_dependency": "",
+        "utility_type": "shared_view"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.ejb3.PingServlet2Session2CMROne2One",
+      "id": "108",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 5,
+        "num_ext_dependency": "",
+        "original_cluster_assignment": [
+          "cluster.0",
+          "cluster.4"
+        ]
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServlet2JNDI",
+      "id": "109",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 0,
+        "used_to": 1,
+        "num_ext_dependency": "",
+        "utility_type": "shared_view"
+      }
+    },
+    {
+      "entity_type": "class",
+      "label": "com.ibm.websphere.samples.daytrader.web.prims.PingServlet31Async",
+      "id": "110",
+      "description": "",
+      "properties": {
+        "technical_type": "",
+        "business_type": "",
+        "used_by": 2,
+        "used_to": 2,
+        "num_ext_dependency": "",
+        "utility_type": "utility"
+      }
+    },
+    {
+      "entity_type": "table",
+      "label": "orderejb",
+      "id": "111",
+      "description": "",
+      "properties": {
+        "used_by": 2,
+        "used_to": 2,
+        "crud_operations": ""
+      }
+    },
+    {
+      "entity_type": "table",
+      "label": "quoteejb",
+      "id": "112",
+      "description": "",
+      "properties": {
+        "used_by": 2,
+        "used_to": 2,
+        "crud_operations": ""
+      }
+    },
+    {
+      "entity_type": "table",
+      "label": "holdingejb",
+      "id": "113",
+      "description": "",
+      "properties": {
+        "used_by": 2,
+        "used_to": 2,
+        "crud_operations": ""
+      }
+    },
+    {
+      "entity_type": "table",
+      "label": "accountprofileejb",
+      "id": "114",
+      "description": "",
+      "properties": {
+        "used_by": 2,
+        "used_to": 2,
+        "crud_operations": ""
+      }
+    },
+    {
+      "entity_type": "table",
+      "label": "accountejb",
+      "id": "115",
+      "description": "",
+      "properties": {
+        "used_by": 2,
+        "used_to": 2,
+        "crud_operations": ""
+      }
+    }
+  ]
+}
