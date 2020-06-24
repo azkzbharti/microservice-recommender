@@ -235,6 +235,24 @@ if __name__ == "__main__":
 	for i in del_index:
 		del seed_mapping[i]
 
+	#Checking for duplicates of seeds
+	all_seeds_temp = []
+	for i in seed_mapping:
+		all_seeds_temp += seed_mapping[i]
+
+	duplicate_temp = {}
+	for i in all_seeds_temp:
+		if i not in duplicate_temp:
+			duplicate_temp[i] = 0
+		duplicate_temp[i] += 1
+
+	for i in duplicate_temp:
+		if duplicate_temp[i] > 1:
+			for j in seed_mapping:
+				if len(seed_mapping[j]) > 1:
+					if i in seed_mapping[j]:
+						seed_mapping[j].remove(i)
+
 	edit_information["seeds"] = seed_mapping
 	print (edit_information)
 	with open(args.editInfo, 'w') as f:

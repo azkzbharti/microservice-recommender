@@ -199,5 +199,5 @@ if __name__ == "__main__":
 		graph1 = json.load(json_file)
 
 	with open(args.outFile, 'w') as f:
-		json.dump(graph1, f)
+		json.dump(graph, f)
 
