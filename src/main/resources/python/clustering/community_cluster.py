@@ -138,12 +138,14 @@ def remove_duplicates(G, communities,delta):
 							deleted[i] = 1
 							for node in comm:
 								node2com[node].remove(i)
+	store_delete = []
 	for i in range(len(communities)):
 		if deleted.get(i,0)==1:
 			communities[i] = []
+			store_delete.append(i)
 
 	communities = filter(lambda c: c!=[], communities) # Discard empty communities
-	return communities
+	return communities, store_delete
 
 def neighbor_inflation(G,seeds):
 	# Seed = union(seedNode, egonet(seedNode))
@@ -217,6 +219,7 @@ if __name__ == "__main__":
 	parser.add_argument('--visFilePath')
 	parser.add_argument('--filterFilePath')
 	parser.add_argument('--serviceEntry')
+	parser.add_argument('--editInfo')
 	
 
 	# parser.add_argument('graph_file',type=str,help='Input Graph File Path')
@@ -278,7 +281,15 @@ if __name__ == "__main__":
 	print ("Seed Expansion Finished.\n")
 	print ("Initiating removal of near duplicate communities.")
 
-	communities = remove_duplicates(G,communities,args.delta)
+	communities, store_delete = remove_duplicates(G,communities,args.delta)
+	if args.editInfo is not None:
+		# store_delete.append(1000)
+		if store_delete:
+			with open(args.editInfo) as json_file:
+				del_info = json.load(json_file)
+				del_info['delete'] = store_delete
+			with open(args.editInfo, 'w') as f:
+				json.dump(del_info, f)
 	print ("Duplicate communities removed\n")
 
 	communities = list(communities)
@@ -1374,27 +1385,16 @@ if __name__ == "__main__":
 	with open(args.outPutFilePath, 'w') as f:
 		json.dump(data, f)
 	print ("Saved")
-	# exit()
+
 	"""
-	For visualisation
-	"""
+	For visualisation file for older d3 format (Uncomment this entire code)
+
 	new_communities = []
 	for i in save_communities:
 		temp = []
 		for j in i:
 			temp.append(j.split('.')[-1])
 		new_communities.append(temp)
-
-
-	# for i in new_communities:
-	# 	print (i)
-	# 	print (len(i))
-	# 	print ('\n')
-	# 	print ('\n')
-	# 	print ('\n')
-	# print (len(G.nodes()))
-	# exit()
-# -------
 
 	counter = 0
 	cluster_mapping = {}
@@ -1503,3 +1503,4 @@ if __name__ == "__main__":
 	# except Exception as error:
 	# 	print("ERR: "+repr(error))  
 	# 	sys.exit(-1)
+	"""
