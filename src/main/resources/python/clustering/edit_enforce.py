@@ -19,6 +19,7 @@ Code for re-enforcing user edits
 import sys
 import argparse
 import json
+import time
 from datetime import datetime
 
 def find_node_id(name,data):
@@ -52,7 +53,6 @@ def create_new(inp, label, data):
 	new_temp_dict["label"] = label
 
 	new_temp_dict["id"] = str(int(time.time()*10**16))
-	ids.append(new_temp_dict["id"])
 	# counter += 1
 	new_temp_dict["type"] = label
 	new_temp_dict["description"] = ""
