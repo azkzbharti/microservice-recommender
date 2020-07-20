@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
  
 /**
  * This utility extracts files and directories of a standard zip file to
@@ -110,6 +112,42 @@ public class UnzipUtility {
 				}
     	}
     }
+    
+    public void checkWarAndExtract(String earChildrenPath) throws IOException {
+    	File dir = new File(earChildrenPath);
+    	
+    	GenericExtFilter filter = new GenericExtFilter(".war");
+
+		
+		if(dir.isDirectory()==false){
+			System.out.println("Directory does not exists : " + earChildrenPath);
+			return;
+		}
+		
+		// list out all the file name and filter by the extension
+		String[] list = dir.list(filter);
+
+		for (String file : list) {
+			String temp = new StringBuffer(earChildrenPath).append(File.separator)
+					.append(file).toString();
+			System.out.println("file : " + temp);
+			unzip(temp, earChildrenPath);
+		}
+    }
+    
+    // inner class, generic extension filter
+ 	public class GenericExtFilter implements FilenameFilter {
+
+ 		private String ext;
+
+ 		public GenericExtFilter(String ext) {
+ 			this.ext = ext;
+ 		}
+
+ 		public boolean accept(File dir, String name) {
+ 			return (name.endsWith(ext));
+ 		}
+ 	}
     
     
 }
