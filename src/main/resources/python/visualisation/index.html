@@ -593,6 +593,11 @@
 				// Calling D3 visualisation given the processed visualisation data
 				// Input: D3 formatted visualisation data
 
+				// If the data is an output of the microservice API then there
+				// will be a Results key wrapping the actual data - remove it.
+				if (data["Result"])
+					data = data["Result"]
+
 				processed_data = function_to_proces(data);
 				// for (const k in i["nodes"]){
 				// 		if (j != k){
