@@ -69,6 +69,7 @@ public class Constants {
 	public static final String MSR_PROPERTIES = "msr.properties";
 	public static final String STOP_WORDS_FILE = "stop_words.txt";
 	public static final String SEEDS_FILE = "seeds.txt";
+	public static final String PMI_USER_ENTRY_CUSTOM_FILE = "user-entry-points.txt";
 	
 	public static final String CMA_ANALYZING_STATUS_MSG = "Analyzing";
 	public static final String CMA_ANALYZED_STATUS_MSG = "Analyzed";
