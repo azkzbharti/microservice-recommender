@@ -137,8 +137,14 @@ if __name__ == "__main__":
 		with open(args.inPutFilePath) as json_file:
 			data = json.load(json_file)
 
-		with open(args.transactionName) as json_file:
-			trasaction_file = json.load(json_file)
+		if not args.transactionName:
+			transaction_flag = 0
+		else:
+			transaction_flag = 1
+
+		if transaction_flag == 1:
+			with open(args.transactionName) as json_file:
+				trasaction_file = json.load(json_file)
 
 		count_node = 0
 		count_edge = 0
@@ -160,13 +166,14 @@ if __name__ == "__main__":
 
 		# Making Transaction Nodes
 		table_names = set()
-		for i in trasaction_file:
-			for j in i["transaction"]:
-				name = j["table"]
-				table_names.add(name)
+		if transaction_flag == 1:
+			for i in trasaction_file:
+				for j in i["transaction"]:
+					name = j["table"]
+					table_names.add(name)
 
-		for i in list(table_names):
-			schema["nodes"].append(make_table(i))
+			for i in list(table_names):
+				schema["nodes"].append(make_table(i))
 		
 		# Making Edges
 
@@ -202,15 +209,16 @@ if __name__ == "__main__":
 		make_t_edge["relationship"] = []
 		schema["edges"].append(make_t_edge)
 
-		for i in trasaction_file:
-			for j in i["transaction"]:
-				end = j["table"]
-				for k in j["callgraph"]:
-					val_k = ".".join(k.split(".")[:-1])
-					val_end = end
-					if (find_node_id(val_k), find_node_id(val_end)) not in edge_list:
-						make_t_edge["relationship"].append(make_edge_func(find_node_id(val_k), find_node_id(val_end),"1"))
-						edge_list.append((find_node_id(val_k), find_node_id(val_end)))
+		if transaction_flag == 1:
+			for i in trasaction_file:
+				for j in i["transaction"]:
+					end = j["table"]
+					for k in j["callgraph"]:
+						val_k = ".".join(k.split(".")[:-1])
+						val_end = end
+						if (find_node_id(val_k), find_node_id(val_end)) not in edge_list:
+							make_t_edge["relationship"].append(make_edge_func(find_node_id(val_k), find_node_id(val_end),"1"))
+							edge_list.append((find_node_id(val_k), find_node_id(val_end)))
 
 		
 
