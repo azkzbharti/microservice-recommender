@@ -22,6 +22,7 @@ import networkx as nx
 from networkx.algorithms import community
 import pickle
 import re
+import logging
 
 def node_used_to(node):
 	"""
@@ -119,6 +120,9 @@ def make_table(current_node_name):
 	make_node["properties"]["crud_operations"] = ""
 	return make_node
 
+logging.basicConfig(filename="clustering.log", level=logging.INFO)
+logging.info('This code run')
+
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--inPutFilePath')
@@ -128,6 +132,7 @@ if __name__ == "__main__":
 	parser.add_argument('--filterFilePath')
 	
 	args = parser.parse_args()
+	logging.info(args.transactionName)
 
 	try: 
 		with open(args.filterFilePath) as f:
@@ -137,7 +142,7 @@ if __name__ == "__main__":
 		with open(args.inPutFilePath) as json_file:
 			data = json.load(json_file)
 
-		if not args.transactionName:
+		if not args.transactionName or args.transactionName == "\"\"":
 			transaction_flag = 0
 		else:
 			transaction_flag = 1
