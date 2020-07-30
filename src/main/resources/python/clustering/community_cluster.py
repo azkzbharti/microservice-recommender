@@ -33,15 +33,28 @@ import os
 import pickle
 import re
 import signal
+import logging
+import time
+
+# logging.basicConfig(filename="/root/appmod/msr/deploy/python/clustering/seed_expansion2.log", level=logging.INFO)
+logging.basicConfig(filename="seed_expansion.log", level=logging.INFO)
+logging.info('This code run')
 
 INF = float('inf')
 
 def signal_handler(signum, frame):
+    logging.info("This was triggered")
     raise Exception("Timed out!")
 
+time_lim = int(os.getenv('MAX_TIME', default = 3600)) #60 mins
+seed_limit = int(os.getenv('SEED_LIMIT', default = 160))
+
+logging.info("This is the time limit (seconds): "+str(time_lim))
+logging.info("This is the seed limit: "+str(seed_limit))
+
 signal.signal(signal.SIGALRM, signal_handler)
-signal.alarm(7200) #120 mins
-# signal.alarm(180) #60 secs
+# signal.alarm(7200) #120 mins
+signal.alarm(time_lim) #60 secs
 
 def pprgrow(args):
 	seed,G,stopping,nruns,alpha,maxexpand,fast = args
@@ -94,6 +107,7 @@ def growclusters(G,seeds,expansion,stopping,nworkers,nruns,alpha,maxexpand,fast)
 
 	if nworkers==1:
 		for i in range(ns):
+			logging.info(i)
 			seed = seeds[i]
 			if expansion=='ppr':
 				curset = pprgrow((seed,G,stopping,nruns,alpha,maxexpand,fast))
@@ -267,6 +281,7 @@ if __name__ == "__main__":
 	G = nx.read_edgelist(args.inPutFilePath)
 
 	print ("Graph Loaded")
+	logging.info("Graph Loaded")
 	if not os.path.exists(args.seed_file):
 		default_seeds = ["com.ibm.websphere.samples.daytrader.beans.MarketSummaryDataBean","com.ibm.websphere.samples.daytrader.entities.OrderDataBean","com.ibm.websphere.samples.daytrader.entities.AccountProfileDataBean","com.ibm.websphere.samples.daytrader.beans.RunStatsDataBean"]
 		with open(args.seed_file, 'w') as f:
@@ -278,16 +293,23 @@ if __name__ == "__main__":
 		seeds = [x.strip() for x in seeds]
 		seeds = [[x.split(",")[0]] for x in seeds]
 		print ("Seeds Loaded\n")
-	print (seeds)
-	# exit()
+		logging.info("Seeds Loaded")
+	seeds = seeds[:seed_limit]
+	logging.info("Number of seeds"+str(len(seeds)))
 	# print seeds
 	if args.ninf==True:
 		seeds = neighbor_inflation(G,seeds)
+
 	print ("Initiating Seed Expansion------")
+	logging.info("Initiating Seed Expansion")
+	start = time.process_time()
 	communities = growclusters(G,seeds,args.expansion,args.stopping,args.nworkers,args.nruns,args.alpha,args.maxexpand,False)
+	logging.info(time.process_time() - start)
 
 	print ("Seed Expansion Finished.\n")
+	logging.info("Seed Expansion Finished")
 	print ("Initiating removal of near duplicate communities.")
+	logging.info("Initiating removal of near duplicate communities.")
 
 	communities, store_delete = remove_duplicates(G,communities,args.delta)
 	if args.editInfo is not None:
@@ -299,18 +321,20 @@ if __name__ == "__main__":
 			with open(args.editInfo, 'w') as f:
 				json.dump(del_info, f)
 	print ("Duplicate communities removed\n")
+	logging.info("Duplicate communities removed")
 
 	communities = list(communities)
 	print ("Writing communities to output file:")
+	logging.info("Setting up for output")
 	save_communities = []
 
 	count = 0
 	for c in communities:
-		print (len(c))
+		#print (len(c))
 		count += 1
 		# save_communities.append([x.encode('UTF8') for x in c])
 		save_communities.append([x for x in c])
-	print (save_communities)
+	#print (save_communities)
 	# print (type(save_communities[0][0]))
 	# exit()
 	check_arr = []
@@ -332,7 +356,7 @@ if __name__ == "__main__":
 
 	print ("this is ",count)
 	print ("Here",len(G.nodes()))
-
+	logging.info("Seed Expansion Complete")
 	try:
 		"""
 		[Processing 1] Closure Detection
@@ -340,6 +364,7 @@ if __name__ == "__main__":
 		- If there are networks (paths) that are linked to only one microservice and no other classes (unassigned or other classes) then add
 		  that to respective microservice through closure detection
 		"""
+		logging.info(data.keys())
 		for i in data["edges"]:
 			if i["type"] == "inter_class_connections":
 				edges = i["relationship"]
@@ -1397,6 +1422,7 @@ if __name__ == "__main__":
 		
 	except Exception as msg:
 		print ("Timed out!")
+		logging.info("Timed out information!")
 		"""Save seed-expansion mid way"""
 		data["clusters"] = []
 		counter = 0
@@ -1475,6 +1501,10 @@ if __name__ == "__main__":
 				new_temp_dict["nodes"].append(i["id"])
 		data["clusters"].append(new_temp_dict)
 		
+		logging.info(args.outPutFilePath)
+		logging.info(len(new_temp_dict["nodes"]))
+		logging.info("This was saved instead")
+		print ("This was saved instead")
 		with open(args.outPutFilePath, 'w') as f:
 			json.dump(data, f)
 
