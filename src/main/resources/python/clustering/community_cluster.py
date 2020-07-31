@@ -1384,6 +1384,7 @@ if __name__ == "__main__":
 		new_temp_dict["metrics"]["structural_cohesivity"] = ""
 		
 		new_temp_dict["nodes"] = []
+		new_temp_dict["transactions"] = []
 		for i in dead_code:
 			for j in i:
 				new_temp_dict["nodes"].append(find_node_id(j,data))
