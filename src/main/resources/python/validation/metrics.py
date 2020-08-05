@@ -129,3 +129,21 @@ class Metrics(object):
 		cohesion, coupling = compute_cohesion_coupling(clusters, edge)
 
 		return cohesion-coupling
+
+	@staticmethod
+	def get_ned(data, low_lim=5, high_lim=100):
+		total_length = 0
+		for i in data["nodes"]:
+			if i["entity_type"] == 'class':
+				total_length += 1
+				
+		valid_len = 0
+		comm = []
+		count = 0
+		comm_data = data["clusters"]
+		for i in comm_data:
+			if len(i["nodes"]) >= low_lim and len(i["nodes"]) <= high_lim:
+				valid_len += len(i["nodes"])
+
+		total_score = valid_len / total_length
+		return total_score

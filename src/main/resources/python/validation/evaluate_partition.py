@@ -24,6 +24,11 @@ conceptual_independence_key = "conceptual_independence"
 modularity_key              = "modularity"
 structural_cohesivity_key   = "structural_cohesivity"
 structural_modularity_key   = "structural_modularity"
+ned_key                     = "ned"
+connection_maintained_key   = "single_connections_maintained"
+inconsistency_prop_key      = "inconsistency_proportion"
+avg_microservice_size_key   = "avg_microservice_size"
+avg_interface_count_key     = "avg_interface_count"
 
 class PartitionEvaluator(object):
     """
@@ -31,8 +36,9 @@ class PartitionEvaluator(object):
     Refer to the end of the file for example usage
     """
 
-    def __init__(self, partition_file, icu_file=None, callgraph_file=None, entrypoint_file=None, output_file=None):
+    def __init__(self, partition_file, icu_file=None, callgraph_file=None, entrypoint_file=None, output_file=None, detail=False):
         self.output_file = output_file
+        self.detail = detail
 
         with open(partition_file) as json_file:
             self.data = json.load(json_file)
@@ -41,9 +47,11 @@ class PartitionEvaluator(object):
         print("Schema validated.")
 
         self.app = None
+        self.source_sink = None
         if icu_file is not None and callgraph_file is not None and entrypoint_file is not None:
-            print("Parsing ICU and Call graph .. ")
+            #print("Parsing ICU and Call graph .. ")
             self.app = Monolith(icu_file, callgraph_file, entrypoint_file)
+            self.source_sink = utils.extract_unique_usage_relations(self.app.icu)
 
     def evaluate_clusters(self):
         """
@@ -54,15 +62,21 @@ class PartitionEvaluator(object):
             return
 
         clusters, edges = utils.get_clusters_and_edges(self.data)
+        num_clusters = len(clusters)
 
         # Store evaluation results for each cluster here:
         evaluation_results = []
+
+        total_classes = 0.0
+        total_inconsistencies = 0.0
 
         # Get list of clusters
         for clusterid in clusters.keys():
             cm = clusters[clusterid]
             members = cm['classes']
             all_members = list(members)
+
+            total_classes += len(all_members)
 
             # Result and inconsistencies for this cluster
             result = {'clusterid':clusterid, 'members':all_members}
@@ -79,20 +93,21 @@ class PartitionEvaluator(object):
                 for j in all_idxs:  # this loop denotes all classes
                     if i == j:
                         continue
-                    if self.app.icu[i,j] > 0 or self.app.icu[j,i] > 0:
+                    if self.app.icu[i,j] > 0 or self.app.icu[j,i] > 0 or self.app.implements[i,j]>0 or self.app.implements[j,i]>0:
                         found_idxs.append(i)
                         break
             # From all classes, if we have not found some class in link with another class, we capture it
             missing_icu_link_ids = [i for i in all_idxs if i not in found_idxs]
             missing_icu_link_classes = [self.app.idx2icuclass[idx] for idx in missing_icu_link_ids]
-            #print("*** Classes in cluster", clusterid, "with no ICU link - Total:", len(missing_icu_link_ids), missing_icu_link_classes)
+            if self.detail:
+                print("*** Classes in cluster", clusterid, "with no ICU link - Total:", len(missing_icu_link_ids), missing_icu_link_classes)
             inconsistencies.append({'type':'ICU', 'classes':missing_icu_link_classes})
 
             ### Check for entrypoint link
             reverse_ep = utils.reverse_entrypoint(self.app.entrypoints)
 
             missing_ep_link_classes = []
-            for i, ci in enumerate(missing_icu_link_classes): # this loop denotes the class under consideration
+            for i, ci in enumerate(all_members): # this loop denotes the class under consideration
                 common_ep = 0
                 for j,cj in enumerate(all_members):  # this loop denotes all classes
                     if ci == cj:
@@ -107,20 +122,45 @@ class PartitionEvaluator(object):
                             break
                 if common_ep == 0:
                     missing_ep_link_classes.append(ci)
-            #print("Classes in this cluster with no entrypoints common with other classes:", len(missing_ep_link_classes), missing_ep_link_classes)
+            if self.detail:
+                print("+++ Classes in this cluster with no entrypoints common with other classes:", len(missing_ep_link_classes), missing_ep_link_classes)
             inconsistencies.append({'type':'EntryPoint', 'classes':missing_ep_link_classes})
+
+            icu_and_ep_inconsitencies = [x for x in missing_icu_link_classes if x in missing_ep_link_classes]
+            if self.detail:
+                print("Both missing:", icu_and_ep_inconsitencies)
+
+            num_inconsistencies = len(icu_and_ep_inconsitencies)
+            total_inconsistencies += num_inconsistencies
 
             # Add to this cluster's result
             result['inconsistencies'] = inconsistencies
             # Add this clnuster's result to the glocal result for all clusters
             evaluation_results.append(result)
 
-            ### TODO: Finally check if the classes occur in cooccurrence matrix (highly unlikely if they dont share entrypoint, but still)
-
         evaluation_result = {'evaluation_results':evaluation_results}
 
+        single_connections_maintained = utils.get_maintained_connections_proportion(clusters, self.source_sink, self.app.icuclass2idx)
+
+        evaluation_result[connection_maintained_key] = single_connections_maintained
+
+        inconsistency_prop = total_inconsistencies/total_classes
+        evaluation_result[inconsistency_prop_key] = inconsistency_prop
+
+        avg_size = total_classes/num_clusters
+
+        evaluation_result[avg_microservice_size_key] = avg_size
+
+        avg_interface_count = utils.get_interface_count(self.app, clusters)
+        evaluation_result["avg_interface_count_key"] = avg_interface_count
+        if self.detail:
+            print("Single connection maintained:", single_connections_maintained)
+            print("Total inconsistencies detected:", inconsistency_prop, "Total classes:", total_classes, "Inconsistent:", total_inconsistencies)
+            print("Average size:", avg_size)
+            print("Average Interface Count:", avg_interface_count)
+
+
         #print("Num clusters:", len(clusters))
-        #print(evaluation_result)
         return evaluation_result
 
     def compute_metrics(self):
@@ -132,13 +172,16 @@ class PartitionEvaluator(object):
         modularity = Metrics.get_modularity(self.data)
         structural_cohesivity = Metrics.get_structural_cohesivity(self.data)
         structural_modularity = Metrics.get_structural_modularity(self.data)
+        ned = Metrics.get_ned(self.data)
 
         self.result = { coverage_key : coverage,
                         conceptual_independence_key : conceptual_independence,
                         modularity_key : modularity,
                         structural_cohesivity_key : structural_cohesivity,
-                        structural_modularity_key : structural_modularity
+                        structural_modularity_key : structural_modularity,
+                        ned_key : ned
                     }
+        #TODO: avg microcluster size will come here, since it doesnt really depend on ICU etc
 
         if self.output_file is not None:
             with open(self.output_file, 'w') as f:
@@ -161,7 +204,7 @@ if __name__ == "__main__":
     icufile = None
     callgraphfile = None
     entrypointfile = None
-    print(len(sys.argv), "--")
+
     if len(sys.argv) > 2:
         outputfile = sys.argv[2]
     if len(sys.argv) == 6:
@@ -169,8 +212,16 @@ if __name__ == "__main__":
         callgraphfile = sys.argv[4]
         entrypointfile = sys.argv[5]
 
-    eval = PartitionEvaluator(partition_file=inputfile, output_file=outputfile, icu_file=icufile, callgraph_file=callgraphfile, entrypoint_file=entrypointfile)
+    DETAIL_MODE = True
+
+    eval = PartitionEvaluator(partition_file=inputfile,
+                                output_file=outputfile,
+                                icu_file=icufile,
+                                callgraph_file=callgraphfile,
+                                entrypoint_file=entrypointfile,
+                                detail=DETAIL_MODE)
+
     metrics = eval.compute_metrics()
     print("Result:", metrics)
     eval_result = eval.evaluate_clusters()
-    print("Evaluation:", eval_result)
+    #print("Evaluation:", eval_result)

@@ -230,7 +230,7 @@ def process_line_part(linepart):
     """
     linepart = linepart.strip().replace("\"", "")
 
-    parts = linepart.split()
+    parts = linepart.split("] ")
     if len(parts) > 2:
         return None
     annotation = None
@@ -243,8 +243,116 @@ def process_line_part(linepart):
     methodname = nodepath[-1]
     classname = ".".join(nodepath[:-1])
 
+    #print("----", nodename, methodname, classname, annotation)
+
     node =  Node(nodename, classname, methodname)
     if annotation is not None:
+        annotation = clean_annotation(annotation)
         node.add_annotation(annotation)
 
     return node
+
+def clean_annotation(annotation):
+    tx_index = annotation.find(", txid: ")
+    if tx_index > -1:
+        annotation = annotation[:tx_index]+"}"
+        lastfewchars = annotation[-10:]
+        paren_idx = lastfewchars.rfind("(")
+        if paren_idx > -1:
+            paren_idx = 10 - paren_idx
+            #print ("------", annotation, lastfewchars, paren_idx)
+            annotation = annotation[:-paren_idx] + "}"
+            #print ("after", annotation)
+    return annotation
+
+def extract_unique_usage_relations(icu, type=None):
+	"""
+	Constructs separate feature matrices for classes using or used by a single class
+	ICU convention is row-uses-col, so icu[r][c] = 1 if r is used by c
+	The type can be 'incoming', 'outgoing', 'both' or None which is same as 'both'
+	"""
+	incoming_relations = np.zeros_like(icu)
+	outgoing_relations = np.zeros_like(icu)
+
+	num_classes = icu.shape[0]
+	incoming = 0
+	outgoing = 0
+
+	for ridx in range(num_classes):
+		r = icu[ridx,:]
+		if np.sum(r>0) == 1:
+			incoming += 1
+			incoming_relations[ridx,:] = r
+
+	#print("Single Incoming found:", incoming)
+	if type == "incoming":
+		return incoming_relations
+
+	for cidx in range(num_classes):
+		c = icu[:,cidx]
+		if np.sum(c>0) == 1:
+			outgoing+=1
+			outgoing_relations[:,cidx] = c
+
+	#print("Single outgoing found:", outgoing)
+	if type == "outgoing":
+		return outgoing_relations
+
+	return incoming_relations + outgoing_relations
+
+def get_maintained_connections_proportion(clusters, single_usage_relations, class2idx):
+
+	member2clustermap = {}
+
+	for clusterid in clusters.keys():
+		cm = clusters[clusterid]
+		members = cm['classes']
+		all_members = list(members)
+		for m in all_members:
+			memberid = class2idx[m]
+			member2clustermap[memberid] = clusterid
+
+	num_classes = single_usage_relations.shape[0]
+	total_relations = 0.
+	found_relations = 0.
+
+	# We only look at the upper diagonal
+	for ridx in range(num_classes):
+		row_cluster = member2clustermap.get(ridx)
+		if row_cluster is None:
+			continue
+		for cidx in range(ridx, num_classes):
+			if single_usage_relations[ridx][cidx] == 1:
+				col_cluster = member2clustermap.get(cidx)
+				if col_cluster is None:
+					continue
+				total_relations += 1.0
+				if row_cluster == col_cluster:
+					found_relations += 1.0
+
+	return found_relations/total_relations
+
+def get_interface_count(app, clusters):
+
+	num_clusters = float(len(clusters))
+	global_interface_count = 0.
+
+	for clusterid in clusters.keys():
+		cluster_interface_count = 0.
+
+		cm = clusters[clusterid]
+		members = cm['classes']
+		all_members = list(members)
+		all_member_idxs = [app.icuclass2idx[m] for m in all_members]  # all classes in this cluster
+
+		for member_idx in all_member_idxs:
+			col = app.icu[:,member_idx]		# cofirm if it should be row or col, i think col is correct
+			for idx,value in enumerate(col):
+				if value > 0 and idx not in all_member_idxs:
+					# if the class is used by another class and that class is not from this cluster
+					# treat it as an interface and move on the next class
+					cluster_interface_count +=1
+					break
+		global_interface_count += cluster_interface_count
+
+	return global_interface_count / num_clusters
