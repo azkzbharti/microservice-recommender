@@ -492,12 +492,22 @@ public class EntityBeanAffinity {
 			}
 			acc.setClassName(tmp);
 		}
-		
+		//GS BEGIN ADDED July 27 2020 for cast/pmi
+		user_bo_input.add(".WLS");
+		user_bo_input.add(".NWLS");
+		//GS END ADDED July 27 2020 for cast/pmi
 		for(Map.Entry<String, List<String>> ep : ep_cg_map.entrySet()) {
 			String epname = ep.getKey();
 			System.out.println("entryPoint name from call_graph "+epname);
 			List<String> paths = ep.getValue();// each path is a comma separated string of strings
 			Set<String> ep_methods = epmap.get(epname);
+			//GS BEGIN ADDED July 27 2020 for cast/pmi
+			if (ep_methods ==null)
+			{
+				System.out.println("ep_methods null for="+epname);
+				continue;
+			}
+			//GS END ADDED July 27 2020 for cast/pmi
 			boolean usertermfnd=false;
 			for (String m:ep_methods) {
 				if(m.contains("<init>") || m.contains("jpa")) continue; //these are not important entry points
