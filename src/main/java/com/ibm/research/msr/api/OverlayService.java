@@ -10,6 +10,7 @@ package com.ibm.research.msr.api;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,6 +70,7 @@ public class OverlayService {
 					result.put("Result", partiton.getTransactionResult().get(Constants.TRANSACTIONS));	
 				}
 			}else{
+				result.put("Result", new JSONArray());
 				result.put("status", "No traansaction Data Available.");
 			}
 			

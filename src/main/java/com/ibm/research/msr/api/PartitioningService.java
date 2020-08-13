@@ -260,6 +260,13 @@ public class PartitioningService {
 	public static void peformDDDAnalysis(String projectId, MongoDatabase db, File projectPath, String rootPath, String type,
 			String tempFolder, File callGraphDotFile, File entryPointsJSONFile, File crudJSONFile,
 			File transactionsJSONFile) throws IOException, ParseException, FileNotFoundException {
+		
+		String trans_path  = "\"\"";
+		if(transactionsJSONFile.exists()) {
+			trans_path  = transactionsJSONFile.getAbsolutePath();
+		}
+		
+		
 		String outputFileName = tempFolder + File.separator + "businessslices.json";
 		String resultFolder = projectPath.getAbsolutePath() + File.separator + "ui" + File.separator + "data" + File.separator;		
 		String tempStoreFolder = projectPath.getAbsolutePath() + File.separator + "temp";
@@ -279,8 +286,7 @@ public class PartitioningService {
 		dddanalysis.runAnalysis(crudJSONFile.getAbsolutePath(), entryPointsJSONFile.getAbsolutePath(), outputFileName, userInputFilePath, seedFilePath);
 		System.out.println("END DDD Analysis");
 		
-		
-		APIUtilities.runCommunity(rootPath, communityClusterJSON, tempStoreFolder, icuPath, type, projectPath.getAbsolutePath(), viscommunityClusterJSON, transactionsJSONFile.getAbsolutePath(), entryPointsJSONFile.getAbsolutePath());
+		APIUtilities.runCommunity(rootPath, communityClusterJSON, tempStoreFolder, icuPath, type, projectPath.getAbsolutePath(), viscommunityClusterJSON, trans_path, entryPointsJSONFile.getAbsolutePath());
 		
 		//Make the data compatible
 				JSONParser microserviceCompatibility   = new JSONParser();
@@ -297,7 +303,7 @@ public class PartitioningService {
 
 				// Adding Transaction data
 				String cma_path    = communityClusterJSON;
-				String trans_path  = transactionsJSONFile.getAbsolutePath();
+				
 				
 				JSONParser parser_cma   = new JSONParser();
 				JSONParser parser_trans = new JSONParser();
@@ -305,21 +311,24 @@ public class PartitioningService {
 				BufferedReader bufferedReader = new BufferedReader(new FileReader(cma_path));
 				JSONObject cma  = (JSONObject) parser_cma.parse(bufferedReader);
 				
-				JSONArray transactions = (JSONArray) parser_trans.parse(new FileReader(trans_path));
 				
-				System.out.println("executing: analyze");
-				
-				JSONArray output = Ownership.analyze(cma, transactions);
-				
-				System.out.println("executing: revise");
-		        JSONObject revised_microservice = Ownership.revise(cma, output);
-		        
-		        try (Writer writer = new FileWriter(communityClusterJSON)) {
-		        	JSONObject revisedMicroserviceTemp = (JSONObject)revised_microservice.get("partition_result");
-		        	JSONObject revisedMicroserviceWrite = (JSONObject)revisedMicroserviceTemp.get("microservice");
-		        			
-		        	writer.write(revisedMicroserviceWrite.toJSONString());
-		        }
+				if(!trans_path.equals("\"\"")) {
+					JSONArray transactions = (JSONArray) parser_trans.parse(new FileReader(trans_path));
+					
+					System.out.println("executing: analyze");
+					
+					JSONArray output = Ownership.analyze(cma, transactions);
+					
+					System.out.println("executing: revise");
+			        JSONObject revised_microservice = Ownership.revise(cma, output);
+			        
+			        try (Writer writer = new FileWriter(communityClusterJSON)) {
+			        	JSONObject revisedMicroserviceTemp = (JSONObject)revised_microservice.get("partition_result");
+			        	JSONObject revisedMicroserviceWrite = (JSONObject)revisedMicroserviceTemp.get("microservice");
+			        			
+			        	writer.write(revisedMicroserviceWrite.toJSONString());
+			        }
+				}
 		        
 		JSONParser jsonParser = new JSONParser();
 		JSONObject jsonobject = new JSONObject();
@@ -333,10 +342,13 @@ public class PartitioningService {
 		InsertIntoPartitionQuery insertQuery = new InsertIntoPartitionQuery(db, clusters, logger);
 		insertQuery.execute();
 		
+		
+		clusters.set_id(new ObjectId()); //set new _id to avoid duplicate key error on update of existing in m2m_partitions collection 
 		InsertIntoPartitionHistoryQuery insertPartitionsHistoryQuery = new InsertIntoPartitionHistoryQuery(db, clusters, logger); //add an entry to history to revert in future
 		insertPartitionsHistoryQuery.execute();
 		
-		insertTransactionsToDB(projectId, transactionsJSONFile.getAbsolutePath());
+		if(!trans_path.equals("\"\""))
+			insertTransactionsToDB(projectId, trans_path);
 		
 
 		UpdateProjectStatusByProjectId updateProjQuery = new UpdateProjectStatusByProjectId(db, projectId, Constants.CMA_ANALYZED_STATUS_MSG, logger);

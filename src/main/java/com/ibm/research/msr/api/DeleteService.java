@@ -24,6 +24,7 @@ import com.ibm.research.msr.db.queries.base.DeleteManyQuery;
 import com.ibm.research.msr.utils.Constants.ProjectStatus;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.DeleteResult;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
@@ -44,7 +45,7 @@ public class DeleteService {
 
 	/**
 	 * This API is exposed for CMA integration.
-	 * It takes projectId as input and returns the transaction details of the monolith applciation. If the result is still in progress, it gives appropriate status code
+	 * It takes projectId as input and deletes all onboarded applciation details.
 	 * @param projectId
 	 * @return
 	 */
@@ -74,6 +75,9 @@ public class DeleteService {
 			query.execute();
 			
 			query = new DeleteManyQuery(db, "m2m_partitions_history", filterByProjId, logger);
+			query.execute();
+			
+			query = new DeleteManyQuery(db, "m2m_notes", filterByProjId, logger);
 			query.execute();
 		}
 		result.put("status", ProjectStatus.OK);	

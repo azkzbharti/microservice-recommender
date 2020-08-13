@@ -20,8 +20,8 @@ public class SelectEarliestPartitionsFromHistoryByProjectId extends FindManyQuer
 		super(db, "m2m_partitions_history", logger);
 		
 		Bson filter = Filters.eq("project_id", projectId);
-		Document sort = new Document().append("timeStampInMS", 1);
-		super.bind(filter, null, sort, 1);
+		Document sort = new Document().append("timeStampInMS", -1);
+		super.bind(filter, null, sort, -1);
 
 		logger.info("Binding to select the earliest paritions from history for project id:" + projectId);
 	}

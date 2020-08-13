@@ -1,0 +1,53 @@
+version: "3"
+
+services:
+  cma-mongo:
+    image: 'mongo:3.4-xenial'
+    hostname: cma-mongo
+    container_name: cma-mongo
+    restart: always
+    volumes:
+      - ~/data:/data/db
+    ports:
+      # TODO: Not nice since we are hard coding the host port here
+      - "27017:27017"
+    networks:
+      - cma_network
+
+  msr:
+    # Context is parent folder to allow the Dockerfile access to dependency peer repos
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.build
+    image: msr:latest
+    hostname: msr
+    depends_on:
+      - cma-mongo
+    ports:
+      # TODO: Not nice since we are hard coding the host port here
+      - 8081:8081
+    env_file:
+      # TODO: Not nice since we are keeping the same parameter in two different files: this docker-compose and the env file.
+      - env
+    volumes:
+      - ./tmp/volumes/cmaimport:/import
+    networks:
+      - cma_network
+
+  me:
+    image: trl/me
+    env_file:
+        - env
+    ports:
+        - "8084:8084"
+    restart: unless-stopped
+    networks:
+      - cma_network
+    volumes:
+      - ./tmp/volumes/cmaimport:/import
+
+# docker run -d -p 8084:8084 -v $PWD/tmp/volumes/cmaimport:/import --network cma-network trl/me
+
+networks:
+  cma_network:
+

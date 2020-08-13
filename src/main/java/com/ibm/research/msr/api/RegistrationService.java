@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ibm.research.appmod.cast.CAST_MSR_Interface;
 import com.ibm.research.msr.db.DatabaseConnection;
 import com.ibm.research.msr.db.dto.GitProject;
 import com.ibm.research.msr.db.dto.SourceProject;
@@ -35,10 +36,10 @@ import com.ibm.research.msr.db.queries.project.InsertIntoProjectQuery;
 import com.ibm.research.msr.db.queries.project.UpdateProjectStatusByProjectId;
 import com.ibm.research.msr.git.GitConnect;
 import com.ibm.research.msr.utils.Commons;
-import com.ibm.research.msr.utils.UnzipFiles;
-import com.ibm.research.msr.utils.UnzipUtility;
 import com.ibm.research.msr.utils.Constants;
 import com.ibm.research.msr.utils.Constants.ProjectStatus;
+import com.ibm.research.msr.utils.UnzipFiles;
+import com.ibm.research.msr.utils.UnzipUtility;
 import com.mongodb.client.MongoDatabase;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -411,31 +412,54 @@ public class RegistrationService {
 			}else { //for cast based .Net application intermediate 4 json files
 				String rootPath = project.getProjectLocation();
 				String tempFolder = rootPath + File.separator + "temp";
+				new File(tempFolder).mkdirs();
+				
+				String userEntryFile = project.getProjectLocation() + File.separator + Constants.PMI_USER_ENTRY_CUSTOM_FILE;
+				
 				try {
-				UnzipFiles.unzip(rootPath + File.separator + srcFile.getName(), tempFolder);
+					UnzipFiles.unzip(rootPath + File.separator + srcFile.getName(), project.getProjectLocation());
+					if(new File(userEntryFile).exists()) {
+						FileUtils.copyFileToDirectory(new File(userEntryFile), new File(tempFolder));
+					}
 				}catch (IOException ie) {
 					logger.info(srcFile.getName()+" failed with UnzipFiles. Try unzipUitlity");
 					APIUtilities.deleteDirectory(new File(project.getProjectLocation()), srcFile.getName());
-					UnzipUtility.unzip(rootPath + File.separator + srcFile.getName(),tempFolder);
+					UnzipUtility.unzip(rootPath + File.separator + srcFile.getName(), project.getProjectLocation());
+					if(new File(userEntryFile).exists()) {
+						FileUtils.copyFileToDirectory(new File(userEntryFile), new File(tempFolder));
+					}
 				}
 				
 				projID = new InsertIntoProjectQuery(db, project, logger).execute();
-				 
+				logger.info("projID for cast  --"+projID.toString()); 
 				// Creating files for community detection
 				File projectPath = new File(project.getProjectLocation());
 				String resultFolder = projectPath.getAbsolutePath() + File.separator + "ui" + File.separator + "data" + File.separator;		
 				new File(resultFolder).mkdirs();
 				
-				String entryPointFilePath = tempFolder + File.separator + "service.json";
-				String callGraphDotFilePath = tempFolder + File.separator + "callgraph.dot";
-				String crudPath = tempFolder + File.separator + "db.json";
-				String transactionFilePath = tempFolder + File.separator + "transaction.json";
-				
-				//DDD processing start
-				PartitioningService.peformDDDAnalysis(project.get_id().toString(), db, projectPath, rootPath, project.getCodeType(), tempFolder, new File(callGraphDotFilePath),
-						new File(entryPointFilePath), new File(crudPath), new File(transactionFilePath));
-				
-				
+				 Runnable r = new Runnable() {
+						public void run() {
+							try {
+								logger.info("call CAST_MSR_Interface  --");
+								CAST_MSR_Interface c=new CAST_MSR_Interface();
+								c.computeJSONs(rootPath, tempFolder);
+								
+								String entryPointFilePath = tempFolder + File.separator + "service.json";
+								String callGraphDotFilePath = tempFolder + File.separator + "callgraph.dot";
+								String crudPath = tempFolder + File.separator + "db.json";
+								String transactionFilePath = tempFolder + File.separator + "transaction.json";
+								
+								//DDD processing start
+								PartitioningService.peformDDDAnalysis(project.get_id().toString(), db, projectPath, rootPath, project.getCodeType(), tempFolder, new File(callGraphDotFilePath),
+										new File(entryPointFilePath), new File(crudPath), new File(transactionFilePath));
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					};
+					
+					Thread t = new Thread(r);
+					t.start(); // starts thread in background..
 			}
 			
 		 newProjJSON.put("projectID", projID.toString());	

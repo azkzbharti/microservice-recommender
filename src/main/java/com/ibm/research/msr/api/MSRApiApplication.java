@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Licensed Materials - Property of IBM
+ * Licensed Materials - Property of IBM
 * (c) Copyright IBM Corporation 2020. All Rights Reserved.
 *
 * Note to U.S. Government Users Restricted Rights:
@@ -50,7 +50,8 @@ public class MSRApiApplication {
 	  DataSize ds = DataSize.ofMegabytes(1000);
 	  factory.setMaxFileSize(ds);
 	  factory.setMaxRequestSize(ds);
-	  return factory.createMultipartConfig();
+	  MultipartConfigElement mce  = factory.createMultipartConfig();
+	  return mce;
 	}
 	 
 }

@@ -136,13 +136,7 @@
 	      <artifactId>org.eclipse.jgit</artifactId>
 	      <version>5.5.1.201910021850-r</version>
     	</dependency>
-		<dependency>
-			<groupId>appmod</groupId>
-			<artifactId>
-				dependency-migration-assistant-common
-			</artifactId>
-			<version>0.0.1</version>
-		</dependency>
+	
 
 		
 	</dependencies>
@@ -185,7 +179,7 @@
 				</executions> -->
 
 			</plugin>
-						<plugin>
+			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 
 				<configuration>

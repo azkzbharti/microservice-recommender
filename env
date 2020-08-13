@@ -1,0 +1,18 @@
+MSR_PORT=8081
+
+#### Env for Microservices Evaluator
+ME_PORT=8084
+# Can we remove this - this should be set within the dockerfile
+CODE2CRUD=/app/code2crud
+M2M_SERVER=localhost:$MSR_PORT
+
+#### Environment for MSR
+# Can we remove this - this should be set within the dockerfile
+PYTHON_HOME=python3
+DATA_API_PREFIX=cma-c2c
+DB_HOST=cma-mongo
+DB_PORT=27017
+DB_NAME=cmaprod
+#DB_USER=appmodAdmin
+#DB_PASSWORD=AppMod123
+

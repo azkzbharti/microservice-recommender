@@ -228,12 +228,6 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>appmod</groupId>
-      <artifactId>microservice-recommender</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpasyncclient</artifactId>
       <version>4.1.4</version>

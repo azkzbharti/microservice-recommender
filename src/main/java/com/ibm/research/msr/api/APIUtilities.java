@@ -289,8 +289,8 @@ public class APIUtilities {
 		String cmd = Util.getProperty("PYTHON_HOME") + " " + schemaPythonFile + " --inPutFilePath " + interclass
 				+ " --outPutFilePath " + outputJSONFile + " --graphInputForSeed " + graphInputForSeed + " --transactionName " + transactionFilePath  + " --filterFilePath "+filterFile;
 		try {
+			System.out.println(cmd);
 			Runtime rt = Runtime.getRuntime();
-
 			// generate the clusters
 			Process proc = rt.exec(cmd);
 			InputStream stderr = proc.getErrorStream();

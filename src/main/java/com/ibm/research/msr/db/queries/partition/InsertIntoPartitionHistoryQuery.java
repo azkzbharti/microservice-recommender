@@ -14,7 +14,7 @@ public class InsertIntoPartitionHistoryQuery extends InsertOneQuery{
 		super(db, "m2m_partitions_history", logger);
 
 		super.bind(partition.toDocument(), null);
-		logger.info("Binding to insert updated partition: " + partition.getPartitionType()+  "for project id: " 
+		logger.info("Binding to insert partition : " + partition.getPartitionType()+  " for project id: " 
 				+ partition.getProjectId() + "into the partitions history collection.");
 	}
 }

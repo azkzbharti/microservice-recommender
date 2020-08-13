@@ -2,13 +2,11 @@ package com.ibm.research.msr.utils;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
  
 /**
  * This utility extracts files and directories of a standard zip file to
@@ -28,62 +26,36 @@ public class UnzipUtility {
      * @param destDirectory
      * @throws IOException
      */
-    public static void unzip(String zipFilePath, String destDirectory) {
+    public static void unzip(String zipFilePath, String destDirectory) throws IOException {
         File destDir = new File(destDirectory);
         if (!destDir.exists()) {
             destDir.mkdir();
         }
         ZipInputStream zipIn = null;
-		try {
-			zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
-		} catch (FileNotFoundException e) {
-			System.out.println(" Unable to read zipFile");
-			e.printStackTrace();
-			return;
-		}
-        ZipEntry entry;
-		try {
-			entry = zipIn.getNextEntry();
-		} catch (IOException e) {
-			System.out.println(" No entry found in zip ");
-			e.printStackTrace();
-			return;
-		}
-        // iterates over entries in the zip file
-        while (entry != null) {
-            String filePath = destDirectory + File.separator + entry.getName();
-            if (!entry.isDirectory()) {
-                // if the entry is a file, extracts it
-                try {
-					extractFile(zipIn, filePath);
-				} catch (Exception e) {
-					System.out.println(" Unable to extract file" + filePath);
-					e.printStackTrace();
-				}
-            } else {
-                // if the entry is a directory, make the directory
-                File dir = new File(filePath);
-                dir.mkdir();
-            }
-            try {
-				zipIn.closeEntry();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-            try {
-				entry = zipIn.getNextEntry();
-			} catch (IOException e) {
-				System.out.println(" No entry found in zip ");
-				e.printStackTrace();
-				return;
-			}
-        }
         try {
-			zipIn.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	        zipIn 	= new ZipInputStream(new FileInputStream(zipFilePath));
+	        ZipEntry entry = zipIn.getNextEntry();
+	        // iterates over entries in the zip file
+	        while (entry != null) {
+	            String filePath = destDirectory + File.separator + entry.getName();
+	//            System.out.println(filePath);
+	            if (!entry.isDirectory()) {
+	                // if the entry is a file, extracts it
+	                extractFile(zipIn, filePath);
+	            } else {
+	                // if the entry is a directory, make the directory
+	                File dir = new File(filePath);
+	                dir.mkdir();
+	            }
+	            zipIn.closeEntry();
+	            entry = zipIn.getNextEntry();
+	        }
+        }catch(Exception e) {
+        	System.err.println("Error in reading input. " + e.getMessage());
+        }finally {
+        	if (zipIn != null)
+        		zipIn.close();
+        }
     }
     /**
      * Extracts a zip entry (file entry)
@@ -91,26 +63,23 @@ public class UnzipUtility {
      * @param filePath
      * @throws IOException
      */
-    private static void extractFile(ZipInputStream zipIn, String filePath) {
+    private static void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
     	BufferedOutputStream bos = null;
-    	try {
-	    	System.out.println("Extracting File: " + filePath);
-	        bos = new BufferedOutputStream(new FileOutputStream(filePath));
+        try{
+        	bos = new BufferedOutputStream(new FileOutputStream(filePath));
+	        
 	        byte[] bytesIn = new byte[BUFFER_SIZE];
 	        int read = 0;
 	        while ((read = zipIn.read(bytesIn)) != -1) {
 	            bos.write(bytesIn, 0, read);
 	        }
-    	}catch(Exception e) {
-    		System.err.println("Error reading file. " + e.getMessage());
-    	} finally {
-    		if(bos!=null)
-				try {
-					bos.close();
-				} catch (IOException e) {
-					System.err.println("Exception while closing file handle. " + e.getMessage());
-				}
-    	}
+	        
+        }catch(Exception e) {
+        	System.err.println("Error extracting file. " + e.getMessage());
+        }finally {
+        	if (bos != null)
+        		bos.close();
+        }
     }
     
     public void checkWarAndExtract(String earChildrenPath) throws IOException {
@@ -135,7 +104,16 @@ public class UnzipUtility {
 		}
     }
     
-    // inner class, generic extension filter
+    public static void main(String sa[]) {
+    	try {
+			new UnzipUtility().checkWarAndExtract("/Users/srikanth/Desktop/hybrid-cloud/workspace/microservice-recommender-api/src/main/output/temp/apps/source/5dde159bff0b8b4150ff2d1a");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+ // inner class, generic extension filter
  	public class GenericExtFilter implements FilenameFilter {
 
  		private String ext;
@@ -148,6 +126,5 @@ public class UnzipUtility {
  			return (name.endsWith(ext));
  		}
  	}
-    
     
 }

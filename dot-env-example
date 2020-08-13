@@ -1,0 +1,7 @@
+PYTHON_HOME=python3
+DATA_API_PREFIX=cma-c2c
+DB_HOST=cma-mongo
+DB_PORT=27017
+DB_NAME=cmaprod
+#DB_USER=appmodAdmin
+#DB_PASSWORD=AppMod123
