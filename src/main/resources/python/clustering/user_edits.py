@@ -105,17 +105,20 @@ if __name__ == "__main__":
 	edit_information = {}
 
 	# Unasigned Group
-	# o_list = e_list = []
-	# for i in original_clusters:
-	# 	if i['type'] == 'unassigned_group':
-	# 		o_list = i
-	# for i in edited_clusters:
-	# 	if i['type'] == 'unassigned_group':
-	# 		e_list = i
-	# unassign_edit_list = compare_groups(o_list,e_list)
-	# unassign_edit_list = [find_node(x, original_data) for x in unassign_edit_list]
-	# if unassign_edit_list:
-	# 	edit_information["unassigned_group"] = unassign_edit_list
+	o_list = e_list = []
+	for i in original_clusters:
+		if i['type'] == 'unassigned_group':
+			o_list = i
+	for i in edited_clusters:
+		if i['type'] == 'unassigned_group':
+			e_list = i
+	unassign_edit_list = compare_groups(o_list,e_list)
+	unassign_edit_list = [find_node(x, original_data) for x in unassign_edit_list]
+	for j in unassign_edit_list:
+		if j in all_seeds:
+			all_seeds.remove(j)
+	if unassign_edit_list:
+		edit_information["unassigned_group"] = unassign_edit_list
 
 	#Utility Group
 	o_list = e_list = []
@@ -187,7 +190,7 @@ if __name__ == "__main__":
 	deleted_ms = set(o_ms_ids) - set(e_ms_ids)
 	added_ms = set(e_ms_ids) - set(o_ms_ids)
 	common_ms = set(o_ms_ids).intersection(e_ms_ids)
-	print (deleted_ms, added_ms, common_ms)
+	print ("Deleted: ",deleted_ms, "Added: ",added_ms,"Common: ", common_ms)
 
 	# For common microservices
 	seed_mapping = {}
