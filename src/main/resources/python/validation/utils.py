@@ -330,7 +330,7 @@ def get_maintained_connections_proportion(clusters, single_usage_relations, clas
 				if row_cluster == col_cluster:
 					found_relations += 1.0
 
-	return found_relations/total_relations
+	return found_relations/total_relations, total_relations
 
 def get_interface_count(app, clusters):
 
@@ -356,3 +356,37 @@ def get_interface_count(app, clusters):
 		global_interface_count += cluster_interface_count
 
 	return global_interface_count / num_clusters
+
+def get_chattiness(app, clusters):
+
+	total_chattiness = 0
+
+	for c_i in clusters.keys():
+
+		members_i = list(clusters[c_i]['classes'])
+		member_idxs_i = [app.icuclass2idx[m] for m in members_i]
+
+		for c_j in clusters.keys():
+			if c_i == c_j:
+				continue
+			members_j = list(clusters[c_j]['classes'])
+			member_idxs_j = [app.icuclass2idx[m] for m in members_j]
+
+			filtered_members_idxs_i = [idx for idx in member_idxs_i if idx not in member_idxs_j]
+			filtered_members_idxs_j = [idx for idx in member_idxs_j if idx not in member_idxs_i]
+
+			num_pairs = len(filtered_members_idxs_i) * len(filtered_members_idxs_j)
+			chat_count = 0.0
+			for i in filtered_members_idxs_i:
+				for j in filtered_members_idxs_j:
+					if app.icu[i,j] > 0 or app.icu[j,i] > 0:
+						chat_count += 1.0
+			chattiness = chat_count/num_pairs
+			#print("---", c_i, chattiness, chat_count, num_pairs)
+			total_chattiness += chattiness
+
+	num_clusters = len(clusters.keys())
+	denominator = num_clusters * (num_clusters - 1) # all pairs of clusters
+	chattiness_score = total_chattiness / denominator
+
+	return chattiness_score

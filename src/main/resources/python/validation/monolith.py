@@ -101,7 +101,7 @@ class Monolith(object):
             c_idx = self.icuclass2idx[classname]
             parent = classdata.get("superClass")
             interfaces = classdata.get("implementedInterfaces")
-            if parent is not None and parent[:4] != "java":
+            if parent is not None and parent[:4] != "java" and len(parent) > 3:
                 parentidx = self.icuclass2idx[parent]
                 self.implements[c_idx][parentidx] = 1
             if interfaces is not None:
