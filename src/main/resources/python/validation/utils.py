@@ -149,6 +149,7 @@ def reverse_entrypoint(eps):
         #print("-", ep, c, "--",rev_ep[c])
 	return rev_ep
 
+
 class Node(object):
     """
     Represents a node in the graph
@@ -390,3 +391,71 @@ def get_chattiness(app, clusters):
 	chattiness_score = total_chattiness / denominator
 
 	return chattiness_score
+
+def compute_purity_metrics(entrypoints, reverse_entrypoints, clusters):
+	rev_ep_map = reverse_entrypoints
+	# convert entrypoints to have classes instead of methods
+	ep_map = {}
+	for ep in entrypoints.keys():
+		methods = entrypoints[ep]
+		for m in methods:
+			c = ".".join(m.split(".")[:-1])
+			#print("c:", c)
+			if ep_map.get(ep) is None:
+				ep_map[ep] = []
+			ep_map[ep].append(c)
+
+	cluster_purity = compute_cluster_purity(clusters, rev_ep_map)
+	entrypoint_purity = compute_entrypoint_purity(clusters, ep_map)
+
+	return cluster_purity, entrypoint_purity
+
+def compute_cluster_purity(clusters, rev_ep):
+	purities = []
+	missing = []
+	num_clusters = float(len(clusters))
+
+	for c in clusters.keys():
+		members = list(clusters[c]['classes'])
+
+		entrypoints_involved = []
+		for classname in members:
+			eps = rev_ep.get(classname)
+			if eps is None:
+				missing.append(classname)
+				continue
+			entrypoints_involved.extend(eps)
+
+		uniq_entrypoints_in_cluster = len(set(entrypoints_involved))
+		purities.append(uniq_entrypoints_in_cluster)
+
+	print("Classes ignored due to no entrypoint mapping:", len(missing))
+	return np.sum(purities) / num_clusters
+
+def compute_entrypoint_purity(clusters, ep):
+	class2cluster_map = {}
+	missing = []
+
+	for clusid in clusters.keys():
+		members = list(clusters[clusid]['classes'])
+		for classname in members:
+			class2cluster_map[classname] = clusid
+
+	num_eps = len(ep)
+	print("Number of entrypoints detected:", num_eps)
+	purities = []
+
+	for epname in ep.keys():
+		classes_for_ep = ep[epname]
+		clusters_involved = []
+		for c in classes_for_ep:
+			if class2cluster_map.get(c) is None:
+				missing.append(c)
+				continue
+			clusters_involved.append(class2cluster_map[c])
+
+		uniq_clusters_for_ep = len(set(clusters_involved))
+		purities.append(uniq_clusters_for_ep)
+
+	print("Classes ignored due to no cluster mapping:", len(missing))
+	return np.sum(purities) / num_eps
