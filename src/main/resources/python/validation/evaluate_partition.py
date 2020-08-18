@@ -29,6 +29,9 @@ connection_maintained_key   = "single_connections_maintained"
 inconsistency_prop_key      = "inconsistency_proportion"
 avg_microservice_size_key   = "avg_microservice_size"
 avg_interface_count_key     = "avg_interface_count"
+chattiness_key              = "chattiness"
+cluster_purity_key          = "cluster_purity_on_entrypoints"
+entrypoint_purity_key       = "entrypoint_purity_on_clusters"
 
 class PartitionEvaluator(object):
     """
@@ -140,7 +143,7 @@ class PartitionEvaluator(object):
 
         evaluation_result = {'evaluation_results':evaluation_results}
 
-        single_connections_maintained = utils.get_maintained_connections_proportion(clusters, self.source_sink, self.app.icuclass2idx)
+        single_connections_maintained, total_single_conn = utils.get_maintained_connections_proportion(clusters, self.source_sink, self.app.icuclass2idx)
 
         evaluation_result[connection_maintained_key] = single_connections_maintained
 
@@ -152,13 +155,30 @@ class PartitionEvaluator(object):
         evaluation_result[avg_microservice_size_key] = avg_size
 
         avg_interface_count = utils.get_interface_count(self.app, clusters)
-        evaluation_result["avg_interface_count_key"] = avg_interface_count
-        if self.detail:
-            print("Single connection maintained:", single_connections_maintained)
-            print("Total inconsistencies detected:", inconsistency_prop, "Total classes:", total_classes, "Inconsistent:", total_inconsistencies)
-            print("Average size:", avg_size)
-            print("Average Interface Count:", avg_interface_count)
+        evaluation_result[avg_interface_count_key] = avg_interface_count
 
+        chattiness = utils.get_chattiness(self.app, clusters)
+        evaluation_result[chattiness_key] = chattiness
+
+        cluster_purity, entrypoint_purity = utils.compute_purity_metrics(self.app.entrypoints, reverse_ep, clusters)
+
+        evaluation_result[cluster_purity_key] = cluster_purity
+        evaluation_result[entrypoint_purity_key] = entrypoint_purity_key
+
+        #if self.detail:
+        print("Single connection maintained:", single_connections_maintained, "of total:", total_single_conn)
+        print("Total inconsistencies detected:", inconsistency_prop, "Total classes:", total_classes, "Inconsistent:", total_inconsistencies)
+        print("Num clusters:", num_clusters)
+        print("Average size:", avg_size)
+        print("Average Interface Count:", avg_interface_count)
+        print("Chattiness", chattiness)
+        print("Avg entrypoints per cluster:", cluster_purity)
+        print("Avg clusters per entrypoint:", entrypoint_purity)
+
+        print(str(num_clusters)+"\t"+str(self.result[conceptual_independence_key])+"\t"+str(self.result[modularity_key])+"\t"+str(self.result[structural_cohesivity_key])+"\t"
+                    +str(self.result[structural_modularity_key])+"\t"+str(self.result[ned_key])+"\t"+str(single_connections_maintained)+" / "+str(total_single_conn) + "\t"
+                    +str(inconsistency_prop)+" of "+str(total_classes)+"\t"+str(avg_size)+"\t"+str(avg_interface_count) + "\t"
+                    +str(chattiness))
 
         #print("Num clusters:", len(clusters))
         return evaluation_result
@@ -212,7 +232,7 @@ if __name__ == "__main__":
         callgraphfile = sys.argv[4]
         entrypointfile = sys.argv[5]
 
-    DETAIL_MODE = True
+    DETAIL_MODE = False
 
     eval = PartitionEvaluator(partition_file=inputfile,
                                 output_file=outputfile,

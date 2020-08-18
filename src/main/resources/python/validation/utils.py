@@ -149,6 +149,7 @@ def reverse_entrypoint(eps):
         #print("-", ep, c, "--",rev_ep[c])
 	return rev_ep
 
+
 class Node(object):
     """
     Represents a node in the graph
@@ -330,7 +331,7 @@ def get_maintained_connections_proportion(clusters, single_usage_relations, clas
 				if row_cluster == col_cluster:
 					found_relations += 1.0
 
-	return found_relations/total_relations
+	return found_relations/total_relations, total_relations
 
 def get_interface_count(app, clusters):
 
@@ -356,3 +357,105 @@ def get_interface_count(app, clusters):
 		global_interface_count += cluster_interface_count
 
 	return global_interface_count / num_clusters
+
+def get_chattiness(app, clusters):
+
+	total_chattiness = 0
+
+	for c_i in clusters.keys():
+
+		members_i = list(clusters[c_i]['classes'])
+		member_idxs_i = [app.icuclass2idx[m] for m in members_i]
+
+		for c_j in clusters.keys():
+			if c_i == c_j:
+				continue
+			members_j = list(clusters[c_j]['classes'])
+			member_idxs_j = [app.icuclass2idx[m] for m in members_j]
+
+			filtered_members_idxs_i = [idx for idx in member_idxs_i if idx not in member_idxs_j]
+			filtered_members_idxs_j = [idx for idx in member_idxs_j if idx not in member_idxs_i]
+
+			num_pairs = len(filtered_members_idxs_i) * len(filtered_members_idxs_j)
+			chat_count = 0.0
+			for i in filtered_members_idxs_i:
+				for j in filtered_members_idxs_j:
+					if app.icu[i,j] > 0 or app.icu[j,i] > 0:
+						chat_count += 1.0
+			chattiness = chat_count/num_pairs
+			#print("---", c_i, chattiness, chat_count, num_pairs)
+			total_chattiness += chattiness
+
+	num_clusters = len(clusters.keys())
+	denominator = num_clusters * (num_clusters - 1) # all pairs of clusters
+	chattiness_score = total_chattiness / denominator
+
+	return chattiness_score
+
+def compute_purity_metrics(entrypoints, reverse_entrypoints, clusters):
+	rev_ep_map = reverse_entrypoints
+	# convert entrypoints to have classes instead of methods
+	ep_map = {}
+	for ep in entrypoints.keys():
+		methods = entrypoints[ep]
+		for m in methods:
+			c = ".".join(m.split(".")[:-1])
+			#print("c:", c)
+			if ep_map.get(ep) is None:
+				ep_map[ep] = []
+			ep_map[ep].append(c)
+
+	cluster_purity = compute_cluster_purity(clusters, rev_ep_map)
+	entrypoint_purity = compute_entrypoint_purity(clusters, ep_map)
+
+	return cluster_purity, entrypoint_purity
+
+def compute_cluster_purity(clusters, rev_ep):
+	purities = []
+	missing = []
+	num_clusters = float(len(clusters))
+
+	for c in clusters.keys():
+		members = list(clusters[c]['classes'])
+
+		entrypoints_involved = []
+		for classname in members:
+			eps = rev_ep.get(classname)
+			if eps is None:
+				missing.append(classname)
+				continue
+			entrypoints_involved.extend(eps)
+
+		uniq_entrypoints_in_cluster = len(set(entrypoints_involved))
+		purities.append(uniq_entrypoints_in_cluster)
+
+	print("Classes ignored due to no entrypoint mapping:", len(missing))
+	return np.sum(purities) / num_clusters
+
+def compute_entrypoint_purity(clusters, ep):
+	class2cluster_map = {}
+	missing = []
+
+	for clusid in clusters.keys():
+		members = list(clusters[clusid]['classes'])
+		for classname in members:
+			class2cluster_map[classname] = clusid
+
+	num_eps = len(ep)
+	print("Number of entrypoints detected:", num_eps)
+	purities = []
+
+	for epname in ep.keys():
+		classes_for_ep = ep[epname]
+		clusters_involved = []
+		for c in classes_for_ep:
+			if class2cluster_map.get(c) is None:
+				missing.append(c)
+				continue
+			clusters_involved.append(class2cluster_map[c])
+
+		uniq_clusters_for_ep = len(set(clusters_involved))
+		purities.append(uniq_clusters_for_ep)
+
+	print("Classes ignored due to no cluster mapping:", len(missing))
+	return np.sum(purities) / num_eps
