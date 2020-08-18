@@ -19,8 +19,10 @@ public class SelectAllNotesForProjectId extends FindManyQuery {
 	public SelectAllNotesForProjectId(MongoDatabase db, String projectId, Logger logger) throws MongoException  {
 		super(db, "m2m_notes", logger);
 		
+		Document sort = new Document().append("timeStampInMS", 1);
 		Bson filter = Filters.eq("project_id", projectId);	
-		super.bind(filter, null, null, -1);
+		
+		super.bind(filter, null, sort, -1);
 
 		logger.info("Binding to select all the Notes for project id:" + projectId);
 	}
