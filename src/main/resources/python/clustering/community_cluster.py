@@ -555,7 +555,7 @@ if __name__ == "__main__":
 
 		degree = {}
 		for i in node_list:
-			if i["entity_type"] == 'class':
+			if i["entity_type"] == 'class' or i["entity_type"] == 'service':
 				degree[i["id"]] = {"in":[],"out":[]}
 
 		edge_list = []
@@ -678,7 +678,7 @@ if __name__ == "__main__":
 
 		links_check = {}
 		for i in node_list:
-			if i["entity_type"] == 'class':
+			if i["entity_type"] == 'class' or i["entity_type"] == 'service':
 				links_check[i["id"]] = {"in":[],"out":[]}
 
 		for i in edge_list:
@@ -1276,7 +1276,7 @@ if __name__ == "__main__":
 
 		# Adding table nodes to the unassigned group
 		for i in data["nodes"]:
-			if i["entity_type"] == "table":
+			if i["entity_type"] == "table" or i["entity_type"] == "queue" or i["entity_type"] == "file":
 				new_temp_dict["nodes"].append(i["id"])
 		data["clusters"].append(new_temp_dict)
 
@@ -1498,7 +1498,7 @@ if __name__ == "__main__":
 
 		# Adding table nodes to the unassigned group
 		for i in data["nodes"]:
-			if i["entity_type"] == "table":
+			if i["entity_type"] == "table" or i["entity_type"] == "queue" or i["entity_type"] == "file":
 				new_temp_dict["nodes"].append(i["id"])
 		data["clusters"].append(new_temp_dict)
 		
