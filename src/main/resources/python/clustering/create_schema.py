@@ -98,7 +98,7 @@ def make_edge_func(source, sink, frequency):
 	make_edge["methods"] = [""]
 	return make_edge
 
-def make_table(current_node_name):
+def make_table(current_node_name,type_value):
 	"""
 	Creating a new node following schema rules
 	Input: Node data from inter-class-usage
@@ -106,7 +106,7 @@ def make_table(current_node_name):
 	"""
 	global count_node
 	make_node = {}
-	make_node["entity_type"] = "table"
+	make_node["entity_type"] = type_value
 	make_node["label"] = current_node_name
 	make_node["id"] = str(count_node)
 	count_node += 1
@@ -174,11 +174,15 @@ if __name__ == "__main__":
 		if transaction_flag == 1:
 			for i in trasaction_file:
 				for j in i["transaction"]:
-					name = j["table"]
-					table_names.add(name)
+					name = j["resource"]
 
+					if j["resource_type"] == 'dbtable':
+						type_value = 'table'
+					else:
+						type_value = j["resource_type"]
+					table_names.add((name,type_value))
 			for i in list(table_names):
-				schema["nodes"].append(make_table(i))
+				schema["nodes"].append(make_table(i[0], i[1]))
 		
 		# Making Edges
 
@@ -217,13 +221,22 @@ if __name__ == "__main__":
 		if transaction_flag == 1:
 			for i in trasaction_file:
 				for j in i["transaction"]:
-					end = j["table"]
+					end = j["resource"]
 					for k in j["callgraph"]:
 						val_k = ".".join(k.split(".")[:-1])
 						val_end = end
 						if (find_node_id(val_k), find_node_id(val_end)) not in edge_list:
 							make_t_edge["relationship"].append(make_edge_func(find_node_id(val_k), find_node_id(val_end),"1"))
 							edge_list.append((find_node_id(val_k), find_node_id(val_end)))
+
+			entry_set = set()
+			for i in trasaction_file:
+				entry_set.add(i["entry"])
+
+			for i in list(entry_set):
+				for j in schema["nodes"]:
+					if i == j["label"]:
+						j["entity_type"] = "service"
 
 		
 
