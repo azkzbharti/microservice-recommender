@@ -1207,14 +1207,58 @@ if __name__ == "__main__":
 		counter = 0
 		ids = []
 		for i in save_communities:
+			if i:
+				new_temp_dict = {}
+				
+
+				new_temp_dict["id"] = str(int(time.time()*10**16))
+				ids.append(new_temp_dict["id"])
+				new_temp_dict["label"] = "cluster"+str(new_temp_dict["id"])
+				# counter += 1
+				new_temp_dict["type"] = "microservices_group"
+				new_temp_dict["description"] = ""
+				new_temp_dict["properties"] = {}
+				new_temp_dict["properties"]["affected_business_domains"] = [""]
+				new_temp_dict["properties"]["db_dependence"] = {}
+				new_temp_dict["properties"]["db_dependence"]["db"] = ""
+				new_temp_dict["properties"]["db_dependence"]["tables"] = [""]
+
+				new_temp_dict["metrics"] = {}
+				new_temp_dict["metrics"]["cohesion_score"] = ""
+				new_temp_dict["metrics"]["conceptual_independence"] = ""
+				new_temp_dict["metrics"]["coupling_score"] = ""
+				new_temp_dict["metrics"]["independence_score"] = ""
+				new_temp_dict["metrics"]["data_independence_score"] = ""
+				new_temp_dict["metrics"]["volume_inter_partition_calls"] = ""
+				new_temp_dict["metrics"]["transaction_independence_score"] = ""
+				new_temp_dict["metrics"]["functional_encapsulation"] = ""
+				new_temp_dict["metrics"]["modularity"] = ""
+				new_temp_dict["metrics"]["structural_cohesivity"] = ""
+
+				new_temp_dict["nodes"] = []
+				new_temp_dict["transactions"] = []
+				for j in i:
+					# print (find_node_id(j,data))
+					new_temp_dict["nodes"].append(find_node_id(j,data))
+				data["clusters"].append(new_temp_dict)
+
+		# Adding final_community
+		final_community_flag = 0
+		if final_community:
+			final_community_flag = 1
+		for i in data["nodes"]:
+			if i["entity_type"] == "table" or i["entity_type"] == "queue" or i["entity_type"] == "file":
+				final_community_flag = 1
+				break
+
+		if final_community_flag:
 			new_temp_dict = {}
-			
+			new_temp_dict["label"] = "unassigned_group"
 
 			new_temp_dict["id"] = str(int(time.time()*10**16))
 			ids.append(new_temp_dict["id"])
-			new_temp_dict["label"] = "cluster"+str(new_temp_dict["id"])
 			# counter += 1
-			new_temp_dict["type"] = "microservices_group"
+			new_temp_dict["type"] = "unassigned_group"
 			new_temp_dict["description"] = ""
 			new_temp_dict["properties"] = {}
 			new_temp_dict["properties"]["affected_business_domains"] = [""]
@@ -1236,159 +1280,132 @@ if __name__ == "__main__":
 
 			new_temp_dict["nodes"] = []
 			new_temp_dict["transactions"] = []
-			for j in i:
+			for j in final_community:
+				# print (find_node_id(j,data))
+				new_temp_dict["nodes"].append(find_node_id(j,data))
+
+			# Adding table nodes to the unassigned group
+			for i in data["nodes"]:
+				if i["entity_type"] == "table" or i["entity_type"] == "queue" or i["entity_type"] == "file":
+					new_temp_dict["nodes"].append(i["id"])
+			data["clusters"].append(new_temp_dict)
+
+		# Adding utility cluster
+		if utility_cluster:
+			new_temp_dict = {}
+			new_temp_dict["label"] = "utility_group"
+
+			# new_temp_dict["id"] = str(counter)
+			# counter += 1
+			new_temp_dict["id"] = str(int(time.time()*10**16))
+			ids.append(new_temp_dict["id"])
+
+			new_temp_dict["type"] = "utility_group"
+			new_temp_dict["description"] = ""
+			new_temp_dict["properties"] = {}
+			new_temp_dict["properties"]["affected_business_domains"] = [""]
+			new_temp_dict["properties"]["db_dependence"] = {}
+			new_temp_dict["properties"]["db_dependence"]["db"] = ""
+			new_temp_dict["properties"]["db_dependence"]["tables"] = [""]
+
+			new_temp_dict["metrics"] = {}
+			new_temp_dict["metrics"]["cohesion_score"] = ""
+			new_temp_dict["metrics"]["conceptual_independence"] = ""
+			new_temp_dict["metrics"]["coupling_score"] = ""
+			new_temp_dict["metrics"]["independence_score"] = ""
+			new_temp_dict["metrics"]["data_independence_score"] = ""
+			new_temp_dict["metrics"]["volume_inter_partition_calls"] = ""
+			new_temp_dict["metrics"]["transaction_independence_score"] = ""
+			new_temp_dict["metrics"]["functional_encapsulation"] = ""
+			new_temp_dict["metrics"]["modularity"] = ""
+			new_temp_dict["metrics"]["structural_cohesivity"] = ""
+			
+			new_temp_dict["nodes"] = []
+			new_temp_dict["transactions"] = []
+			for j in utility_cluster:
 				# print (find_node_id(j,data))
 				new_temp_dict["nodes"].append(find_node_id(j,data))
 			data["clusters"].append(new_temp_dict)
 
-		# Adding final_community
-		new_temp_dict = {}
-		new_temp_dict["label"] = "unassigned_group"
-
-		new_temp_dict["id"] = str(int(time.time()*10**16))
-		ids.append(new_temp_dict["id"])
-		# counter += 1
-		new_temp_dict["type"] = "unassigned_group"
-		new_temp_dict["description"] = ""
-		new_temp_dict["properties"] = {}
-		new_temp_dict["properties"]["affected_business_domains"] = [""]
-		new_temp_dict["properties"]["db_dependence"] = {}
-		new_temp_dict["properties"]["db_dependence"]["db"] = ""
-		new_temp_dict["properties"]["db_dependence"]["tables"] = [""]
-
-		new_temp_dict["metrics"] = {}
-		new_temp_dict["metrics"]["cohesion_score"] = ""
-		new_temp_dict["metrics"]["conceptual_independence"] = ""
-		new_temp_dict["metrics"]["coupling_score"] = ""
-		new_temp_dict["metrics"]["independence_score"] = ""
-		new_temp_dict["metrics"]["data_independence_score"] = ""
-		new_temp_dict["metrics"]["volume_inter_partition_calls"] = ""
-		new_temp_dict["metrics"]["transaction_independence_score"] = ""
-		new_temp_dict["metrics"]["functional_encapsulation"] = ""
-		new_temp_dict["metrics"]["modularity"] = ""
-		new_temp_dict["metrics"]["structural_cohesivity"] = ""
-
-		new_temp_dict["nodes"] = []
-		new_temp_dict["transactions"] = []
-		for j in final_community:
-			# print (find_node_id(j,data))
-			new_temp_dict["nodes"].append(find_node_id(j,data))
-
-		# Adding table nodes to the unassigned group
-		for i in data["nodes"]:
-			if i["entity_type"] == "table" or i["entity_type"] == "queue" or i["entity_type"] == "file":
-				new_temp_dict["nodes"].append(i["id"])
-		data["clusters"].append(new_temp_dict)
-
-		# Adding utility cluster
-		new_temp_dict = {}
-		new_temp_dict["label"] = "utility_group"
-
-		# new_temp_dict["id"] = str(counter)
-		# counter += 1
-		new_temp_dict["id"] = str(int(time.time()*10**16))
-		ids.append(new_temp_dict["id"])
-
-		new_temp_dict["type"] = "utility_group"
-		new_temp_dict["description"] = ""
-		new_temp_dict["properties"] = {}
-		new_temp_dict["properties"]["affected_business_domains"] = [""]
-		new_temp_dict["properties"]["db_dependence"] = {}
-		new_temp_dict["properties"]["db_dependence"]["db"] = ""
-		new_temp_dict["properties"]["db_dependence"]["tables"] = [""]
-
-		new_temp_dict["metrics"] = {}
-		new_temp_dict["metrics"]["cohesion_score"] = ""
-		new_temp_dict["metrics"]["conceptual_independence"] = ""
-		new_temp_dict["metrics"]["coupling_score"] = ""
-		new_temp_dict["metrics"]["independence_score"] = ""
-		new_temp_dict["metrics"]["data_independence_score"] = ""
-		new_temp_dict["metrics"]["volume_inter_partition_calls"] = ""
-		new_temp_dict["metrics"]["transaction_independence_score"] = ""
-		new_temp_dict["metrics"]["functional_encapsulation"] = ""
-		new_temp_dict["metrics"]["modularity"] = ""
-		new_temp_dict["metrics"]["structural_cohesivity"] = ""
-		
-		new_temp_dict["nodes"] = []
-		new_temp_dict["transactions"] = []
-		for j in utility_cluster:
-			# print (find_node_id(j,data))
-			new_temp_dict["nodes"].append(find_node_id(j,data))
-		data["clusters"].append(new_temp_dict)
-
 		# Adding refactor cluster
-		new_temp_dict = {}
-		new_temp_dict["label"] = "refactor_candidates_group"
+		if refactor_candidate:
+			new_temp_dict = {}
+			new_temp_dict["label"] = "refactor_candidates_group"
 
-		# new_temp_dict["id"] = str(counter)
-		# counter += 1
+			# new_temp_dict["id"] = str(counter)
+			# counter += 1
 
-		new_temp_dict["id"] = str(int(time.time()*10**16))
-		ids.append(new_temp_dict["id"])
+			new_temp_dict["id"] = str(int(time.time()*10**16))
+			ids.append(new_temp_dict["id"])
 
-		new_temp_dict["type"] = "refactor_candidates_group"
-		new_temp_dict["description"] = ""
-		new_temp_dict["properties"] = {}
-		new_temp_dict["properties"]["affected_business_domains"] = [""]
-		new_temp_dict["properties"]["db_dependence"] = {}
-		new_temp_dict["properties"]["db_dependence"]["db"] = ""
-		new_temp_dict["properties"]["db_dependence"]["tables"] = [""]
+			new_temp_dict["type"] = "refactor_candidates_group"
+			new_temp_dict["description"] = ""
+			new_temp_dict["properties"] = {}
+			new_temp_dict["properties"]["affected_business_domains"] = [""]
+			new_temp_dict["properties"]["db_dependence"] = {}
+			new_temp_dict["properties"]["db_dependence"]["db"] = ""
+			new_temp_dict["properties"]["db_dependence"]["tables"] = [""]
 
-		new_temp_dict["metrics"] = {}
-		new_temp_dict["metrics"]["cohesion_score"] = ""
-		new_temp_dict["metrics"]["conceptual_independence"] = ""
-		new_temp_dict["metrics"]["coupling_score"] = ""
-		new_temp_dict["metrics"]["independence_score"] = ""
-		new_temp_dict["metrics"]["data_independence_score"] = ""
-		new_temp_dict["metrics"]["volume_inter_partition_calls"] = ""
-		new_temp_dict["metrics"]["transaction_independence_score"] = ""
-		new_temp_dict["metrics"]["functional_encapsulation"] = ""
-		new_temp_dict["metrics"]["modularity"] = ""
-		new_temp_dict["metrics"]["structural_cohesivity"] = ""
-		
-		new_temp_dict["nodes"] = []
-		new_temp_dict["transactions"] = []
-		for j_data in refactor_candidate:
-			# print (find_node_id(j,data))
-			j = j_data[0]
-			new_temp_dict["nodes"].append(find_node_id(j,data))
-		data["clusters"].append(new_temp_dict)
+			new_temp_dict["metrics"] = {}
+			new_temp_dict["metrics"]["cohesion_score"] = ""
+			new_temp_dict["metrics"]["conceptual_independence"] = ""
+			new_temp_dict["metrics"]["coupling_score"] = ""
+			new_temp_dict["metrics"]["independence_score"] = ""
+			new_temp_dict["metrics"]["data_independence_score"] = ""
+			new_temp_dict["metrics"]["volume_inter_partition_calls"] = ""
+			new_temp_dict["metrics"]["transaction_independence_score"] = ""
+			new_temp_dict["metrics"]["functional_encapsulation"] = ""
+			new_temp_dict["metrics"]["modularity"] = ""
+			new_temp_dict["metrics"]["structural_cohesivity"] = ""
+			
+			new_temp_dict["nodes"] = []
+			new_temp_dict["transactions"] = []
+			for j_data in refactor_candidate:
+				# print (find_node_id(j,data))
+				j = j_data[0]
+				new_temp_dict["nodes"].append(find_node_id(j,data))
+			data["clusters"].append(new_temp_dict)
 
 		# Adding dead code
-		new_temp_dict = {}
-		new_temp_dict["label"] = "unreachable_group"
-		# new_temp_dict["id"] = str(counter)
-		# counter += 1
-
-		new_temp_dict["id"] = str(int(time.time()*10**16))
-		ids.append(new_temp_dict["id"])
-
-		new_temp_dict["type"] = "unreachable_group"
-		new_temp_dict["description"] = ""
-		new_temp_dict["properties"] = {}
-		new_temp_dict["properties"]["affected_business_domains"] = [""]
-		new_temp_dict["properties"]["db_dependence"] = {}
-		new_temp_dict["properties"]["db_dependence"]["db"] = ""
-		new_temp_dict["properties"]["db_dependence"]["tables"] = [""]
-
-		new_temp_dict["metrics"] = {}
-		new_temp_dict["metrics"]["cohesion_score"] = ""
-		new_temp_dict["metrics"]["conceptual_independence"] = ""
-		new_temp_dict["metrics"]["coupling_score"] = ""
-		new_temp_dict["metrics"]["independence_score"] = ""
-		new_temp_dict["metrics"]["data_independence_score"] = ""
-		new_temp_dict["metrics"]["volume_inter_partition_calls"] = ""
-		new_temp_dict["metrics"]["transaction_independence_score"] = ""
-		new_temp_dict["metrics"]["functional_encapsulation"] = ""
-		new_temp_dict["metrics"]["modularity"] = ""
-		new_temp_dict["metrics"]["structural_cohesivity"] = ""
-		
-		new_temp_dict["nodes"] = []
-		new_temp_dict["transactions"] = []
+		dead_code_flag = 0
 		for i in dead_code:
-			for j in i:
-				new_temp_dict["nodes"].append(find_node_id(j,data))
-		data["clusters"].append(new_temp_dict)
+			if i:
+				dead_code_flag = 1
+		if dead_code_flag:
+			new_temp_dict = {}
+			new_temp_dict["label"] = "unreachable_group"
+			# new_temp_dict["id"] = str(counter)
+			# counter += 1
+
+			new_temp_dict["id"] = str(int(time.time()*10**16))
+			ids.append(new_temp_dict["id"])
+
+			new_temp_dict["type"] = "unreachable_group"
+			new_temp_dict["description"] = ""
+			new_temp_dict["properties"] = {}
+			new_temp_dict["properties"]["affected_business_domains"] = [""]
+			new_temp_dict["properties"]["db_dependence"] = {}
+			new_temp_dict["properties"]["db_dependence"]["db"] = ""
+			new_temp_dict["properties"]["db_dependence"]["tables"] = [""]
+
+			new_temp_dict["metrics"] = {}
+			new_temp_dict["metrics"]["cohesion_score"] = ""
+			new_temp_dict["metrics"]["conceptual_independence"] = ""
+			new_temp_dict["metrics"]["coupling_score"] = ""
+			new_temp_dict["metrics"]["independence_score"] = ""
+			new_temp_dict["metrics"]["data_independence_score"] = ""
+			new_temp_dict["metrics"]["volume_inter_partition_calls"] = ""
+			new_temp_dict["metrics"]["transaction_independence_score"] = ""
+			new_temp_dict["metrics"]["functional_encapsulation"] = ""
+			new_temp_dict["metrics"]["modularity"] = ""
+			new_temp_dict["metrics"]["structural_cohesivity"] = ""
+			
+			new_temp_dict["nodes"] = []
+			new_temp_dict["transactions"] = []
+			for i in dead_code:
+				for j in i:
+					new_temp_dict["nodes"].append(find_node_id(j,data))
+			data["clusters"].append(new_temp_dict)
 
 		if len(data['clusters']) != len(set(ids)):
 			print ("problem not unique ids")
@@ -1429,14 +1446,58 @@ if __name__ == "__main__":
 		counter = 0
 		ids = []
 		for i in save_communities:
+			if i:
+				new_temp_dict = {}
+				
+
+				new_temp_dict["id"] = str(int(time.time()*10**16))
+				ids.append(new_temp_dict["id"])
+				new_temp_dict["label"] = "cluster"+str(new_temp_dict["id"])
+				# counter += 1
+				new_temp_dict["type"] = "microservices_group"
+				new_temp_dict["description"] = ""
+				new_temp_dict["properties"] = {}
+				new_temp_dict["properties"]["affected_business_domains"] = [""]
+				new_temp_dict["properties"]["db_dependence"] = {}
+				new_temp_dict["properties"]["db_dependence"]["db"] = ""
+				new_temp_dict["properties"]["db_dependence"]["tables"] = [""]
+
+				new_temp_dict["metrics"] = {}
+				new_temp_dict["metrics"]["cohesion_score"] = ""
+				new_temp_dict["metrics"]["conceptual_independence"] = ""
+				new_temp_dict["metrics"]["coupling_score"] = ""
+				new_temp_dict["metrics"]["independence_score"] = ""
+				new_temp_dict["metrics"]["data_independence_score"] = ""
+				new_temp_dict["metrics"]["volume_inter_partition_calls"] = ""
+				new_temp_dict["metrics"]["transaction_independence_score"] = ""
+				new_temp_dict["metrics"]["functional_encapsulation"] = ""
+				new_temp_dict["metrics"]["modularity"] = ""
+				new_temp_dict["metrics"]["structural_cohesivity"] = ""
+
+				new_temp_dict["nodes"] = []
+				new_temp_dict["transactions"] = []
+				for j in i:
+					# print (find_node_id(j,data))
+					new_temp_dict["nodes"].append(find_node_id(j,data))
+				data["clusters"].append(new_temp_dict)
+
+		final_community_flag = 0
+		if final_community:
+			final_community_flag = 1
+		for i in data["nodes"]:
+			if i["entity_type"] == "table" or i["entity_type"] == "queue" or i["entity_type"] == "file":
+				final_community_flag = 1
+				break
+
+		if final_community_flag:
+			# Adding final_community
 			new_temp_dict = {}
-			
+			new_temp_dict["label"] = "unassigned_group"
 
 			new_temp_dict["id"] = str(int(time.time()*10**16))
 			ids.append(new_temp_dict["id"])
-			new_temp_dict["label"] = "cluster"+str(new_temp_dict["id"])
 			# counter += 1
-			new_temp_dict["type"] = "microservices_group"
+			new_temp_dict["type"] = "unassigned_group"
 			new_temp_dict["description"] = ""
 			new_temp_dict["properties"] = {}
 			new_temp_dict["properties"]["affected_business_domains"] = [""]
@@ -1458,49 +1519,15 @@ if __name__ == "__main__":
 
 			new_temp_dict["nodes"] = []
 			new_temp_dict["transactions"] = []
-			for j in i:
+			for j in final_community:
 				# print (find_node_id(j,data))
 				new_temp_dict["nodes"].append(find_node_id(j,data))
+
+			# Adding table nodes to the unassigned group
+			for i in data["nodes"]:
+				if i["entity_type"] == "table" or i["entity_type"] == "queue" or i["entity_type"] == "file":
+					new_temp_dict["nodes"].append(i["id"])
 			data["clusters"].append(new_temp_dict)
-
-		# Adding final_community
-		new_temp_dict = {}
-		new_temp_dict["label"] = "unassigned_group"
-
-		new_temp_dict["id"] = str(int(time.time()*10**16))
-		ids.append(new_temp_dict["id"])
-		# counter += 1
-		new_temp_dict["type"] = "unassigned_group"
-		new_temp_dict["description"] = ""
-		new_temp_dict["properties"] = {}
-		new_temp_dict["properties"]["affected_business_domains"] = [""]
-		new_temp_dict["properties"]["db_dependence"] = {}
-		new_temp_dict["properties"]["db_dependence"]["db"] = ""
-		new_temp_dict["properties"]["db_dependence"]["tables"] = [""]
-
-		new_temp_dict["metrics"] = {}
-		new_temp_dict["metrics"]["cohesion_score"] = ""
-		new_temp_dict["metrics"]["conceptual_independence"] = ""
-		new_temp_dict["metrics"]["coupling_score"] = ""
-		new_temp_dict["metrics"]["independence_score"] = ""
-		new_temp_dict["metrics"]["data_independence_score"] = ""
-		new_temp_dict["metrics"]["volume_inter_partition_calls"] = ""
-		new_temp_dict["metrics"]["transaction_independence_score"] = ""
-		new_temp_dict["metrics"]["functional_encapsulation"] = ""
-		new_temp_dict["metrics"]["modularity"] = ""
-		new_temp_dict["metrics"]["structural_cohesivity"] = ""
-
-		new_temp_dict["nodes"] = []
-		new_temp_dict["transactions"] = []
-		for j in final_community:
-			# print (find_node_id(j,data))
-			new_temp_dict["nodes"].append(find_node_id(j,data))
-
-		# Adding table nodes to the unassigned group
-		for i in data["nodes"]:
-			if i["entity_type"] == "table" or i["entity_type"] == "queue" or i["entity_type"] == "file":
-				new_temp_dict["nodes"].append(i["id"])
-		data["clusters"].append(new_temp_dict)
 		
 		logging.info(args.outPutFilePath)
 		logging.info(len(new_temp_dict["nodes"]))
