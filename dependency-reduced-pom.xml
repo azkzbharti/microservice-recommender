@@ -245,6 +245,34 @@
       <version>5.5.1.201910021850-r</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-module-junit4</artifactId>
+      <version>2.0.2</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>powermock-module-junit4-common</artifactId>
+          <groupId>org.powermock</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-api-mockito2</artifactId>
+      <version>2.0.2</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>powermock-api-support</artifactId>
+          <groupId>org.powermock</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>mockito-core</artifactId>
+          <groupId>org.mockito</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
   <properties>
     <spring.version>5.2.6.RELEASE</spring.version>
