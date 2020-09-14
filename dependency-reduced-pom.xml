@@ -47,6 +47,45 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.12.2</version>
+        <configuration>
+          <systemPropertyVariables>
+            <jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.3</version>
+        <executions>
+          <execution>
+            <id>default-instrument</id>
+            <goals>
+              <goal>instrument</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-restore-instrumented-classes</id>
+            <goals>
+              <goal>restore-instrumented-classes</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-report</id>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <excludes>**/model/*</excludes>
+          <excludes>**/queries/*</excludes>
+          <excludes>**/dto/*</excludes>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <repositories>
@@ -273,8 +312,16 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>org.jacoco</groupId>
+      <artifactId>org.jacoco.agent</artifactId>
+      <version>0.8.3</version>
+      <classifier>runtime</classifier>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
   <properties>
+    <jacoco.skip.instrument>true</jacoco.skip.instrument>
     <spring.version>5.2.6.RELEASE</spring.version>
     <java.version>1.8</java.version>
     <maven.compiler.source>1.8</maven.compiler.source>
