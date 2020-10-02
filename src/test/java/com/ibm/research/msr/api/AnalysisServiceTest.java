@@ -9,6 +9,8 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -30,6 +32,7 @@ import com.ibm.research.appmod.pa.jarlist.POMDependencyDownloader;
 import com.ibm.research.msr.db.DatabaseConnection;
 import com.ibm.research.msr.db.dto.Analysis;
 import com.ibm.research.msr.db.dto.Project;
+import com.ibm.research.msr.db.dto.SourceProject;
 import com.ibm.research.msr.db.queries.analysis.InsertIntoAnalysisQuery;
 import com.ibm.research.msr.db.queries.analysis.SelectAnalysisByProjectIdAndType;
 import com.ibm.research.msr.db.queries.project.SelectProjectByProjectId;
@@ -40,11 +43,11 @@ import com.ibm.research.msr.utils.Util;
 import com.mongodb.client.MongoDatabase;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ AnalysisService.class, DatabaseConnection.class, FileUtils.class, Util.class })
+@PrepareForTest({ AnalysisService.class, DatabaseConnection.class, FileUtils.class, Util.class, File.class })
 public class AnalysisServiceTest {
-	
+
 	private static final String PROJECT_ID = new ObjectId().toHexString();
-	
+
 	AnalysisService analysisService = new AnalysisService();
 
 	@Test
@@ -186,20 +189,20 @@ public class AnalysisServiceTest {
 
 		when(FileUtils.listFiles(Mockito.any(File.class), Mockito.any(String[].class), Mockito.anyBoolean()))
 				.thenReturn(collection);
-		
+
 		POMDependencyDownloader pomDependencyDownloader = mock(POMDependencyDownloader.class);
 		whenNew(POMDependencyDownloader.class).withAnyArguments().thenReturn(pomDependencyDownloader);
-		
+
 		MavenCategoryEtAlExtractor mavenCategoryEtAlExtractor = mock(MavenCategoryEtAlExtractor.class);
 		whenNew(MavenCategoryEtAlExtractor.class).withAnyArguments().thenReturn(mavenCategoryEtAlExtractor);
-		
+
 		mockStatic(Util.class);
-		
+
 		when(Util.dumpAPIInfo(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
-		
+
 		APIUsageStatsMiner apiUsageStatsMiner = mock(APIUsageStatsMiner.class);
 		whenNew(APIUsageStatsMiner.class).withAnyArguments().thenReturn(apiUsageStatsMiner);
-		
+
 		JSONParser jsonParser = mock(JSONParser.class);
 		whenNew(JSONParser.class).withNoArguments().thenReturn(jsonParser);
 
@@ -207,19 +210,19 @@ public class AnalysisServiceTest {
 
 		FileReader fileReader = mock(FileReader.class);
 		whenNew(FileReader.class).withAnyArguments().thenReturn(fileReader);
-		
+
 		Analysis analysis = mock(Analysis.class);
 		whenNew(Analysis.class).withAnyArguments().thenReturn(analysis);
-		
+
 		InsertIntoAnalysisQuery insertIntoAnalysisQuery = mock(InsertIntoAnalysisQuery.class);
 		whenNew(InsertIntoAnalysisQuery.class).withAnyArguments().thenReturn(insertIntoAnalysisQuery);
-		
+
 		JSONObject jsonObject = analysisService.getJarAPIInfo(PROJECT_ID);
-		
+
 		assertEquals("Successfully collected Jar API details.", jsonObject.get("status"));
-		
+
 	}
-	
+
 	@Test
 	public void getJarAPIInfoWithGradleTest() throws Exception {
 		mockStatic(DatabaseConnection.class);
@@ -246,26 +249,26 @@ public class AnalysisServiceTest {
 
 		when(FileUtils.listFiles(Mockito.any(File.class), Mockito.any(String[].class), Mockito.anyBoolean()))
 				.thenReturn(collection);
-		
+
 		GradleDependencyDownloader gradleDependencyDownloader = mock(GradleDependencyDownloader.class);
 		whenNew(GradleDependencyDownloader.class).withAnyArguments().thenReturn(gradleDependencyDownloader);
 		ArrayList<String> list = new ArrayList<>();
 		list.add("pom.xml");
 		when(gradleDependencyDownloader.createPOMFiles(Mockito.any(), Mockito.any())).thenReturn(list);
-		
+
 		POMDependencyDownloader pomDependencyDownloader = mock(POMDependencyDownloader.class);
 		whenNew(POMDependencyDownloader.class).withAnyArguments().thenReturn(pomDependencyDownloader);
-		
+
 		MavenCategoryEtAlExtractor mavenCategoryEtAlExtractor = mock(MavenCategoryEtAlExtractor.class);
 		whenNew(MavenCategoryEtAlExtractor.class).withAnyArguments().thenReturn(mavenCategoryEtAlExtractor);
-		
+
 		mockStatic(Util.class);
-		
+
 		when(Util.dumpAPIInfo(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
-		
+
 		APIUsageStatsMiner apiUsageStatsMiner = mock(APIUsageStatsMiner.class);
 		whenNew(APIUsageStatsMiner.class).withAnyArguments().thenReturn(apiUsageStatsMiner);
-		
+
 		JSONParser jsonParser = mock(JSONParser.class);
 		whenNew(JSONParser.class).withNoArguments().thenReturn(jsonParser);
 
@@ -273,19 +276,19 @@ public class AnalysisServiceTest {
 
 		FileReader fileReader = mock(FileReader.class);
 		whenNew(FileReader.class).withAnyArguments().thenReturn(fileReader);
-		
+
 		Analysis analysis = mock(Analysis.class);
 		whenNew(Analysis.class).withAnyArguments().thenReturn(analysis);
-		
+
 		InsertIntoAnalysisQuery insertIntoAnalysisQuery = mock(InsertIntoAnalysisQuery.class);
 		whenNew(InsertIntoAnalysisQuery.class).withAnyArguments().thenReturn(insertIntoAnalysisQuery);
-		
+
 		JSONObject jsonObject = analysisService.getJarAPIInfo(PROJECT_ID);
-		
+
 		assertEquals("Successfully collected Jar API details.", jsonObject.get("status"));
-		
+
 	}
-	
+
 	@Test
 	public void getJarAPIInfoTypeBinTest() throws Exception {
 		mockStatic(DatabaseConnection.class);
@@ -304,12 +307,12 @@ public class AnalysisServiceTest {
 		when(file.exists()).thenReturn(true);
 
 		mockStatic(Util.class);
-		
+
 		when(Util.dumpAPIInfo(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
-		
+
 		APIUsageStatsMiner apiUsageStatsMiner = mock(APIUsageStatsMiner.class);
 		whenNew(APIUsageStatsMiner.class).withAnyArguments().thenReturn(apiUsageStatsMiner);
-		
+
 		JSONParser jsonParser = mock(JSONParser.class);
 		whenNew(JSONParser.class).withNoArguments().thenReturn(jsonParser);
 
@@ -317,19 +320,19 @@ public class AnalysisServiceTest {
 
 		FileReader fileReader = mock(FileReader.class);
 		whenNew(FileReader.class).withAnyArguments().thenReturn(fileReader);
-		
+
 		Analysis analysis = mock(Analysis.class);
 		whenNew(Analysis.class).withAnyArguments().thenReturn(analysis);
-		
+
 		InsertIntoAnalysisQuery insertIntoAnalysisQuery = mock(InsertIntoAnalysisQuery.class);
 		whenNew(InsertIntoAnalysisQuery.class).withAnyArguments().thenReturn(insertIntoAnalysisQuery);
-		
+
 		JSONObject jsonObject = analysisService.getJarAPIInfo(PROJECT_ID);
-		
+
 		assertEquals("Successfully collected Jar API details.", jsonObject.get("status"));
-		
+
 	}
-	
+
 	@Test
 	public void getAPIUsageInfoExceptionTest() throws Exception {
 		mockStatic(DatabaseConnection.class);
@@ -345,7 +348,7 @@ public class AnalysisServiceTest {
 
 		assertEquals("Project not registerd", jsonObject.get("status"));
 	}
-	
+
 	@Test
 	public void getAPIUsageInfoFileNotFoundTest() throws Exception {
 		mockStatic(DatabaseConnection.class);
@@ -367,7 +370,7 @@ public class AnalysisServiceTest {
 
 		assertEquals("Project files not found", jsonObject.get("status"));
 	}
-	
+
 	@Test
 	public void getAPIUsageInfoTest() throws Exception {
 		mockStatic(DatabaseConnection.class);
@@ -384,19 +387,20 @@ public class AnalysisServiceTest {
 		whenNew(File.class).withAnyArguments().thenReturn(file);
 
 		when(file.exists()).thenReturn(true);
-		
-		SelectAnalysisByProjectIdAndType selectAnalysisByProjectIdAndType = mock(SelectAnalysisByProjectIdAndType.class);
+
+		SelectAnalysisByProjectIdAndType selectAnalysisByProjectIdAndType = mock(
+				SelectAnalysisByProjectIdAndType.class);
 		whenNew(SelectAnalysisByProjectIdAndType.class).withAnyArguments().thenReturn(selectAnalysisByProjectIdAndType);
-		
+
 		Analysis analysis = mock(Analysis.class);
 		when(selectAnalysisByProjectIdAndType.getResult()).thenReturn(analysis);
-		
+
 		ReadJarMap readJarMap = mock(ReadJarMap.class);
 		whenNew(ReadJarMap.class).withNoArguments().thenReturn(readJarMap);
-		
+
 		AnalyzeApp analyzeApp = mock(AnalyzeApp.class);
 		whenNew(AnalyzeApp.class).withAnyArguments().thenReturn(analyzeApp);
-		
+
 		JSONParser jsonParser = mock(JSONParser.class);
 		whenNew(JSONParser.class).withNoArguments().thenReturn(jsonParser);
 
@@ -404,15 +408,26 @@ public class AnalysisServiceTest {
 
 		FileReader fileReader = mock(FileReader.class);
 		whenNew(FileReader.class).withAnyArguments().thenReturn(fileReader);
-		
+
 		whenNew(Analysis.class).withAnyArguments().thenReturn(analysis);
-		
+
 		InsertIntoAnalysisQuery insertIntoAnalysisQuery = mock(InsertIntoAnalysisQuery.class);
 		whenNew(InsertIntoAnalysisQuery.class).withAnyArguments().thenReturn(insertIntoAnalysisQuery);
-		
+
 		JSONObject jsonObject = analysisService.getAPIUsageInfo(PROJECT_ID);
 
 		assertEquals("Successfully analyzed API usage.", jsonObject.get("status"));
+	}
+
+	@Test
+	public void extractICUTest() throws Exception {
+		MongoDatabase database = DatabaseConnection.getDatabase();
+		SourceProject sourceProject = mock(SourceProject.class);
+		when(sourceProject.getProjectLocation()).thenReturn("src/test/resources/apps/source/5f6888acab353118f79ea34e");
+		when(sourceProject.getRootAnalyzePath()).thenReturn("");
+		when(sourceProject.getCodeType()).thenReturn("bin");
+		whenNew(InterClassUsageFinder.class).withAnyArguments().thenReturn(mock(InterClassUsageFinder.class));
+		AnalysisService.extractICU("5f6888acab353118f79ea34e", database, sourceProject);
 	}
 
 }
